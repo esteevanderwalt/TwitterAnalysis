@@ -37,6 +37,11 @@ tweets <- dbGetQuery(con, "SELECT * from main.experiment_tweets_shortest where \
 
 Amount of records retrieved: `r nrow(tweets)`
 
+## Show first 5 records
+```{r}
+head(tweets)
+```
+
 ## Structure of the data
 
 ```{r}

@@ -28,6 +28,99 @@ tweets <- dbGetQuery(con, "SELECT * from main.experiment_tweets_shortest where \
 
 Amount of records retrieved: 1000
 
+## Show first 5 records
+
+```r
+head(tweets)
+```
+
+```
+##             ID
+## 1 6.267694e+17
+## 2 6.265920e+17
+## 3 6.267700e+17
+## 4 6.260581e+17
+## 5 6.257871e+17
+## 6 6.257856e+17
+##                                                                                                                     CONTENT
+## 1                                                                                 @mall0ry_ please tell me you work tonight
+## 2                                                                                           I love everything about my life
+## 3                                              @mall0ry_ GOD IS ALIVE! Thank ya Jesus. I can't wait to see you Ã­Â Â½Ã­Â¸Â
+## 4                                                              This made me smile today Ã¢ÂÂ¤Ã¯Â¸Â http://t.co/DSueGBTPJD
+## 5              @JamesAustinCole exactly Ã¢ÂÂºÃ¯Â¸Â chin up. You have so many great things to look forward to Ã­Â Â½Ã­Â¸Â
+## 6 RT @JamesAustinCole: God Tilonda i absolutely love you @Londs_   you dont know how close I was to flipping out last night
+##             CREATEDAT RETWEET         RTID      RTUSERNAME
+## 1 2015-07-30 15:00:55       0           NA            <NA>
+## 2 2015-07-30 03:15:40       0           NA            <NA>
+## 3 2015-07-30 15:03:10       0           NA            <NA>
+## 4 2015-07-28 15:54:05       0           NA            <NA>
+## 5 2015-07-27 21:57:17       0           NA            <NA>
+## 6 2015-07-27 21:51:26       1 6.257845e+17 JamesAustinCole
+##             OPEN_DATE    USERID USERNAME     FULLNAME
+## 1 2010-05-01 15:07:23 139102704   Londs_ Tilly Ã¢ÂÂ®
+## 2 2010-05-01 15:07:23 139102704   Londs_ Tilly Ã¢ÂÂ®
+## 3 2010-05-01 15:07:23 139102704   Londs_ Tilly Ã¢ÂÂ®
+## 4 2010-05-01 15:07:23 139102704   Londs_ Tilly Ã¢ÂÂ®
+## 5 2010-05-01 15:07:23 139102704   Londs_ Tilly Ã¢ÂÂ®
+## 6 2010-05-01 15:07:23 139102704   Londs_ Tilly Ã¢ÂÂ®
+##                                  DESCRIPTION GEO_ENABLED LATITUDE
+## 1 To the moon & back\\, forever Ã¢ÂÂ¤Ã¯Â¸Â           1       NA
+## 2 To the moon & back\\, forever Ã¢ÂÂ¤Ã¯Â¸Â           1       NA
+## 3 To the moon & back\\, forever Ã¢ÂÂ¤Ã¯Â¸Â           1       NA
+## 4 To the moon & back\\, forever Ã¢ÂÂ¤Ã¯Â¸Â           1       NA
+## 5 To the moon & back\\, forever Ã¢ÂÂ¤Ã¯Â¸Â           1       NA
+## 6 To the moon & back\\, forever Ã¢ÂÂ¤Ã¯Â¸Â           1       NA
+##   LONGITUDE LOCATION                   TIMEZONE LANGUAGE FOLLOWERS FRIENDS
+## 1        NA          Pacific Time (US & Canada)       en       673     480
+## 2        NA          Pacific Time (US & Canada)       en       673     480
+## 3        NA          Pacific Time (US & Canada)       en       673     480
+## 4        NA          Pacific Time (US & Canada)       en       673     480
+## 5        NA          Pacific Time (US & Canada)       en       673     480
+## 6        NA          Pacific Time (US & Canada)       en       673     480
+##   RTFOLLOWERS TRANSLATOR STATUS_COUNT
+## 1          NA          0        45701
+## 2          NA          0        45701
+## 3          NA          0        45701
+## 4          NA          0        45701
+## 5          NA          0        45701
+## 6         416          0        45701
+##                                                         PROFILE_IMAGE
+## 1 http://pbs.twimg.com/profile_images/704190279889391616/lUg_77m4.jpg
+## 2 http://pbs.twimg.com/profile_images/704190279889391616/lUg_77m4.jpg
+## 3 http://pbs.twimg.com/profile_images/704190279889391616/lUg_77m4.jpg
+## 4 http://pbs.twimg.com/profile_images/704190279889391616/lUg_77m4.jpg
+## 5 http://pbs.twimg.com/profile_images/704190279889391616/lUg_77m4.jpg
+## 6 http://pbs.twimg.com/profile_images/704190279889391616/lUg_77m4.jpg
+##                                                      BACKGROUND_IMAGE
+## 1 http://pbs.twimg.com/profile_background_images/304967369/animal.jpg
+## 2 http://pbs.twimg.com/profile_background_images/304967369/animal.jpg
+## 3 http://pbs.twimg.com/profile_background_images/304967369/animal.jpg
+## 4 http://pbs.twimg.com/profile_background_images/304967369/animal.jpg
+## 5 http://pbs.twimg.com/profile_background_images/304967369/animal.jpg
+## 6 http://pbs.twimg.com/profile_background_images/304967369/animal.jpg
+##                                                     BANNER_IMAGE IS_FRIEND
+## 1 https://pbs.twimg.com/profile_banners/139102704/1449461742/web         1
+## 2 https://pbs.twimg.com/profile_banners/139102704/1449461742/web         1
+## 3 https://pbs.twimg.com/profile_banners/139102704/1449461742/web         1
+## 4 https://pbs.twimg.com/profile_banners/139102704/1449461742/web         1
+## 5 https://pbs.twimg.com/profile_banners/139102704/1449461742/web         1
+## 6 https://pbs.twimg.com/profile_banners/139102704/1449461742/web         1
+##   IS_FOLLOWER IS_DEFAULT_PROFILE SIZE        LAST_UPDATED INREPLYTO
+## 1           0                  0 2648 2016-03-03 02:57:30 162477103
+## 2           0                  0 2416 2016-03-03 02:57:30        -1
+## 3           0                  0 2696 2016-03-03 02:57:29 162477103
+## 4           0                  0 4640 2016-03-03 02:57:30        -1
+## 5           0                  0 2792 2016-03-03 02:57:30  33519881
+## 6           0                  0 6032 2016-03-03 02:57:30        -1
+##                                                                               SOURCE
+## 1 <a href="http://twitter.com/download/iphone" rel="nofollow">Twitter for iPhone</a>
+## 2 <a href="http://twitter.com/download/iphone" rel="nofollow">Twitter for iPhone</a>
+## 3 <a href="http://twitter.com/download/iphone" rel="nofollow">Twitter for iPhone</a>
+## 4 <a href="http://twitter.com/download/iphone" rel="nofollow">Twitter for iPhone</a>
+## 5 <a href="http://twitter.com/download/iphone" rel="nofollow">Twitter for iPhone</a>
+## 6 <a href="http://twitter.com/download/iphone" rel="nofollow">Twitter for iPhone</a>
+```
+
 ## Structure of the data
 
 
