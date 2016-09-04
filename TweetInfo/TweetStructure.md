@@ -249,4 +249,41 @@ summary(tweets)
 ## Find NA (not applicables) in dataset 
 These could be a problem later in data analysis
 
+```r
+table(is.na(tweets))
+```
 
+```
+## 
+## FALSE  TRUE 
+## 27575  4425
+```
+
+Are there any complete rows
+Incomplete = 1000
+
+
+```r
+df <- data.frame(dose=c("Total", "Incomplete"),len=c(total_tweets, incomplete_tweets))
+ggplot(data=df, aes(x=dose, y=len)) + geom_bar(stat="identity", fill="steelblue") + theme_minimal() + coord_flip() + theme(axis.title=element_blank())
+```
+
+![](TweetStructure_files/figure-html/unnamed-chunk-8-1.png)<!-- -->
+
+```r
+#counts = data.frame(total_tweets, incomplete_tweets)
+#barplot(as.matrix(counts), main="Total vs Incompleted Rows", horiz=TRUE, names.arg=c("Total", "Incomplete"), row=c("darkblue","red"))
+```
+
+Lets see which columns contribute
+
+```r
+#df <- colSums(is.na(tweets))
+
+#df <- data.frame(dose=c("Total", "Incomplete"),len=c(total_tweets, incomplete_tweets))
+toplot_noind <- data.frame(cols=colnames(tweets), count=colSums(is.na(tweets)))
+#y <- colnames(toplot_noind)
+ggplot(data=toplot_noind, aes(x = cols, y = count)) + geom_bar(stat="identity", fill="steelblue") + theme_minimal() + theme(axis.title=element_blank())+theme(axis.text.x = element_text(angle = 45, hjust = 1))
+```
+
+![](TweetStructure_files/figure-html/unnamed-chunk-9-1.png)<!-- -->
