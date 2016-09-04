@@ -22,7 +22,6 @@ summary(cars)
 ## Including Plots
 
 You can also embed plots, for example:
-Changed text test:
 
 ```{r pressure, echo=FALSE}
 plot(pressure)
