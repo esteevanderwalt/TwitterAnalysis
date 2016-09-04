@@ -1,5 +1,5 @@
 # TwitterAnalysis
-## Analysis of Twitter data as part of PhD work
+## Analysis of Twitter data as part of PhD research work
 Using R-Studio and data scraped from Internet. Some sample data is available.
 For our current purpose we either have the data hosted in Postgres or SAP HANA.
 
