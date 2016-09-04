@@ -1,1 +1,1 @@
-Examples of connecting to difference databases
+Examples of connecting to difference databases via R and its libraries

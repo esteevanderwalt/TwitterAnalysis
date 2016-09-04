@@ -1,7 +1,7 @@
 # TwitterAnalysis
 ## Analysis of Twitter data as part of PhD research work
 Using R-Studio and data scraped from Internet. Some sample data is available.
-For our current purpose we either have the data hosted in Postgres or SAP HANA.
+For our current purpose we either have the data hosted in [Postgres or SAP HANA](/DBConnection/README.md).
 
 The goal is to extract features from the tweets to ultimately build a identity deception indicator. This deception indicator's purpose will be to highlight potential accounts which does not belong to the current corpus.
 The current corpus was scraped using specific key words to identity a target group of people. In our case we used the words 'school' and 'homework' as these will hopefully give us a corpus of children or young adults.
