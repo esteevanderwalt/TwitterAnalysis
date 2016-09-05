@@ -10,15 +10,15 @@ First we need to analyse our data for features to be used as part of the identit
 But what [information](/TweetInfo/TweetStructure.md) have we got available per tweet?
 
 ####Understanding the [content of the tweets](/TweetInfo/TweetCorpusInfo.md)
-- Amount of tweets in corpus
-- Dates of tweets
-- Times of tweets
-- Time of tweet per timezone
-- Time of tweet per location
-- Amount of retweets
-- Tweets with URL link
-- Retweets vs followers
-- Retweets vs URL link
+- [x] Amount of tweets in corpus
+- [x] Dates of tweets
+- [x] Times of tweets
+- [x] Time of tweet per timezone
+- [ ] Time of tweet per location
+- [ ] Amount of retweets
+- [ ] Tweets with URL link
+- [ ] Retweets vs followers
+- [ ] Retweets vs URL link
 
 ####Sentiment analysis of tweets
 - For corpus

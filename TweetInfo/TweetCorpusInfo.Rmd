@@ -14,6 +14,8 @@ knitr::opts_chunk$set(tidy = TRUE)
   #load libraries
   library(RPostgreSQL)
   library(ggplot2)
+  library(lubridate)
+  library(scales)
 ```
 
 ## Connect to the database first
@@ -32,9 +34,95 @@ Connection success: `r dbExistsTable(con, c("main","experiment_tweets_shortest")
 ##Pull data from the database
 We will only pull the data for one user to understand the structure and content initially
 
-```{r}
-tweets <- dbGetQuery(con, "SELECT * from main.experiment_tweets_shortest where \"USERNAME\" = 'Londs_'")
+```{r cache=TRUE}
+tweets <- dbGetQuery(con, "SELECT \"ID\", \"CREATEDAT\", \"USERID\", \"RETWEET\", \"GEO_ENABLED\", \"LATITUDE\", \"LONGITUDE\", \"LOCATION\", \"TIMEZONE\" from main.experiment_tweets_shortest")
 ```
 
-Amount of records retrieved: `r total_tweets <- nrow(tweets)
+Total amount of tweets in the corpus: `r total_tweets <- nrow(tweets)
   total_tweets`
+
+Total unique users: `r total_users <- length(unique(tweets$USERID))
+  total_users`
+
+##Dates of the tweets
+
+####Per year
+Show a plot off all tweets as per their creation date
+```{r}
+tweets$CREATEDAT <- ymd_hms(tweets$CREATEDAT)
+tweets$YEAR <- year(tweets$CREATEDAT)
+
+ggplot(data = tweets, aes(x = CREATEDAT)) +
+  geom_histogram(aes(fill = ..count..)) +
+  theme(legend.position = "none") +
+  xlab("Time") + ylab("Number of tweets") + 
+  scale_fill_gradient(low = "midnightblue", high = "aquamarine4")
+```
+
+####Per hour
+Show a plot off all tweets as per hour
+```{r}
+ggplot(data = tweets, aes(x = hour(CREATEDAT))) +
+  geom_histogram(aes(fill = ..count..)) +
+  theme(legend.position = "none") +
+  xlab("Hour") + ylab("Number of tweets") + 
+  scale_fill_gradient(low = "midnightblue", high = "aquamarine4")
+```
+
+Is this the same per year?
+```{r}
+ggplot(data = tweets, aes(x = hour(CREATEDAT))) +
+  geom_histogram(aes(fill = ..count..)) +
+  theme(legend.position = "none") +
+  facet_wrap(~YEAR) +
+  xlab("Hour") + ylab("Number of tweets") + 
+  scale_fill_gradient(low = "midnightblue", high = "aquamarine4")
+```
+
+Is the behavior the same for all timezones?
+
+First show the top20 timezones
+```{r}
+toptz <- data.frame(sort(table(tweets$TIMEZONE),decreasing=T))
+toptz <- toptz[1:20,]
+ggplot(data = toptz, aes(Var1, Freq)) +
+  geom_bar(stat = "identity") +
+  theme(legend.position = "none") +
+  xlab("Timezone") + ylab("Number of tweets") + 
+  scale_fill_gradient(low = "midnightblue", high = "aquamarine4") +
+  theme(axis.text.x = element_text(angle = 90, hjust = 1))
+```
+
+Now show the tweets per hour per the top 20 timezones
+```{r}
+toptz_tweets <- tweets[tweets$TIMEZONE %in% toptz$Var1,]
+
+ggplot(data = toptz_tweets, aes(x = hour(CREATEDAT))) +
+  geom_histogram(aes(fill = ..count..)) +
+  theme(legend.position = "none") +
+  facet_wrap(~TIMEZONE) +
+  xlab("Hour") + ylab("Number of tweets") + 
+  scale_fill_gradient(low = "midnightblue", high = "aquamarine4")
+```
+
+####Per weekday
+Show a plot off all tweets as per week day
+```{r}
+ggplot(data = tweets, aes(x = wday(CREATEDAT, label = TRUE))) +
+  geom_bar(aes(fill = ..count..)) +
+  theme(legend.position = "none") +
+  xlab("Day of the Week") + ylab("Number of tweets") + 
+  scale_fill_gradient(low = "midnightblue", high = "aquamarine4")
+```
+
+Is this the same per year?
+```{r}
+ggplot(data = tweets, aes(x = wday(CREATEDAT, label = TRUE))) +
+  geom_bar(aes(fill = ..count..)) +
+  theme(legend.position = "none") +
+  facet_wrap(~YEAR) +
+  xlab("Day of the Week") + ylab("Number of tweets") + 
+  scale_fill_gradient(low = "midnightblue", high = "aquamarine4")
+```
+
+####Per hour, per location

@@ -1,0 +1,6 @@
+base
+DBI
+RPostgreSQL
+ggplot2
+lubridate
+scales
