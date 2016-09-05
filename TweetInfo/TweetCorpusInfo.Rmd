@@ -1,0 +1,40 @@
+---
+title: "Tweet Corpus Information"
+output: 
+  html_document: 
+    keep_md: yes
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+knitr::opts_chunk$set(tidy = TRUE)
+```
+
+```{r include=FALSE}
+  #load libraries
+  library(RPostgreSQL)
+  library(ggplot2)
+```
+
+## Connect to the database first
+```{r}
+#loads the PostgreSQL driver
+drv <- dbDriver("PostgreSQL")
+#creates a connection to the postgres database
+#note that "con" will be used later in each connection to the database
+con <- dbConnect(drv, dbname = "twitter",
+                 host = "localhost", port = 5432,
+                 user = "postgres", password = "")
+```
+
+Connection success: `r dbExistsTable(con, c("main","experiment_tweets_shortest"))`
+
+##Pull data from the database
+We will only pull the data for one user to understand the structure and content initially
+
+```{r}
+tweets <- dbGetQuery(con, "SELECT * from main.experiment_tweets_shortest where \"USERNAME\" = 'Londs_'")
+```
+
+Amount of records retrieved: `r total_tweets <- nrow(tweets)
+  total_tweets`

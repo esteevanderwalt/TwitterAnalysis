@@ -7,13 +7,12 @@
 ## Connect to the database first
 
 ```r
-#loads the PostgreSQL driver
+# loads the PostgreSQL driver
 drv <- dbDriver("PostgreSQL")
-#creates a connection to the postgres database
-#note that "con" will be used later in each connection to the database
-con <- dbConnect(drv, dbname = "twitter",
-host = "localhost", port = 5432,
-user = "postgres", password = "")
+# creates a connection to the postgres database note that 'con' will be used
+# later in each connection to the database
+con <- dbConnect(drv, dbname = "twitter", host = "localhost", port = 5432, user = "postgres", 
+    password = "")
 ```
 
 Connection success: TRUE
@@ -264,26 +263,29 @@ Incomplete = 1000
 
 
 ```r
-df <- data.frame(dose=c("Total", "Incomplete"),len=c(total_tweets, incomplete_tweets))
-ggplot(data=df, aes(x=dose, y=len)) + geom_bar(stat="identity", fill="steelblue") + theme_minimal() + coord_flip() + theme(axis.title=element_blank())
+df <- data.frame(dose = c("Total", "Incomplete"), len = c(total_tweets, incomplete_tweets))
+ggplot(data = df, aes(x = dose, y = len)) + geom_bar(stat = "identity", fill = "steelblue") + 
+    theme_minimal() + coord_flip() + theme(axis.title = element_blank())
 ```
 
 ![](TweetStructure_files/figure-html/unnamed-chunk-8-1.png)<!-- -->
 
 ```r
-#counts = data.frame(total_tweets, incomplete_tweets)
-#barplot(as.matrix(counts), main="Total vs Incompleted Rows", horiz=TRUE, names.arg=c("Total", "Incomplete"), row=c("darkblue","red"))
+# counts = data.frame(total_tweets, incomplete_tweets)
+# barplot(as.matrix(counts), main='Total vs Incompleted Rows', horiz=TRUE,
+# names.arg=c('Total', 'Incomplete'), row=c('darkblue','red'))
 ```
 
 Lets see which columns contribute
 
 ```r
-#df <- colSums(is.na(tweets))
+toplot_noind <- data.frame(cols = colnames(tweets), count = colSums(is.na(tweets)))
+# remove rows where count = 0
+toplot_noind <- toplot_noind[toplot_noind$count > 0, ]
 
-#df <- data.frame(dose=c("Total", "Incomplete"),len=c(total_tweets, incomplete_tweets))
-toplot_noind <- data.frame(cols=colnames(tweets), count=colSums(is.na(tweets)))
-#y <- colnames(toplot_noind)
-ggplot(data=toplot_noind, aes(x = cols, y = count)) + geom_bar(stat="identity", fill="steelblue") + theme_minimal() + theme(axis.title=element_blank())+theme(axis.text.x = element_text(angle = 45, hjust = 1))
+ggplot(data = toplot_noind, aes(x = cols, y = count)) + geom_bar(stat = "identity", 
+    fill = "steelblue") + theme_minimal() + theme(axis.title = element_blank()) + 
+    theme(axis.text.x = element_text(angle = 90, hjust = 1))
 ```
 
 ![](TweetStructure_files/figure-html/unnamed-chunk-9-1.png)<!-- -->

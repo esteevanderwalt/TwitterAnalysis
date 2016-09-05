@@ -7,6 +7,7 @@ output:
 
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE)
+knitr::opts_chunk$set(tidy = TRUE)
 ```
 
 ```{r include=FALSE}
@@ -22,9 +23,8 @@ drv <- dbDriver("PostgreSQL")
 #creates a connection to the postgres database
 #note that "con" will be used later in each connection to the database
 con <- dbConnect(drv, dbname = "twitter",
-host = "localhost", port = 5432,
-user = "postgres", password = "")
-
+                 host = "localhost", port = 5432,
+                 user = "postgres", password = "")
 ```
 
 Connection success: `r dbExistsTable(con, c("main","experiment_tweets_shortest"))`
@@ -75,11 +75,9 @@ ggplot(data=df, aes(x=dose, y=len)) + geom_bar(stat="identity", fill="steelblue"
 
 Lets see which columns contribute
 ```{r}
-#df <- colSums(is.na(tweets))
-
-#df <- data.frame(dose=c("Total", "Incomplete"),len=c(total_tweets, incomplete_tweets))
 toplot_noind <- data.frame(cols=colnames(tweets), count=colSums(is.na(tweets)))
-#remove columns where count = 0
+#remove rows where count = 0
+toplot_noind <- toplot_noind[toplot_noind$count > 0,]
 
 ggplot(data=toplot_noind, aes(x = cols, y = count)) + geom_bar(stat="identity", fill="steelblue") + theme_minimal() + theme(axis.title=element_blank())+theme(axis.text.x = element_text(angle = 90, hjust = 1))
 ```

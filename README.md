@@ -9,7 +9,7 @@ The current corpus was scraped using specific key words to identity a target gro
 First we need to analyse our data for features to be used as part of the identity deception indicator.
 But what [information](/TweetInfo/TweetStructure.md) have we got available per tweet?
 
-####Understanding the content of the tweets
+####Understanding the [content of the tweets](/TweetInfo/TweetCorpusInfo.md)
 - Amount of tweets in corpus
 - Dates of tweets
 - Times of tweets
