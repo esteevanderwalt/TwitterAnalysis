@@ -119,6 +119,7 @@ $(document).ready(function () {
 </div>
 
 
+<p>The aim is to understand the nature of the tweets a bit more. These could help us later in feature selection when building a indentity deception indicator.</p>
 <div id="connect-to-the-database-first" class="section level2">
 <h2>Connect to the database first</h2>
 <pre class="r"><code># loads the PostgreSQL driver
@@ -131,7 +132,7 @@ con &lt;- dbConnect(drv, dbname = &quot;twitter&quot;, host = &quot;localhost&qu
 </div>
 <div id="pull-data-from-the-database" class="section level2">
 <h2>Pull data from the database</h2>
-<p>We will only pull the data for one user to understand the structure and content initially</p>
+<p>We will pull the full corpus but selective fields for analysis due to memory limitation</p>
 <pre class="r"><code>tweets &lt;- dbGetQuery(con, &quot;SELECT \&quot;ID\&quot;, \&quot;CREATEDAT\&quot;, \&quot;USERID\&quot;, \&quot;RETWEET\&quot;, \&quot;GEO_ENABLED\&quot;, \&quot;LATITUDE\&quot;, \&quot;LONGITUDE\&quot;, \&quot;LOCATION\&quot;, \&quot;TIMEZONE\&quot; from main.experiment_tweets_shortest&quot;)</code></pre>
 <p>Total amount of tweets in the corpus: 4764733</p>
 <p>Total unique users: 6846</p>

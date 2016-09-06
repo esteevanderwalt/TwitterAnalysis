@@ -4,6 +4,8 @@
 
 
 
+The aim is to understand the nature of the tweets a bit more. These could help us later in feature selection when building a indentity deception indicator.
+
 ## Connect to the database first
 
 ```r
@@ -18,7 +20,7 @@ con <- dbConnect(drv, dbname = "twitter", host = "localhost", port = 5432, user 
 Connection success: TRUE
 
 ##Pull data from the database
-We will only pull the data for one user to understand the structure and content initially
+We will pull the full corpus but selective fields for analysis due to memory limitation
 
 
 ```r
