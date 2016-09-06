@@ -7,7 +7,7 @@ The goal is to extract features from the tweets to ultimately build a identity d
 The current corpus was scraped using specific key words to identity a target group of people. In our case we used the words 'school' and 'homework' as these will hopefully give us a corpus of children or young adults.
 
 First we need to analyse our data for features to be used as part of the identity deception indicator.
-But what [information](/TweetInfo/TweetStructure.md) have we got available per tweet?
+But lets first understand the [structures of tweets](/TweetInfo/TweetStructure.md).
 
 ####Understanding the [content of the tweets](/TweetInfo/TweetCorpusInfo.md)
 - [x] Amount of tweets in corpus
@@ -20,7 +20,7 @@ But what [information](/TweetInfo/TweetStructure.md) have we got available per t
 - [ ] Retweets vs followers
 - [ ] Retweets vs URL link
 
-####Sentiment analysis of tweets
+####[Sentiment analysis](/Sentiment/SentimentAnalysis.md) of tweets
 - For corpus
 - For one person
 - Sentiment vs location

@@ -18,6 +18,8 @@ knitr::opts_chunk$set(tidy = TRUE)
   library(scales)
 ```
 
+The aim is to understand the nature of the tweets a bit more. These could help us later in feature selection when building a indentity deception indicator.
+
 ## Connect to the database first
 ```{r}
 #loads the PostgreSQL driver
@@ -32,7 +34,7 @@ con <- dbConnect(drv, dbname = "twitter",
 Connection success: `r dbExistsTable(con, c("main","experiment_tweets_shortest"))`
 
 ##Pull data from the database
-We will only pull the data for one user to understand the structure and content initially
+We will pull the full corpus but selective fields for analysis due to memory limitation
 
 ```{r cache=TRUE}
 tweets <- dbGetQuery(con, "SELECT \"ID\", \"CREATEDAT\", \"USERID\", \"RETWEET\", \"GEO_ENABLED\", \"LATITUDE\", \"LONGITUDE\", \"LOCATION\", \"TIMEZONE\" from main.experiment_tweets_shortest")
