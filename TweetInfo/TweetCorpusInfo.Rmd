@@ -12,7 +12,7 @@ knitr::opts_chunk$set(tidy = TRUE)
 
 ```{r include=FALSE}
   #load libraries
-  library(RPostgreSQL)
+  library(knitr)
   library(ggplot2)
   library(lubridate)
   library(scales)
@@ -21,14 +21,11 @@ knitr::opts_chunk$set(tidy = TRUE)
 The aim is to understand the nature of the tweets a bit more. These could help us later in feature selection when building a indentity deception indicator.
 
 ## Connect to the database first
-```{r}
-#loads the PostgreSQL driver
-drv <- dbDriver("PostgreSQL")
-#creates a connection to the postgres database
-#note that "con" will be used later in each connection to the database
-con <- dbConnect(drv, dbname = "twitter",
-                 host = "localhost", port = 5432,
-                 user = "postgres", password = "")
+```{r echo=FALSE}
+read_chunk('../DBConnection/ConnectPostgres.R')
+```
+
+```{r connectDB}
 ```
 
 Connection success: `r dbExistsTable(con, c("main","experiment_tweets_shortest"))`
@@ -36,8 +33,7 @@ Connection success: `r dbExistsTable(con, c("main","experiment_tweets_shortest")
 ##Pull data from the database
 We will pull the full corpus but selective fields for analysis due to memory limitation
 
-```{r cache=TRUE}
-tweets <- dbGetQuery(con, "SELECT \"ID\", \"CREATEDAT\", \"USERID\", \"RETWEET\", \"GEO_ENABLED\", \"LATITUDE\", \"LONGITUDE\", \"LOCATION\", \"TIMEZONE\" from main.experiment_tweets_shortest")
+```{r tweets}
 ```
 
 Total amount of tweets in the corpus: `r total_tweets <- nrow(tweets)
@@ -128,3 +124,7 @@ ggplot(data = tweets, aes(x = wday(CREATEDAT, label = TRUE))) +
 ```
 
 ####Per hour, per location
+
+##Close the Database connection
+```{r closeDB}
+```

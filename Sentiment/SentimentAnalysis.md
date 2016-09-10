@@ -9,13 +9,31 @@ We will then create a wordcloud for a select few users and measure there distanc
 
 ## Connect to the database first
 
+
+
 ```r
+library(RPostgreSQL)
+```
+
+```
+## Loading required package: DBI
+```
+
+```r
+# create a connection save the password that we can 'hide' it as best as we
+# can by collapsing it
+pw <- {
+    ""
+}
+
 # loads the PostgreSQL driver
 drv <- dbDriver("PostgreSQL")
 # creates a connection to the postgres database note that 'con' will be used
 # later in each connection to the database
 con <- dbConnect(drv, dbname = "twitter", host = "localhost", port = 5432, user = "postgres", 
     password = "")
+
+rm(pw)  # removes the password
 ```
 
 Connection success: TRUE
@@ -72,3 +90,6 @@ Sentiment per continent
 Word clouds for different continents over the full corpus
 
 Sentiment per continent
+
+##Close the Database connection
+

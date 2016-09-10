@@ -122,12 +122,22 @@ $(document).ready(function () {
 <p>The aim here is to perform sentiment analysis from the content within tweets. We have various options in processing the content: we can rely on NLP libraries or we can use the language processing capabilities built into the SAP HANA library. We will try both and visually show the results in a wordcloud to measure any noticable differences at first. We will then create a wordcloud for a select few users and measure there distance from the main word cloud, ie how much does their talk differ to that from the corpus.</p>
 <div id="connect-to-the-database-first" class="section level2">
 <h2>Connect to the database first</h2>
-<pre class="r"><code># loads the PostgreSQL driver
+<pre class="r"><code>library(RPostgreSQL)</code></pre>
+<pre><code>## Loading required package: DBI</code></pre>
+<pre class="r"><code># create a connection save the password that we can 'hide' it as best as we
+# can by collapsing it
+pw &lt;- {
+    &quot;&quot;
+}
+
+# loads the PostgreSQL driver
 drv &lt;- dbDriver(&quot;PostgreSQL&quot;)
 # creates a connection to the postgres database note that 'con' will be used
 # later in each connection to the database
 con &lt;- dbConnect(drv, dbname = &quot;twitter&quot;, host = &quot;localhost&quot;, port = 5432, user = &quot;postgres&quot;, 
-    password = &quot;&quot;)</code></pre>
+    password = &quot;&quot;)
+
+rm(pw)  # removes the password</code></pre>
 <p>Connection success: TRUE</p>
 </div>
 <div id="pull-data-from-the-database" class="section level2">
@@ -161,6 +171,9 @@ con &lt;- dbConnect(drv, dbname = &quot;twitter&quot;, host = &quot;localhost&qu
 <p>Word clouds for different continents over the full corpus</p>
 <p>Sentiment per continent</p>
 </div>
+</div>
+<div id="close-the-database-connection" class="section level2">
+<h2>Close the Database connection</h2>
 </div>
 
 

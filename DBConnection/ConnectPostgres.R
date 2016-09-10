@@ -1,5 +1,8 @@
 #install.packages("RPostgreSQL")
 # require("RPostgreSQL")
+
+## @knitr connectDB
+
 library(RPostgreSQL)
 
 #create a connection
@@ -15,6 +18,19 @@ host = "localhost", port = 5432,
 user = "postgres", password = "")
 
 rm(pw) # removes the password
+
+## @knitr tweets_single_user
+tweets.singleuser <- dbGetQuery(con, "SELECT * from main.experiment_tweets_shortest where \"USERNAME\" = 'Londs_'")
+
+## @knitr tweets
+tweets <- dbGetQuery(con, "SELECT \"ID\", \"CREATEDAT\", \"USERID\", \"RETWEET\", \"GEO_ENABLED\", \"LATITUDE\", \"LONGITUDE\", \"LOCATION\", \"TIMEZONE\" from main.experiment_tweets_shortest")
+
+## @knitr tweets_content
+tweets <- dbGetQuery(con, "SELECT \"USERNAME\", \"USERID\", \"CREATEDAT\", \"CONTENT\",\"GEO_ENABLED\", \"LATITUDE\", \"LONGITUDE\", \"LOCATION\", \"TIMEZONE\" from main.experiment_tweets_shortest where \"RETWEET\" = 0")
+
+## @knitr closeDB
+
+## @knitr other
 
 #check for table existence
 dbExistsTable(con, c("main","experiment_tweets_shortest"))

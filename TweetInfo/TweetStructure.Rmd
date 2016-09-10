@@ -12,19 +12,16 @@ knitr::opts_chunk$set(tidy = TRUE)
 
 ```{r include=FALSE}
   #load libraries
-  library(RPostgreSQL)
+  library(knitr)
   library(ggplot2)
 ```
 
 ## Connect to the database first
-```{r}
-#loads the PostgreSQL driver
-drv <- dbDriver("PostgreSQL")
-#creates a connection to the postgres database
-#note that "con" will be used later in each connection to the database
-con <- dbConnect(drv, dbname = "twitter",
-                 host = "localhost", port = 5432,
-                 user = "postgres", password = "")
+```{r echo=FALSE}
+read_chunk('../DBConnection/ConnectHana.R')
+```
+
+```{r connectDB}
 ```
 
 Connection success: `r dbExistsTable(con, c("main","experiment_tweets_shortest"))`
@@ -32,8 +29,11 @@ Connection success: `r dbExistsTable(con, c("main","experiment_tweets_shortest")
 ##Pull data from the database
 We will only pull the data for one user to understand the structure and content initially
 
+```{r tweets_single_user}
+```
+
 ```{r}
-tweets <- dbGetQuery(con, "SELECT * from main.experiment_tweets_shortest where \"USERNAME\" = 'Londs_'")
+tweets <- tweets.singleuser
 ```
 
 Amount of records retrieved: `r total_tweets <- nrow(tweets)
@@ -80,4 +80,8 @@ toplot_noind <- data.frame(cols=colnames(tweets), count=colSums(is.na(tweets)))
 toplot_noind <- toplot_noind[toplot_noind$count > 0,]
 
 ggplot(data=toplot_noind, aes(x = cols, y = count)) + geom_bar(stat="identity", fill="steelblue") + theme_minimal() + theme(axis.title=element_blank())+theme(axis.text.x = element_text(angle = 90, hjust = 1))
+```
+
+##Close the Database connection
+```{r closeDB}
 ```
