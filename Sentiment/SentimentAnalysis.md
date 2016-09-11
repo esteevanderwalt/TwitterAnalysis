@@ -189,16 +189,28 @@ wf <- tweet_words %>% count(word, sort = TRUE) %>% head(200) %>% mutate(word = r
     n))
 
 # build word cloud
-library(wordcloud2)
-# setting the same seed each time ensures consistent look across clouds
-set.seed(42)
-# limit words by specifying min frequency
-wordcloud2(wf[1:50, ], size = 0.5, shape = "circle", color = "random-dark", 
-    backgroundColor = "white")
+library(wordcloud)
 ```
 
-<!--html_preserve--><div id="htmlwidget-eaef49d4a484bc22a8b4" style="width:672px;height:480px;" class="wordcloud2 html-widget"></div>
-<script type="application/json" data-for="htmlwidget-eaef49d4a484bc22a8b4">{"x":{"word":["love","@mall0ry","life","people","@gmaeasteggchick","damn","http","girl","@auntiejaymeee","day","miss","time","haha","wait","lol","omg","tho","@beamerorbienz","night","ass","fucking","happy","friends","karma","@cdavis821","baby","boo","cuz","glad","@abbey","beautiful","lenae","wanna","bed","lmao","world","@skkarah","home","@andrya","bad","car","entire","phone","ready","renee","stop","@hypebeastrelly","dog","excited","hard"],"freq":[110,55,46,39,35,35,35,33,29,27,27,27,25,23,21,21,20,19,19,17,17,17,15,15,14,14,14,14,14,13,13,13,13,12,12,12,11,11,10,10,10,10,10,10,10,10,9,9,9,9],"fontFamily":"Segoe UI","fontWeight":"bold","color":"random-dark","minSize":0,"weightFactor":0.818181818181818,"backgroundColor":"white","gridSize":0,"minRotation":-0.785398163397448,"maxRotation":0.785398163397448,"shuffle":true,"rotateRatio":0.4,"shape":"circle","ellipticity":0.65,"figBase64":null,"hover":null},"evals":[],"jsHooks":[]}</script><!--/html_preserve-->
+```
+## Loading required package: RColorBrewer
+```
+
+```r
+# library(wordcloud2) setting the same seed each time ensures consistent
+# look across clouds
+set.seed(42)
+# limit words by specifying min frequency
+pal2 <- brewer.pal(8, "Dark2")
+wordcloud(wf$word, wf$n, max.words = 50, random.order = FALSE, colors = pal2)
+```
+
+![](SentimentAnalysis_files/figure-html/unnamed-chunk-7-1.png)<!-- -->
+
+```r
+# wordcloud2(wf[1:50,], size = 0.5,shape = 'circle', color =
+# 'random-dark',backgroundColor = 'white')
+```
 
 We can also cluster the words together based on Euclidian distance.
 This can be presented in various ways:
@@ -386,13 +398,6 @@ colnames(tdm) = labels
 
 # comparison word cloud
 library(wordcloud)
-```
-
-```
-## Loading required package: RColorBrewer
-```
-
-```r
 comparison.cloud(tdm, colors = brewer.pal(nemo, "Dark2"), scale = c(3, 0.5), 
     random.order = FALSE, title.size = 1.5)
 ```
@@ -428,16 +433,21 @@ wf <- tweet_words %>% count(word, sort = TRUE) %>% head(200) %>% mutate(word = r
     n))
 
 # build word cloud
-library(wordcloud2)
-# setting the same seed each time ensures consistent look across clouds
+library(wordcloud)
+# library(wordcloud2) setting the same seed each time ensures consistent
+# look across clouds
 set.seed(42)
 # limit words by specifying min frequency
-wordcloud2(wf[1:50, ], size = 0.5, shape = "circle", color = "random-dark", 
-    backgroundColor = "white")
+pal2 <- brewer.pal(8, "Dark2")
+wordcloud(wf$word, wf$n, max.words = 50, random.order = FALSE, colors = pal2)
 ```
 
-<!--html_preserve--><div id="htmlwidget-75b8ef4176f0fa1e798f" style="width:672px;height:480px;" class="wordcloud2 html-widget"></div>
-<script type="application/json" data-for="htmlwidget-75b8ef4176f0fa1e798f">{"x":{"word":["love","#izombie","#thegoldbergs","http","gemini","people","life","day","@sugaswifeyy","@mall0ry","computing","#gotham","de","lol","time","@bangtangboyss","festival","bir","cok","ben","girl","happy","#rufestofcomp16","@scoopit","damn","icin","omg","cute","@gmaeasteggchick","@iskaraman","haha","miss","@myozden","night","week","ve","wait","@aysegusahin","literally","tho","@auntiejaymeee","friends","fucking","ile","chaos","bad","im","blaine","bu","ru"],"freq":[165,121,105,101,90,77,74,63,61,55,51,48,48,47,47,46,44,42,41,40,40,40,38,38,38,38,37,36,35,35,35,34,33,33,33,32,32,31,31,30,29,29,29,29,28,27,27,26,26,25],"fontFamily":"Segoe UI","fontWeight":"bold","color":"random-dark","minSize":0,"weightFactor":0.545454545454545,"backgroundColor":"white","gridSize":0,"minRotation":-0.785398163397448,"maxRotation":0.785398163397448,"shuffle":true,"rotateRatio":0.4,"shape":"circle","ellipticity":0.65,"figBase64":null,"hover":null},"evals":[],"jsHooks":[]}</script><!--/html_preserve-->
+![](SentimentAnalysis_files/figure-html/unnamed-chunk-14-1.png)<!-- -->
+
+```r
+# wordcloud2(wf[1:50,], size = 0.5,shape = 'circle', color =
+# 'random-dark',backgroundColor = 'white')
+```
 
 We can also cluster the words together based on Euclidian distance.
 This can be presented in various ways:

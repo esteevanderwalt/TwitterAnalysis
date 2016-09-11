@@ -131,11 +131,14 @@ wf <- tweet_words %>%
   mutate(word = reorder(word, n))
 
 #build word cloud
-library(wordcloud2)
+library(wordcloud)
+#library(wordcloud2)
 #setting the same seed each time ensures consistent look across clouds
 set.seed(42)
 #limit words by specifying min frequency
-wordcloud2(wf[1:50,], size = 0.5,shape = 'circle', color = 'random-dark',backgroundColor = 'white')
+pal2 <- brewer.pal(8,"Dark2")
+wordcloud(wf$word,wf$n, max.words=50, random.order=FALSE, colors=pal2)
+#wordcloud2(wf[1:50,], size = 0.5,shape = 'circle', color = 'random-dark',backgroundColor = 'white')
 ```
 
 We can also cluster the words together based on Euclidian distance.
@@ -305,11 +308,14 @@ wf <- tweet_words %>%
   mutate(word = reorder(word, n))
 
 #build word cloud
-library(wordcloud2)
+library(wordcloud)
+#library(wordcloud2)
 #setting the same seed each time ensures consistent look across clouds
 set.seed(42)
 #limit words by specifying min frequency
-wordcloud2(wf[1:50,], size = 0.5,shape = 'circle', color = 'random-dark',backgroundColor = 'white')
+pal2 <- brewer.pal(8,"Dark2")
+wordcloud(wf$word,wf$n, max.words=50, random.order=FALSE, colors=pal2)
+#wordcloud2(wf[1:50,], size = 0.5,shape = 'circle', color = 'random-dark',backgroundColor = 'white')
 ```
 
 We can also cluster the words together based on Euclidian distance.
