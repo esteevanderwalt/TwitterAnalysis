@@ -29,11 +29,17 @@ drv <- dbDriver("PostgreSQL")
 # later in each connection to the database
 con <- dbConnect(drv, dbname = "twitter", host = "localhost", port = 5432, user = "postgres", 
     password = "")
+# user = postgres for UBUNTU
 
 rm(pw)  # removes the password
+
+# Connection success:
+dbExistsTable(con, c("main", "experiment_tweets_shortest"))
 ```
 
-Connection success: TRUE
+```
+## [1] TRUE
+```
 
 ##Pull data from the database
 We will only pull the data for one user to understand the structure and content initially
@@ -67,9 +73,9 @@ head(tweets)
 ##                                                                                                                     CONTENT
 ## 1                                                                                 @mall0ry_ please tell me you work tonight
 ## 2                                                                                           I love everything about my life
-## 3                                               @mall0ry_ GOD IS ALIVE! Thank ya Jesus. I can't wait to see you í ½í¸\u008d
-## 4                                                          This made me smile today â\u009d¤ï¸\u008f http://t.co/DSueGBTPJD
-## 5           @JamesAustinCole exactly â\u0098ºï¸\u008f chin up. You have so many great things to look forward to í ½í¸\u0098
+## 3                                              @mall0ry_ GOD IS ALIVE! Thank ya Jesus. I can't wait to see you Ã­Â Â½Ã­Â¸Â
+## 4                                                              This made me smile today Ã¢ÂÂ¤Ã¯Â¸Â http://t.co/DSueGBTPJD
+## 5              @JamesAustinCole exactly Ã¢ÂÂºÃ¯Â¸Â chin up. You have so many great things to look forward to Ã­Â Â½Ã­Â¸Â
 ## 6 RT @JamesAustinCole: God Tilonda i absolutely love you @Londs_   you dont know how close I was to flipping out last night
 ##             CREATEDAT RETWEET         RTID      RTUSERNAME
 ## 1 2015-07-30 15:00:55       0           NA            <NA>
@@ -78,20 +84,20 @@ head(tweets)
 ## 4 2015-07-28 15:54:05       0           NA            <NA>
 ## 5 2015-07-27 21:57:17       0           NA            <NA>
 ## 6 2015-07-27 21:51:26       1 6.257845e+17 JamesAustinCole
-##             OPEN_DATE    USERID USERNAME       FULLNAME
-## 1 2010-05-01 15:07:23 139102704   Londs_ Tilly â\u0098®
-## 2 2010-05-01 15:07:23 139102704   Londs_ Tilly â\u0098®
-## 3 2010-05-01 15:07:23 139102704   Londs_ Tilly â\u0098®
-## 4 2010-05-01 15:07:23 139102704   Londs_ Tilly â\u0098®
-## 5 2010-05-01 15:07:23 139102704   Londs_ Tilly â\u0098®
-## 6 2010-05-01 15:07:23 139102704   Londs_ Tilly â\u0098®
-##                                      DESCRIPTION GEO_ENABLED LATITUDE
-## 1 To the moon & back\\, forever â\u009d¤ï¸\u008f           1       NA
-## 2 To the moon & back\\, forever â\u009d¤ï¸\u008f           1       NA
-## 3 To the moon & back\\, forever â\u009d¤ï¸\u008f           1       NA
-## 4 To the moon & back\\, forever â\u009d¤ï¸\u008f           1       NA
-## 5 To the moon & back\\, forever â\u009d¤ï¸\u008f           1       NA
-## 6 To the moon & back\\, forever â\u009d¤ï¸\u008f           1       NA
+##             OPEN_DATE    USERID USERNAME     FULLNAME
+## 1 2010-05-01 15:07:23 139102704   Londs_ Tilly Ã¢ÂÂ®
+## 2 2010-05-01 15:07:23 139102704   Londs_ Tilly Ã¢ÂÂ®
+## 3 2010-05-01 15:07:23 139102704   Londs_ Tilly Ã¢ÂÂ®
+## 4 2010-05-01 15:07:23 139102704   Londs_ Tilly Ã¢ÂÂ®
+## 5 2010-05-01 15:07:23 139102704   Londs_ Tilly Ã¢ÂÂ®
+## 6 2010-05-01 15:07:23 139102704   Londs_ Tilly Ã¢ÂÂ®
+##                                  DESCRIPTION GEO_ENABLED LATITUDE
+## 1 To the moon & back\\, forever Ã¢ÂÂ¤Ã¯Â¸Â           1       NA
+## 2 To the moon & back\\, forever Ã¢ÂÂ¤Ã¯Â¸Â           1       NA
+## 3 To the moon & back\\, forever Ã¢ÂÂ¤Ã¯Â¸Â           1       NA
+## 4 To the moon & back\\, forever Ã¢ÂÂ¤Ã¯Â¸Â           1       NA
+## 5 To the moon & back\\, forever Ã¢ÂÂ¤Ã¯Â¸Â           1       NA
+## 6 To the moon & back\\, forever Ã¢ÂÂ¤Ã¯Â¸Â           1       NA
 ##   LONGITUDE LOCATION                   TIMEZONE LANGUAGE FOLLOWERS FRIENDS
 ## 1        NA          Pacific Time (US & Canada)       en       673     480
 ## 2        NA          Pacific Time (US & Canada)       en       673     480
@@ -153,7 +159,7 @@ str(tweets)
 ```
 ## 'data.frame':	1000 obs. of  32 variables:
 ##  $ ID                : num  6.27e+17 6.27e+17 6.27e+17 6.26e+17 6.26e+17 ...
-##  $ CONTENT           : chr  "@mall0ry_ please tell me you work tonight" "I love everything about my life" "@mall0ry_ GOD IS ALIVE! Thank ya Jesus. I can't wait to see you í ½í¸\u008d" "This made me smile today â\u009d¤ï¸\u008f http://t.co/DSueGBTPJD" ...
+##  $ CONTENT           : chr  "@mall0ry_ please tell me you work tonight" "I love everything about my life" "@mall0ry_ GOD IS ALIVE! Thank ya Jesus. I can't wait to see you Ã­Â Â½Ã­Â¸Â" "This made me smile today Ã¢ÂÂ¤Ã¯Â¸Â http://t.co/DSueGBTPJD" ...
 ##  $ CREATEDAT         : POSIXct, format: "2015-07-30 15:00:55" "2015-07-30 03:15:40" ...
 ##  $ RETWEET           : int  0 0 0 0 0 1 0 1 1 0 ...
 ##  $ RTID              : num  NA NA NA NA NA ...
@@ -161,8 +167,8 @@ str(tweets)
 ##  $ OPEN_DATE         : POSIXct, format: "2010-05-01 15:07:23" "2010-05-01 15:07:23" ...
 ##  $ USERID            : num  1.39e+08 1.39e+08 1.39e+08 1.39e+08 1.39e+08 ...
 ##  $ USERNAME          : chr  "Londs_" "Londs_" "Londs_" "Londs_" ...
-##  $ FULLNAME          : chr  "Tilly â\u0098®" "Tilly â\u0098®" "Tilly â\u0098®" "Tilly â\u0098®" ...
-##  $ DESCRIPTION       : chr  "To the moon & back\\, forever â\u009d¤ï¸\u008f" "To the moon & back\\, forever â\u009d¤ï¸\u008f" "To the moon & back\\, forever â\u009d¤ï¸\u008f" "To the moon & back\\, forever â\u009d¤ï¸\u008f" ...
+##  $ FULLNAME          : chr  "Tilly Ã¢ÂÂ®" "Tilly Ã¢ÂÂ®" "Tilly Ã¢ÂÂ®" "Tilly Ã¢ÂÂ®" ...
+##  $ DESCRIPTION       : chr  "To the moon & back\\, forever Ã¢ÂÂ¤Ã¯Â¸Â" "To the moon & back\\, forever Ã¢ÂÂ¤Ã¯Â¸Â" "To the moon & back\\, forever Ã¢ÂÂ¤Ã¯Â¸Â" "To the moon & back\\, forever Ã¢ÂÂ¤Ã¯Â¸Â" ...
 ##  $ GEO_ENABLED       : int  1 1 1 1 1 1 1 1 1 1 ...
 ##  $ LATITUDE          : num  NA NA NA NA NA NA NA NA NA NA ...
 ##  $ LONGITUDE         : num  NA NA NA NA NA NA NA NA NA NA ...

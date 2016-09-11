@@ -8,6 +8,7 @@ output:
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE)
 knitr::opts_chunk$set(tidy = TRUE)
+knitr::opts_chunk$set(warning = FALSE)
 ```
 
 ```{r include=FALSE}
@@ -36,7 +37,8 @@ We will pull the full corpus but selective fields for analysis due to memory lim
 Ignore any retweets as we deem this to not be the original content from the user itself and not their opinion.
 (we still potentially have to exclude content from bots)
 
-```{r tweets_content}
+```{r cache=FALSE}
+tweets <- dbGetQuery(con, "SELECT \"USERNAME\", \"USERID\", \"CREATEDAT\", \"CONTENT\",\"GEO_ENABLED\", \"LATITUDE\", \"LONGITUDE\", \"LOCATION\", \"TIMEZONE\" from main.experiment_tweets_shortest where \"RETWEET\" = 0 and \"USERNAME\" in ('Londs_','AbeaChou','shift_comma3','HorizonCDT','ttenraBsucraMaD','maknaewon','oliviagarrett25','yallsop','Blackdolphin5','aaleyiahpoisson')")
 ```
 
 Total amount of tweets in the corpus: `r tweets.total <- nrow(tweets)
@@ -49,22 +51,404 @@ Avg amount of tweets per user: `r tweets.peruser <- tweets %>% select(USERID) %>
   tweets.avgperuser = tweets.peruser %>% summarise(mean(count))
   tweets.avgperuser`
 
-####Word clouds
+####Clean the text data
+The following code is used to clean the data. We initially just first want to get rid of emoticons.
 
-Build a word cloud over full corpus
+```{r}
+#extract only content
+df <- data.frame(tweets$CONTENT)
+#rename column
+df <- setNames(df, c("CONTENT"))
+#showing that there is a lot of junk in the text
+head(df)
+#get only ASCII characters
+df$CONTENT <- sapply(df$CONTENT,function(row) iconv(row, "latin1", "ASCII", sub=""))
+head(df)
+```
 
+The we use the text mining libary to remove stopword and also cater for word stemming
 
-Build a word cloud for a few users
+```{r}
+#cleanup text
+library(tm)
+tweetcorpus <- Corpus(DataframeSource(df))
+tweetcorpus <- tm_map(tweetcorpus, removePunctuation)
+tweetcorpus <- tm_map(tweetcorpus, tolower) 
+tweetcorpus <- tm_map(tweetcorpus, removeWords, stopwords("english")) 
+#remove word stemming
+library(SnowballC)   
+tweetcorpus <- tm_map(tweetcorpus, stemDocument)
+#remove whitespace
+tweetcorpus <- tm_map(tweetcorpus, stripWhitespace) 
+#lastly - treat your preprocessed documents as text documents
+tweetcorpus <- tm_map(tweetcorpus, PlainTextDocument) 
 
+df<-data.frame(text=unlist(sapply(tweetcorpus, `[`, "content")), stringsAsFactors=F)
+df <- setNames(df, c("CONTENT"))
+
+head(df)
+```
+
+##Per user
+##Word clouds
+It is then important to count the occurances of all words. We start with one user first to illustrate.
+
+```{r}
+#remove unwanted text from tweets
+#emoticons, hashtags, mentions of people
+library(tidytext)
+library(stringr)
+
+df<- tweets[tweets$USERNAME=='Londs_',]
+
+reg <- "([^A-Za-z\\d#@']|'(?![A-Za-z\\d#@]))"
+tweet_words <- df %>%
+  #remove quoted text
+  filter(!str_detect(CONTENT, '^"')) %>%
+  #remove hyperlinks
+  mutate(CONTENT = str_replace_all(CONTENT, "https://t.co/[A-Za-z\\d]+|&amp;", "")) %>%
+  unnest_tokens(word, CONTENT, token = "regex", pattern = reg) %>%
+  filter(!word %in% stop_words$word,
+         str_detect(word, "[a-z]"))
+
+#show results as bar, ordered (top 20)
+tweet_words %>%
+  count(word, sort = TRUE) %>%
+  head(20) %>%
+  mutate(word = reorder(word, n)) %>%
+  ggplot(aes(word, n)) +
+  geom_bar(stat = "identity") +
+  ylab("Occurrences") +
+  coord_flip()
+```
+
+Build a word cloud for the user based on the word counts already done
+
+```{r}
+wf <- tweet_words %>%
+  count(word, sort = TRUE) %>%
+  head(200) %>%
+  mutate(word = reorder(word, n))
+
+#build word cloud
+library(wordcloud2)
+#setting the same seed each time ensures consistent look across clouds
+set.seed(42)
+#limit words by specifying min frequency
+wordcloud2(wf[1:50,], size = 0.5,shape = 'circle', color = 'random-dark',backgroundColor = 'white')
+```
+
+We can also cluster the words together based on Euclidian distance.
+This can be presented in various ways:
+1. A Dendogram
+```{r}
+#Hierarchal Clustering
+#First calculate distance between words & then cluster them according to similarity
+library(cluster)
+dfd <- wf[1:20,]
+labs <- dfd$word                   # new labels
+rownames(dfd) <- labs
+d <- dist(dfd, method="euclidian")   
+fit <- hclust(d=d, method="ward.D")   
+hcd = as.dendrogram(fit)
+```
+
+2. Another version of a dentogram as a tree
+```{r}
+plot(hcd, type = "triangle")
+#plot.new()
+#plot(fit, hang=-1)
+#groups <- cutree(fit, k=5)   # "k=" defines the number of clusters you are using   
+rect.hclust(fit, k=5, border="red") # draw dendogram with red borders around the 5 clusters   
+```
+
+3. A dendogram with a fan shape
+```{r}
+#show info as fan diagram
+library(ape)
+# vector of colors
+mypal = c("#556270", "#4ECDC4", "#1B676B", "#FF6B6B", "#C44D58")
+# cutting dendrogram in 5 clusters
+clus5 = cutree(fit, 5)
+# plot
+op = par(bg = "white")
+# Size reflects miles per gallon
+plot(as.phylo(fit), type = "fan", tip.color = mypal[clus5], label.offset = 1, 
+     cex = log(dfd$n, 10), col = "red")
+```
+
+4. Or as a cluster
+```{r}
+#show info in cluster
+library(fpc)   
+kfit <- kmeans(d, 3)   
+clusplot(as.matrix(d), kfit$cluster, color=T, shade=T, labels=3, lines=0, main="Cluster") 
+```
 
 ####Sentiment analysis
+```{r}
+#sentiment analysis for each of the words
+library(tidytext)
+library(tidyr)
+#get NRC Word-Emotion Association Lexicon
+nrc <- sentiments %>%
+  filter(lexicon == "nrc") %>%
+  dplyr::select(word, sentiment)
+#show values in dataset
+head(nrc)
 
-For the full corpus
+#apply sentiment to words
+sources <- tweet_words %>%
+  mutate(total_words = n()) %>%
+  ungroup() %>%
+  distinct(word, total_words)
+
+by_source_sentiment <- tweet_words %>%
+  inner_join(nrc, by = "word") %>%
+  count(sentiment, word) %>%
+  ungroup() %>%
+  complete(sentiment, word, fill = list(n = 0)) %>%
+  inner_join(sources) %>%
+  group_by(sentiment, total_words) %>%
+  summarize(words = sum(n)) %>%
+  ungroup()
+
+#show the sentiment
+by_source_sentiment
+
+#use Poisson test to measure the difference in sentiment
+library(broom)
+
+sentiment_differences <- by_source_sentiment %>%
+  group_by(sentiment) %>%
+  do(tidy(poisson.test(.$words, .$total_words)))
+
+sentiment_differences
+
+# visualize confidence
+library(scales)
+
+sentiment_differences %>%
+  ungroup() %>%
+  mutate(sentiment = reorder(sentiment, estimate)) %>%
+  mutate_each(funs(. - 1), estimate, conf.low, conf.high) %>%
+  ggplot(aes(estimate, sentiment)) +
+  geom_point() +
+  geom_errorbarh(aes(xmin = conf.low, xmax = conf.high)) +
+  scale_x_continuous(labels = percent_format()) +
+  labs(x = "% increase",
+       y = "Sentiment")
+
+#separate text by sentiment
+sents = levels(factor(by_source_sentiment$sentiment))
+# get the labels and percents
+tweet_words_sentiment <- tweet_words %>%
+  inner_join(nrc, by = "word") %>%
+  count(sentiment, word) %>%
+  ungroup()
+
+labels <- lapply(sents, function(x) paste(x,format(round((length((tweet_words_sentiment[tweet_words_sentiment$sentiment ==x,])$word)/length(tweet_words_sentiment$sentiment)*100),2),nsmall=2),"%"))
+
+#build data for word cloud
+nemo = length(sents)
+emo.docs = rep("", nemo)
+for (i in 1:nemo)
+{
+  tmp = tweet_words_sentiment[by_source_sentiment$sentiment == sents[i],]$word
+  
+  emo.docs[i] = paste(tmp,collapse=" ")
+}
+corpus = Corpus(VectorSource(emo.docs))
+tdm = TermDocumentMatrix(corpus)
+tdm = as.matrix(tdm)
+colnames(tdm) = labels
+
+# comparison word cloud
+library(wordcloud)
+comparison.cloud(tdm, colors = brewer.pal(nemo, "Dark2"),
+                 scale = c(3,.5), random.order = FALSE, title.size = 1.5)
+```                 
+                 
+####Per full corpus
+```{r}
+#remove unwanted text from tweets
+#emoticons, hashtags, mentions of people
+df<- tweets
+
+reg <- "([^A-Za-z\\d#@']|'(?![A-Za-z\\d#@]))"
+tweet_words <- df %>%
+  #remove quoted text
+  filter(!str_detect(CONTENT, '^"')) %>%
+  #remove hyperlinks
+  mutate(CONTENT = str_replace_all(CONTENT, "https://t.co/[A-Za-z\\d]+|&amp;", "")) %>%
+  unnest_tokens(word, CONTENT, token = "regex", pattern = reg) %>%
+  filter(!word %in% stop_words$word,
+         str_detect(word, "[a-z]"))
+
+#show results as bar, ordered (top 20)
+tweet_words %>%
+  count(word, sort = TRUE) %>%
+  head(20) %>%
+  mutate(word = reorder(word, n)) %>%
+  ggplot(aes(word, n)) +
+  geom_bar(stat = "identity") +
+  ylab("Occurrences") +
+  coord_flip()
+```
+
+Build a word cloud for the user based on the word counts already done
+
+```{r}
+wf <- tweet_words %>%
+  count(word, sort = TRUE) %>%
+  head(200) %>%
+  mutate(word = reorder(word, n))
+
+#build word cloud
+library(wordcloud2)
+#setting the same seed each time ensures consistent look across clouds
+set.seed(42)
+#limit words by specifying min frequency
+wordcloud2(wf[1:50,], size = 0.5,shape = 'circle', color = 'random-dark',backgroundColor = 'white')
+```
+
+We can also cluster the words together based on Euclidian distance.
+This can be presented in various ways:
+1. A Dendogram
+```{r}
+#Hierarchal Clustering
+#First calculate distance between words & then cluster them according to similarity
+library(cluster)
+dfd <- wf[1:20,]
+labs <- dfd$word                   # new labels
+rownames(dfd) <- labs
+d <- dist(dfd, method="euclidian")   
+fit <- hclust(d=d, method="ward.D")   
+hcd = as.dendrogram(fit)
+```
+
+2. Another version of a dentogram as a tree
+```{r}
+plot(hcd, type = "triangle")
+#plot.new()
+#plot(fit, hang=-1)
+#groups <- cutree(fit, k=5)   # "k=" defines the number of clusters you are using   
+rect.hclust(fit, k=5, border="red") # draw dendogram with red borders around the 5 clusters   
+```
+
+3. A dendogram with a fan shape
+```{r}
+#show info as fan diagram
+library(ape)
+# vector of colors
+mypal = c("#556270", "#4ECDC4", "#1B676B", "#FF6B6B", "#C44D58")
+# cutting dendrogram in 5 clusters
+clus5 = cutree(fit, 5)
+# plot
+op = par(bg = "white")
+# Size reflects miles per gallon
+plot(as.phylo(fit), type = "fan", tip.color = mypal[clus5], label.offset = 1, 
+     cex = log(dfd$n, 10), col = "red")
+```
+
+4. Or as a cluster
+```{r}
+#show info in cluster
+library(fpc)   
+kfit <- kmeans(d, 3)   
+clusplot(as.matrix(d), kfit$cluster, color=T, shade=T, labels=3, lines=0, main="Cluster") 
+```
+
+####Sentiment analysis
+```{r}
+#sentiment analysis for each of the words
+library(tidytext)
+library(tidyr)
+#get NRC Word-Emotion Association Lexicon
+nrc <- sentiments %>%
+  filter(lexicon == "nrc") %>%
+  dplyr::select(word, sentiment)
+#show values in dataset
+head(nrc)
+
+#apply sentiment to words
+sources <- tweet_words %>%
+  mutate(total_words = n()) %>%
+  ungroup() %>%
+  distinct(word, total_words)
+
+by_source_sentiment <- tweet_words %>%
+  inner_join(nrc, by = "word") %>%
+  count(sentiment, word) %>%
+  ungroup() %>%
+  complete(sentiment, word, fill = list(n = 0)) %>%
+  inner_join(sources) %>%
+  group_by(sentiment, total_words) %>%
+  summarize(words = sum(n)) %>%
+  ungroup()
+
+#show the sentiment
+by_source_sentiment
+
+#use Poisson test to measure the difference in sentiment
+library(broom)
+
+sentiment_differences <- by_source_sentiment %>%
+  group_by(sentiment) %>%
+  do(tidy(poisson.test(.$words, .$total_words)))
+
+sentiment_differences
+
+# visualize confidence
+library(scales)
+
+sentiment_differences %>%
+  ungroup() %>%
+  mutate(sentiment = reorder(sentiment, estimate)) %>%
+  mutate_each(funs(. - 1), estimate, conf.low, conf.high) %>%
+  ggplot(aes(estimate, sentiment)) +
+  geom_point() +
+  geom_errorbarh(aes(xmin = conf.low, xmax = conf.high)) +
+  scale_x_continuous(labels = percent_format()) +
+  labs(x = "% increase",
+       y = "Sentiment")
+
+#separate text by sentiment
+sents = levels(factor(by_source_sentiment$sentiment))
+# get the labels and percents
+tweet_words_sentiment <- tweet_words %>%
+  inner_join(nrc, by = "word") %>%
+  count(sentiment, word) %>%
+  ungroup()
+
+labels <- lapply(sents, function(x) paste(x,format(round((length((tweet_words_sentiment[tweet_words_sentiment$sentiment ==x,])$word)/length(tweet_words_sentiment$sentiment)*100),2),nsmall=2),"%"))
+
+#build data for word cloud
+nemo = length(sents)
+emo.docs = rep("", nemo)
+for (i in 1:nemo)
+{
+  tmp = tweet_words_sentiment[by_source_sentiment$sentiment == sents[i],]$word
+  
+  emo.docs[i] = paste(tmp,collapse=" ")
+}
+corpus = Corpus(VectorSource(emo.docs))
+tdm = TermDocumentMatrix(corpus)
+tdm = as.matrix(tdm)
+colnames(tdm) = labels
+
+# comparison word cloud
+library(wordcloud)
+comparison.cloud(tdm, colors = brewer.pal(nemo, "Dark2"),
+                 scale = c(3,.5), random.order = FALSE, title.size = 1.5)
+``` 
 
 
-For a few individual users
 
 
+
+
+####TODO
 ####Per continents
 
 How many tweets have location enabled

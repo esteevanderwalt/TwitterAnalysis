@@ -18,13 +18,11 @@ knitr::opts_chunk$set(tidy = TRUE)
 
 ## Connect to the database first
 ```{r echo=FALSE}
-read_chunk('../DBConnection/ConnectHana.R')
+read_chunk('../DBConnection/ConnectPostgres.R')
 ```
 
 ```{r connectDB}
 ```
-
-Connection success: `r dbExistsTable(con, c("main","experiment_tweets_shortest"))`
 
 ##Pull data from the database
 We will only pull the data for one user to understand the structure and content initially

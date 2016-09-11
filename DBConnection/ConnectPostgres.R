@@ -16,8 +16,12 @@ drv <- dbDriver("PostgreSQL")
 con <- dbConnect(drv, dbname = "twitter",
 host = "localhost", port = 5432,
 user = "postgres", password = "")
+#user = postgres for UBUNTU
 
 rm(pw) # removes the password
+
+#Connection success: 
+dbExistsTable(con, c("main","experiment_tweets_shortest"))
 
 ## @knitr tweets_single_user
 tweets.singleuser <- dbGetQuery(con, "SELECT * from main.experiment_tweets_shortest where \"USERNAME\" = 'Londs_'")
