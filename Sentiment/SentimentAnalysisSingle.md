@@ -64,6 +64,7 @@ Total unique users: 9
 
 Avg amount of tweets per user: 309.8888889
 
+
 ##Clean the text data
 The following code is used to clean the data. We initially just first want to get rid of emoticons.
 
@@ -158,14 +159,15 @@ head(df)
 
 
 ##Word clouds
-It is then important to count the occurances of all words.
+It is then important to count the occurances of all words. We start with one user first to illustrate.
+
 
 ```r
+# remove unwanted text from tweets emoticons, hashtags, mentions of people
 library(tidytext)
 library(stringr)
 
-# remove unwanted text from tweets emoticons, hashtags, mentions of people
-df <- tweets
+df <- tweets[tweets$USERNAME == "Londs_", ]
 
 reg <- "([^A-Za-z\\d#@']|'(?![A-Za-z\\d#@]))"
 tweet_words <- df %>% # remove quoted text
@@ -174,14 +176,12 @@ mutate(CONTENT = str_replace_all(CONTENT, "https://t.co/[A-Za-z\\d]+|&amp;",
     "")) %>% unnest_tokens(word, CONTENT, token = "regex", pattern = reg) %>% 
     filter(!word %in% stop_words$word, str_detect(word, "[a-z]"))
 
-rm(df)
-
 # Amount of words =
 nrow(tweet_words)
 ```
 
 ```
-## [1] 13037
+## [1] 3133
 ```
 
 ```r
@@ -191,7 +191,7 @@ tweet_words %>% count(word, sort = TRUE) %>% head(20) %>% mutate(word = reorder(
     coord_flip()
 ```
 
-![](SentimentAnalysis_files/figure-html/unnamed-chunk-7-1.png)<!-- -->
+![](SentimentAnalysisSingle_files/figure-html/unnamed-chunk-7-1.png)<!-- -->
 
 Build a word cloud for the user based on the word counts already done
 
@@ -217,7 +217,7 @@ pal2 <- brewer.pal(8, "Dark2")
 wordcloud(wf$word, wf$n, max.words = 50, random.order = FALSE, colors = pal2)
 ```
 
-![](SentimentAnalysis_files/figure-html/unnamed-chunk-8-1.png)<!-- -->
+![](SentimentAnalysisSingle_files/figure-html/unnamed-chunk-8-1.png)<!-- -->
 
 ```r
 # wordcloud2(wf[1:50,], size = 0.5,shape = 'circle', color =
@@ -249,7 +249,7 @@ plot(hcd, type = "triangle")
 rect.hclust(fit, k = 5, border = "red")  # draw dendogram with red borders around the 5 clusters   
 ```
 
-![](SentimentAnalysis_files/figure-html/unnamed-chunk-10-1.png)<!-- -->
+![](SentimentAnalysisSingle_files/figure-html/unnamed-chunk-10-1.png)<!-- -->
 
 3. A dendogram with a fan shape
 
@@ -267,7 +267,7 @@ plot(as.phylo(fit), type = "fan", tip.color = mypal[clus5], label.offset = 1,
     cex = log(dfd$n, 10), col = "red")
 ```
 
-![](SentimentAnalysis_files/figure-html/unnamed-chunk-11-1.png)<!-- -->
+![](SentimentAnalysisSingle_files/figure-html/unnamed-chunk-11-1.png)<!-- -->
 
 4. Or as a cluster
 
@@ -279,7 +279,7 @@ clusplot(as.matrix(d), kfit$cluster, color = T, shade = T, labels = 3, lines = 0
     main = "Cluster")
 ```
 
-![](SentimentAnalysis_files/figure-html/unnamed-chunk-12-1.png)<!-- -->
+![](SentimentAnalysisSingle_files/figure-html/unnamed-chunk-12-1.png)<!-- -->
 
 
 ##Sentiment analysis
@@ -330,16 +330,16 @@ by_source_sentiment
 ## # A tibble: 10 x 3
 ##       sentiment total_words words
 ##           <chr>       <int> <dbl>
-## 1         anger       13037   327
-## 2  anticipation       13037   678
-## 3       disgust       13037   284
-## 4          fear       13037   316
-## 5           joy       13037   798
-## 6      negative       13037   698
-## 7      positive       13037  1303
-## 8       sadness       13037   330
-## 9      surprise       13037   286
-## 10        trust       13037   577
+## 1         anger        3133   134
+## 2  anticipation        3133   231
+## 3       disgust        3133   125
+## 4          fear        3133    90
+## 5           joy        3133   338
+## 6      negative        3133   287
+## 7      positive        3133   454
+## 8       sadness        3133   114
+## 9      surprise        3133    87
+## 10        trust        3133   188
 ```
 
 ```r
@@ -358,16 +358,16 @@ sentiment_differences
 ## 
 ##       sentiment   estimate statistic       p.value parameter   conf.low
 ##           <chr>      <dbl>     <dbl>         <dbl>     <int>      <dbl>
-## 1         anger 0.02508246       327 9.881313e-324     13037 0.02243723
-## 2  anticipation 0.05200583       678 9.881313e-324     13037 0.04816440
-## 3       disgust 0.02178415       284 9.881313e-324     13037 0.01932402
-## 4          fear 0.02423871       316 9.881313e-324     13037 0.02163960
-## 5           joy 0.06121040       798 9.881313e-324     13037 0.05703661
-## 6      negative 0.05353992       698 9.881313e-324     13037 0.04964117
-## 7      positive 0.09994631      1303 9.881313e-324     13037 0.09459253
-## 8       sadness 0.02531257       330 9.881313e-324     13037 0.02265490
-## 9      surprise 0.02193756       286 9.881313e-324     13037 0.01946852
-## 10        trust 0.04425865       577 9.881313e-324     13037 0.04072058
+## 1         anger 0.04277051       134 4.940656e-324      3133 0.03583570
+## 2  anticipation 0.07373125       231 4.940656e-324      3133 0.06452898
+## 3       disgust 0.03989786       125 4.940656e-324      3133 0.03321063
+## 4          fear 0.02872646        90 4.940656e-324      3133 0.02309947
+## 5           joy 0.10788382       338 4.940656e-324      3133 0.09668778
+## 6      negative 0.09160549       287 4.940656e-324      3133 0.08131285
+## 7      positive 0.14490903       454 4.940656e-324      3133 0.13188432
+## 8       sadness 0.03638685       114 4.940656e-324      3133 0.03001466
+## 9      surprise 0.02776891        87 4.940656e-324      3133 0.02224176
+## 10        trust 0.06000638       188 4.940656e-324      3133 0.05173497
 ## # ... with 3 more variables: conf.high <dbl>, method <fctr>,
 ## #   alternative <fctr>
 ```
@@ -383,7 +383,7 @@ sentiment_differences %>% ungroup() %>% mutate(sentiment = reorder(sentiment,
     y = "Sentiment")
 ```
 
-![](SentimentAnalysis_files/figure-html/unnamed-chunk-13-1.png)<!-- -->
+![](SentimentAnalysisSingle_files/figure-html/unnamed-chunk-13-1.png)<!-- -->
 
 ```r
 # separate text by sentiment
@@ -415,29 +415,7 @@ comparison.cloud(tdm, colors = brewer.pal(nemo, "Dark2"), scale = c(3, 0.5),
     random.order = FALSE, title.size = 1.5)
 ```
 
-![](SentimentAnalysis_files/figure-html/unnamed-chunk-13-2.png)<!-- -->
+![](SentimentAnalysisSingle_files/figure-html/unnamed-chunk-13-2.png)<!-- -->
 
-
-##TODO
-####Per continents
-
-How many tweets have location enabled
-
-How many tweets have location enabled per continent
-
-Use timezone to determine continent/location iso geo points
-
-User location to determine continent/location iso geo points
-
-Word clouds for different continents over the full corpus
-
-Sentiment per continent
-
-
-####Per country
-
-Word clouds for different continents over the full corpus
-
-Sentiment per continent
 
 

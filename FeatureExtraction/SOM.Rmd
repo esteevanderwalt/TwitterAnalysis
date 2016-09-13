@@ -1,0 +1,41 @@
+---
+title: "SOM (Self Organised Maps)"
+output: 
+  html_document: 
+    keep_md: yes
+---
+
+```{r echo=FALSE, messages=FALSE, results='hide'}
+#garbage collection + clear RAM
+rm(list = ls(all.name = TRUE))
+gc()
+```
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+knitr::opts_chunk$set(tidy = TRUE)
+knitr::opts_chunk$set(warning = FALSE)
+```
+
+```{r include=FALSE}
+  #load libraries
+  library(knitr)
+  library(ggplot2)
+```
+
+High-dimensional data, meaning data that requires more than two or three dimensions to represent, can be difficult to interpret. One approach to simplification is to assume that the data of interest lie on an embedded non-linear manifold within the higher-dimensional space. If the manifold is of low enough dimension, the data can be visualised in the low-dimensional space.
+
+The self-organizing map (SOM, also called Kohonen map) and its probabilistic variant generative topographic mapping (GTM) use a point representation in the embedded space to form a latent variable model based on a non-linear mapping from the embedded space to the high-dimensional space.These techniques are related to work on density networks, which also are based around the same probabilistic model.
+
+## Connect to the database first
+```{r echo=FALSE}
+read_chunk('../DBConnection/ConnectPostgres.R')
+```
+
+```{r connectDB}
+```
+
+The analysis here
+
+```{r closeDB}
+```

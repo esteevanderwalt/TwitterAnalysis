@@ -44,7 +44,7 @@ Ignore any retweets as we deem this to not be the original content from the user
 (we still potentially have to exclude content from bots)
 
 ```{r cache=FALSE}
-tweets <- dbGetQuery(con, "SELECT \"USERNAME\", \"USERID\", \"CREATEDAT\", \"CONTENT\",\"GEO_ENABLED\", \"LATITUDE\", \"LONGITUDE\", \"LOCATION\", \"TIMEZONE\" from main.experiment_tweets_shortest where \"RETWEET\" = 0")
+tweets <- dbGetQuery(con, "SELECT \"USERNAME\", \"USERID\", \"CREATEDAT\", \"CONTENT\",\"GEO_ENABLED\", \"LATITUDE\", \"LONGITUDE\", \"LOCATION\", \"TIMEZONE\" from main.experiment_tweets_shortest where \"RETWEET\" = 0 and \"USERNAME\" in ('Londs_','AbeaChou','shift_comma3','HorizonCDT','ttenraBsucraMaD','maknaewon','oliviagarrett25','yallsop','Blackdolphin5','aaleyiahpoisson')")
 ```
 
 Total amount of tweets in the corpus: `r tweets.total <- nrow(tweets)
@@ -56,6 +56,7 @@ Total unique users: `r tweets.users <- length(unique(tweets$USERID))
 Avg amount of tweets per user: `r tweets.peruser <- tweets %>% select(USERID) %>% group_by(USERID) %>% mutate(count = n()) %>% summarise(count = mean(count))
   tweets.avgperuser = tweets.peruser %>% summarise(mean(count))
   tweets.avgperuser`
+
 
 ##Clean the text data
 The following code is used to clean the data. We initially just first want to get rid of emoticons.
@@ -97,14 +98,15 @@ head(df)
 
 
 ##Word clouds
-It is then important to count the occurances of all words.
+It is then important to count the occurances of all words. We start with one user first to illustrate.
+
 ```{r}
+#remove unwanted text from tweets
+#emoticons, hashtags, mentions of people
 library(tidytext)
 library(stringr)
 
-#remove unwanted text from tweets
-#emoticons, hashtags, mentions of people
-df<- tweets
+df<- tweets[tweets$USERNAME=='Londs_',]
 
 reg <- "([^A-Za-z\\d#@']|'(?![A-Za-z\\d#@]))"
 tweet_words <- df %>%
@@ -115,8 +117,6 @@ tweet_words <- df %>%
   unnest_tokens(word, CONTENT, token = "regex", pattern = reg) %>%
   filter(!word %in% stop_words$word,
          str_detect(word, "[a-z]"))
-
-rm(df)
 
 #Amount of words = 
 nrow(tweet_words)
@@ -130,6 +130,7 @@ tweet_words %>%
   geom_bar(stat = "identity") +
   ylab("Occurrences") +
   coord_flip()
+
 ```
 
 Build a word cloud for the user based on the word counts already done
@@ -281,30 +282,8 @@ colnames(tdm) = labels
 library(wordcloud)
 comparison.cloud(tdm, colors = brewer.pal(nemo, "Dark2"),
                  scale = c(3,.5), random.order = FALSE, title.size = 1.5)
-``` 
+```                 
 
-
-##TODO
-####Per continents
-
-How many tweets have location enabled
-
-How many tweets have location enabled per continent
-
-Use timezone to determine continent/location iso geo points
-
-User location to determine continent/location iso geo points
-
-Word clouds for different continents over the full corpus
-
-Sentiment per continent
-
-
-####Per country
-
-Word clouds for different continents over the full corpus
-
-Sentiment per continent
 
 ```{r closeDB}
 ```
