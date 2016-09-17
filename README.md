@@ -23,9 +23,14 @@ This might also help us to gain insight into the features we could look at or in
 - [ ] Retweets vs followers
 - [ ] Retweets vs URL link
 
-####Feature extraction
+####Feature extraction via clustering techniques
 There are many techniques to extract features from high dimentional data. Here we will apply the techniques blindly to see whether we get some insight into what features could define who is tweeting.
+- [ ] Kmeans
 - [ ] SOM ([Self organized maps](/FeatureExtraction/SOM.md))
+
+####Dimentionality reduction
+In machine learning and statistics, dimensionality reduction or dimension reduction is the process of reducing the number of random variables under consideration, via obtaining a set of principal variables. It can be divided into feature selection and feature extraction.
+- [ ] Principal Component Analysis (PCA)
 - [ ] t-Distributed Stochastic Neighbor Embedding (t-SNE)
 
 ####Network graph analysis

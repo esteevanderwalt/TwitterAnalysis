@@ -122,81 +122,53 @@ $(document).ready(function () {
 <h1>TwitterAnalysis</h1>
 <div id="analysis-of-twitter-data-as-part-of-phd-research-work" class="section level2">
 <h2>Analysis of Twitter data as part of PhD research work</h2>
-<p>Using R-Studio and data scraped from Internet. Some sample data is available. For our current purpose we either have the data hosted in <a href="/DBConnection">Postgres or SAP HANA</a>.</p>
-<p>The goal is to extract features from the tweets to ultimately build a identity deception indicator. This deception indicator’s purpose will be to highlight potential accounts which does not belong to the current corpus. The current corpus was scraped using specific key words to identity a target group of people. In our case we used the words ‘school’ and ‘homework’ as these will hopefully give us a corpus of children or young adults.</p>
-<p>First we need to analyse our data for features to be used as part of the identity deception indicator. But what <a href="/TweetInfo/TweetStructure.md">information</a> have we got available per tweet?</p>
+<p>Using R-Studio and data scraped from social media (Twitter to be specific). For our current purpose we either have the data hosted in <a href="/DBConnection">Postgres or SAP HANA</a>. There are <a href="/DBConnection/pro_con.md">pro’s and con’s</a> to choosing the current environment.</p>
+<p>The goal is to extract features from the tweets to ultimately build a identity deception indicator. This deception indicator’s purpose will be to highlight potential accounts which does not belong to the current corpus. The current corpus was scraped using specific key words to identity a target group of people. In our case we used the words ‘school’ and ‘homework’ as these will hopefully give us a corpus of children or young adults. We would like to ultimately identify outliers, ie people who are not children but talking to them (potentially identifying threats).</p>
+<p>But lets first understand the <a href="/TweetInfo/TweetStructure.md">structures of tweets</a> in general. We then need to analyse our data for features to be used as part of our final identity deception indicator.</p>
 <div id="understanding-the-content-of-the-tweets" class="section level4">
-<h4>Understanding the content of the tweets</h4>
-<ul>
-<li>Amount of tweets in corpus</li>
-<li>Dates of tweets</li>
-<li>Times of tweets</li>
-<li>Time of tweet per timezone</li>
-<li>Time of tweet per location</li>
-<li>Amount of retweets</li>
-<li>Tweets with URL link</li>
-<li>Retweets vs followers</li>
-<li>Retweets vs URL link</li>
-</ul>
+<h4>Understanding the <a href="/TweetInfo/TweetCorpusInfo.md">content of the tweets</a></h4>
+<p>In this section we are only interested in understanding what data we have, whether it makes sense. This might also help us to gain insight into the features we could look at or incorporate in our final identity deception indicator. - [x] Amount of tweets in corpus - [x] Dates of tweets - [x] Times of tweets - [x] Time of tweet per timezone - [ ] Time of tweet per location - [ ] Amount of retweets - [ ] Tweets with URL link - [ ] Retweets vs followers - [ ] Retweets vs URL link</p>
+</div>
+<div id="feature-extraction-via-clustering-techniques" class="section level4">
+<h4>Feature extraction via clustering techniques</h4>
+<p>There are many techniques to extract features from high dimentional data. Here we will apply the techniques blindly to see whether we get some insight into what features could define who is tweeting. - [ ] Kmeans - [ ] SOM (<a href="/FeatureExtraction/SOM.md">Self organized maps</a>)</p>
+</div>
+<div id="dimentionality-reduction" class="section level4">
+<h4>Dimentionality reduction</h4>
+<p>In machine learning and statistics, dimensionality reduction or dimension reduction is the process of reducing the number of random variables under consideration, via obtaining a set of principal variables. It can be divided into feature selection and feature extraction. - [ ] Principal Component Analysis (PCA) - [ ] t-Distributed Stochastic Neighbor Embedding (t-SNE)</p>
+</div>
+<div id="network-graph-analysis" class="section level4">
+<h4>Network graph analysis</h4>
+<p>In this section we would like to view the network over time, either how connections are formed and who talks to who. For this we are planning to extract nodes and edges from the data and use a tool (Gephi) to view the graph maps. - [ ] Friends and followers - [ ] Friends vs location</p>
 </div>
 <div id="sentiment-analysis-of-tweets" class="section level4">
 <h4>Sentiment analysis of tweets</h4>
-<ul>
-<li>For corpus</li>
-<li>For one person</li>
-<li>Sentiment vs location</li>
-</ul>
-<p>Predictive techniques applied - Sentiment analysis</p>
+<p>In this section we aim to analyse the content of tweets. We are only interested in original tweets (no retweets) and we will clean the data a bit to perform both word frequence and sentiment analysis on the tweets. - [x] [For one person](/Sentiment/SentimentAnalysisSingle.md) - [x] [For corpus](/Sentiment/SentimentAnalysis.md) - [ ] Sentiment vs location</p>
 </div>
 <div id="location-analysis-of-tweets" class="section level4">
 <h4>Location analysis of tweets</h4>
-<ul>
-<li>extract locations from content</li>
-<li>compare content with actual stated location</li>
-<li>compare location with GEO indicators</li>
-</ul>
-<p>Predictive techniques applied - predict timezone based on location (does actual agree?) - predict location based on timezone (does actual agree?)</p>
+<p>In this sections we are interested to understand the location if the tweets. We will try to understand what the correlation are between location, timezone, GEO indicators and potential placed mentioned in the tweet content itself - [ ] extract locations from content - [ ] compare content with actual stated location - [ ] compare location with timezone - [ ] compare tweet times to timezone - [ ] compare location with GEO indicators - [ ] combine all dimentions</p>
 </div>
 <div id="twitter-images" class="section level4">
 <h4>Twitter images</h4>
-<ul>
-<li>amount of empty images</li>
-<li>tagging profile pictures</li>
-<li>tagging content images</li>
-<li>build potential word cloud</li>
-<li>compare images to sentiment</li>
-</ul>
-<p>Predictive techniques applied - image recognition</p>
+<p>Here we would like to understand what the images can tell us about the person - [ ] amount of empty images - [ ] understanding if an image is a person or not - [ ] tagging profile pictures -&gt; machine learning to extract features from an image - [ ] tagging content images - [ ] build potential word cloud - [ ] compare images to sentiment</p>
 </div>
 <div id="origin-of-tweets" class="section level4">
 <h4>Origin of tweets</h4>
-<ul>
-<li>Find which phone was used for tweeting</li>
-<li>What is the spread amongst the corpus</li>
-</ul>
+<p>This section is simply to understand what devices the corpus is using. We could for example hypothesize that children to not have money for expensive devices like iPhones. - [ ] Find which phone was used for tweeting - [ ] What is the spread amongst the corpus - [ ] Spread per continent</p>
 </div>
 <div id="comparison-to-other-social-mediaweb-content" class="section level4">
 <h4>Comparison to other social media/web content</h4>
-<ul>
-<li>find similar image on web connected to similar name</li>
-</ul>
+<p>In this section we would like to find the same person on another social media platform and compare features to understand if the person is giving the same information through accross different platforms. - [ ] find similar names - [ ] find similar image on web connected to similar name - [ ] similar sentiment - [ ] similar content</p>
 </div>
 <div id="other" class="section level4">
 <h4>Other</h4>
-<ul>
-<li>Gender indicator</li>
-<li>How populated profile is</li>
-<li>Amount of followers</li>
-<li>Followers vs commonality of name</li>
-<li>retweet ratio vs 1to1 comms</li>
-<li>account start dates vs ?</li>
-<li>time since last tweet</li>
-<li>name on criminal database</li>
-</ul>
+<p>Here are some other ideas to mention: - [ ] Gender indicator - [ ] How populated/complete profile is - [ ] Amount of followers - [ ] Followers vs commonality of name - [ ] retweet ratio vs 1to1 comms - [ ] account start dates vs ? - [ ] time since last tweet - [ ] name on criminal database - [ ] sentiment vs that of a criminal database</p>
 </div>
 </div>
 <div id="deception" class="section level2">
 <h2>Deception</h2>
+<p>This is where the main work is done. There are many idea I am playing with: - just like books are compared to be similar, so we can compare twitter accounts - build a ‘DNA’ string of a twitter accounts and compare them to find if they are similar</p>
 <ol style="list-style-type: decimal">
 <li>Finding outliers in sentiment (individuals whose content as further from the norm)</li>
 </ol>
@@ -227,6 +199,7 @@ $(document).ready(function () {
 <h4>Deception indicator</h4>
 <ul>
 <li>euclidian distance</li>
+<li>eigenvectors</li>
 <li>entropy</li>
 <li>elbow method</li>
 <li>poison distribution</li>
