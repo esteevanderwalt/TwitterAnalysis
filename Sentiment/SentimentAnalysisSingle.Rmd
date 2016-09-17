@@ -203,6 +203,17 @@ kfit <- kmeans(d, 3)
 clusplot(as.matrix(d), kfit$cluster, color=T, shade=T, labels=3, lines=0, main="Cluster") 
 ```
 
+5. Word associations network diagram
+```{r}
+library(graph)
+#source("http://bioconductor.org/biocLite.R")
+#biocLite("Rgraphviz")
+library(Rgraphviz)
+#network of terms
+tdm <- TermDocumentMatrix(tweetcorpus,control = list(wordLengths = c(1, Inf)))
+freq.terms <- findFreqTerms(tdm, lowfreq = 25)
+plot(tdm, term = freq.terms, corThreshold = 0.1, weighting = T)
+```
 
 ##Sentiment analysis
 ```{r sentiment}

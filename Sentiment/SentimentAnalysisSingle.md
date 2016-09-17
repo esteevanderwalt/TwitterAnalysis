@@ -82,13 +82,13 @@ head(df)
 ```
 
 ```
-##                                                                                                                      CONTENT
-## 1                                                                                  @mall0ry_ please tell me you work tonight
-## 2                                                                                            I love everything about my life
-## 3                                               @mall0ry_ GOD IS ALIVE! Thank ya Jesus. I can't wait to see you Ã­Â Â½Ã­Â¸Â
-## 4                                                               This made me smile today Ã¢ÂÂ¤Ã¯Â¸Â http://t.co/DSueGBTPJD
-## 5               @JamesAustinCole exactly Ã¢ÂÂºÃ¯Â¸Â chin up. You have so many great things to look forward to Ã­Â Â½Ã­Â¸Â
-## 6 @BrytnyAnn aw I agree. It needs to happen more often & I have got to meet that beautiful little girl of yours Ã­Â Â½Ã­Â²Â
+##                                                                                                                 CONTENT
+## 1                                                             Life without you isn't the same @abbey_lenae Ã­Â Â½Ã­Â²Â
+## 2                                                                Misssssss you two Ã­Â Â½Ã­Â¸Â https://t.co/sHXxVV3zJn
+## 3                                                          @mall0ry_ Ã­Â Â½Ã­Â¸ÂÃ­Â Â½Ã­Â¸ÂÃ­Â Â½Ã­Â¸Â they was tho!
+## 4 @CDavis821 haha I love you! I'm not going to though Ã¢ÂÂºÃ¯Â¸ÂÃ­Â Â½Ã­Â¸ÂÃ­Â Â½Ã­Â¸Â© I love my curls tooooo much!
+## 5        @GMAeasteggchick we stay hungry Ã­Â Â½Ã­Â¸ÂÃ­Â Â½Ã­Â²ÂÃ­Â Â¼Ã­Â¿Â¼Ã­Â Â½Ã­Â°ÂÃ­Â Â½Ã­Â²ÂÃ¢ÂÂÃ­Â Â¼Ã­Â¿Â½
+## 6                                     @GMAeasteggchick lmao I love us Ã­Â Â½Ã­Â¸Â can't wait til we can do it together
 ```
 
 ```r
@@ -99,13 +99,13 @@ head(df)
 ```
 
 ```
-##                                                                                                          CONTENT
-## 1                                                                      @mall0ry_ please tell me you work tonight
-## 2                                                                                I love everything about my life
-## 3                                               @mall0ry_ GOD IS ALIVE! Thank ya Jesus. I can't wait to see you 
-## 4                                                               This made me smile today  http://t.co/DSueGBTPJD
-## 5                           @JamesAustinCole exactly  chin up. You have so many great things to look forward to 
-## 6 @BrytnyAnn aw I agree. It needs to happen more often & I have got to meet that beautiful little girl of yours
+##                                                                             CONTENT
+## 1                                     Life without you isn't the same @abbey_lenae 
+## 2                                        Misssssss you two  https://t.co/sHXxVV3zJn
+## 3                                                          @mall0ry_  they was tho!
+## 4 @CDavis821 haha I love you! I'm not going to though  I love my curls tooooo much!
+## 5                                                  @GMAeasteggchick we stay hungry 
+## 6             @GMAeasteggchick lmao I love us  can't wait til we can do it together
 ```
 
 The we use the text mining libary to remove stopword and also cater for word stemming
@@ -152,13 +152,13 @@ head(df)
 ```
 
 ```
-##                                                                 CONTENT
-## 1                                      mall0ry please tell work tonight
-## 2                                                   love everything lif
-## 3                       mall0ry god alive thank ya jesus cant wait see 
-## 4                                    made smile today httptcodsuegbtpjd
-## 5          jamesaustincole exactly chin many great things look forward 
-## 6 brytnyann aw agree needs happen often got meet beautiful little girl
+##                                                      CONTENT
+## 1                              life without isnt abbeylenae 
+## 2                           misssssss two httpstcoshxxvv3zjn
+## 3                                                mall0ry tho
+## 4 cdavis821 haha love im going though love curls tooooo much
+## 5                               gmaeasteggchick stay hungry 
+## 6      gmaeasteggchick lmao love us cant wait til can togeth
 ```
 
 
@@ -284,6 +284,90 @@ clusplot(as.matrix(d), kfit$cluster, color = T, shade = T, labels = 3, lines = 0
 
 ![](SentimentAnalysisSingle_files/figure-html/unnamed-chunk-7-1.png)<!-- -->
 
+5. Word associations network diagram
+
+```r
+library(graph)
+```
+
+```
+## Loading required package: BiocGenerics
+```
+
+```
+## Loading required package: parallel
+```
+
+```
+## 
+## Attaching package: 'BiocGenerics'
+```
+
+```
+## The following objects are masked from 'package:parallel':
+## 
+##     clusterApply, clusterApplyLB, clusterCall, clusterEvalQ,
+##     clusterExport, clusterMap, parApply, parCapply, parLapply,
+##     parLapplyLB, parRapply, parSapply, parSapplyLB
+```
+
+```
+## The following objects are masked from 'package:dplyr':
+## 
+##     combine, intersect, setdiff, union
+```
+
+```
+## The following objects are masked from 'package:stats':
+## 
+##     IQR, mad, xtabs
+```
+
+```
+## The following objects are masked from 'package:base':
+## 
+##     anyDuplicated, append, as.data.frame, cbind, colnames,
+##     do.call, duplicated, eval, evalq, Filter, Find, get, grep,
+##     grepl, intersect, is.unsorted, lapply, lengths, Map, mapply,
+##     match, mget, order, paste, pmax, pmax.int, pmin, pmin.int,
+##     Position, rank, rbind, Reduce, rownames, sapply, setdiff,
+##     sort, table, tapply, union, unique, unsplit
+```
+
+```
+## 
+## Attaching package: 'graph'
+```
+
+```
+## The following objects are masked from 'package:ape':
+## 
+##     complement, edges
+```
+
+```
+## The following object is masked from 'package:stringr':
+## 
+##     boundary
+```
+
+```r
+# source('http://bioconductor.org/biocLite.R') biocLite('Rgraphviz')
+library(Rgraphviz)
+```
+
+```
+## Loading required package: grid
+```
+
+```r
+# network of terms
+tdm <- TermDocumentMatrix(tweetcorpus, control = list(wordLengths = c(1, Inf)))
+freq.terms <- findFreqTerms(tdm, lowfreq = 25)
+plot(tdm, term = freq.terms, corThreshold = 0.1, weighting = T)
+```
+
+![](SentimentAnalysisSingle_files/figure-html/unnamed-chunk-8-1.png)<!-- -->
 
 ##Sentiment analysis
 
