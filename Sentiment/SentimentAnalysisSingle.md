@@ -71,7 +71,10 @@ The following code is used to clean the data. We initially just first want to ge
 
 ```r
 # extract only content
-df <- data.frame(tweets$CONTENT)
+df <- tweets[tweets$USERNAME == "Londs_", ]
+rm(tweets)
+
+df <- data.frame(df$CONTENT)
 # rename column
 df <- setNames(df, c("CONTENT"))
 # showing that there is a lot of junk in the text
@@ -79,13 +82,13 @@ head(df)
 ```
 
 ```
-##                                                                                                        CONTENT
-## 1                                                                    @mall0ry_ please tell me you work tonight
-## 2                                                                              I love everything about my life
-## 3                                 @mall0ry_ GOD IS ALIVE! Thank ya Jesus. I can't wait to see you Ã­Â Â½Ã­Â¸Â
-## 4                                                 This made me smile today Ã¢ÂÂ¤Ã¯Â¸Â http://t.co/DSueGBTPJD
-## 5                                                                                  My phone just cracked ..wtf
-## 6 @JamesAustinCole exactly Ã¢ÂÂºÃ¯Â¸Â chin up. You have so many great things to look forward to Ã­Â Â½Ã­Â¸Â
+##                                                                                                                      CONTENT
+## 1                                                                                  @mall0ry_ please tell me you work tonight
+## 2                                                                                            I love everything about my life
+## 3                                               @mall0ry_ GOD IS ALIVE! Thank ya Jesus. I can't wait to see you Ã­Â Â½Ã­Â¸Â
+## 4                                                               This made me smile today Ã¢ÂÂ¤Ã¯Â¸Â http://t.co/DSueGBTPJD
+## 5               @JamesAustinCole exactly Ã¢ÂÂºÃ¯Â¸Â chin up. You have so many great things to look forward to Ã­Â Â½Ã­Â¸Â
+## 6 @BrytnyAnn aw I agree. It needs to happen more often & I have got to meet that beautiful little girl of yours Ã­Â Â½Ã­Â²Â
 ```
 
 ```r
@@ -96,13 +99,13 @@ head(df)
 ```
 
 ```
-##                                                                                CONTENT
-## 1                                            @mall0ry_ please tell me you work tonight
-## 2                                                      I love everything about my life
-## 3                     @mall0ry_ GOD IS ALIVE! Thank ya Jesus. I can't wait to see you 
-## 4                                     This made me smile today  http://t.co/DSueGBTPJD
-## 5                                                          My phone just cracked ..wtf
-## 6 @JamesAustinCole exactly  chin up. You have so many great things to look forward to
+##                                                                                                          CONTENT
+## 1                                                                      @mall0ry_ please tell me you work tonight
+## 2                                                                                I love everything about my life
+## 3                                               @mall0ry_ GOD IS ALIVE! Thank ya Jesus. I can't wait to see you 
+## 4                                                               This made me smile today  http://t.co/DSueGBTPJD
+## 5                           @JamesAustinCole exactly  chin up. You have so many great things to look forward to 
+## 6 @BrytnyAnn aw I agree. It needs to happen more often & I have got to meet that beautiful little girl of yours
 ```
 
 The we use the text mining libary to remove stopword and also cater for word stemming
@@ -133,7 +136,8 @@ tweetcorpus <- Corpus(DataframeSource(df))
 tweetcorpus <- tm_map(tweetcorpus, removePunctuation)
 tweetcorpus <- tm_map(tweetcorpus, tolower)
 tweetcorpus <- tm_map(tweetcorpus, removeWords, stopwords("english"))
-# remove word stemming
+# removeURL <- function(x) gsub('http[^[:space:]]*', '', x) tweetcorpus <-
+# tm_map(tweetcorpus, content_transformer(removeURL)) remove word stemming
 library(SnowballC)
 tweetcorpus <- tm_map(tweetcorpus, stemDocument)
 # remove whitespace
@@ -148,13 +152,13 @@ head(df)
 ```
 
 ```
-##                                                        CONTENT
-## 1                             mall0ry please tell work tonight
-## 2                                          love everything lif
-## 3              mall0ry god alive thank ya jesus cant wait see 
-## 4                           made smile today httptcodsuegbtpjd
-## 5                                       phone just cracked wtf
-## 6 jamesaustincole exactly chin many great things look forward
+##                                                                 CONTENT
+## 1                                      mall0ry please tell work tonight
+## 2                                                   love everything lif
+## 3                       mall0ry god alive thank ya jesus cant wait see 
+## 4                                    made smile today httptcodsuegbtpjd
+## 5          jamesaustincole exactly chin many great things look forward 
+## 6 brytnyann aw agree needs happen often got meet beautiful little girl
 ```
 
 
@@ -167,21 +171,20 @@ It is then important to count the occurances of all words. We start with one use
 library(tidytext)
 library(stringr)
 
-df <- tweets[tweets$USERNAME == "Londs_", ]
-
 reg <- "([^A-Za-z\\d#@']|'(?![A-Za-z\\d#@]))"
 tweet_words <- df %>% # remove quoted text
-filter(!str_detect(CONTENT, "^\"")) %>% # remove hyperlinks
-mutate(CONTENT = str_replace_all(CONTENT, "https://t.co/[A-Za-z\\d]+|&amp;", 
-    "")) %>% unnest_tokens(word, CONTENT, token = "regex", pattern = reg) %>% 
-    filter(!word %in% stop_words$word, str_detect(word, "[a-z]"))
+filter(!str_detect(CONTENT, "^\"")) %>% # remove hyperlinks mutate(CONTENT = str_replace_all(CONTENT,
+# 'https://t.co/[A-Za-z\\d]+|&amp;', '')) %>%
+mutate(CONTENT = str_replace_all(CONTENT, "httptco[A-Za-z]", "")) %>% unnest_tokens(word, 
+    CONTENT, token = "regex", pattern = reg) %>% filter(!word %in% stop_words$word, 
+    str_detect(word, "[a-z]"))
 
 # Amount of words =
 nrow(tweet_words)
 ```
 
 ```
-## [1] 3133
+## [1] 3331
 ```
 
 ```r
@@ -191,7 +194,7 @@ tweet_words %>% count(word, sort = TRUE) %>% head(20) %>% mutate(word = reorder(
     coord_flip()
 ```
 
-![](SentimentAnalysisSingle_files/figure-html/unnamed-chunk-7-1.png)<!-- -->
+![](SentimentAnalysisSingle_files/figure-html/worclouds-1.png)<!-- -->
 
 Build a word cloud for the user based on the word counts already done
 
@@ -217,7 +220,7 @@ pal2 <- brewer.pal(8, "Dark2")
 wordcloud(wf$word, wf$n, max.words = 50, random.order = FALSE, colors = pal2)
 ```
 
-![](SentimentAnalysisSingle_files/figure-html/unnamed-chunk-8-1.png)<!-- -->
+![](SentimentAnalysisSingle_files/figure-html/unnamed-chunk-3-1.png)<!-- -->
 
 ```r
 # wordcloud2(wf[1:50,], size = 0.5,shape = 'circle', color =
@@ -249,7 +252,7 @@ plot(hcd, type = "triangle")
 rect.hclust(fit, k = 5, border = "red")  # draw dendogram with red borders around the 5 clusters   
 ```
 
-![](SentimentAnalysisSingle_files/figure-html/unnamed-chunk-10-1.png)<!-- -->
+![](SentimentAnalysisSingle_files/figure-html/unnamed-chunk-5-1.png)<!-- -->
 
 3. A dendogram with a fan shape
 
@@ -267,7 +270,7 @@ plot(as.phylo(fit), type = "fan", tip.color = mypal[clus5], label.offset = 1,
     cex = log(dfd$n, 10), col = "red")
 ```
 
-![](SentimentAnalysisSingle_files/figure-html/unnamed-chunk-11-1.png)<!-- -->
+![](SentimentAnalysisSingle_files/figure-html/unnamed-chunk-6-1.png)<!-- -->
 
 4. Or as a cluster
 
@@ -279,7 +282,7 @@ clusplot(as.matrix(d), kfit$cluster, color = T, shade = T, labels = 3, lines = 0
     main = "Cluster")
 ```
 
-![](SentimentAnalysisSingle_files/figure-html/unnamed-chunk-12-1.png)<!-- -->
+![](SentimentAnalysisSingle_files/figure-html/unnamed-chunk-7-1.png)<!-- -->
 
 
 ##Sentiment analysis
@@ -330,16 +333,16 @@ by_source_sentiment
 ## # A tibble: 10 x 3
 ##       sentiment total_words words
 ##           <chr>       <int> <dbl>
-## 1         anger        3133   134
-## 2  anticipation        3133   231
-## 3       disgust        3133   125
-## 4          fear        3133    90
-## 5           joy        3133   338
-## 6      negative        3133   287
-## 7      positive        3133   454
-## 8       sadness        3133   114
-## 9      surprise        3133    87
-## 10        trust        3133   188
+## 1         anger        3331   146
+## 2  anticipation        3331   226
+## 3       disgust        3331   135
+## 4          fear        3331   101
+## 5           joy        3331   330
+## 6      negative        3331   295
+## 7      positive        3331   442
+## 8       sadness        3331   124
+## 9      surprise        3331    85
+## 10        trust        3331   187
 ```
 
 ```r
@@ -358,16 +361,16 @@ sentiment_differences
 ## 
 ##       sentiment   estimate statistic       p.value parameter   conf.low
 ##           <chr>      <dbl>     <dbl>         <dbl>     <int>      <dbl>
-## 1         anger 0.04277051       134 4.940656e-324      3133 0.03583570
-## 2  anticipation 0.07373125       231 4.940656e-324      3133 0.06452898
-## 3       disgust 0.03989786       125 4.940656e-324      3133 0.03321063
-## 4          fear 0.02872646        90 4.940656e-324      3133 0.02309947
-## 5           joy 0.10788382       338 4.940656e-324      3133 0.09668778
-## 6      negative 0.09160549       287 4.940656e-324      3133 0.08131285
-## 7      positive 0.14490903       454 4.940656e-324      3133 0.13188432
-## 8       sadness 0.03638685       114 4.940656e-324      3133 0.03001466
-## 9      surprise 0.02776891        87 4.940656e-324      3133 0.02224176
-## 10        trust 0.06000638       188 4.940656e-324      3133 0.05173497
+## 1         anger 0.04383068       146 4.940656e-324      3331 0.03700948
+## 2  anticipation 0.06784749       226 4.940656e-324      3331 0.05928957
+## 3       disgust 0.04052837       135 4.940656e-324      3331 0.03398040
+## 4          fear 0.03032122       101 4.940656e-324      3331 0.02469714
+## 5           joy 0.09906935       330 4.940656e-324      3331 0.08866764
+## 6      negative 0.08856199       295 4.940656e-324      3331 0.07874315
+## 7      positive 0.13269289       442 4.940656e-324      3331 0.12060921
+## 8       sadness 0.03722606       124 4.940656e-324      3331 0.03096271
+## 9      surprise 0.02551786        85 4.940656e-324      3331 0.02038276
+## 10        trust 0.05613930       187 4.940656e-324      3331 0.04838104
 ## # ... with 3 more variables: conf.high <dbl>, method <fctr>,
 ## #   alternative <fctr>
 ```
@@ -383,7 +386,7 @@ sentiment_differences %>% ungroup() %>% mutate(sentiment = reorder(sentiment,
     y = "Sentiment")
 ```
 
-![](SentimentAnalysisSingle_files/figure-html/unnamed-chunk-13-1.png)<!-- -->
+![](SentimentAnalysisSingle_files/figure-html/sentiment-1.png)<!-- -->
 
 ```r
 # separate text by sentiment
@@ -415,7 +418,7 @@ comparison.cloud(tdm, colors = brewer.pal(nemo, "Dark2"), scale = c(3, 0.5),
     random.order = FALSE, title.size = 1.5)
 ```
 
-![](SentimentAnalysisSingle_files/figure-html/unnamed-chunk-13-2.png)<!-- -->
+![](SentimentAnalysisSingle_files/figure-html/sentiment-2.png)<!-- -->
 
 
 

@@ -1,0 +1,53 @@
+---
+title: "K-means clustering"
+output: 
+  html_document: 
+    keep_md: yes
+---
+
+```{r echo=FALSE, messages=FALSE, results='hide'}
+#garbage collection + clear RAM
+rm(list = ls(all.name = TRUE))
+gc()
+```
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+knitr::opts_chunk$set(tidy = TRUE)
+knitr::opts_chunk$set(warning = FALSE)
+```
+
+```{r include=FALSE}
+  #load libraries
+  library(knitr)
+  library(ggplot2)
+```
+
+The K-means algorithm aims to choose centroids C that minimize the within cluster sum of squares objective function with a dataset X with n samples
+
+## Connect to the database first
+```{r echo=FALSE}
+read_chunk('../DBConnection/ConnectPostgres.R')
+```
+
+```{r connectDB}
+```
+
+##Get the tweets
+```{r gettwitterfeeddata, cache=FALSE}
+tweets <- dbGetQuery(con, "SELECT \"USERNAME\", \"USERID\", \"CREATEDAT\", \"GEO_ENABLED\", \"LATITUDE\", \"LONGITUDE\", \"LOCATION\", \"TIMEZONE\" from main.experiment_tweets_shortest where \"RETWEET\" = 0 and \"USERNAME\" in ('Londs_','AbeaChou','shift_comma3','HorizonCDT','ttenraBsucraMaD','maknaewon','oliviagarrett25','yallsop','Blackdolphin5','aaleyiahpoisson')")
+```
+
+Total amount of tweets in the corpus: `r tweets.total <- nrow(tweets)
+  tweets.total`
+
+Total unique users: `r tweets.users <- length(unique(tweets$USERID))
+  tweets.users`
+  
+##Train the data
+
+##The analysis here
+
+
+```{r closeDB}
+```

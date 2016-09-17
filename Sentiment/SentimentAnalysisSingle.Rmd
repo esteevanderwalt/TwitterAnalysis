@@ -5,7 +5,7 @@ output:
     keep_md: yes
 ---
 
-```{r echo=FALSE, messages=FALSE, results='hide'}
+```{r gc, echo=FALSE, messages=FALSE, results='hide'}
 #garbage collection + clear RAM
 rm(list = ls(all.name = TRUE))
 gc()
@@ -17,7 +17,7 @@ knitr::opts_chunk$set(tidy = TRUE)
 knitr::opts_chunk$set(warning = FALSE)
 ```
 
-```{r include=FALSE}
+```{r loadlibraries, include=FALSE}
   #load libraries
   library(knitr)
   library(ggplot2)
@@ -43,7 +43,7 @@ We will pull the full corpus but selective fields for analysis due to memory lim
 Ignore any retweets as we deem this to not be the original content from the user itself and not their opinion.
 (we still potentially have to exclude content from bots)
 
-```{r cache=FALSE}
+```{r gettwitterfeeddata, cache=FALSE}
 tweets <- dbGetQuery(con, "SELECT \"USERNAME\", \"USERID\", \"CREATEDAT\", \"CONTENT\",\"GEO_ENABLED\", \"LATITUDE\", \"LONGITUDE\", \"LOCATION\", \"TIMEZONE\" from main.experiment_tweets_shortest where \"RETWEET\" = 0 and \"USERNAME\" in ('Londs_','AbeaChou','shift_comma3','HorizonCDT','ttenraBsucraMaD','maknaewon','oliviagarrett25','yallsop','Blackdolphin5','aaleyiahpoisson')")
 ```
 
@@ -61,9 +61,12 @@ Avg amount of tweets per user: `r tweets.peruser <- tweets %>% select(USERID) %>
 ##Clean the text data
 The following code is used to clean the data. We initially just first want to get rid of emoticons.
 
-```{r}
+```{r cleandata}
 #extract only content
-df <- data.frame(tweets$CONTENT)
+df <- tweets[tweets$USERNAME=='Londs_',]
+rm(tweets)
+
+df <- data.frame(df$CONTENT)
 #rename column
 df <- setNames(df, c("CONTENT"))
 #showing that there is a lot of junk in the text
@@ -82,6 +85,8 @@ tweetcorpus <- Corpus(DataframeSource(df))
 tweetcorpus <- tm_map(tweetcorpus, removePunctuation)
 tweetcorpus <- tm_map(tweetcorpus, tolower) 
 tweetcorpus <- tm_map(tweetcorpus, removeWords, stopwords("english")) 
+#removeURL <- function(x) gsub("http[^[:space:]]*", "", x)
+#tweetcorpus <- tm_map(tweetcorpus, content_transformer(removeURL))
 #remove word stemming
 library(SnowballC)   
 tweetcorpus <- tm_map(tweetcorpus, stemDocument)
@@ -90,7 +95,7 @@ tweetcorpus <- tm_map(tweetcorpus, stripWhitespace)
 #lastly - treat your preprocessed documents as text documents
 tweetcorpus <- tm_map(tweetcorpus, PlainTextDocument) 
 
-df<-data.frame(text=unlist(sapply(tweetcorpus, `[`, "content")), stringsAsFactors=F)
+df <-data.frame(text=unlist(sapply(tweetcorpus, `[`, "content")), stringsAsFactors=F)
 df <- setNames(df, c("CONTENT"))
 
 head(df)
@@ -100,20 +105,19 @@ head(df)
 ##Word clouds
 It is then important to count the occurances of all words. We start with one user first to illustrate.
 
-```{r}
+```{r worclouds}
 #remove unwanted text from tweets
 #emoticons, hashtags, mentions of people
 library(tidytext)
 library(stringr)
-
-df<- tweets[tweets$USERNAME=='Londs_',]
 
 reg <- "([^A-Za-z\\d#@']|'(?![A-Za-z\\d#@]))"
 tweet_words <- df %>%
   #remove quoted text
   filter(!str_detect(CONTENT, '^"')) %>%
   #remove hyperlinks
-  mutate(CONTENT = str_replace_all(CONTENT, "https://t.co/[A-Za-z\\d]+|&amp;", "")) %>%
+  #mutate(CONTENT = str_replace_all(CONTENT, "https://t.co/[A-Za-z\\d]+|&amp;", "")) %>%
+  mutate(CONTENT = str_replace_all(CONTENT, "httptco[A-Za-z]", "")) %>%
   unnest_tokens(word, CONTENT, token = "regex", pattern = reg) %>%
   filter(!word %in% stop_words$word,
          str_detect(word, "[a-z]"))
@@ -201,7 +205,7 @@ clusplot(as.matrix(d), kfit$cluster, color=T, shade=T, labels=3, lines=0, main="
 
 
 ##Sentiment analysis
-```{r}
+```{r sentiment}
 #sentiment analysis for each of the words
 library(tidytext)
 library(tidyr)

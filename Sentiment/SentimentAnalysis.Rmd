@@ -5,7 +5,7 @@ output:
     keep_md: yes
 ---
 
-```{r echo=FALSE, messages=FALSE, results='hide'}
+```{r gc, echo=FALSE, messages=FALSE, results='hide'}
 #garbage collection + clear RAM
 rm(list = ls(all.name = TRUE))
 gc()
@@ -17,7 +17,7 @@ knitr::opts_chunk$set(tidy = TRUE)
 knitr::opts_chunk$set(warning = FALSE)
 ```
 
-```{r include=FALSE}
+```{r loadlibraries, include=FALSE}
   #load libraries
   library(knitr)
   library(ggplot2)
@@ -43,7 +43,7 @@ We will pull the full corpus but selective fields for analysis due to memory lim
 Ignore any retweets as we deem this to not be the original content from the user itself and not their opinion.
 (we still potentially have to exclude content from bots)
 
-```{r cache=FALSE}
+```{r gettwitterfeeddata, cache=FALSE}
 tweets <- dbGetQuery(con, "SELECT \"USERNAME\", \"USERID\", \"CREATEDAT\", \"CONTENT\",\"GEO_ENABLED\", \"LATITUDE\", \"LONGITUDE\", \"LOCATION\", \"TIMEZONE\" from main.experiment_tweets_shortest where \"RETWEET\" = 0")
 ```
 
@@ -60,9 +60,10 @@ Avg amount of tweets per user: `r tweets.peruser <- tweets %>% select(USERID) %>
 ##Clean the text data
 The following code is used to clean the data. We initially just first want to get rid of emoticons.
 
-```{r}
+```{r cleandata1}
 #extract only content
 df <- data.frame(tweets$CONTENT)
+rm(tweets)
 #rename column
 df <- setNames(df, c("CONTENT"))
 #showing that there is a lot of junk in the text
@@ -74,21 +75,26 @@ head(df)
 
 The we use the text mining libary to remove stopword and also cater for word stemming
 
-```{r}
+```{r cleandata2a}
 #cleanup text
 library(tm)
 tweetcorpus <- Corpus(DataframeSource(df))
 tweetcorpus <- tm_map(tweetcorpus, removePunctuation)
 tweetcorpus <- tm_map(tweetcorpus, tolower) 
 tweetcorpus <- tm_map(tweetcorpus, removeWords, stopwords("english")) 
+```
+```{r cleandata2b}
 #remove word stemming
 library(SnowballC)   
 tweetcorpus <- tm_map(tweetcorpus, stemDocument)
 #remove whitespace
 tweetcorpus <- tm_map(tweetcorpus, stripWhitespace) 
+```
+```{r cleandata2c}
 #lastly - treat your preprocessed documents as text documents
 tweetcorpus <- tm_map(tweetcorpus, PlainTextDocument) 
-
+```
+```{r cleandata2d}
 df<-data.frame(text=unlist(sapply(tweetcorpus, `[`, "content")), stringsAsFactors=F)
 df <- setNames(df, c("CONTENT"))
 
@@ -98,13 +104,13 @@ head(df)
 
 ##Word clouds
 It is then important to count the occurances of all words.
-```{r}
+```{r wordcloud1a}
 library(tidytext)
 library(stringr)
 
 #remove unwanted text from tweets
 #emoticons, hashtags, mentions of people
-df<- tweets
+#df<- tweets
 
 reg <- "([^A-Za-z\\d#@']|'(?![A-Za-z\\d#@]))"
 tweet_words <- df %>%
@@ -116,11 +122,10 @@ tweet_words <- df %>%
   filter(!word %in% stop_words$word,
          str_detect(word, "[a-z]"))
 
-rm(df)
-
 #Amount of words = 
 nrow(tweet_words)
-
+```
+```{r wordcloud1b}
 #show results as bar, ordered (top 20)
 tweet_words %>%
   count(word, sort = TRUE) %>%
@@ -134,7 +139,7 @@ tweet_words %>%
 
 Build a word cloud for the user based on the word counts already done
 
-```{r}
+```{r wordcloud2}
 wf <- tweet_words %>%
   count(word, sort = TRUE) %>%
   head(200) %>%
@@ -154,7 +159,7 @@ wordcloud(wf$word,wf$n, max.words=50, random.order=FALSE, colors=pal2)
 We can also cluster the words together based on Euclidian distance.
 This can be presented in various ways:
 1. A Dendogram
-```{r}
+```{r wordcloud_dendo}
 #Hierarchal Clustering
 #First calculate distance between words & then cluster them according to similarity
 library(cluster)
@@ -167,7 +172,7 @@ hcd = as.dendrogram(fit)
 ```
 
 2. Another version of a dentogram as a tree
-```{r}
+```{r wordcloud_dendotree}
 plot(hcd, type = "triangle")
 #plot.new()
 #plot(fit, hang=-1)
@@ -176,7 +181,7 @@ rect.hclust(fit, k=5, border="red") # draw dendogram with red borders around the
 ```
 
 3. A dendogram with a fan shape
-```{r}
+```{r wordcloud_dendofan}
 #show info as fan diagram
 library(ape)
 # vector of colors
@@ -191,7 +196,7 @@ plot(as.phylo(fit), type = "fan", tip.color = mypal[clus5], label.offset = 1,
 ```
 
 4. Or as a cluster
-```{r}
+```{r wordcloud_cluster}
 #show info in cluster
 library(fpc)   
 kfit <- kmeans(d, 3)   
@@ -200,7 +205,7 @@ clusplot(as.matrix(d), kfit$cluster, color=T, shade=T, labels=3, lines=0, main="
 
 
 ##Sentiment analysis
-```{r}
+```{r sentiment}
 #sentiment analysis for each of the words
 library(tidytext)
 library(tidyr)
