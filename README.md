@@ -22,21 +22,24 @@ This might also help us to gain insight into the features we could look at or in
 - [ ] Tweets with URL link
 - [ ] Retweets vs followers
 - [ ] Retweets vs URL link
+- [x] [Multi variate analysis] (/TweetInfo/MultiVarAnalysis.md)
 
 ####Feature extraction via clustering techniques
 There are many techniques to extract features from high dimentional data. Here we will apply the techniques blindly to see whether we get some insight into what features could define who is tweeting.
-- [ ] Kmeans
-- [x] SOM ([Self organized maps](/FeatureExtraction/SOM.md))
+- [x] [Kmeans] (/FeatureExtraction/Kmeans.md)
+- [x] [Hierarchical clustering] (/FeatureExtraction/HierarchClust.md)
+- [x] [Model based clustering] (/FeatureExtraction/ModelClust.md)
+- [x] Self organized maps ([SOM]) (/FeatureExtraction/SOM.md)
 
 ####Dimentionality reduction
 In machine learning and statistics, dimensionality reduction or dimension reduction is the process of reducing the number of random variables under consideration, via obtaining a set of principal variables. It can be divided into feature selection and feature extraction.
-- [ ] Principal Component Analysis (PCA)
+- [x] Principal Component Analysis ([PCA]) (/DimensionReduction/PCA.md)
 - [ ] t-Distributed Stochastic Neighbor Embedding (t-SNE)
 
 ####Network graph analysis
 In this section we would like to view the network over time, either how connections are formed and who talks to who. For this we are planning to extract nodes and edges from the data and use a tool (Gephi) to view the graph maps.
-- [ ] Friends and followers
-- [ ] Friends vs location
+- [ ] [Friends and followers vs location](/NetworkAnalysis/FriendsVsFollowers.md)
+- [ ] Network graph of only people who actually replied to others
 
 ####Sentiment analysis of tweets
 In this section we aim to analyse the content of tweets. We are only interested in original tweets (no retweets) and we will clean the data a bit to perform both word frequence and sentiment analysis on the tweets.

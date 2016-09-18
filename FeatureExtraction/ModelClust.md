@@ -1,4 +1,4 @@
-# K-means clustering
+# Model based clustering
 
 
 
@@ -6,7 +6,7 @@
 
 
 
-The K-means algorithm aims to choose centroids C that minimize the within cluster sum of squares objective function with a dataset X with n samples
+Model based approaches assume a variety of data models and apply maximum likelihood estimation and Bayes criteria to identify the most likely model and number of clusters. Specifically, the Mclust( ) function in the mclust package selects the optimal model according to BIC for EM initialized by hierarchical clustering for parameterized Gaussian mixture models.
 
 ## Connect to the database first
 
@@ -142,7 +142,7 @@ head(df)
 ## 5    -0.5333897   -2.907811  -0.8533727
 ## 6     0.1462913   -2.907811   1.1716497
 ```
-
+  
 ##Train the data
 We need to find the optimal amount of clusters first
 
@@ -150,73 +150,46 @@ We need to find the optimal amount of clusters first
 
 
 ```r
-mydata <- df[, 1:2]
+mydata <- df
 
 set.seed(20)
-wss <- (nrow(mydata) - 1) * sum(apply(mydata, 2, var))
-for (i in 2:15) wss[i] <- sum(kmeans(mydata, centers = i)$withinss)
-# par(mar=c(5.1,4.1,4.1,2.1))
-plot(1:15, wss, type = "b", xlab = "Number of Clusters", ylab = "Within groups sum of squares", 
-    main = "Within cluster sum of squares (WCSS)")
+library(mclust)
 ```
 
-![](Kmeans_files/figure-html/cluster_size_1-1.png)<!-- -->
+```
+## Package 'mclust' version 5.2
+```
+
+```
+## Type 'citation("mclust")' for citing this R package in publications.
+```
 
 ```r
-myCluster <- kmeans(mydata, 8)
-users$cluster <- as.factor(myCluster$cluster)
-ggplot(users, aes(no_of_tweets, no_of_replies, color = users$cluster)) + geom_point()
+fit <- Mclust(mydata)
+plot(fit)  # plot results 
 ```
 
-![](Kmeans_files/figure-html/cluster_size_1-2.png)<!-- -->
-
-###Lets look at: no_of_tweets vs no_of_friends:
-
+![](ModelClust_files/figure-html/cluster_size_1-1.png)<!-- -->![](ModelClust_files/figure-html/cluster_size_1-2.png)<!-- -->![](ModelClust_files/figure-html/cluster_size_1-3.png)<!-- -->![](ModelClust_files/figure-html/cluster_size_1-4.png)<!-- -->
 
 ```r
-mydata <- df[, c(1, 4)]
-
-set.seed(20)
-wss <- (nrow(mydata) - 1) * sum(apply(mydata, 2, var))
-for (i in 2:15) wss[i] <- sum(kmeans(mydata, centers = i)$withinss)
-# par(mar=c(5.1,4.1,4.1,2.1))
-plot(1:15, wss, type = "b", xlab = "Number of Clusters", ylab = "Within groups sum of squares", 
-    main = "Within cluster sum of squares (WCSS)")
+summary(fit)  # display the best model
 ```
 
-![](Kmeans_files/figure-html/cluster_size_2-1.png)<!-- -->
-
-```r
-myCluster <- kmeans(mydata, 10)
-users$cluster <- as.factor(myCluster$cluster)
-ggplot(users, aes(no_of_tweets, no_of_friends, color = users$cluster)) + geom_point()
+```
+## ----------------------------------------------------
+## Gaussian finite mixture model fitted by EM algorithm 
+## ----------------------------------------------------
+## 
+## Mclust VEV (ellipsoidal, equal shape) model with 4 components:
+## 
+##  log.likelihood    n  df       BIC       ICL
+##       -1562.022 6846 158 -4519.408 -4834.562
+## 
+## Clustering table:
+##    1    2    3    4 
+## 2864  388  801 2793
 ```
 
-![](Kmeans_files/figure-html/cluster_size_2-2.png)<!-- -->
 
-###Lets look at: no_of_friends vs no_of_followers:
-
-
-```r
-mydata <- df[, 4:5]
-
-set.seed(20)
-wss <- (nrow(mydata) - 1) * sum(apply(mydata, 2, var))
-for (i in 2:15) wss[i] <- sum(kmeans(mydata, centers = i)$withinss)
-# par(mar=c(5.1,4.1,4.1,2.1))
-plot(1:15, wss, type = "b", xlab = "Number of Clusters", ylab = "Within groups sum of squares", 
-    main = "Within cluster sum of squares (WCSS)")
-```
-
-![](Kmeans_files/figure-html/cluster_size_3-1.png)<!-- -->
-
-```r
-myCluster <- kmeans(mydata, 10)
-users$cluster <- as.factor(myCluster$cluster)
-ggplot(users, aes(no_of_friends, no_of_followers, color = users$cluster)) + 
-    geom_point()
-```
-
-![](Kmeans_files/figure-html/cluster_size_3-2.png)<!-- -->
 
 

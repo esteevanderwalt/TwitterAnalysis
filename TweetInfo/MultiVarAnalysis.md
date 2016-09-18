@@ -1,4 +1,4 @@
-# K-means clustering
+# Model based clustering
 
 
 
@@ -6,7 +6,7 @@
 
 
 
-The K-means algorithm aims to choose centroids C that minimize the within cluster sum of squares objective function with a dataset X with n samples
+Model based approaches assume a variety of data models and apply maximum likelihood estimation and Bayes criteria to identify the most likely model and number of clusters. Specifically, the Mclust( ) function in the mclust package selects the optimal model according to BIC for EM initialized by hierarchical clustering for parameterized Gaussian mixture models.
 
 ## Connect to the database first
 
@@ -143,80 +143,95 @@ head(df)
 ## 6     0.1462913   -2.907811   1.1716497
 ```
 
-##Train the data
-We need to find the optimal amount of clusters first
+##First investigate the multivariate data
 
-###Lets look at: no_of_tweets vs no_of_replies:
-
-
-```r
-mydata <- df[, 1:2]
-
-set.seed(20)
-wss <- (nrow(mydata) - 1) * sum(apply(mydata, 2, var))
-for (i in 2:15) wss[i] <- sum(kmeans(mydata, centers = i)$withinss)
-# par(mar=c(5.1,4.1,4.1,2.1))
-plot(1:15, wss, type = "b", xlab = "Number of Clusters", ylab = "Within groups sum of squares", 
-    main = "Within cluster sum of squares (WCSS)")
-```
-
-![](Kmeans_files/figure-html/cluster_size_1-1.png)<!-- -->
+### scatterplot
+User a scatterplot to investigate the different dimensions of data
 
 ```r
-myCluster <- kmeans(mydata, 8)
-users$cluster <- as.factor(myCluster$cluster)
-ggplot(users, aes(no_of_tweets, no_of_replies, color = users$cluster)) + geom_point()
+library(car)
+
+scatterplotMatrix(df)
 ```
 
-![](Kmeans_files/figure-html/cluster_size_1-2.png)<!-- -->
+![](MultiVarAnalysis_files/figure-html/cluster_scatter-1.png)<!-- -->
 
-###Lets look at: no_of_tweets vs no_of_friends:
-
+### profileplot
+To find the variance within a dimention
 
 ```r
-mydata <- df[, c(1, 4)]
+makeProfilePlot <- function(mylist, names) {
+    require(RColorBrewer)
+    # find out how many variables we want to include
+    numvariables <- length(mylist)
+    # choose 'numvariables' random colours
+    colours <- brewer.pal(numvariables, "Set1")
+    # find out the minimum and maximum values of the variables:
+    mymin <- 1e+20
+    mymax <- 1e-20
+    for (i in 1:numvariables) {
+        vectori <- mylist[[i]]
+        mini <- min(vectori)
+        maxi <- max(vectori)
+        if (mini < mymin) {
+            mymin <- mini
+        }
+        if (maxi > mymax) {
+            mymax <- maxi
+        }
+    }
+    # plot the variables
+    for (i in 1:numvariables) {
+        vectori <- mylist[[i]]
+        namei <- names[i]
+        colouri <- colours[i]
+        if (i == 1) {
+            plot(vectori, col = colouri, type = "l", ylim = c(mymin, mymax))
+        } else {
+            points(vectori, col = colouri, type = "l")
+        }
+        lastxval <- length(vectori)
+        lastyval <- vectori[length(vectori)]
+        text((lastxval - 10), (lastyval), namei, col = "black", cex = 0.6)
+    }
+}
 
-set.seed(20)
-wss <- (nrow(mydata) - 1) * sum(apply(mydata, 2, var))
-for (i in 2:15) wss[i] <- sum(kmeans(mydata, centers = i)$withinss)
-# par(mar=c(5.1,4.1,4.1,2.1))
-plot(1:15, wss, type = "b", xlab = "Number of Clusters", ylab = "Within groups sum of squares", 
-    main = "Within cluster sum of squares (WCSS)")
+library(RColorBrewer)
+makeProfilePlot(df, colnames(df))
 ```
 
-![](Kmeans_files/figure-html/cluster_size_2-1.png)<!-- -->
+![](MultiVarAnalysis_files/figure-html/cluster_profile-1.png)<!-- -->
+  
+### correlations
+Try to find the dimentions which are most correlated with each other
 
 ```r
-myCluster <- kmeans(mydata, 10)
-users$cluster <- as.factor(myCluster$cluster)
-ggplot(users, aes(no_of_tweets, no_of_friends, color = users$cluster)) + geom_point()
+mosthighlycorrelated <- function(mydataframe, numtoreport) {
+    # find the correlations
+    cormatrix <- cor(mydataframe)
+    # set the correlations on the diagonal or lower triangle to zero, so they
+    # will not be reported as the highest ones:
+    diag(cormatrix) <- 0
+    cormatrix[lower.tri(cormatrix)] <- 0
+    # flatten the matrix into a dataframe for easy sorting
+    fm <- as.data.frame(as.table(cormatrix))
+    # assign human-friendly names
+    names(fm) <- c("First.Variable", "Second.Variable", "Correlation")
+    # sort and print the top n correlations
+    head(fm[order(abs(fm$Correlation), decreasing = T), ], n = numtoreport)
+}
+
+mosthighlycorrelated(df, 5)
 ```
 
-![](Kmeans_files/figure-html/cluster_size_2-2.png)<!-- -->
-
-###Lets look at: no_of_friends vs no_of_followers:
-
-
-```r
-mydata <- df[, 4:5]
-
-set.seed(20)
-wss <- (nrow(mydata) - 1) * sum(apply(mydata, 2, var))
-for (i in 2:15) wss[i] <- sum(kmeans(mydata, centers = i)$withinss)
-# par(mar=c(5.1,4.1,4.1,2.1))
-plot(1:15, wss, type = "b", xlab = "Number of Clusters", ylab = "Within groups sum of squares", 
-    main = "Within cluster sum of squares (WCSS)")
+```
+##    First.Variable Second.Variable Correlation
+## 17   no_of_tweets  no_of_retweets   0.5515557
+## 9    no_of_tweets   no_of_replies   0.4739078
+## 49   no_of_tweets     year_opened  -0.3964179
+## 54  no_of_devices     year_opened  -0.3866232
+## 57   no_of_tweets     geo_enabled   0.3367037
 ```
 
-![](Kmeans_files/figure-html/cluster_size_3-1.png)<!-- -->
-
-```r
-myCluster <- kmeans(mydata, 10)
-users$cluster <- as.factor(myCluster$cluster)
-ggplot(users, aes(no_of_friends, no_of_followers, color = users$cluster)) + 
-    geom_point()
-```
-
-![](Kmeans_files/figure-html/cluster_size_3-2.png)<!-- -->
 
 

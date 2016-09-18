@@ -1,4 +1,4 @@
-# K-means clustering
+# Hierarchical clustering
 
 
 
@@ -6,7 +6,23 @@
 
 
 
-The K-means algorithm aims to choose centroids C that minimize the within cluster sum of squares objective function with a dataset X with n samples
+K means clustering requires us to specify the number of clusters, and finding the optimal number of clusters can often be hard. Hierarchical clustering is an alternative approach which builds a hierarchy from the bottom-up, and doesn’t require us to specify the number of clusters beforehand.
+
+The algorithm works as follows:
+
+- Put each data point in its own cluster.
+- Identify the closest two clusters and combine them into one cluster.
+- Repeat the above step till all the data points are in a single cluster.
+- Once this is done, it is usually represented by a dendrogram like structure.
+
+There are a few ways to determine how close two clusters are:
+
+- Complete linkage clustering: Find the maximum possible distance between points belonging to two different clusters.
+- Single linkage clustering: Find the minimum possible distance between points belonging to two different clusters.
+- Mean linkage clustering: Find all possible pairwise distances for points belonging to two different clusters and then calculate the average.
+- Centroid linkage clustering: Find the centroid of each cluster and calculate the distance between centroids of two clusters.
+
+Complete linkage and mean linkage clustering are the ones used most often.
 
 ## Connect to the database first
 
@@ -153,70 +169,22 @@ We need to find the optimal amount of clusters first
 mydata <- df[, 1:2]
 
 set.seed(20)
-wss <- (nrow(mydata) - 1) * sum(apply(mydata, 2, var))
-for (i in 2:15) wss[i] <- sum(kmeans(mydata, centers = i)$withinss)
-# par(mar=c(5.1,4.1,4.1,2.1))
-plot(1:15, wss, type = "b", xlab = "Number of Clusters", ylab = "Within groups sum of squares", 
-    main = "Within cluster sum of squares (WCSS)")
+clusters <- hclust(dist(mydata))  #default method = complete linkage
+plot(clusters)
 ```
 
-![](Kmeans_files/figure-html/cluster_size_1-1.png)<!-- -->
+![](HierarchClust_files/figure-html/cluster_size_1-1.png)<!-- -->
 
 ```r
-myCluster <- kmeans(mydata, 8)
-users$cluster <- as.factor(myCluster$cluster)
-ggplot(users, aes(no_of_tweets, no_of_replies, color = users$cluster)) + geom_point()
+clusters <- hclust(dist(mydata), method = "average")
+plot(clusters)
+groups <- cutree(clusters, k = 5)  # cut tree into 5 clusters
+# draw dendogram with red borders around the 5 clusters
+rect.hclust(clusters, k = 5, border = "red")
 ```
 
-![](Kmeans_files/figure-html/cluster_size_1-2.png)<!-- -->
-
-###Lets look at: no_of_tweets vs no_of_friends:
+![](HierarchClust_files/figure-html/cluster_size_1-2.png)<!-- -->
 
 
-```r
-mydata <- df[, c(1, 4)]
-
-set.seed(20)
-wss <- (nrow(mydata) - 1) * sum(apply(mydata, 2, var))
-for (i in 2:15) wss[i] <- sum(kmeans(mydata, centers = i)$withinss)
-# par(mar=c(5.1,4.1,4.1,2.1))
-plot(1:15, wss, type = "b", xlab = "Number of Clusters", ylab = "Within groups sum of squares", 
-    main = "Within cluster sum of squares (WCSS)")
-```
-
-![](Kmeans_files/figure-html/cluster_size_2-1.png)<!-- -->
-
-```r
-myCluster <- kmeans(mydata, 10)
-users$cluster <- as.factor(myCluster$cluster)
-ggplot(users, aes(no_of_tweets, no_of_friends, color = users$cluster)) + geom_point()
-```
-
-![](Kmeans_files/figure-html/cluster_size_2-2.png)<!-- -->
-
-###Lets look at: no_of_friends vs no_of_followers:
-
-
-```r
-mydata <- df[, 4:5]
-
-set.seed(20)
-wss <- (nrow(mydata) - 1) * sum(apply(mydata, 2, var))
-for (i in 2:15) wss[i] <- sum(kmeans(mydata, centers = i)$withinss)
-# par(mar=c(5.1,4.1,4.1,2.1))
-plot(1:15, wss, type = "b", xlab = "Number of Clusters", ylab = "Within groups sum of squares", 
-    main = "Within cluster sum of squares (WCSS)")
-```
-
-![](Kmeans_files/figure-html/cluster_size_3-1.png)<!-- -->
-
-```r
-myCluster <- kmeans(mydata, 10)
-users$cluster <- as.factor(myCluster$cluster)
-ggplot(users, aes(no_of_friends, no_of_followers, color = users$cluster)) + 
-    geom_point()
-```
-
-![](Kmeans_files/figure-html/cluster_size_3-2.png)<!-- -->
 
 

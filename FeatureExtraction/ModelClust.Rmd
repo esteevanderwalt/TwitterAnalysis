@@ -1,0 +1,75 @@
+---
+title: "Model based clustering"
+output: 
+  html_document: 
+    keep_md: yes
+---
+
+```{r echo=FALSE, messages=FALSE, results='hide'}
+#garbage collection + clear RAM
+rm(list = ls(all.name = TRUE))
+gc()
+```
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+knitr::opts_chunk$set(tidy = TRUE)
+knitr::opts_chunk$set(warning = FALSE)
+```
+
+```{r include=FALSE}
+  #load libraries
+  library(knitr)
+  library(ggplot2)
+  library(scales)
+```
+
+Model based approaches assume a variety of data models and apply maximum likelihood estimation and Bayes criteria to identify the most likely model and number of clusters. Specifically, the Mclust( ) function in the mclust package selects the optimal model according to BIC for EM initialized by hierarchical clustering for parameterized Gaussian mixture models.
+
+## Connect to the database first
+```{r echo=FALSE}
+read_chunk('../DBConnection/ConnectPostgres.R')
+```
+
+```{r connectDB}
+```
+
+##Get the tweets
+```{r gettwitterfeeddata, cache=FALSE}
+users <- dbGetQuery(con, "SELECT * from main.experiment_user_shortest")
+```
+
+Total amount of users in the corpus: `r users.total <- nrow(users)
+  users.total`
+
+```{r preview_users}
+#Preview user dataset  
+head(users)
+
+#scale the dataset
+df <- scale(users[,3:10])
+
+#Preview scaled dataset
+head(df)
+```
+  
+##Train the data
+We need to find the optimal amount of clusters first
+
+###Lets look at: no_of_tweets vs no_of_replies:
+
+```{r cluster_size_1}
+mydata <- df
+
+set.seed(20)
+library(mclust)
+
+fit <- Mclust(mydata)
+plot(fit) # plot results 
+summary(fit) # display the best model
+```
+
+
+
+```{r closeDB}
+```
