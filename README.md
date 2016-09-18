@@ -29,11 +29,11 @@ There are many techniques to extract features from high dimentional data. Here w
 - [x] [Kmeans] (/FeatureExtraction/Kmeans.md)
 - [x] [Hierarchical clustering] (/FeatureExtraction/HierarchClust.md)
 - [x] [Model based clustering] (/FeatureExtraction/ModelClust.md)
-- [x] Self organized maps ([SOM]) (/FeatureExtraction/SOM.md)
+- [x] Self organized maps - [SOM] (/FeatureExtraction/SOM.md)
 
 ####Dimentionality reduction
 In machine learning and statistics, dimensionality reduction or dimension reduction is the process of reducing the number of random variables under consideration, via obtaining a set of principal variables. It can be divided into feature selection and feature extraction.
-- [x] Principal Component Analysis ([PCA]) (/DimensionReduction/PCA.md)
+- [x] Principal Component Analysis - [PCA] (/DimensionReduction/PCA.md)
 - [ ] t-Distributed Stochastic Neighbor Embedding (t-SNE)
 
 ####Network graph analysis
