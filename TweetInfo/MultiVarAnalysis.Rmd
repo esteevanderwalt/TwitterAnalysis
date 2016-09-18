@@ -122,7 +122,7 @@ mosthighlycorrelated <- function(mydataframe,numtoreport)
    head(fm[order(abs(fm$Correlation),decreasing=T),],n=numtoreport)
 }
 
-mosthighlycorrelated(df, 5)
+mosthighlycorrelated(df, 10)
 
 ```
 

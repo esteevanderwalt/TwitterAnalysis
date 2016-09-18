@@ -1,4 +1,4 @@
-# Model based clustering
+# Multi variate analysis
 
 
 
@@ -221,7 +221,7 @@ mosthighlycorrelated <- function(mydataframe, numtoreport) {
     head(fm[order(abs(fm$Correlation), decreasing = T), ], n = numtoreport)
 }
 
-mosthighlycorrelated(df, 5)
+mosthighlycorrelated(df, 10)
 ```
 
 ```
@@ -231,6 +231,11 @@ mosthighlycorrelated(df, 5)
 ## 49   no_of_tweets     year_opened  -0.3964179
 ## 54  no_of_devices     year_opened  -0.3866232
 ## 57   no_of_tweets     geo_enabled   0.3367037
+## 63    year_opened     geo_enabled  -0.2377597
+## 59 no_of_retweets     geo_enabled   0.2346335
+## 41   no_of_tweets   no_of_devices   0.2102285
+## 50  no_of_replies     year_opened  -0.2004756
+## 58  no_of_replies     geo_enabled   0.1841529
 ```
 
 
