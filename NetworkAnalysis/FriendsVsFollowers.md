@@ -14,6 +14,10 @@ Most networks are defined as one-mode networks with one set of nodes that are si
 
 We will use Gephi as main tool for this part of the analysis.
 
+## First a plain hashtag graph from Gephi that was run for about 2 minutes on 'school', 'homework' tweets
+
+![Hashtag Graph] (network_twitter_hashtags_20160919.png)
+
 ## Friends graph
 Import the following into Gephi
 - list of nodes (users)
