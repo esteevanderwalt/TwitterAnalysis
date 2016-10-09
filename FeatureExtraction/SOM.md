@@ -108,13 +108,13 @@ head(users)
 ## 4           41133            10        2006           1
 ## 5           52686             1        2006           0
 ## 6        11654033             3        2006           1
-##               location                   timezone
-## 1     where data flows Pacific Time (US & Canada)
-## 2                 Ohio Eastern Time (US & Canada)
-## 3 all up in your DMs.  Pacific Time (US & Canada)
-## 4       Portland\\, OR Pacific Time (US & Canada)
-## 5            Nashville Central Time (US & Canada)
-## 6        Seattle\\, WA Pacific Time (US & Canada)
+##               location latitude longitude                   timezone
+## 1     where data flows       NA        NA Pacific Time (US & Canada)
+## 2                 Ohio       NA        NA Eastern Time (US & Canada)
+## 3 all up in your DMs.        NA        NA Pacific Time (US & Canada)
+## 4       Portland\\, OR       NA        NA Pacific Time (US & Canada)
+## 5            Nashville       NA        NA Central Time (US & Canada)
+## 6        Seattle\\, WA       NA        NA Pacific Time (US & Canada)
 ##                                                                             profile_image
 ## 1                     http://pbs.twimg.com/profile_images/702536731807973376/iDelKqT6.jpg
 ## 2                     http://pbs.twimg.com/profile_images/633119610477387776/K9aBQma2.jpg
@@ -177,7 +177,7 @@ library(kohonen)
 ```r
 # Create a training data set (rows are samples, columns are variables Here I
 # am selecting a subset of my variables available in 'data'
-data_train <- users[, c(3, 4, 5, 6, 7, 8, 9, 10, 15, 16, 17, 18, 19)]  #15-19
+data_train <- users[, c(3, 4, 5, 6, 7, 8, 9, 10, 17, 18, 19, 20, 21)]  #15-19
 head(data_train)
 ```
 
@@ -342,5 +342,226 @@ add.cluster.boundaries(som_model, som_cluster)
 ```
 
 ![](SOM_files/figure-html/visualiseSOM_Clustering_SOM-2.png)<!-- -->
+
+
+
+
+
+###users.numbers
+
+```r
+# Create a training data set (rows are samples, columns are variables Here I
+# am selecting a subset of my variables available in 'data'
+data_train <- users[, c(3, 4, 5, 6, 7, 8, 9)]  #15-19
+head(data_train)
+```
+
+```
+##   no_of_tweets no_of_replies no_of_retweets no_of_friends no_of_followers
+## 1         1000           270            347          3984           95486
+## 2         1000            19            408           481           79178
+## 3         1000           103             28           899          137646
+## 4         1002           612            153           403           41133
+## 5         1000           406             45          1912           52686
+## 6          497           487              6         99958        11654033
+##   no_of_devices year_opened
+## 1             4        2006
+## 2             8        2006
+## 3            13        2006
+## 4            10        2006
+## 5             1        2006
+## 6             3        2006
+```
+
+```r
+# Change the data frame with training data to a matrix Also center and scale
+# all variables to give them equal importance during the SOM training
+# process.
+data_train_matrix <- as.matrix(scale(data_train))
+
+# Create the SOM Grid - you generally have to specify the size of the
+# training grid prior to training the SOM. Hexagonal and Circular topologies
+# are possible
+som_grid <- somgrid(xdim = 20, ydim = 20, topo = "hexagonal")
+
+# Finally, train the SOM, options for the number of iterations, the learning
+# rates, and the neighbourhood are available
+som_model <- som(data_train_matrix, grid = som_grid, rlen = 250, alpha = c(0.05, 
+    0.01), keep.data = TRUE, n.hood = "circular")
+
+# remove datasets not required further
+rm(som_grid, data_train_matrix)
+
+# Visualise the SOM model results Plot of the training progress - how the
+# node distances have stabilised over time.
+plot(som_model, type = "changes")
+```
+
+![](SOM_files/figure-html/user_numbers-1.png)<!-- -->
+
+```r
+## custom palette as per kohonen package (not compulsory)
+source("coolBlueHotRed.R")
+# counts within nodes
+plot(som_model, type = "counts", main = "Node Counts", palette.name = coolBlueHotRed)
+```
+
+![](SOM_files/figure-html/user_numbers-2.png)<!-- -->
+
+```r
+# map quality
+plot(som_model, type = "quality", main = "Node Quality/Distance", palette.name = coolBlueHotRed)
+```
+
+![](SOM_files/figure-html/user_numbers-3.png)<!-- -->
+
+```r
+# show the WCSS metric for kmeans for different clustering sizes.  Can be
+# used as a 'rough' indicator of the ideal number of clusters
+mydata <- som_model$codes
+wss <- (nrow(mydata) - 1) * sum(apply(mydata, 2, var))
+for (i in 2:25) wss[i] <- sum(kmeans(mydata, centers = i)$withinss)
+par(mar = c(5.1, 4.1, 4.1, 2.1))
+plot(1:25, wss, type = "b", xlab = "Number of Clusters", ylab = "Within groups sum of squares", 
+    main = "Within cluster sum of squares (WCSS)")
+```
+
+![](SOM_files/figure-html/user_numbers-4.png)<!-- -->
+
+```r
+# Colour palette definition
+pretty_palette <- c("#1f77b4", "#ff7f0e", "#2ca02c", "#d62728", "#9467bd", "#8c564b", 
+    "#e377c2")
+
+# Form clusters on grid use hierarchical clustering to cluster the codebook
+# vectors
+som_cluster <- cutree(hclust(dist(som_model$codes)), 10)
+
+# Show the map with different colours for every cluster
+plot(som_model, type = "mapping", bgcol = pretty_palette[som_cluster], main = "Clusters")
+add.cluster.boundaries(som_model, som_cluster)
+```
+
+![](SOM_files/figure-html/user_numbers-5.png)<!-- -->
+
+```r
+# show the same plot with the codes instead of just colours
+plot(som_model, type = "codes", bgcol = pretty_palette[som_cluster], main = "Clusters")
+add.cluster.boundaries(som_model, som_cluster)
+```
+
+![](SOM_files/figure-html/user_numbers-6.png)<!-- -->
+
+###users.images
+
+```r
+# Create a training data set (rows are samples, columns are variables Here I
+# am selecting a subset of my variables available in 'data'
+data_train <- users[, c(17, 18, 19, 20, 21)]  #15-19
+head(data_train)
+```
+
+```
+##   is_default_profile_image is_default_background_image
+## 1                        0                           0
+## 2                        0                           0
+## 3                        0                           0
+## 4                        0                           1
+## 5                        0                           0
+## 6                        0                           0
+##   is_theme_background_image profile_image_uniqueness
+## 1                         0                        1
+## 2                         0                        1
+## 3                         0                        1
+## 4                         1                        1
+## 5                         1                        1
+## 6                         0                        1
+##   background_image_uniqueness
+## 1                           1
+## 2                           1
+## 3                           1
+## 4                        3599
+## 5                          20
+## 6                           1
+```
+
+```r
+# Change the data frame with training data to a matrix Also center and scale
+# all variables to give them equal importance during the SOM training
+# process.
+data_train_matrix <- as.matrix(scale(data_train))
+
+# Create the SOM Grid - you generally have to specify the size of the
+# training grid prior to training the SOM. Hexagonal and Circular topologies
+# are possible
+som_grid <- somgrid(xdim = 5, ydim = 5, topo = "hexagonal")
+
+# Finally, train the SOM, options for the number of iterations, the learning
+# rates, and the neighbourhood are available
+som_model <- som(data_train_matrix, grid = som_grid, rlen = 100, alpha = c(0.05, 
+    0.01), keep.data = TRUE, n.hood = "circular")
+
+# remove datasets not required further
+rm(som_grid, data_train_matrix)
+
+# Visualise the SOM model results Plot of the training progress - how the
+# node distances have stabilised over time.
+plot(som_model, type = "changes")
+```
+
+![](SOM_files/figure-html/user_images-1.png)<!-- -->
+
+```r
+## custom palette as per kohonen package (not compulsory)
+source("coolBlueHotRed.R")
+# counts within nodes
+plot(som_model, type = "counts", main = "Node Counts", palette.name = coolBlueHotRed)
+```
+
+![](SOM_files/figure-html/user_images-2.png)<!-- -->
+
+```r
+# map quality
+plot(som_model, type = "quality", main = "Node Quality/Distance", palette.name = coolBlueHotRed)
+```
+
+![](SOM_files/figure-html/user_images-3.png)<!-- -->
+
+```r
+# show the WCSS metric for kmeans for different clustering sizes.  Can be
+# used as a 'rough' indicator of the ideal number of clusters
+mydata <- som_model$codes
+wss <- (nrow(mydata) - 1) * sum(apply(mydata, 2, var))
+for (i in 2:15) wss[i] <- sum(kmeans(mydata, centers = i)$withinss)
+par(mar = c(5.1, 4.1, 4.1, 2.1))
+plot(1:15, wss, type = "b", xlab = "Number of Clusters", ylab = "Within groups sum of squares", 
+    main = "Within cluster sum of squares (WCSS)")
+```
+
+![](SOM_files/figure-html/user_images-4.png)<!-- -->
+
+```r
+# Colour palette definition
+pretty_palette <- c("#1f77b4", "#ff7f0e", "#2ca02c", "#d62728", "#9467bd", "#8c564b", 
+    "#e377c2")
+
+# Form clusters on grid use hierarchical clustering to cluster the codebook
+# vectors
+som_cluster <- cutree(hclust(dist(som_model$codes)), 2)
+
+# Show the map with different colours for every cluster
+plot(som_model, type = "mapping", bgcol = pretty_palette[som_cluster], main = "Clusters")
+add.cluster.boundaries(som_model, som_cluster)
+```
+
+![](SOM_files/figure-html/user_images-5.png)<!-- -->
+
+```r
+# show the same plot with the codes instead of just colours
+plot(som_model, type = "codes", bgcol = pretty_palette[som_cluster], main = "Clusters")
+add.cluster.boundaries(som_model, som_cluster)
+```
+
+![](SOM_files/figure-html/user_images-6.png)<!-- -->
 
 

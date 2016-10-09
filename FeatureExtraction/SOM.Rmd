@@ -94,7 +94,7 @@ library(kohonen)
 
 # Create a training data set (rows are samples, columns are variables
 # Here I am selecting a subset of my variables available in "data"
-data_train <- users[, c(3,4,5,6,7,8,9,10,15,16,17,18,19)]   #15-19
+data_train <- users[, c(3,4,5,6,7,8,9,10,17,18,19,20,21)]   #15-19
 head(data_train)
 
 # Change the data frame with training data to a matrix
@@ -209,6 +209,140 @@ pretty_palette <- c("#1f77b4", '#ff7f0e', '#2ca02c', '#d62728', '#9467bd', '#8c5
 # Form clusters on grid
 ## use hierarchical clustering to cluster the codebook vectors
 som_cluster <- cutree(hclust(dist(som_model$codes)), 14)
+
+# Show the map with different colours for every cluster						  
+plot(som_model, type="mapping", bgcol = pretty_palette[som_cluster], main = "Clusters")
+add.cluster.boundaries(som_model, som_cluster)
+
+#show the same plot with the codes instead of just colours
+plot(som_model, type="codes", bgcol = pretty_palette[som_cluster], main = "Clusters")
+add.cluster.boundaries(som_model, som_cluster)
+```
+
+
+
+
+
+###users.numbers
+```{r user_numbers}
+# Create a training data set (rows are samples, columns are variables
+# Here I am selecting a subset of my variables available in "data"
+data_train <- users[, c(3,4,5,6,7,8,9)]   #15-19
+head(data_train)
+
+# Change the data frame with training data to a matrix
+# Also center and scale all variables to give them equal importance during
+# the SOM training process. 
+data_train_matrix <- as.matrix(scale(data_train))
+
+# Create the SOM Grid - you generally have to specify the size of the 
+# training grid prior to training the SOM. Hexagonal and Circular 
+# topologies are possible
+som_grid <- somgrid(xdim = 20, ydim=20, topo="hexagonal")
+
+# Finally, train the SOM, options for the number of iterations,
+# the learning rates, and the neighbourhood are available
+som_model <- som(data_train_matrix, 
+                 grid=som_grid, 
+                 rlen=250, 
+                 alpha=c(0.05,0.01), 
+                 keep.data = TRUE,
+                 n.hood="circular" )
+
+#remove datasets not required further
+rm(som_grid, data_train_matrix)
+
+#Visualise the SOM model results
+# Plot of the training progress - how the node distances have stabilised over time.
+plot(som_model, type = "changes")
+## custom palette as per kohonen package (not compulsory)
+source('coolBlueHotRed.R')
+#counts within nodes
+plot(som_model, type = "counts", main="Node Counts", palette.name=coolBlueHotRed)
+#map quality
+plot(som_model, type = "quality", main="Node Quality/Distance", palette.name=coolBlueHotRed)
+
+# show the WCSS metric for kmeans for different clustering sizes.
+# Can be used as a "rough" indicator of the ideal number of clusters
+mydata <- som_model$codes
+wss <- (nrow(mydata)-1)*sum(apply(mydata,2,var))
+for (i in 2:25) wss[i] <- sum(kmeans(mydata,
+                                     centers=i)$withinss)
+par(mar=c(5.1,4.1,4.1,2.1))
+plot(1:25, wss, type="b", xlab="Number of Clusters",
+     ylab="Within groups sum of squares", main="Within cluster sum of squares (WCSS)")
+
+# Colour palette definition
+pretty_palette <- c("#1f77b4", '#ff7f0e', '#2ca02c', '#d62728', '#9467bd', '#8c564b', '#e377c2')
+
+# Form clusters on grid
+## use hierarchical clustering to cluster the codebook vectors
+som_cluster <- cutree(hclust(dist(som_model$codes)), 10)
+
+# Show the map with different colours for every cluster						  
+plot(som_model, type="mapping", bgcol = pretty_palette[som_cluster], main = "Clusters")
+add.cluster.boundaries(som_model, som_cluster)
+
+#show the same plot with the codes instead of just colours
+plot(som_model, type="codes", bgcol = pretty_palette[som_cluster], main = "Clusters")
+add.cluster.boundaries(som_model, som_cluster)
+```
+
+###users.images
+```{r user_images}
+# Create a training data set (rows are samples, columns are variables
+# Here I am selecting a subset of my variables available in "data"
+data_train <- users[, c(17,18,19,20,21)]   #15-19
+head(data_train)
+
+# Change the data frame with training data to a matrix
+# Also center and scale all variables to give them equal importance during
+# the SOM training process. 
+data_train_matrix <- as.matrix(scale(data_train))
+
+# Create the SOM Grid - you generally have to specify the size of the 
+# training grid prior to training the SOM. Hexagonal and Circular 
+# topologies are possible
+som_grid <- somgrid(xdim = 5, ydim=5, topo="hexagonal")
+
+# Finally, train the SOM, options for the number of iterations,
+# the learning rates, and the neighbourhood are available
+som_model <- som(data_train_matrix, 
+                 grid=som_grid, 
+                 rlen=100, 
+                 alpha=c(0.05,0.01), 
+                 keep.data = TRUE,
+                 n.hood="circular" )
+
+#remove datasets not required further
+rm(som_grid, data_train_matrix)
+
+#Visualise the SOM model results
+# Plot of the training progress - how the node distances have stabilised over time.
+plot(som_model, type = "changes")
+## custom palette as per kohonen package (not compulsory)
+source('coolBlueHotRed.R')
+#counts within nodes
+plot(som_model, type = "counts", main="Node Counts", palette.name=coolBlueHotRed)
+#map quality
+plot(som_model, type = "quality", main="Node Quality/Distance", palette.name=coolBlueHotRed)
+
+# show the WCSS metric for kmeans for different clustering sizes.
+# Can be used as a "rough" indicator of the ideal number of clusters
+mydata <- som_model$codes
+wss <- (nrow(mydata)-1)*sum(apply(mydata,2,var))
+for (i in 2:15) wss[i] <- sum(kmeans(mydata,
+                                     centers=i)$withinss)
+par(mar=c(5.1,4.1,4.1,2.1))
+plot(1:15, wss, type="b", xlab="Number of Clusters",
+     ylab="Within groups sum of squares", main="Within cluster sum of squares (WCSS)")
+
+# Colour palette definition
+pretty_palette <- c("#1f77b4", '#ff7f0e', '#2ca02c', '#d62728', '#9467bd', '#8c564b', '#e377c2')
+
+# Form clusters on grid
+## use hierarchical clustering to cluster the codebook vectors
+som_cluster <- cutree(hclust(dist(som_model$codes)), 2)
 
 # Show the map with different colours for every cluster						  
 plot(som_model, type="mapping", bgcol = pretty_palette[som_cluster], main = "Clusters")

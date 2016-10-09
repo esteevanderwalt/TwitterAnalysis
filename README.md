@@ -23,6 +23,7 @@ This might also help us to gain insight into the features we could look at or in
 - [ ] Retweets vs followers
 - [ ] Retweets vs URL link
 - [x] [Multi variate analysis] (/TweetInfo/MultiVarAnalysis.md)
+- [x] [Outliers] (/TweetInfo/TweetOutliers.md)
 
 ####Feature extraction via clustering techniques
 There are many techniques to extract features from high dimentional data. Here we will apply the techniques blindly to see whether we get some insight into what features could define who is tweeting.
