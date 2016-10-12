@@ -24,7 +24,7 @@ knitr::opts_chunk$set(warning = FALSE)
   library(scales)
 ```
 
-Model based approaches assume a variety of data models and apply maximum likelihood estimation and Bayes criteria to identify the most likely model and number of clusters. Specifically, the Mclust( ) function in the mclust package selects the optimal model according to BIC for EM initialized by hierarchical clustering for parameterized Gaussian mixture models.
+Multivariate analysis (MVA) is based on the statistical principle of multivariate statistics, which involves observation and analysis of more than one statistical outcome variable at a time.
 
 ## Connect to the database first
 ```{r echo=FALSE}
@@ -56,7 +56,8 @@ head(df)
 ##First investigate the multivariate data
 
 ### scatterplot
-User a scatterplot to investigate the different dimensions of data
+User a scatterplot to investigate the different dimensions of data.
+Scatterplot matrices are a great way to roughly determine if you have a linear correlation between multiple variables. This is particularly helpful in pinpointing specific variables that might have similar correlations to your genomic or proteomic data.
 ```{r cluster_scatter}
 library(car)
 
