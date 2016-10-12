@@ -7,15 +7,17 @@ There are [pro's and con's](/DBConnection/pro_con.md) to choosing the current en
 The goal is to extract features from the tweets to ultimately build an identity deception indicator. This deception indicator's purpose will be to highlight potential accounts which does not belong to the current corpus.
 The current corpus was scraped using specific key words to identify a target group of people. In our case we used the words 'school' and 'homework' as these will hopefully give us a corpus of children or young adults. Note these two words were found to be most common in a research study on internet usage across age bands. We would like to ultimately identify outliers, i.e. people who are not children but talking to them (potentially identifying threats).
 
-Hypothesis to answer during our study
-1. The sentiment of people's tweets in the corpus can highlight group of outliers (IDI with 1 variable)
-2. The usage of accounts can highlight outliers (IDI with 1 variable)
-3. The types of images used can highlight outliers (IDI with 1 variable)
-4. Number of devices per person (IDI with 1 variable)
-5. The above  variables differ between timezone/location
-6. The combination of the multiple variables makes the IDI/outlier detection stronger (IDI with multiple variables)
-7. Adding the timezone/locations makes the IDI/outlier stronger
-8. Using the above to learn about past outliers, can be applied to detect outliers in real time
+Hypothesis to answer during our study:
+1. The sentiment of people's tweets in the corpus can highlight group of outliers (IDI with 1 variable)&nbsp;
+2. The usage of accounts can highlight outliers (IDI with 1 variable)&nbsp;
+3. The types of images used can highlight outliers (IDI with 1 variable)&nbsp;
+4. Number of devices per person (IDI with 1 variable)&nbsp;
+5. The above  variables differ between timezone/location&nbsp;
+6. The combination of the multiple variables makes the IDI/outlier detection stronger (IDI with multiple variables)&nbsp;
+7. Adding the timezone/locations makes the IDI/outlier stronger&nbsp;
+8. Using the above to learn about past outliers, can be applied to detect outliers in real time&nbsp;
+
+Some [definitions](/Definitions/Definitions.md)
 
 But lets first understand the [structures of tweets](/TweetInfo/TweetStructure.md) in general.
 We then need to analyse our data for features to be used as part of our final identity deception indicator.
