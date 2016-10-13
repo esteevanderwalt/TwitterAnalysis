@@ -40,7 +40,7 @@ This might also help us to gain insight into the features we could look at or in
 
 ####Understanding the [twitter accounts](/TweetInfo/TweetAccountInfo.md)
 Here we try to understand the information we have about twitter users
-- [ ] Amount of users in corpus
+- [x] Amount of users in corpus
 - [ ] Account open dates of users
 - [ ] Tweet activity on the accounts
 - [ ] Locations of the users
