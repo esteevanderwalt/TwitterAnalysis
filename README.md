@@ -8,6 +8,7 @@ The goal is to extract features from the tweets to ultimately build an identity 
 The current corpus was scraped using specific key words to identify a target group of people. In our case we used the words 'school' and 'homework' as these will hopefully give us a corpus of children or young adults. Note these two words were found to be most common in a research study on internet usage across age bands. We would like to ultimately identify outliers, i.e. people who are not children but talking to them (potentially identifying threats).
 
 Hypothesis to answer during our study:
+
 1. The sentiment of people's tweets in the corpus can highlight group of outliers (IDI with 1 variable)&nbsp;
 2. The usage of accounts can highlight outliers (IDI with 1 variable)&nbsp;
 3. The types of images used can highlight outliers (IDI with 1 variable)&nbsp;
@@ -38,7 +39,7 @@ This might also help us to gain insight into the features we could look at or in
 - [x] [Outliers] (/TweetInfo/TweetOutliers.md)
 
 ####Understanding the [twitter accounts](/TweetInfo/TweetAccountInfo.md)
-Here we try to understand the unformation we have about twitter users
+Here we try to understand the information we have about twitter users
 - [ ] Amount of users in corpus
 - [ ] Account open dates of users
 - [ ] Tweet activity on the accounts
