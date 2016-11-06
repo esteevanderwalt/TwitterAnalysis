@@ -133,6 +133,10 @@ This is where the main work is done. There are many idea I am playing with:
   * not related to content
 4. How many people have more than one phone
 
+####Anomaly detection / Outlier detection
+The definition for abnormal, or outlier, is an element which does not follow the behaviour of the majority.
+- [x] Anomaly detection from Twitter (AnomalyDetection/TwitterAnomalyDetection.md)
+
 ####Deception indicator
 - euclidian distance
 - eigenvectors
@@ -143,3 +147,38 @@ This is where the main work is done. There are many idea I am playing with:
     
 ####Realtime
 - use indicator to point out potential threats as time pass
+
+##The Identity Deception Engine
+The identity deception engine that is built has part of this research has 3 main components
+1. The factor training engine
+2. The deception scoring
+3. Network analytics and results
+
+####Factor training engine
+Here we will start with a trained dataset. 
+(Data Cleaning) All duplicates have been remove from the set.
+
+For each factor
+  Perform clustering (WDD) 
+    Show elbow graph
+  Apply chosen Kmeans and show final result
+  Save prediction
+  Indicate which cluster will highlight outliers
+  Save k + outlier indicator
+  Determine entropy
+  
+Testing will be done one various training sets. The idea is to see if we can get better trained results with more data. We also want to understand whether this information of the factor will give us more information gain (entropy).
+
+Testing with the original tweet short training set:
+  Factor 1: No of devices
+  Factor 2: No of friends vs followers
+  Factor 3: Type of profile image
+  Factor 4: Timezone vs AVG tweet time
+  Factor 5: Distance between TZ and geo location
+  Show final test results
+
+
+####Deception scoring
+
+####Network analytics and results
+

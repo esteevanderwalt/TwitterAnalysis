@@ -1,0 +1,87 @@
+---
+title: "Twitter Anomaly Detection"
+output: 
+  html_document: 
+    keep_md: yes
+---
+
+```{r echo=FALSE, messages=FALSE, results='hide'}
+#garbage collection + clear RAM
+rm(list = ls(all.name = TRUE))
+gc()
+```
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+knitr::opts_chunk$set(tidy = TRUE)
+knitr::opts_chunk$set(warning = FALSE)
+```
+
+```{r include=FALSE}
+  #load libraries
+  library(knitr)
+  library(ggplot2)
+  library(scales)
+
+#install.packages("devtools")
+#devtools::install_github("twitter/AnomalyDetection")
+library(AnomalyDetection)
+
+```
+
+https://blog.twitter.com/2015/introducing-practical-and-robust-anomaly-detection-in-a-time-series
+
+'Despite prior research in anomaly detection [1], these techniques are not applicable in the context of social network data because of its inherent seasonal and trend components. Also, as pointed out by Chandola et al. [2], anomalies are contextual in nature and hence, techniques developed for anomaly detection in one domain can rarely be used ‘as is’ in another domain.
+
+Broadly, an anomaly can be characterized in the following ways:
+- Global/Local
+- Positive/Negative
+
+The primary algorithm, Seasonal Hybrid ESD (S-H-ESD), builds upon the Generalized ESD test [3] for detecting anomalies. S-H-ESD can be used to detect both global and local anomalies. This is achieved by employing time series decomposition and using robust statistical metrics, viz., median together with ESD. In addition, for long time series such as 6 months of minutely data, the algorithm employs piecewise approximation. This is rooted to the fact that trend extraction in the presence of anomalies is non-trivial for anomaly detection [4]'.
+
+## Connect to the database first
+```{r echo=FALSE}
+read_chunk('../DBConnection/ConnectPostgres.R')
+```
+
+```{r connectDB}
+```
+
+##Get the tweets
+```{r gettwitterfeeddata, cache=FALSE, echo=FALSE}
+users <- dbGetQuery(con, "SELECT * from main.experiment_user_shortest")
+```
+
+Total amount of users in the corpus: `r users.total <- nrow(users)
+  users.total`
+
+```{r preview_users}
+head(users)
+#scale the dataset
+df <- scale(users[,3:10])
+```
+
+##Play with the package
+
+```{r anom_3}
+data(raw_data)
+res = AnomalyDetectionTs(raw_data, max_anoms=0.02, direction='both', plot=TRUE)
+res$plot
+```
+
+##Try with actual data from our dataset
+
+Conclusion is that it might be good for seasonal data but our data is a static set so maybe not.
+
+```{r anom_4}
+#friends
+res = AnomalyDetectionVec(users[,6], max_anoms=0.01, period=1440, direction='both', only_last=FALSE, plot=TRUE)
+res$plot
+
+#followers
+res = AnomalyDetectionVec(users[,6], max_anoms=0.01, period=1440, direction='both', only_last=FALSE, plot=TRUE)
+res$plot
+```
+
+```{r closeDB}
+```
