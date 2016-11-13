@@ -21,6 +21,7 @@ Hypothesis to potentially answer during our study:
 Some [definitions](/Definitions/Definitions.md)
 
 The study consists of the following phases
+
 1. [Understanding the data] (/Phase_Data_Mining.md)
 2. The experiment - [the variables] (/Phase_Experiment_Variables.md)
 3. [The results] (/Phase_Experiment_Results.md)
@@ -28,6 +29,7 @@ The study consists of the following phases
 
 ##The Identity Deception Engine
 The identity deception engine that is built has part of this research has 3 main components
+
 1. The factor training engine
 2. The deception scoring
 3. Network analytics and results
@@ -37,14 +39,14 @@ Here we will start with a trained dataset.
 (Data Cleaning) All duplicates have been remove from the set.
 Enhance the data with more factors
 
-For each factor in the evaluation
-  Determine individual score
-    Perform clustering (WDD) or hard set score
-      Show elbow graph
-    Apply chosen Kmeans and show final result
-  Save prediction
-  Indicate which cluster/score will highlight outliers
-  Save k + outlier indicator
-  Determine entropy
+For each factor in the evaluation   
+  Determine individual score  
+    Perform clustering (WDD) or hard set score  
+      Show elbow graph  
+    Apply chosen Kmeans and show final result  
+  Save prediction  
+  Indicate which cluster/score will highlight outliers  
+  Save k + outlier indicator  
+  Determine entropy  
   
 Testing will be done one various training sets. The idea is to see if we can get better trained results with more data. We also want to understand whether this information of the factor will give us more information gain (entropy).
