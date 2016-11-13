@@ -1,0 +1,66 @@
+---
+title: "Attribute analysis - TZ vs Avg Tweet Time"
+output: 
+  html_document: 
+    keep_md: yes
+---
+
+```{r echo=FALSE, messages=FALSE, results='hide'}
+#garbage collection + clear RAM
+rm(list = ls(all.name = TRUE))
+gc()
+```
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+knitr::opts_chunk$set(tidy = TRUE)
+knitr::opts_chunk$set(warning = FALSE)
+```
+
+```{r include=FALSE}
+  #load libraries
+  library(knitr)
+  library(ggplot2)
+  library(scales)
+
+```
+
+## Connect to the database first
+```{r echo=FALSE}
+read_chunk('../../DBConnection/ConnectPostgres.R')
+```
+
+```{r connectDB}
+```
+
+##Get the tweets
+```{r gettwitterfeeddata, cache=FALSE, echo=FALSE}
+users <- dbGetQuery(con, "SELECT abs(u.avg_tweet_hour) as avg, tz.correct_tz as timezone, tz.continent from main.experiment_user u left join main.timezone_r tz on tz.timezone = u.timezone")
+```
+
+##Display avg tweet hour per timezone
+```{r avg_tweet}
+df <- data.frame(users$avg, users$timezone)
+user.data <- df[complete.cases(df),]
+colnames(user.data) = c("avg","timezone")
+ggplot(user.data, aes(x=timezone, y=avg)) +
+  geom_boxplot(outlier.colour="red", outlier.shape=8, outlier.size=4) +
+  stat_summary(fun.y=mean, geom="point", shape=23, size=4) 
+  #geom_dotplot(binaxis='y', stackdir='center', dotsize=1) 
+  #geom_jitter(shape=16, position=position_jitter(0.2))
+```
+
+##Display avg tweet hour per continent
+```{r avg_tweet_continent}
+df <- data.frame(users$avg, users$continent)
+user.data <- df[complete.cases(df),]
+colnames(user.data) = c("avg","continent")
+ggplot(user.data, aes(x=continent, y=avg)) +
+  geom_boxplot(outlier.colour="red", outlier.shape=8, outlier.size=4) +
+  stat_summary(fun.y=mean, geom="point", shape=23, size=4) 
+  #geom_dotplot(binaxis='y', stackdir='center', dotsize=1) 
+  #geom_jitter(shape=16, position=position_jitter(0.2))
+```
+
+```{r closeDB}
+```

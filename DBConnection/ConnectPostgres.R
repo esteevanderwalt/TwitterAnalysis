@@ -1,7 +1,7 @@
 #install.packages("RPostgreSQL")
 # require("RPostgreSQL")
 
-## @knitr connectDB
+## @knitr connectDB, results='hide', message=FALSE, warning=FALSE
 
 library(RPostgreSQL)
 

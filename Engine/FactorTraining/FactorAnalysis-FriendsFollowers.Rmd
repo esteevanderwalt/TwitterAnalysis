@@ -1,0 +1,56 @@
+---
+title: "Attribute analysis - Friends vs Followers"
+output: 
+  html_document: 
+    keep_md: yes
+---
+
+```{r echo=FALSE, messages=FALSE, results='hide'}
+#garbage collection + clear RAM
+rm(list = ls(all.name = TRUE))
+gc()
+```
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+knitr::opts_chunk$set(tidy = TRUE)
+knitr::opts_chunk$set(warning = FALSE)
+```
+
+```{r include=FALSE}
+  #load libraries
+  library(knitr)
+  library(ggplot2)
+  library(scales)
+
+```
+
+## Connect to the database first
+```{r echo=FALSE}
+read_chunk('../../DBConnection/ConnectPostgres.R')
+```
+
+```{r connectDB}
+```
+
+##Get the tweets
+```{r gettwitterfeeddata, cache=FALSE, echo=FALSE}
+users <- dbGetQuery(con, "SELECT u.no_of_friends, u.no_of_followers, tz.continent from main.experiment_user u left join main.timezone_r tz on tz.timezone = u.timezone")
+```
+
+##Friends vs Followers
+```{r ff}
+ggplot(users, aes(x = no_of_friends, y = no_of_followers)) +
+  geom_point(aes(color=factor(continent)))
+```
+
+##Friends vs Followers per continent
+```{r ff_continent}
+ggplot(users, aes(x = no_of_friends, y = no_of_followers)) +
+  geom_point(aes(color=factor(continent))) +
+  facet_wrap(~continent) 
+```
+
+
+```{r closeDB}
+```

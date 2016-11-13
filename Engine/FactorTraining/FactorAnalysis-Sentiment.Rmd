@@ -1,0 +1,107 @@
+---
+title: "Attribute analysis - Sentiment"
+output: 
+  html_document: 
+    keep_md: yes
+---
+
+```{r echo=FALSE, messages=FALSE, results='hide'}
+#garbage collection + clear RAM
+rm(list = ls(all.name = TRUE))
+gc()
+```
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+knitr::opts_chunk$set(tidy = TRUE)
+knitr::opts_chunk$set(warning = FALSE)
+```
+
+```{r include=FALSE}
+  #load libraries
+  library(knitr)
+  library(ggplot2)
+  library(scales)
+
+```
+
+## Connect to the database first
+```{r echo=FALSE}
+read_chunk('../../DBConnection/ConnectPostgres.R')
+```
+
+```{r connectDB}
+```
+
+##Get the tweets
+```{r gettwitterfeeddata, cache=FALSE, echo=FALSE}
+users <- dbGetQuery(con, "SELECT u.sentiment, u.sentiment_pos_neg, tz.continent from main.experiment_user u left join main.timezone_r tz on tz.timezone = u.timezone")
+```
+
+##Display overall sentiment
+```{r sentiment}
+user.s <- users[users$sentiment != 'NA',]
+ggplot(data = user.s, aes(x = sentiment)) +
+  geom_bar() +
+  theme(legend.position = "none") +
+  xlab("Sentiment") + ylab("Count") + 
+  scale_fill_gradient(low = "midnightblue", high = "aquamarine4")
+```
+
+##Display sentiment per continent
+```{r sentiment_continent}
+ggplot(data = user.s, aes(x = sentiment)) +
+  geom_bar() +
+  theme(legend.position = "none") +
+  facet_wrap(~continent) +
+  xlab("Sentiment") + ylab("Count") + 
+  scale_fill_gradient(low = "midnightblue", high = "aquamarine4") +
+  theme(axis.text.x = element_text(angle = 90, hjust = 1))
+```
+##Sentiment for only Africa
+```{r sentiment_continent_africa}
+a_users <- users[user.s$continent == 'Africa',]
+ggplot(data = a_users, aes(x = sentiment)) +
+  geom_bar() +
+  theme(legend.position = "none") +
+  facet_wrap(~continent) +
+  xlab("Sentiment") + ylab("Count") + 
+  scale_fill_gradient(low = "midnightblue", high = "aquamarine4") +
+  theme(axis.text.x = element_text(angle = 90, hjust = 1))
+```
+###Positive, Negative sentiment
+
+##Display overall sentiment
+```{r sentiment_pos_neg}
+user.s <- users[users$sentiment_pos_neg != 'NA',]
+ggplot(data = users, aes(x = sentiment_pos_neg)) +
+  geom_bar() +
+  theme(legend.position = "none") +
+  xlab("Sentiment") + ylab("Count") + 
+  scale_fill_gradient(low = "midnightblue", high = "aquamarine4")
+```
+
+##Display sentiment per continent
+```{r sentiment_pos_neg_continent}
+ggplot(data = user.s, aes(x = sentiment_pos_neg)) +
+  geom_bar() +
+  theme(legend.position = "none") +
+  facet_wrap(~continent) +
+  xlab("Sentiment") + ylab("Count") + 
+  scale_fill_gradient(low = "midnightblue", high = "aquamarine4") +
+  theme(axis.text.x = element_text(angle = 90, hjust = 1))
+```
+##Sentiment for only Africa
+```{r sentiment_pos_neg_continent_africa}
+a_user <- user.s[user.s$continent == 'Africa',]
+ggplot(data = a_user, aes(x = sentiment_pos_neg)) +
+  geom_bar() +
+  theme(legend.position = "none") +
+  facet_wrap(~continent) +
+  xlab("Sentiment") + ylab("Count") + 
+  scale_fill_gradient(low = "midnightblue", high = "aquamarine4") +
+  theme(axis.text.x = element_text(angle = 90, hjust = 1))
+```
+
+```{r closeDB}
+```

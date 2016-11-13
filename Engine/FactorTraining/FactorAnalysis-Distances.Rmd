@@ -1,0 +1,100 @@
+---
+title: "Attribute analysis - Distances"
+output: 
+  html_document: 
+    keep_md: yes
+---
+
+```{r echo=FALSE, messages=FALSE, results='hide'}
+#garbage collection + clear RAM
+rm(list = ls(all.name = TRUE))
+gc()
+```
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+knitr::opts_chunk$set(tidy = TRUE)
+knitr::opts_chunk$set(warning = FALSE)
+```
+
+```{r include=FALSE}
+  #load libraries
+  library(knitr)
+  library(ggplot2)
+  library(scales)
+  library(gridExtra)
+
+```
+
+## Connect to the database first
+```{r echo=FALSE}
+read_chunk('../../DBConnection/ConnectPostgres.R')
+```
+
+```{r connectDB}
+```
+
+##Get the tweets
+```{r gettwitterfeeddata, cache=FALSE, echo=FALSE}
+users <- dbGetQuery(con, "SELECT u.dist_latlon_vs_tz, u.dist_latlon_vs_loc, u.dist_tz_vs_loc, tz.continent from main.experiment_user u left join main.timezone_r tz on tz.timezone = u.timezone")
+```
+
+###Display latitude, longitude vs timezone
+```{r ll_tz}
+df <- data.frame(users$dist_latlon_vs_tz, users$continent)
+user.data <- df[complete.cases(df),]
+colnames(user.data) = c("dist_latlon_vs_tz","continent")
+p2 <- ggplot(user.data, aes(x=continent, y=dist_latlon_vs_tz)) +
+  geom_boxplot(outlier.colour="red", outlier.shape=8, outlier.size=4) +
+  stat_summary(fun.y=mean, geom="point", shape=23, size=4) +
+  theme(axis.text.x = element_text(angle = 90, hjust = 1))
+  #geom_dotplot(binaxis='y', stackdir='center', dotsize=1) 
+  #geom_jitter(shape=16, position=position_jitter(0.2))
+p2
+```
+###Display latitude, longitude vs location
+```{r ll_loc}
+df <- data.frame(users$dist_latlon_vs_loc, users$continent)
+user.data <- df[complete.cases(df),]
+colnames(user.data) = c("dist_latlon_vs_loc","continent")
+p3 <- ggplot(user.data, aes(x=continent, y=dist_latlon_vs_loc)) +
+  geom_boxplot(outlier.colour="red", outlier.shape=8, outlier.size=4) +
+  stat_summary(fun.y=mean, geom="point", shape=23, size=4) +
+  theme(axis.text.x = element_text(angle = 90, hjust = 1))
+  #geom_dotplot(binaxis='y', stackdir='center', dotsize=1) 
+  #geom_jitter(shape=16, position=position_jitter(0.2))
+p3
+```
+###Display location vs timezone
+```{r loc_tz}
+df <- data.frame(users$dist_tz_vs_loc, users$continent)
+user.data <- df[complete.cases(df),]
+colnames(user.data) = c("dist_tz_vs_loc","continent")
+p4 <- ggplot(user.data, aes(x=continent, y=dist_tz_vs_loc)) +
+  geom_boxplot(outlier.colour="red", outlier.shape=8, outlier.size=4) +
+  stat_summary(fun.y=mean, geom="point", shape=23, size=4) +
+  theme(axis.text.x = element_text(angle = 90, hjust = 1))
+  #geom_dotplot(binaxis='y', stackdir='center', dotsize=1) 
+  #geom_jitter(shape=16, position=position_jitter(0.2))
+p4
+```
+
+##All in one grid
+```{r grid}
+grid.arrange(p2, p3, p4, nrow=1)
+```
+
+##Combined results
+```{r loc_total}
+df <- data.frame((users$dist_latlon_vs_tz+users$dist_latlon_vs_loc+users$dist_tz_vs_loc)/3, users$continent)
+user.data <- df[complete.cases(df),]
+colnames(user.data) = c("dist","continent")
+ggplot(user.data, aes(x=continent, y=dist)) +
+  geom_boxplot(outlier.colour="red", outlier.shape=8, outlier.size=4) +
+  stat_summary(fun.y=mean, geom="point", shape=23, size=4) 
+  #geom_dotplot(binaxis='y', stackdir='center', dotsize=1) 
+  #geom_jitter(shape=16, position=position_jitter(0.2))
+```
+
+```{r closeDB}
+```

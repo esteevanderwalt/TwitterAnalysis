@@ -1,0 +1,71 @@
+---
+title: "Attribute analysis - No of Devices"
+output: 
+  html_document: 
+    keep_md: yes
+---
+
+```{r echo=FALSE, messages=FALSE, results='hide'}
+#garbage collection + clear RAM
+rm(list = ls(all.name = TRUE))
+gc()
+```
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+knitr::opts_chunk$set(tidy = TRUE)
+knitr::opts_chunk$set(warning = FALSE)
+```
+
+```{r include=FALSE}
+  #load libraries
+  library(knitr)
+  library(ggplot2)
+  library(scales)
+
+```
+
+## Connect to the database first
+```{r echo=FALSE}
+read_chunk('../../DBConnection/ConnectPostgres.R')
+```
+
+```{r connectDB}
+```
+
+##Get the tweets
+```{r gettwitterfeeddata, cache=FALSE, echo=FALSE}
+users <- dbGetQuery(con, "SELECT u.*, tz.continent from main.experiment_user u left join main.timezone_r tz on tz.timezone = u.timezone")
+```
+
+##Display no of devices overall
+```{r device}
+ggplot(data = users, aes(x = no_of_devices)) +
+  geom_histogram(aes(fill = ..count..)) +
+  theme(legend.position = "none") +
+  xlab("No of devices") + ylab("Count") + 
+  scale_fill_gradient(low = "midnightblue", high = "aquamarine4")
+```
+
+##Display no of devices per continent
+```{r device_continent}
+ggplot(data = users, aes(x = no_of_devices)) +
+  geom_histogram(aes(fill = ..count..)) +
+  theme(legend.position = "none") +
+  facet_wrap(~continent) +
+  xlab("No of devices") + ylab("Count") + 
+  scale_fill_gradient(low = "midnightblue", high = "aquamarine4")
+```
+##Display no of devices for only Africa
+```{r device_continent_africa}
+a_users <- users[users$continent == 'Africa',]
+ggplot(data = a_users, aes(x = no_of_devices)) +
+  geom_histogram(aes(fill = ..count..)) +
+  theme(legend.position = "none") +
+  facet_wrap(~continent) +
+  xlab("No of devices") + ylab("Count") + 
+  scale_fill_gradient(low = "midnightblue", high = "aquamarine4")
+```
+
+```{r closeDB}
+```

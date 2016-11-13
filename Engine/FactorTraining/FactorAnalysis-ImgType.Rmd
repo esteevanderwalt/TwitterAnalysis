@@ -1,0 +1,60 @@
+---
+title: "Attribute analysis - Type of Image"
+output: 
+  html_document: 
+    keep_md: yes
+---
+
+```{r echo=FALSE, messages=FALSE, results='hide'}
+#garbage collection + clear RAM
+rm(list = ls(all.name = TRUE))
+gc()
+```
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+knitr::opts_chunk$set(tidy = TRUE)
+knitr::opts_chunk$set(warning = FALSE)
+```
+
+```{r include=FALSE}
+  #load libraries
+  library(knitr)
+  library(ggplot2)
+  library(scales)
+
+```
+
+## Connect to the database first
+```{r echo=FALSE}
+read_chunk('../../DBConnection/ConnectPostgres.R')
+```
+
+```{r connectDB}
+```
+
+##Get the tweets
+```{r gettwitterfeeddata, cache=FALSE, echo=FALSE}
+users <- dbGetQuery(con, "SELECT profile_image_type, background_image_type from main.experiment_user")
+```
+
+##Profile image type
+```{r profile}
+ggplot(data = users, aes(x = profile_image_type)) +
+  geom_bar() +
+  theme(legend.position = "none") +
+  xlab("Profile") + ylab("Count") + 
+  scale_fill_gradient(low = "midnightblue", high = "aquamarine4")
+```
+
+##Background image type
+```{r background}
+ggplot(data = users, aes(x = background_image_type)) +
+  geom_bar() +
+  theme(legend.position = "none") +
+  xlab("Background") + ylab("Count") + 
+  scale_fill_gradient(low = "midnightblue", high = "aquamarine4")
+```
+
+```{r closeDB}
+```
