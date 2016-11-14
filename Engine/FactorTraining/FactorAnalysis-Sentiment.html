@@ -185,7 +185,4894 @@ ggplot(data = users, aes(x = sentiment_pos_neg)) + geom_bar() + theme(legend.pos
 ggplot(data = a_user, aes(x = sentiment_pos_neg)) + geom_bar() + theme(legend.position = &quot;none&quot;) + 
     facet_wrap(~continent) + xlab(&quot;Sentiment&quot;) + ylab(&quot;Count&quot;) + scale_fill_gradient(low = &quot;midnightblue&quot;, 
     high = &quot;aquamarine4&quot;) + theme(axis.text.x = element_text(angle = 90, hjust = 1))</code></pre>
-<p><img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAqAAAAHgCAMAAABNUi8GAAABI1BMVEUAAAAAADoAAGYAOpAAZrYZGT8ZGWIZP2IZP4EZYp8aGhozMzM6AAA6ADo6kNs/GRk/GT8/GWI/P2I/P4E/gb1NTU1NTW5NTY5NbqtNjshZWVliGRliGT9iGWJiPxliP4FiYmJin9lmAABmADpmtv9uTU1uTW5uTY5ubo5ubqtuq+SBPxmBPz+BP2KBn4GBvZ+BvdmOTU2OTW6OTY6Obk2OyP+QOgCQtpCQ2/+fYhmfn2KfvYGf2b2f2dmrbk2rbm6r5OSr5P+2ZgC22/+2//+9gT+92Z+92dnIjk3I/8jI///Zn2LZvYHZ2Z/Z2b3Z2dnbkDrb///kq27k5Kvk/8jk///r6+v/tmb/yI7/25D/27b/5Kv//7b//8j//9v//+T///+Ka7dPAAAACXBIWXMAAA7DAAAOwwHHb6hkAAARHElEQVR4nO3dDXsU1RnG8aNQWiNirW4bqtVCsZbYWoEm1bbGQqUi76TNEBqS7Pf/FJ3Z3QQGk9k7Z87MfWb4/y4vBYlzPXnmn5ndzYthCmQsuAcAmgT3AECT4B4AaBLcAwBNgnsAoElwDwA0Caf9Dx7hdNhbFALtC3uLQqB9YW9RCLQv7C0KgfaFvUUh0L6wtygE2hf2FoVA+8LeohBoX9hblDEE+uCjLx89evj5ygflr++/9417nBPkt7eZ++9eerRY22yPuRlDoPd++0HOZS7kt7eZ+++e+2axvdkeczOCQB/+8c+ffP/gw5WffPGLj8/9vdx09esvy82vrFxyz/aS7PY2d/+9v701D3S2R/c4PzKCQO+///3Xl6oVV3er8h8PP7/06N7P/l3er7K6qma3t7lyR/PtLfaYmxEEevuDR/femgVabXn+j7kHvyHQZcptPfjk+2pn8z3mZviBls+OVlbOffNSoO/Pb1RfV//aPNxLctvbwjzN2Y1nJa+FzQ0/0FmPX1969Qr64MNL3OIF80efXyw+rvO7xw8/0NvVTu+99SLQ6jHo/feqZ0v3f57R6ya57W1h9kFcPZVf7NE9z6sGH+jDP82ulx99cRTo4ln87ZWVn36c0QUhs70dmt9lbp/7x2KPGX1Izww+0MFgb1EItC/sLQqB9oW9RSHQvrC3KATaF/YWhUD7wt6iRAdapNfFMSN1MMrrsLfu1kagdQQahUD7QqBRCLQvBBqFQPtCoFEItC8EGoVA+0KgUQi0LwQahUD7QqBRCLQvBBqFQPtCoFEItC8EGoVA+0KgUQi0LwQahUD7QqBRCLQvBBqFQPtCoFEIVPZrp+Pfu0HsrR0ClRGoA4HKCNSBQGUE6kCgMgJ1IFAZgToQqIxAHQhURqAOBCojUAcClRGoA4HKCNSBQGUE6kCgMgJ1IFAZgToQqIxAHQhURqAOBCojUAcClRGoA4HKCNSBQGUE6kCgMgJ1IFAZgToQqIxAHQhURqAOBCojUAcClRGoA4HKCNSBQGUE6kCgMgJ1IFAZgToQqIxAHQhURqAOBCojUAcClRGoA4HKCNSBQGUE6pBToJmzBup+58conPY/SP+xwhU0EldQAiVQCYHKCNSBQGUE6kCgMgJ1IFAZgToQqIxAHQhURqAOBCojUAcClRGoA4HKCNSBQGUE6kCgMgJ1IFAZgToQqIxAHQhURqAOBCojUAcClRGoA4HKCNSBQGUE6kCgMgJ1IFAZgToQqIxAHQhURqAOBCojUAcClRGoA4HKCNSBQGUE6kCgMgJ1IFAZgToQqIxAHQhURqAOBCojUAcClRGoA4HKCNSBQGUE6kCgMgJ1IFAZgToQqIxAHQhURqAOBCojUAcClRGoA4HKCNSBQGUE6kCgMgJ1IFAZgToQqIxAHQhURqAOBCojUAcClRGoA4HKCNSBQGUE6kCgMgJ1IFAZgToQqIxAHQhURqAOxkAPNten071rk9XtYSyaQB2MgW5N1meRbl0cxqIJ1MEX6O4f/rI+3btxd7r72d1BLJpAHWyBHnz7z/LquXt1e7p3/eZ0+nZpyRXXzRqo+50fo9D4p1tr1e19Z3URaCX9xwpX0EhcQctL58HLV9ABLJpAHVyBbk0qazwGJdBm5peZDjbXeBZPoA14HVRGoA58JklGoA4EKiNQBwKVEagDgcoI1IFAZQTqQKAyAnUgUBmBOhCojEAdCFRGoA4EKiNQBwKVEagDgcoI1IFAZQTqQKAyAnUgUBmBOhCojEAdCFRGoA4EKiNQBwKVEagDgcoI1IFAZQTqQKAyAnUgUBmBOhCojEAdCFRGoA4EKiNQBwKVEagDgcoI1IFAZQTqQKAyAnUgUBmBOhCojEAdCFRGoA4EKiNQBwKVEagDgcoI1IFAZQTqQKAyAnUgUBmBOhCojEAdCFRGoA4EKiNQBwKVEagDgcoI1IFAZQTqQKAyAnXoL9Dnl69U/3j65ncESqAyApURqENfgT4Oh86e1GfuiyZQh96voA3Sj0KgkV7HQJdLPwqBRnotA312fnaL5zEogZ5Cf4Hub5z86HMQiyZQh5weg2bOGqj7nR+jUP/t/gZPkuId/94NYm/t9PgYtOEV0EEsmkAd+rzFB54kEehp8TKTjEAdCFRGoA7c4mUE6tD3FfT5777iCkqgut5v8U/PPCFQApX1Hyi3eAI9hd4DvcUVlEBPofcnSW/wGJRAT4GXmWQE6kCgMgJ16DPQ2bd9XCBQAj2FHgN9XD1/f3755ELTj0KgkV7HQPmuTgKNQKAyAnXgFi8jUAeeJMkI1IGXmWQE6kCgMgJ16C3Q2XOk/Y2TPxOf/aIJ1KGvQJ+dnz/4vNXwnXPpRyHQSK9foLfOvvoLAiVQQU+BvvipDbwOSqCnQaAyAnXoKdD9jcPXPx/zBcsEegp9PQZ9vLhwviiVQAlU0NvLTLdmX0r//HLD60zpRyHQSK9hoPMfD9rwDR/ZL5pAHfhMkoxAHQhURqAOBCojUAcClRGoA4HKCNSBQGUE6kCgMgJ1IFAZgToQqIxAHQhURqAOBCojUAcClRGoA4HKCNSBQGUE6kCgMgJ1IFAZgToQqIxAHQhURqAOBCojUAcClRGoA4HKCNSBQGUE6kCgMgJ1IFAZgToQqIxAHQhURqAOtkB3P51M1qfTvWuT1e1hLJpAHVyB7l2/Od39/c2DzfXp1sVhLJpAHVyB7lRV3lnfu3F3uvvZ3UEsmkAdnI9By6vo7tXt2cV0+nZp2dubWQN1v/NjFJb8+cHm2nRndRFoJf3HClfQSFxBq6dHa+VTpasESqBNjM/i16tKeQxKoI1cgc77nN3meRZPoCdzBbo1qazzOiiBNuMzSTICdSBQGYE6EKiMQB0IVEagDgQqI1AHApURqAOBygjUgUBlBOpAoDICdSBQGYE6EKiMQB0IVEagDgQqI1AHApURqAOBygjUgUBlBOpAoDICdSBQGYE6EKiMQB0IVEagDgQqI1AHApURqAOBygjUgUBlBOpAoDICdSBQGYE6EKiMQB0IVEagDgQqI1AHApURqAOBygjUgUBlBOpAoDICdSBQGYE6EKiMQB0IVEagDgQqI1AHApURqAOBygjUgUBlBOpAoDICdSBQGYE6EKiMQB0IVEagDgQqI1AHApURqAOBygjUgUBlBOpAoDICdSBQGYE6EKiMQB0IVEagDgQqI1AHApURqENOgWbOGqj7nR+jcNr/IP3HClfQSFxBCZRAJQQqI1AHApURqEP2geZThXMSAk15SALtepT6plOfwIJACbTdKPVNpz6BBYESaLtR6ptOfQILAiXQdqPUN536BBYESqDtRqlvOvUJLAiUQNuNUt906hNYECiBthulvunUJ7AgUAJtN0p906lPYEGgBNpulPqmU5/AgkAJtN0o9U2nPoEFgRJou1Hqm059AgsCJdB2o9Q3nfoEFgRKoO1GqW869QksCJRA241S33TqE1gQKIG2G6W+6dQnsCBQAm03Sn3TqU9gQaAE2m6U+qZTn8CCQAm03Sj1Tac+gQWBEmi7UeqbTn0CCwIl0Haj1Ded+gQWBEqg7Uapbzr1CSwIlEDbjVLfdOoTWBAogbYbpb7p1CewIFACbTdKfdOpT2BBoATabpT6plOfwIJACbTdKPVNpz6BBYESaLtR6ptOfQILAiXQdqPUN536BBYESqDtRqlvOvUJLAiUQNuNUt906hNYECiBthulvunUJ7AgUAJtN0p906lPYEGgBNpulPqmU5/AgkAJtN0o9U2nPoEFgRJou1Hqm059AgsCJdB2o9Q3nfoEFgRKoO1GqW869QksCJRA241S33TqE1gQKIG2G6W+6dQnsCBQAm03Sn3TqU9gQaAE2m6U+qZTn8CCQAm03Sj1Tac+gQWBEmi7UeqbTn0CCwIl0Haj1Ded+gQWBEqg7Uapbzr1CSwIlEDbjVLfdOoTWBAogbYbpb7p1CewIFACbTdKfdOpT2BBoATabpT6plOfwIJACbTdKPVNpz6BBYG+sHdtsrpNoKccpb7p1CewINAjB5vr062LBHrKUeqbTn0CCwJ9cQG9cXe6+9ldAj3dKPVNpz6BBYEe2b26Pd27fnM6fbskvD2QTBDeZmd1EWgl/cdKRleCDi8F6Q+c0d5yuYKOftEEGif7x6AtZ+ngmJEINIr9WfzakmfxLWfp4JiRCDRK9q+Dtpylg2NGItAo7kBfln6UjBZNoHEItC8EGoVA+0KgUQi0LwQahUD7QqBRCLQvBBqFQPtCoFEItC8EGoVA+0KgUQi0LwQahUD7QqBRcgq0Axl9EXRGoyyXz7AdThK6O7Qsn0XnNMpy+QxLoH3JaJTl8hmWQPuS0SjL5TPsyAMFThTcAwBNgnsAoElwD7BwsDlZ/e/hd456ZTTKcvkM29EkIfUB4xxsru1e3d45+s4nRtHkM2xXk4TEx4u0d+Nu+e5V399sl9Eoy+UzbFeThMTHizT/+NvK4EqQ0yjL5TNsV5OExMeLVT6CmUwy2PM0q1GWy2fYjiYJqQ8IpBTcAwBNgnuAub1rWdymKhmNslw+w3Y1SejioDF2P51MLi5/sz5kNMpy+QzbzSQh+RFb2PmV/+WShYxGWS6fYdNPEhIfL1o+V4KcRlkun2FHfQXN57FUTqMsl8+wo38MChwnuAeo7N344dqk4n8sldEoy+UzbHeThMTHA5IK7gHm5l9kkMMXPeQ0ynL5DNvVJCHx8aLszW8POXxSOaNRlstn2O4mCYmPFymHa8BCRqMsl8+wXU0SOjkqkEhwD7Cwlcez0YyeGGsy2dvon8XvXb+5c/HF/4wJovHvLbgHmCsfwcz/cg8yMOPfW3APMHfw7c3yr6P/36LV1up2eeNcd48hyWhvHa0tpD5gpHLHO5PJmnuM6eyuWf6VxTkXZLO3rtYWEh9v+Mr7ZXkxGEqg2ehqbSHx8UZga/LLmzsDucVnpKO1hdQHjHP4mQj76yUDM/69BfcAC3eqh1FbF3P4GRmDMvq9BfcAc4dfavBDBi+Y5POt5stltLdxf1/8websSrD6n6v2MA5HsQ+iyGdvXa0tJD5etDvlx9/FvWv+5yb5fAWbJJe9jfrL7bIyqCtoPkZ/Bc3HkB6DZmTcj0Ez+kGswzL6vQX3AHP5/CDWYRn/3oJ7gLl8fhDr4l41kC9gy2hvHa0tJD9ilHx+EOvho/1hFJrP3rpaW0h9wEj5PDMZ1stM2eyNl5l6M7sKDOQKmpGO1hZSH3Dwjr6DdrxfgNGFrtYWkh4t3g5NRBn93oJ7gLkMPlc3SOPfW3APMDeU5yS5Gf/egnuAhTsZfFvNEI1+b8E9wNzeoH5aQj7Gv7fgHgBoEtwDAE2CewCgSXAPADQJ7gGAJsE9ANAkuAcAmgT3AECT4B5gFB6HEN746pg/+N+/ps/eOe4P6m+DEwX3AGPw+M3vptOn4cqP/mBpnOLbvMaCe4AR2N+YpXnrzJNX/4RAWwvuAUZgf+PCi1+GUF5On73z1/MhXHlW/u1CGeD8txeq31459m2c02cuuAcYg6eHje1vnC1v+GeePDtfXk3LG391dawCnf02zP/dcW+DEwX3AONQPUsqu3taPRh9frm8LF6Z3buPAq1+u/h3x70NThTcA4zG88tnnlSdhvltvRbo4rezvx33NjhRcA8wHlV8i+dJjYEe8zY4UXAPMAKLxKrb9+LF0KZAj3sbnCi4BxiDW1Vz1ZOf/Y3y8lgWeBhf+VDzR4Ee9zY4UXAPMAqzx5XVE/nqJaQ3vjqKcXornH010OPexj1/xoJ7AKBJcA8ANAnuAYAmwT0A0CS4BwCaBPcAQJPgHgBoEtwDAE2CewCgSXAPADT5P+ckj2XxDH+qAAAAAElFTkSuQmCC" alt /><!-- --></p>
+<p><img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAqAAAAHgCAMAAABNUi8GAAABI1BMVEUAAAAAADoAAGYAOpAAZrYZGT8ZGWIZP2IZP4EZYp8aGhozMzM6AAA6ADo6kNs/GRk/GT8/GWI/P2I/P4E/gb1NTU1NTW5NTY5NbqtNjshZWVliGRliGT9iGWJiPxliP4FiYmJin9lmAABmADpmtv9uTU1uTW5uTY5ubo5ubqtuq+SBPxmBPz+BP2KBn4GBvZ+BvdmOTU2OTW6OTY6Obk2OyP+QOgCQtpCQ2/+fYhmfn2KfvYGf2b2f2dmrbk2rbm6r5OSr5P+2ZgC22/+2//+9gT+92Z+92dnIjk3I/8jI///Zn2LZvYHZ2Z/Z2b3Z2dnbkDrb///kq27k5Kvk/8jk///r6+v/tmb/yI7/25D/27b/5Kv//7b//8j//9v//+T///+Ka7dPAAAACXBIWXMAAA7DAAAOwwHHb6hkAAARHElEQVR4nO3dDXsU1RnG8aNQWiNirW4bqtVCsZbYWoEm1bbGQqUi76TNEBqS7Pf/FJ3Z3QQGk9k7Z87MfWb4/y4vBYlzPXnmn5ndzYthCmQsuAcAmgT3AECT4B4AaBLcAwBNgnsAoElwDwA0Caf9Dx7hdNhbFALtC3uLQqB9YW9RCLQv7C0KgfaFvUUh0L6wtygE2hf2FoVA+8LeohBoX9hblDEE+uCjLx89evj5ygflr++/9417nBPkt7eZ++9eerRY22yPuRlDoPd++0HOZS7kt7eZ+++e+2axvdkeczOCQB/+8c+ffP/gw5WffPGLj8/9vdx09esvy82vrFxyz/aS7PY2d/+9v701D3S2R/c4PzKCQO+///3Xl6oVV3er8h8PP7/06N7P/l3er7K6qma3t7lyR/PtLfaYmxEEevuDR/femgVabXn+j7kHvyHQZcptPfjk+2pn8z3mZviBls+OVlbOffNSoO/Pb1RfV//aPNxLctvbwjzN2Y1nJa+FzQ0/0FmPX1969Qr64MNL3OIF80efXyw+rvO7xw8/0NvVTu+99SLQ6jHo/feqZ0v3f57R6ya57W1h9kFcPZVf7NE9z6sGH+jDP82ulx99cRTo4ln87ZWVn36c0QUhs70dmt9lbp/7x2KPGX1Izww+0MFgb1EItC/sLQqB9oW9RSHQvrC3KATaF/YWhUD7wt6iRAdapNfFMSN1MMrrsLfu1kagdQQahUD7QqBRCLQvBBqFQPtCoFEItC8EGoVA+0KgUQi0LwQahUD7QqBRCLQvBBqFQPtCoFEItC8EGoVA+0KgUQi0LwQahUD7QqBRCLQvBBqFQPtCoFEIVPZrp+Pfu0HsrR0ClRGoA4HKCNSBQGUE6kCgMgJ1IFAZgToQqIxAHQhURqAOBCojUAcClRGoA4HKCNSBQGUE6kCgMgJ1IFAZgToQqIxAHQhURqAOBCojUAcClRGoA4HKCNSBQGUE6kCgMgJ1IFAZgToQqIxAHQhURqAOBCojUAcClRGoA4HKCNSBQGUE6kCgMgJ1IFAZgToQqIxAHQhURqAOBCojUAcClRGoA4HKCNSBQGUE6pBToJmzBup+58conPY/SP+xwhU0EldQAiVQCYHKCNSBQGUE6kCgMgJ1IFAZgToQqIxAHQhURqAOBCojUAcClRGoA4HKCNSBQGUE6kCgMgJ1IFAZgToQqIxAHQhURqAOBCojUAcClRGoA4HKCNSBQGUE6kCgMgJ1IFAZgToQqIxAHQhURqAOBCojUAcClRGoA4HKCNSBQGUE6kCgMgJ1IFAZgToQqIxAHQhURqAOBCojUAcClRGoA4HKCNSBQGUE6kCgMgJ1IFAZgToQqIxAHQhURqAOBCojUAcClRGoA4HKCNSBQGUE6kCgMgJ1IFAZgToQqIxAHQhURqAOBCojUAcClRGoA4HKCNSBQGUE6kCgMgJ1IFAZgToQqIxAHQhURqAOxkAPNten071rk9XtYSyaQB2MgW5N1meRbl0cxqIJ1MEX6O4f/rI+3btxd7r72d1BLJpAHWyBHnz7z/LquXt1e7p3/eZ0+nZpyRXXzRqo+50fo9D4p1tr1e19Z3URaCX9xwpX0EhcQctL58HLV9ABLJpAHVyBbk0qazwGJdBm5peZDjbXeBZPoA14HVRGoA58JklGoA4EKiNQBwKVEagDgcoI1IFAZQTqQKAyAnUgUBmBOhCojEAdCFRGoA4EKiNQBwKVEagDgcoI1IFAZQTqQKAyAnUgUBmBOhCojEAdCFRGoA4EKiNQBwKVEagDgcoI1IFAZQTqQKAyAnUgUBmBOhCojEAdCFRGoA4EKiNQBwKVEagDgcoI1IFAZQTqQKAyAnUgUBmBOhCojEAdCFRGoA4EKiNQBwKVEagDgcoI1IFAZQTqQKAyAnUgUBmBOhCojEAdCFRGoA4EKiNQBwKVEagDgcoI1IFAZQTqQKAyAnXoL9Dnl69U/3j65ncESqAyApURqENfgT4Oh86e1GfuiyZQh96voA3Sj0KgkV7HQJdLPwqBRnotA312fnaL5zEogZ5Cf4Hub5z86HMQiyZQh5weg2bOGqj7nR+jUP/t/gZPkuId/94NYm/t9PgYtOEV0EEsmkAd+rzFB54kEehp8TKTjEAdCFRGoA7c4mUE6tD3FfT5777iCkqgut5v8U/PPCFQApX1Hyi3eAI9hd4DvcUVlEBPofcnSW/wGJRAT4GXmWQE6kCgMgJ16DPQ2bd9XCBQAj2FHgN9XD1/f3755ELTj0KgkV7HQPmuTgKNQKAyAnXgFi8jUAeeJMkI1IGXmWQE6kCgMgJ16C3Q2XOk/Y2TPxOf/aIJ1KGvQJ+dnz/4vNXwnXPpRyHQSK9foLfOvvoLAiVQQU+BvvipDbwOSqCnQaAyAnXoKdD9jcPXPx/zBcsEegp9PQZ9vLhwviiVQAlU0NvLTLdmX0r//HLD60zpRyHQSK9hoPMfD9rwDR/ZL5pAHfhMkoxAHQhURqAOBCojUAcClRGoA4HKCNSBQGUE6kCgMgJ1IFAZgToQqIxAHQhURqAOBCojUAcClRGoA4HKCNSBQGUE6kCgMgJ1IFAZgToQqIxAHQhURqAOBCojUAcClRGoA4HKCNSBQGUE6kCgMgJ1IFAZgToQqIxAHQhURqAOtkB3P51M1qfTvWuT1e1hLJpAHVyB7l2/Od39/c2DzfXp1sVhLJpAHVyB7lRV3lnfu3F3uvvZ3UEsmkAdnI9By6vo7tXt2cV0+nZp2dubWQN1v/NjFJb8+cHm2nRndRFoJf3HClfQSFxBq6dHa+VTpasESqBNjM/i16tKeQxKoI1cgc77nN3meRZPoCdzBbo1qazzOiiBNuMzSTICdSBQGYE6EKiMQB0IVEagDgQqI1AHApURqAOBygjUgUBlBOpAoDICdSBQGYE6EKiMQB0IVEagDgQqI1AHApURqAOBygjUgUBlBOpAoDICdSBQGYE6EKiMQB0IVEagDgQqI1AHApURqAOBygjUgUBlBOpAoDICdSBQGYE6EKiMQB0IVEagDgQqI1AHApURqAOBygjUgUBlBOpAoDICdSBQGYE6EKiMQB0IVEagDgQqI1AHApURqAOBygjUgUBlBOpAoDICdSBQGYE6EKiMQB0IVEagDgQqI1AHApURqAOBygjUgUBlBOpAoDICdSBQGYE6EKiMQB0IVEagDgQqI1AHApURqENOgWbOGqj7nR+jcNr/IP3HClfQSFxBCZRAJQQqI1AHApURqEP2geZThXMSAk15SALtepT6plOfwIJACbTdKPVNpz6BBYESaLtR6ptOfQILAiXQdqPUN536BBYESqDtRqlvOvUJLAiUQNuNUt906hNYECiBthulvunUJ7AgUAJtN0p906lPYEGgBNpulPqmU5/AgkAJtN0o9U2nPoEFgRJou1Hqm059AgsCJdB2o9Q3nfoEFgRKoO1GqW869QksCJRA241S33TqE1gQKIG2G6W+6dQnsCBQAm03Sn3TqU9gQaAE2m6U+qZTn8CCQAm03Sj1Tac+gQWBEmi7UeqbTn0CCwIl0Haj1Ded+gQWBEqg7Uapbzr1CSwIlEDbjVLfdOoTWBAogbYbpb7p1CewIFACbTdKfdOpT2BBoATabpT6plOfwIJACbTdKPVNpz6BBYESaLtR6ptOfQILAiXQdqPUN536BBYESqDtRqlvOvUJLAiUQNuNUt906hNYECiBthulvunUJ7AgUAJtN0p906lPYEGgBNpulPqmU5/AgkAJtN0o9U2nPoEFgRJou1Hqm059AgsCJdB2o9Q3nfoEFgRKoO1GqW869QksCJRA241S33TqE1gQKIG2G6W+6dQnsCBQAm03Sn3TqU9gQaAE2m6U+qZTn8CCQAm03Sj1Tac+gQWBEmi7UeqbTn0CCwIl0Haj1Ded+gQWBEqg7Uapbzr1CSwIlEDbjVLfdOoTWBAogbYbpb7p1CewIFACbTdKfdOpT2BBoATabpT6plOfwIJACbTdKPVNpz6BBYG+sHdtsrpNoKccpb7p1CewINAjB5vr062LBHrKUeqbTn0CCwJ9cQG9cXe6+9ldAj3dKPVNpz6BBYEe2b26Pd27fnM6fbskvD2QTBDeZmd1EWgl/cdKRleCDi8F6Q+c0d5yuYKOftEEGif7x6AtZ+ngmJEINIr9WfzakmfxLWfp4JiRCDRK9q+Dtpylg2NGItAo7kBfln6UjBZNoHEItC8EGoVA+0KgUQi0LwQahUD7QqBRCLQvBBqFQPtCoFEItC8EGoVA+0KgUQi0LwQahUD7QqBRcgq0Axl9EXRGoyyXz7AdThK6O7Qsn0XnNMpy+QxLoH3JaJTl8hmWQPuS0SjL5TPsyAMFThTcAwBNgnsAoElwD7BwsDlZ/e/hd456ZTTKcvkM29EkIfUB4xxsru1e3d45+s4nRtHkM2xXk4TEx4u0d+Nu+e5V399sl9Eoy+UzbFeThMTHizT/+NvK4EqQ0yjL5TNsV5OExMeLVT6CmUwy2PM0q1GWy2fYjiYJqQ8IpBTcAwBNgnuAub1rWdymKhmNslw+w3Y1SejioDF2P51MLi5/sz5kNMpy+QzbzSQh+RFb2PmV/+WShYxGWS6fYdNPEhIfL1o+V4KcRlkun2FHfQXN57FUTqMsl8+wo38MChwnuAeo7N344dqk4n8sldEoy+UzbHeThMTHA5IK7gHm5l9kkMMXPeQ0ynL5DNvVJCHx8aLszW8POXxSOaNRlstn2O4mCYmPFymHa8BCRqMsl8+wXU0SOjkqkEhwD7Cwlcez0YyeGGsy2dvon8XvXb+5c/HF/4wJovHvLbgHmCsfwcz/cg8yMOPfW3APMHfw7c3yr6P/36LV1up2eeNcd48hyWhvHa0tpD5gpHLHO5PJmnuM6eyuWf6VxTkXZLO3rtYWEh9v+Mr7ZXkxGEqg2ehqbSHx8UZga/LLmzsDucVnpKO1hdQHjHP4mQj76yUDM/69BfcAC3eqh1FbF3P4GRmDMvq9BfcAc4dfavBDBi+Y5POt5stltLdxf1/8websSrD6n6v2MA5HsQ+iyGdvXa0tJD5etDvlx9/FvWv+5yb5fAWbJJe9jfrL7bIyqCtoPkZ/Bc3HkB6DZmTcj0Ez+kGswzL6vQX3AHP5/CDWYRn/3oJ7gLl8fhDr4l41kC9gy2hvHa0tJD9ilHx+EOvho/1hFJrP3rpaW0h9wEj5PDMZ1stM2eyNl5l6M7sKDOQKmpGO1hZSH3Dwjr6DdrxfgNGFrtYWkh4t3g5NRBn93oJ7gLkMPlc3SOPfW3APMDeU5yS5Gf/egnuAhTsZfFvNEI1+b8E9wNzeoH5aQj7Gv7fgHgBoEtwDAE2CewCgSXAPADQJ7gGAJsE9ANAkuAcAmgT3AECT4B5gFB6HEN746pg/+N+/ps/eOe4P6m+DEwX3AGPw+M3vptOn4cqP/mBpnOLbvMaCe4AR2N+YpXnrzJNX/4RAWwvuAUZgf+PCi1+GUF5On73z1/MhXHlW/u1CGeD8txeq31459m2c02cuuAcYg6eHje1vnC1v+GeePDtfXk3LG391dawCnf02zP/dcW+DEwX3AONQPUsqu3taPRh9frm8LF6Z3buPAq1+u/h3x70NThTcA4zG88tnnlSdhvltvRbo4rezvx33NjhRcA8wHlV8i+dJjYEe8zY4UXAPMAKLxKrb9+LF0KZAj3sbnCi4BxiDW1Vz1ZOf/Y3y8lgWeBhf+VDzR4Ee9zY4UXAPMAqzx5XVE/nqJaQ3vjqKcXornH010OPexj1/xoJ7AKBJcA8ANAnuAYAmwT0A0CS4BwCaBPcAQJPgHgBoEtwDAE2CewCgSXAPADT5P+ckj2XxDH+qAAAAAElFTkSuQmCC" alt /><!-- --> ##Score the data</p>
+<div id="first-create-a-score" class="section level3">
+<h3>first create a score</h3>
+<pre class="r"><code>factor_no &lt;- 6
+exp_no &lt;- 1
+period_no &lt;- 1
+
+sql &lt;- paste(&quot;DELETE FROM main.experiment_user_score where factor_no = 6&quot;, sep = &quot;&quot;)
+dbSendQuery(con, sql)</code></pre>
+<pre><code>## &lt;PostgreSQLResult&gt;</code></pre>
+<pre class="r"><code>sql &lt;- paste(&quot;INSERT INTO main.experiment_user_score(experiment_no, period_no, userid, factor_no, idi_full)&quot;, 
+    sep = &quot;&quot;)
+sql &lt;- paste(sql, &quot;select experiment_no, period_no, userid, 6,&quot;, sep = &quot;&quot;)
+sql &lt;- paste(sql, &quot;case when sentiment_pos_neg = 'positive' then 1 else 0 end&quot;, 
+    sep = &quot;&quot;)
+sql &lt;- paste(sql, &quot; from main.experiment_user&quot;, sep = &quot;&quot;)
+dbSendQuery(con, sql)</code></pre>
+<pre><code>## &lt;PostgreSQLResult&gt;</code></pre>
+</div>
+<div id="show-results" class="section level3">
+<h3>show results</h3>
+<p>No scaling required</p>
+<pre class="r"><code>user.score &lt;- dbGetQuery(con, &quot;SELECT s.idi_full, tz.continent from main.experiment_user_score s join main.experiment_user u on u.userid = s.userid left join main.timezone_r tz on tz.timezone = u.timezone where s.factor_no = 6 and s.experiment_no = u.experiment_no and s.period_no = u.period_no&quot;)
+
+# user.scaled_score &lt;- data.frame(as.data.frame( scale(user.score[1] )),
+# user.score[2])
+colnames(user.score) = c(&quot;idi&quot;, &quot;continent&quot;)
+
+ggplot(user.score, aes(x = continent, y = idi)) + geom_boxplot(outlier.colour = &quot;red&quot;, 
+    outlier.shape = 8, outlier.size = 4) + stat_summary(fun.y = mean, geom = &quot;point&quot;, 
+    shape = 23, size = 4)</code></pre>
+<p><img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAqAAAAHgCAMAAABNUi8GAAAAzFBMVEUAAAAAADoAAGYAOpAAZrYzMzM6AAA6ADo6kNtNTU1NTW5NTY5Nbo5NbqtNjshmAABmtv9uTU1uTW5uTY5ubo5ubqtuq6tuq+SOTU2OTW6OTY6Obk2ObquOjm6Ojo6OyP+QOgCQtpCQ2/+rbk2rbm6rbo6rjk2rq26rq46ryKur5Mir5OSr5P+2ZgC22/+2///Ijk3I5KvI///bkDrb///kq27k/8jk///r6+v/AAD/tmb/yI7/25D/27b/5Kv//7b//8j//9v//+T///86QrtBAAAACXBIWXMAAA7DAAAOwwHHb6hkAAAR+ElEQVR4nO2dC3/a5h1G6SVtFc9uEs+znW6jq5Nt3djqkTLsklGKvv93ml5dAMeGiPAi6dFz/r8m2NDo6MBBF0zIIGWYDs+g7RVgmF1DoEynh0CZTg+BMp0eAmU6PQTKdHoOCPQuykRaTPehiO63FAI1YAqLEqgDU1iUQB2YwqIE6sAUFiVQB6awKIE6MIVFCdSBKSxKoA5MYVECdWAKixKoA1NYlEAdmMKiBOrAFBYlUAemsCiBOjCFRQnUgSksWjfQ+fk4v1xcJafT1QWBajCFRWsGOktO8kCXN8N0clZdEKgIU1i0XqC3z38stqCL1+OwMS0vPhbosyPNTqMeMbsn2jx0z138/GKaLq5H5UWahoVv/0NHstmFPB60DWbnRNuBhqkZ6Ow0L7O8KG7a/ZSrO+z5+gZt5STpwy0ogUowhUX3DHS/Y9C9ViTOYroPRXS/pewX6PLmsjiLv+QsXogpLLpPoOEXr4MqMoVF6wa6Y6KsB49b76AEqglFdL+lEKgBU1iUQB2YwqIE6sAUFiVQB6awKIE6MIVFCdSBKSxKoA5MYVECdWAKixKoA1NYlEAdmMKiBOrAFBYlUAemsCiBOjCFRQnUgSksSqAOTGFRAnVgCosSqANTWJRAHZjCogTqwBQWJVAHprAogTowhUUJ1IEpLEqgDkxhUQJ1YAqLEqgDU1iUQB2YwqIE6sAUFiVQB6awKIE6MIVFCdSBeTdogUmgmtA2mIO0hUIJVBPaAnOQQZsvlEA1oY0zB4Mc2nihBKoJbZo5qKBNF0qgmtCGmYM1tOFCCVQT2ixzsAlttlAC1YQ2yqySTB9+28gQqCaULeh+SyHQfjM5BiXQbjM5i4+yHgR6tBncmb8OynR8Bhu/yw5b0B4z+VFnjBWJs5juQ3mzyH5LIVADJm+3i7AicRbTfSii+y2FQA2YwqIE6sAUFu1MoG0cJQk/bgLQfgXaynlmO2fULTAJ9NBp55W6Vl6TtHkm9inQlv5SQguPm88zsU+Blj8tVv1x8R7j80zsU6Cr99uIvuGm/vg8E6MxOxDoxjsWNd+yWHt8nolh4ji2H+iD93xLvum77vg8E8NEOhtsPdAP/taM4l+bqTk+z8Qwsc4GWw/U5nHzeSaGiXY22H6gNns+l2dimHhngx0I1ObcweWZeLcO9HDPLgRq8+qLyzNxQ/Rg004EavP6tckzcXNXcahrNwK1+QmgxTPx4cH2gbYdCdTmPRQWz8QebkF93oVm8Uzs3THondH7eC2eiauD7X6cxecrEmcx3Yd6iPbphfpyReIspvtQE9H+/KizWpE4i9lvDA4HW4P25c0iqxWJs5i9RvgDNwSgfXm7XbUicRazzyh/ZJEAtDdvWC5XJM5i9hjpf51FAEqgh432x2YKQAn0oBH/4GEBKIEeMuof3S4AJdADRv4fvxCAEuinj/4/HyQAJdADhi2oCtM0UI5BVZiugXIWL8K0DVT8n1EXgBLoocOPOgWYzoHyZhEBpnWgvN2u+0zvQHUfNwEogWpCEd1vKQRqwBQWrRfo4io5nYYvJkmYYX55MiZQEaawaK1AlzdZkmfVd7Os1dshW1AhprBorUAXr8fp/LzcYC6uR+nyzYhAhZjCorUCnV9M8y7zCZvSbJcfdvRp+iybXX+SYeLMzkDDTr0KNL+cv9rYikZ5orBh6R20pS3orDhbyqY6Do2yHjxuvYO2dAx6e1ldS6AyTGHRWoEuby6rs/hixx42o8u3vMykwhQWrRVo+Tpo2IiWe/pJkjyvTuSjrAePW++g/CRJE4rofkshUAOmsCiBOjCFRQnUgSksSqAOTGFRAnVgCosSqANTWJRAHZjCogTqwBQWJVAHprAogTowhUUJ1IEpLEqgDkxhUQJ1YAqLEqgDU1iUQB2YwqIE6sAUFiVQB6awKIE6MIVFCdSBKSxKoA5MYVECdWAKixKoA1NYlEAdmMKiBOrAFBYlUAemsCiBOjCFRQnUgSksSqAOTGFRAnVgCosSqANTWJRAHZjCogTqwBQWJVAHprAogTowhUUJ1IEpLEqgDkxhUQJ1YAqLEqgDU1iUQB2YwqIE6sAUFiVQB6awaIRAGeb4wxa0z0xhUQJ1YAqLEqgDU1iUQB2YwqIE6sAUFiVQB6awKIE6MIVFCdSBKSxKoA5MYVECdWAKixKoA1NYlEAdmMKiBOrAFBYlUAemsCiBOjCFRQnUgSksSqAOTGFRAnVgCosSqANTWJRAHZjCogTqwBQWJVAHprAogTowhUUJ1IEpLEqgDkxhUQJ1YAqLEqgDU1iUQB2YwqIE6sAUFiVQB6awKIE6MIVFCdSBKSxKoA5MYVECdWAKixKoA1NYlEAdmMKiBOrAFBYlUAemsCiBOjCFRQnUgSksSqAOTGFRAnVgCos+Feiv37749dtBPp//RKA9YAqLsgV1YAqLEqgDU1j0qUCr/ft6F7+4Sk6n+VeTJElOxhtXEKgAU1h02xb0XUgzOxjNv1neDNPJWf7l7fCDKwhUgCksuiXQMs1fii3o4vU4nZ+PQ5lvRg+vIFAFprBorUDnF9N0cT0q9vVJMlxf8Sybp45LGSbubNnFf5N/MzutAp2/GoWt6PqKlC2oAFNYdFug6S/hHKk4BN3YguZzO3xwRZT14HHrHbTBl5keHHKGQDkG1WIKi9YKdHlzWZ60h3378u14fQWBKjCFRZ8K9PGPOouXPcM2c5Ikz0cpr4NqMYVFa21Bd0+U9eBx6x2UQDWhiO63FAI1YAqLEqgDU1iUQB2YwqIE6sAUFiVQB6awKIE6MIVFCdSBKSxKoA5MYVECdWAKixKoA1NYlEAdmMKiBOrAFBYlUAemsCiBOjCFRQnUgSksSqAOTGFRAnVgCosSqANTWJRAHZjCogTqwBQWJVAHprAogTowhUUJ1IEpLEqgDkxhUQJ1YAqLEqgDU1iUQB2YwqIE6sAUFiVQB6awKIE6MIVFCdSBKSxKoA5MYVECdWAKixKoA1NYlEAdmMKiBOrAFBYlUAemsCiBOjCFRQnUgSksSqAOTGHRCIEyzPGHLWifmcKiBOrAFBYlUAemsCiBOjCFRQnUgSksSqAOTGFRAnVgCosSqANTWJRAHZjCogTqwBQWJVAHprAogTowhUUJ1IEpLEqgDkxhUQJ1YAqLEqgDU1iUQB2YwqIE6sAUFiVQB6awKIE6MIVFCdSBKSxKoA5MYVECdWAKixKoA1NYlEAdmMKiBOrAFBYlUAemsCiBOjCFRQnUgSksSqAOTGFRAnVgCosSqANTWJRAHZjCogTqwBQWJVAHprAogTowhUUJ1IEpLEqgDkxhUQJ1YAqLEqgDU1iUQB2YwqIE6sAUFiVQB6awKIE6MIVFCdSBKSxaL9DFVXI6zb+av0ySYZpOkiQ5GROoCFNYtFagy5thOjnLS70epfNXo/R2yBZUiCksWivQxetxOj8PG8xZyPR2uHwzIlAhprBorUDnF9N821nmej3Kdvn5nj59ls2uP8kwcWZnoLPTjUCXN5f5Xn61FY3yRGHD0jtoS1vQxdVleW11HBplPXjcegdt5Rg0O4tfnR4RqAxTWLRWoGGvXpzFl32Gff7yLS8zqTCFRWsFWr4Omm1Ew+uf4fQou3xenTRFWQ8et95B+UmSJhTR/ZZCoAZMYVECdWAKixKoA1NYlEAdmMKiBOrAFBYlUAemsCiBOjCFRQnUgSksSqAOTGFRAnVgCosSqANTWJRAHZjCogTqwBQWJVAHprAogTowhUUJ1IEpLEqgDkxhUQJ1YAqLEqgDU1iUQB2YwqIE6sAUFiVQB6awKIE6MIVFCdSBKSxKoA5MYVECdWAKixKoA1NYlEAdmMKiBOrAFBYlUAemsCiBOjCFRQnUgSksSqAOTGFRAnVgCosSqANTWJRAHZjCogTqwBQWJVAHprAogTowhUUJ1IEpLEqgDkxhUQJ1YAqLRgiUYY4/bEH7zBQWJVAHprAogTowhUUJ1IEpLEqgDkxhUQJ1YAqLEqgDU1iUQB2YwqIE6sAUFiVQB6awKIE6MIVFCdSBKSxKoA5MYVECdWAKixKoA1NYlEAdmMKiBOrAFBYlUAemsCiBOjCFRQnUgSksSqAOTGFRAnVgCosSqANTWJRAHZjCogTqwBQWJVAHprAogTowhUUJ1IEpLEqgDkxhUQJ1YAqLEqgDU1iUQB2YwqIE6sAUFiVQB6awKIE6MIVFCdSBKSxKoA5MYVECdWAKixKoA1NYtDOB3sdZTPehiO41BOrAFBbtQKD3j34//tw/RjcFbZbZ4r0bh9mBQAuH9W+NzMa91zC0YWZ7924cZhcCzS2qX03N6u5rGto0s7V7Nw6zXqCLq+R0uvnV+ooox6D31X8Nzv1dO9DGmW3du3GYtQJd3gzTydnGV+sr4gSamdw3fiB/f9cKtHlmS/duHGatQBevx+n8fLz+an1FpEDv7u+bP9HM7sEWoC0w27l34zBrBTq/mKaL69H6q9UVz7LZ9Sc/OveP56DlfSK0DWZPRY8E3Rno7LQKtPxqfUWq/DpoGxszXgfdb2oFun0LGi1QdvF9gza5iz/+MSgnSX2DNnqStLy5XJ3FXxZn8ZdRz+J5malv0GZfZipf9gzbzKO8DsoL9X2DNv1C/c6JYsOPOvsE7dePOtt7O0Mr0GaZLd67cZgdCLQYXn3pG7TBl5kIVJwpLNqZQPmbEH2D9uyvfPC49Q1KoJpQRPdbCoEaMIVFCdSBKSxKoA5MYVECdWAKixKoA1NYlEAdmMKiBOrAFBaNEGicOeyvNglBEf2kIdA+M3sgSqB9ZvZAlED7zOyBaOuBMsyuIVCm00OgTKeHQJlOTxuB5p9NsrxJLrOvVx8DcTzS03Nc8JNrcGTk/GWSzfOtxkeYSQYc7vw/DnZuI9DZny8bCiQntToNrkFDT7mNmYSP6ro6rmALgS7f/OOP08VV8vzH33938p/iQyGy533YAOx+Nn4aKfv970lyOUvCFjtDnYzT+VPg7H84if4IF2tQLjsUdATLaqpAc8z5OEiOC9/F67/lW9biu2gTPggprT7WI1t+ufhCcX7x1/ziUOcWAp1fTG/zNZ+/zC/Cp+LOTv+b7QtjbwMK0vLmLLuPzvKl3+Yf3fMUONzbq0/1ibwG5bID5QiWK9YHgWaSwXd2mm0NTqezk8o+2szyD5nJ7sXijpwWiy8V5y9z9MHOLQQ6ydY8f7Sqe3K18sVTMjZp+WaU/8ruqHBfZZCnwDsOVw9eg3LZJS+2ZTXFMWjeRGUXUEH7ahjugdI+GnBWxH47LD9gbr34R/fxp2ObDzQ7Owo7vI1AL4pPe7qNvY8tSZuBXuWnEU+Cs8c3+glGuQblsvMHK7rlaj7cghYXVZlZR6V9NOCs+nT44o5cLf62fHxXgR7i3HyguU3+rHvwJAvP8sg7v5K0GWjxRN4Gnq0+GC3uGpTLDru7+JZr2ONAqy3odX4PxN50r45B1x/Rma7uz/VaHObcfKCT8HjNztYO4Qhmfh5OWuavom7CStJGoOUx2VPgEGf0QMs1KJddKce1XE0VQfCcnJTbrvIY9Cx3K76LR5yEE7DsLL64I8cbd+6r0TrQw5wbD3T5tjhe+XG9EyrOASdJ8rvvYp7gVqR/bgRanrc/BT7Cvrdag9Ht6iw+uuV6imPQ7Hw5Y/yhOAgsT6wX13+qzuLjHsXMytdBV2fxYfGF4sZ2/CBnfpJkMMc5AWxmCNRgCJRhjjQEynR6CJTp9BAo0+khUKbTQ6ANzP/+nb7/+oddNzPbhkCPP7vi/PjN5kOgxx8CPWAINOL89v1g8OX68v3Xf/lqMHjxPvvtm6zC8tvi5s9/enBz22ve3SHQePPb91+mv377Ir8Mv95/9cXP6bvPfwqbyBBo+W24KX33xc+bNzPbhkDjTVXaL9nmMfz2/qsX+ZWrQItv85uzkDdvZrYNgcabvLxwmW0ZV+VtBFp++26QzzebNzPbhkDjTd1Aw81pucEl0I8Mgcab1S7+sx+KXfzTgeY3pwRabwg03lQnR6uTpLLAcOK0Eehv32eb0KzSzZuZbUOgEefRy0xFgem/Bl9uBJrf/NkPD25ue827OwTKdHoIlOn0ECjT6SFQptNDoEynh0CZTg+BMp0eAmU6PQTKdHoIlOn0/B/ZLphJQUhHpgAAAABJRU5ErkJggg==" alt /><!-- --> ##Outlier detection Use Tukey’s method to update all scores that were outliers</p>
+<pre class="r"><code>markoutlier &lt;- function(x, exp_no, period_no, factor_no) {
+    sql &lt;- paste(&quot;update main.experiment_user_score set outlier_full=1&quot;, sep = &quot;&quot;)
+    sql &lt;- paste(sql, &quot; where userid='&quot;, x[&quot;userid&quot;], &quot;'&quot;, sep = &quot;&quot;)
+    sql &lt;- paste(sql, &quot; and experiment_no=&quot;, exp_no, sep = &quot;&quot;)
+    sql &lt;- paste(sql, &quot; and period_no=&quot;, period_no, sep = &quot;&quot;)
+    sql &lt;- paste(sql, &quot; and factor_no=&quot;, factor_no, sep = &quot;&quot;)
+    dbSendQuery(con, sql, echo = FALSE)
+}
+
+# TODO outliers per continent
+continents &lt;- unique(user.score$continent)
+
+user.continent_score &lt;- user.score
+outlier &lt;- boxplot.stats(user.continent_score$idi, coef = 1.5)$out
+user.outlier &lt;- user.continent_score[user.continent_score$idi %in% outlier, 
+    ]
+apply(user.outlier, 1, markoutlier, exp_no = exp_no, period_no = period_no, 
+    factor_no = factor_no)</code></pre>
+<pre><code>## $`2`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`6`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`9`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`13`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`14`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`17`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`24`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`38`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`45`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`52`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`54`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`58`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`64`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`67`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`73`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`74`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`76`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`79`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`93`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`102`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`105`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`129`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`134`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`147`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`162`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`177`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`191`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`194`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`204`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`212`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`215`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`228`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`230`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`232`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`239`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`241`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`250`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`256`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`257`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`258`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`260`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`268`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`270`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`274`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`276`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`280`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`281`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`282`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`291`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`295`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`298`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`304`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`307`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`310`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`311`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`323`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`326`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`328`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`330`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`331`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`337`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`338`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`343`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`345`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`352`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`353`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`354`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`360`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`367`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`369`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`370`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`371`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`372`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`373`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`375`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`379`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`389`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`395`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`400`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`402`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`416`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`417`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`423`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`436`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`437`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`438`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`439`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`443`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`452`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`455`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`460`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`468`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`474`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`476`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`479`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`480`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`482`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`485`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`486`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`487`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`495`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`503`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`516`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`518`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`531`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`533`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`538`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`540`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`543`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`553`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`555`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`561`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`580`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`583`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`586`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`594`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`595`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`597`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`598`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`601`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`603`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`621`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`624`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`628`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`629`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`633`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`635`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`636`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`639`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`642`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`643`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`644`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`645`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`647`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`650`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`660`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`667`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`682`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`683`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`684`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`686`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`687`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`692`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`702`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`704`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`706`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`707`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`711`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`718`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`719`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`727`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`731`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`736`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`739`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`741`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`745`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`748`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`751`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`752`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`757`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`758`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`760`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`764`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`767`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`770`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`772`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`775`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`787`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`791`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`799`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`801`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`807`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`813`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`815`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`816`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`825`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`829`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`830`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`832`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`835`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`846`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`864`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`874`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`879`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`880`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`882`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`883`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`884`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`886`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`888`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`893`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`918`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`938`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`947`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`951`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`952`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`953`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`955`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`969`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`971`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`976`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`977`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`978`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`983`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`987`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`991`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`994`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`997`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`1001`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`1005`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`1006`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`1008`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`1013`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`1017`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`1023`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`1025`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`1027`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`1034`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`1038`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`1042`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`1043`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`1046`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`1048`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`1050`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`1060`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`1061`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`1063`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`1068`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`1069`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`1070`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`1074`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`1077`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`1078`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`1082`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`1087`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`1088`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`1089`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`1090`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`1100`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`1104`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`1105`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`1110`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`1116`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`1119`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`1134`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`1135`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`1139`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`1143`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`1144`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`1148`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`1158`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`1163`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`1169`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`1170`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`1174`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`1178`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`1182`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`1186`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`1188`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`1189`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`1194`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`1195`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`1198`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`1207`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`1213`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`1217`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`1221`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`1225`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`1229`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`1231`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`1234`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`1236`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`1245`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`1249`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`1250`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`1255`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`1257`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`1265`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`1267`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`1271`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`1272`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`1273`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`1274`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`1275`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`1276`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`1277`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`1278`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`1281`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`1286`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`1290`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`1296`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`1300`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`1301`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`1302`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`1303`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`1304`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`1305`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`1306`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`1307`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`1308`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`1309`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`1310`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`1311`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`1317`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`1322`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`1323`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`1324`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`1326`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`1329`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`1330`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`1331`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`1332`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`1333`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`1334`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`1339`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`1346`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`1349`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`1356`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`1357`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`1358`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`1365`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`1369`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`1371`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`1372`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`1382`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`1383`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`1384`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`1385`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`1387`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`1392`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`1394`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`1400`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`1401`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`1404`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`1409`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`1411`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`1412`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`1413`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`1426`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`1427`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`1432`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`1439`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`1455`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`1467`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`1468`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`1469`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`1470`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`1471`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`1472`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`1473`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`1474`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`1475`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`1476`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`1477`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`1481`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`1488`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`1490`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`1494`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`1495`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`1497`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`1498`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`1499`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`1506`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`1511`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`1516`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`1519`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`1524`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`1525`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`1526`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`1527`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`1528`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`1530`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`1532`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`1534`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`1538`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`1542`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`1543`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`1544`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`1547`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`1553`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`1554`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`1555`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`1556`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`1557`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`1558`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`1561`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`1564`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`1565`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`1574`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`1579`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`1580`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`1581`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`1582`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`1583`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`1584`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`1585`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`1586`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`1587`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`1589`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`1600`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`1602`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`1606`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`1607`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`1610`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`1611`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`1612`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`1621`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`1627`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`1628`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`1633`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`1640`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`1641`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`1642`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`1643`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`1644`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`1645`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`1652`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`1655`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`1657`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`1668`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`1669`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`1670`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`1671`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`1672`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`1673`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`1674`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`1675`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`1677`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`1679`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`1680`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`1682`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`1683`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`1684`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`1686`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`1700`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`1702`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`1703`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`1704`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`1705`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`1706`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`1707`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`1708`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`1709`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`1711`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`1717`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`1719`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`1725`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`1730`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`1733`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`1735`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`1736`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`1737`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`1738`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`1739`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`1740`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`1744`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`1748`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`1754`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`1759`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`1760`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`1761`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`1767`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`1768`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`1769`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`1770`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`1771`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`1772`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`1773`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`1774`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`1775`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`1776`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`1777`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`1787`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`1788`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`1791`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`1792`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`1796`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`1797`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`1801`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`1802`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`1803`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`1808`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`1812`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`1814`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`1829`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`1830`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`1831`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`1846`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`1851`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`1872`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`1882`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`1884`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`1892`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`1894`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`1911`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`1920`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`1924`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`1926`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`1930`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`1932`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`1933`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`1936`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`1942`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`1954`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`1963`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`1964`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`1971`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`1976`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`1978`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`1988`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`2001`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`2005`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`2010`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`2028`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`2032`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`2033`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`2036`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`2037`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`2047`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`2076`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`2077`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`2079`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`2085`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`2094`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`2113`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`2115`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`2122`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`2128`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`2137`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`2141`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`2142`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`2143`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`2150`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`2160`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`2161`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`2167`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`2202`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`2212`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`2213`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`2218`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`2234`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`2254`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`2276`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`2298`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`2301`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`2315`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`2317`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`2334`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`2339`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`2343`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`2355`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`2356`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`2357`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`2358`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`2361`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`2364`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`2369`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`2376`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`2377`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`2393`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`2404`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`2427`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`2429`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`2442`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`2443`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`2451`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`2452`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`2453`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`2461`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`2489`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`2490`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`2493`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`2508`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`2510`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`2521`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`2524`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`2525`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`2527`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`2530`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`2533`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`2534`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`2544`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`2545`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`2562`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`2575`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`2581`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`2590`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`2596`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`2605`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`2620`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`2621`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`2623`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`2624`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`2626`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`2632`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`2634`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`2635`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`2649`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`2666`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`2667`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`2669`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`2673`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`2675`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`2688`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`2706`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`2707`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`2716`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`2719`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`2720`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`2728`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`2729`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`2732`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`2733`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`2735`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`2737`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`2740`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`2745`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`2746`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`2753`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`2756`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`2763`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`2782`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`2785`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`2786`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`2792`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`2794`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`2799`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`2812`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`2813`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`2832`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`2836`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`2841`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`2843`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`2846`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`2849`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`2860`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`2892`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`2893`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`2894`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`2895`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`2910`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`2914`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`2917`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`2926`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`2930`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`2931`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`2932`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`2933`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`2941`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`2945`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`2953`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`2958`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`2969`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`2972`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`2973`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`2979`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`2982`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`2986`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`2988`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`2992`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`2997`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`2998`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`3001`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`3003`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`3004`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`3006`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`3010`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`3030`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`3037`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`3040`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`3048`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`3049`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`3051`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`3052`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`3058`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`3061`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`3063`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`3064`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`3074`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`3079`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`3084`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`3101`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`3102`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`3103`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`3105`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`3118`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`3121`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`3123`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`3127`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`3129`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`3136`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`3138`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`3148`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`3150`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`3153`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`3156`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`3167`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`3168`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`3171`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`3177`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`3185`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`3194`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`3201`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`3204`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`3215`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`3217`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`3227`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`3231`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`3234`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`3235`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`3244`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`3246`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`3247`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`3254`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`3261`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`3269`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`3278`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`3279`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`3283`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`3288`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`3302`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`3305`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`3306`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`3321`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`3324`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`3326`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`3327`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`3328`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`3333`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`3343`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`3350`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`3356`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`3363`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`3373`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`3382`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`3386`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`3389`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`3390`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`3398`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`3401`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`3404`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`3405`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`3412`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`3413`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`3427`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`3428`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`3429`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`3430`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`3433`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`3446`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`3451`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`3453`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`3458`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`3459`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`3464`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`3469`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`3470`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`3472`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`3477`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`3480`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`3481`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`3484`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`3485`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`3494`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`3499`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`3501`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`3502`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`3520`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`3524`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`3527`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`3528`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`3530`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`3539`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`3542`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`3544`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`3551`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`3555`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`3556`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`3562`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`3563`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`3565`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`3577`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`3595`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`3596`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`3606`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`3617`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`3621`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`3623`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`3626`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`3628`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`3630`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`3634`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`3641`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`3643`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`3647`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`3648`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`3651`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`3657`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`3658`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`3663`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`3664`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`3668`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`3669`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`3684`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`3686`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`3693`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`3698`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`3700`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`3706`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`3709`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`3711`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`3713`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`3720`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`3724`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`3726`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`3728`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`3729`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`3730`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`3735`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`3742`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`3748`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`3749`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`3750`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`3755`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`3757`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`3761`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`3768`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`3771`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`3773`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`3780`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`3781`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`3782`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`3787`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`3788`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`3789`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`3790`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`3791`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`3792`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`3794`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`3796`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`3809`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`3810`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`3820`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`3821`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`3822`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`3826`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`3829`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`3831`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`3834`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`3839`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`3844`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`3846`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`3851`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`3857`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`3864`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`3867`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`3874`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`3876`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`3888`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`3896`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`3897`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`3899`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`3900`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`3902`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`3904`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`3908`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`3912`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`3913`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`3917`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`3921`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`3929`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`3930`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`3932`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`3943`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`3945`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`3947`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`3948`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`3950`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`3959`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`3973`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`3977`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`3978`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`3979`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`3991`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`4003`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`4007`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`4008`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`4035`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`4036`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`4038`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`4039`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`4044`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`4045`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`4049`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`4058`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`4059`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`4064`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`4068`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`4071`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`4073`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`4077`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`4087`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`4095`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`4096`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`4100`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`4101`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`4103`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`4105`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`4109`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`4111`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`4114`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`4118`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`4119`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`4135`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`4139`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`4140`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`4141`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`4143`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`4152`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`4156`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`4158`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`4161`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`4170`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`4172`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`4174`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`4195`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`4196`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`4203`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`4206`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`4209`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`4212`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`4214`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`4215`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`4218`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`4220`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`4221`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`4224`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`4225`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`4229`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`4241`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`4246`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`4249`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`4255`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`4267`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`4269`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`4272`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`4277`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`4284`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`4296`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`4298`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`4302`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`4306`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`4307`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`4309`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`4314`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`4317`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`4345`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`4346`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`4348`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`4351`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`4353`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`4355`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`4357`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`4361`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`4369`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`4372`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`4373`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`4376`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`4381`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`4387`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`4388`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`4390`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`4394`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`4396`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`4398`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`4400`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`4403`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`4404`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`4405`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`4416`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`4423`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`4424`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`4428`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`4439`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`4445`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`4446`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`4454`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`4459`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`4462`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`4467`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`4472`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`4478`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`4484`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`4487`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`4489`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`4490`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`4491`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`4492`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`4498`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`4505`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`4510`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`4515`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`4516`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`4521`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`4529`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`4532`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`4543`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`4549`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`4550`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`4551`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`4553`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`4555`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`4562`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`4569`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`4572`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`4577`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`4592`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`4593`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`4594`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`4595`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`4597`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`4604`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`4615`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`4616`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`4624`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`4625`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`4626`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`4629`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`4633`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`4638`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`4652`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`4653`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`4658`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`4659`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`4663`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`4666`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`4670`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`4676`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`4677`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`4686`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`4687`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`4693`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`4696`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`4698`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`4700`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`4701`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`4705`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`4711`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`4714`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`4717`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`4723`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`4727`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`4729`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`4731`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`4733`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`4737`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`4740`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`4743`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`4744`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`4747`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`4752`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`4755`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`4759`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`4765`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`4774`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`4779`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`4782`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`4791`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`4792`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`4793`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`4798`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`4808`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`4812`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`4814`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`4817`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`4826`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`4831`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`4832`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`4837`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`4838`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`4840`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`4846`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`4851`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`4857`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`4864`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`4868`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`4879`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`4893`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`4898`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`4901`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`4902`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`4904`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`4912`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`4913`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`4915`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`4918`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`4927`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`4929`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`4942`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`4943`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`4945`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`4954`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`4958`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`4963`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`4965`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`4968`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`4969`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`4970`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`4977`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`4983`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`4991`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`4997`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`5002`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`5004`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`5008`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`5009`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`5011`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`5012`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`5014`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`5016`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`5018`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`5022`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`5024`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`5033`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`5037`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`5039`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`5042`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`5043`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`5052`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`5055`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`5065`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`5068`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`5073`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`5077`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`5083`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`5085`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`5088`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`5091`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`5100`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`5101`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`5110`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`5114`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`5121`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`5124`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`5132`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`5133`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`5138`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`5139`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`5146`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`5147`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`5148`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`5155`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`5157`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`5158`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`5165`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`5166`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`5170`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`5174`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`5176`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`5179`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`5181`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`5182`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`5188`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`5190`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`5193`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`5201`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`5202`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`5204`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`5209`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`5215`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`5218`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`5223`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`5230`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`5233`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`5235`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`5240`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`5242`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`5245`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`5247`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`5248`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`5249`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`5250`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`5264`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`5266`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`5267`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`5270`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`5272`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`5276`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`5278`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`5286`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`5289`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`5290`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`5295`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`5296`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`5300`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`5304`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`5306`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`5308`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`5310`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`5312`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`5314`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`5315`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`5316`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`5317`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`5318`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`5325`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`5329`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`5330`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`5335`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`5347`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`5350`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`5352`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`5359`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`5367`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`5368`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`5372`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`5373`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`5376`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`5380`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`5381`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`5386`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`5387`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`5391`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`5397`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`5398`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`5400`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`5405`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`5407`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`5408`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`5416`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`5420`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`5421`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`5424`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`5425`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`5427`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`5433`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`5437`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`5443`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`5448`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`5449`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`5451`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`5453`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`5454`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`5456`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`5462`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`5463`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`5469`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`5475`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`5477`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`5500`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`5501`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`5502`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`5503`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`5510`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`5511`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`5515`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`5518`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`5519`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`5530`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`5535`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`5536`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`5538`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`5548`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`5549`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`5550`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`5552`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`5556`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`5557`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`5561`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`5562`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`5566`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`5575`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`5577`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`5579`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`5588`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`5589`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`5590`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`5593`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`5597`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`5599`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`5600`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`5601`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`5602`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`5604`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`5611`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`5624`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`5626`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`5630`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`5632`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`5638`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`5639`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`5647`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`5653`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`5656`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`5657`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`5664`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`5666`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`5681`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`5691`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`5704`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`5706`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`5719`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`5720`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`5722`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`5726`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`5733`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`5737`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`5738`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`5739`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`5740`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`5742`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`5743`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`5748`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`5758`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`5763`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`5764`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`5769`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`5773`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`5778`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`5782`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`5783`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`5784`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`5785`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`5790`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`5791`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`5795`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`5796`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`5798`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`5799`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`5802`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`5807`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`5808`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`5812`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`5815`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`5819`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`5824`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`5828`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`5840`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`5841`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`5842`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`5843`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`5845`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`5850`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`5862`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`5864`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`5868`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`5879`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`5881`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`5891`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`5894`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`5906`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`5907`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`5908`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`5912`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`5918`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`5919`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`5928`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`5933`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`5936`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`5939`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`5942`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`5945`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`5946`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`5948`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`5951`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`5953`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`5954`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`5958`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`5965`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`5967`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`5968`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`5976`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`5982`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`5987`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`5989`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`5991`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`5993`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`6004`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`6013`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`6017`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`6031`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`6035`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`6039`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`6046`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`6051`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`6053`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`6055`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`6056`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`6060`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`6061`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`6081`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`6082`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`6083`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`6084`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`6085`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`6086`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`6088`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`6090`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`6110`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`6113`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`6117`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`6123`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`6125`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`6130`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`6133`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`6134`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`6137`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`6139`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`6144`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`6147`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`6156`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`6157`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`6161`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`6162`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`6166`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`6169`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`6170`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`6176`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`6177`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`6180`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`6189`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`6192`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`6199`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`6200`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`6209`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`6214`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`6216`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`6217`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`6221`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`6225`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`6228`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`6232`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`6236`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`6240`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`6241`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`6242`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`6243`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`6250`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`6258`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`6262`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`6278`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`6281`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`6282`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`6285`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`6294`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`6295`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`6296`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`6299`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`6303`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`6305`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`6308`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`6310`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`6311`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`6316`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`6318`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`6319`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`6320`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`6321`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`6322`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`6326`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`6342`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`6343`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`6345`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`6346`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`6347`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`6349`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`6350`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`6352`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`6354`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`6356`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`6359`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`6367`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`6368`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`6369`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`6377`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`6387`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`6390`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`6396`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`6397`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`6398`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`6400`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`6402`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`6404`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`6410`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`6412`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`6419`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`6423`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`6424`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`6425`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`6427`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`6434`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`6436`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`6438`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`6443`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`6445`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`6446`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`6448`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`6449`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`6452`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`6456`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`6457`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`6460`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`6474`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`6481`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`6485`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`6487`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`6489`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`6495`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`6497`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`6511`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`6514`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`6518`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`6521`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`6530`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`6531`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`6532`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`6533`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`6534`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`6539`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`6541`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`6543`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`6544`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`6547`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`6549`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`6550`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`6551`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`6556`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`6557`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`6561`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`6564`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`6565`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`6566`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`6567`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`6568`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`6573`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`6574`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`6575`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`6577`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`6584`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`6585`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`6586`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`6587`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`6588`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`6595`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`6610`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`6615`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`6620`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`6623`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`6624`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`6628`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`6629`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`6637`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`6640`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`6644`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`6646`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`6647`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`6649`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`6650`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`6651`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`6652`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`6653`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`6655`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`6675`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`6678`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`6679`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`6681`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`6684`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`6686`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`6690`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`6691`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`6692`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`6694`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`6700`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`6710`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`6711`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`6713`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`6728`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`6729`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`6733`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`6734`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`6735`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`6739`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`6744`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`6745`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`6748`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`6752`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`6753`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`6758`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`6759`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`6764`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`6766`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`6767`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`6768`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`6781`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`6785`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`6786`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`6788`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`6794`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`6795`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`6798`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`6800`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`6803`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`6810`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`6811`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`6812`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`6814`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`6819`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`6821`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`6837`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`6840`
+## &lt;PostgreSQLResult&gt;</code></pre>
+<pre class="r"><code>na1 &lt;- nrow(user.outlier)
+# Outliers identified:
+na1</code></pre>
+<pre><code>## [1] 1610</code></pre>
+<pre class="r"><code># Propotion (%) of outliers:
+round(na1/sum(!is.na(user.continent_score$idi)) * 100, 1)</code></pre>
+<pre><code>## [1] 23.5</code></pre>
+<p>Total outliers: 1610 out of 6846</p>
+</div>
 </div>
 
 

@@ -1,4 +1,4 @@
-# Attribute analysis - No of Devices
+# Attribute analysis - Combined
 
 
 
@@ -43,61 +43,16 @@ dbExistsTable(con, c("main", "experiment_tweets_shortest"))
 ## [1] TRUE
 ```
 
-##Get the tweets
-
-
-##Display no of devices overall
-
-```r
-ggplot(data = users, aes(x = no_of_devices)) + geom_histogram(aes(fill = ..count..)) + 
-    theme(legend.position = "none") + xlab("No of devices") + ylab("Count") + 
-    scale_fill_gradient(low = "midnightblue", high = "aquamarine4")
-```
-
-```
-## `stat_bin()` using `bins = 30`. Pick better value with `binwidth`.
-```
-
-![](FactorAnalysis-NoOfDevices_files/figure-html/device-1.png)<!-- -->
-
-##Display no of devices per continent
-
-```r
-ggplot(data = users, aes(x = no_of_devices)) + geom_histogram(aes(fill = ..count..)) + 
-    theme(legend.position = "none") + facet_wrap(~continent) + xlab("No of devices") + 
-    ylab("Count") + scale_fill_gradient(low = "midnightblue", high = "aquamarine4")
-```
-
-```
-## `stat_bin()` using `bins = 30`. Pick better value with `binwidth`.
-```
-
-![](FactorAnalysis-NoOfDevices_files/figure-html/device_continent-1.png)<!-- -->
-##Display no of devices for only Africa
-
-```r
-a_users <- users[users$continent == "Africa", ]
-ggplot(data = a_users, aes(x = no_of_devices)) + geom_histogram(aes(fill = ..count..)) + 
-    theme(legend.position = "none") + facet_wrap(~continent) + xlab("No of devices") + 
-    ylab("Count") + scale_fill_gradient(low = "midnightblue", high = "aquamarine4")
-```
-
-```
-## `stat_bin()` using `bins = 30`. Pick better value with `binwidth`.
-```
-
-![](FactorAnalysis-NoOfDevices_files/figure-html/device_continent_africa-1.png)<!-- -->
-
 ##Score the data
 
 ###first create a score
 
 ```r
-factor_no <- 1
+factor_no <- 0
 exp_no <- 1
 period_no <- 1
 
-sql <- paste("DELETE FROM main.experiment_user_score where factor_no = 1", sep = "")
+sql <- paste("DELETE FROM main.experiment_user_score where factor_no = 0", sep = "")
 dbSendQuery(con, sql)
 ```
 
@@ -108,10 +63,21 @@ dbSendQuery(con, sql)
 ```r
 sql <- paste("INSERT INTO main.experiment_user_score(experiment_no, period_no, userid, factor_no, idi_full)", 
     sep = "")
-sql <- paste(sql, "select experiment_no, period_no, userid, 1,", sep = "")
-sql <- paste(sql, "case when no_of_devices = 1 then 1 when no_of_devices = 2 then 0.5 else 0.5 - (no_of_devices * 0.05) end", 
+sql <- paste(sql, "select u1.experiment_no, u1.period_no, u1.userid, 0,", sep = "")
+sql <- paste(sql, "(coalesce(u1.idi_full,0)+coalesce(u2.idi_full,0)+coalesce(u3.idi_full,0)+coalesce(u4.idi_full,0)+coalesce(u5.idi_full,0)+coalesce(u6.idi_full,0))/6 as idi_full", 
     sep = "")
-sql <- paste(sql, " from main.experiment_user", sep = "")
+sql <- paste(sql, " from main.experiment_user_score u1", sep = "")
+sql <- paste(sql, " left join main.experiment_user_score u2 on u1.userid = u2.userid and u2.factor_no=2", 
+    sep = "")
+sql <- paste(sql, " left join main.experiment_user_score u3 on u1.userid = u3.userid and u3.factor_no=3", 
+    sep = "")
+sql <- paste(sql, " left join main.experiment_user_score u4 on u1.userid = u4.userid and u4.factor_no=4", 
+    sep = "")
+sql <- paste(sql, " left join main.experiment_user_score u5 on u1.userid = u5.userid and u5.factor_no=5", 
+    sep = "")
+sql <- paste(sql, " left join main.experiment_user_score u6 on u1.userid = u6.userid and u6.factor_no=6", 
+    sep = "")
+sql <- paste(sql, " where u1.factor_no=1", sep = "")
 dbSendQuery(con, sql)
 ```
 
@@ -124,7 +90,7 @@ No scaling required
 
 
 ```r
-user.score <- dbGetQuery(con, "SELECT s.idi_full, tz.continent from main.experiment_user_score s join main.experiment_user u on u.userid = s.userid left join main.timezone_r tz on tz.timezone = u.timezone where s.factor_no = 1 and s.experiment_no = u.experiment_no and s.period_no = u.period_no")
+user.score <- dbGetQuery(con, "SELECT s.idi_full, tz.continent from main.experiment_user_score s join main.experiment_user u on u.userid = s.userid left join main.timezone_r tz on tz.timezone = u.timezone where s.factor_no = 0 and s.experiment_no = u.experiment_no and s.period_no = u.period_no")
 
 colnames(user.score) = c("idi", "continent")
 
@@ -133,7 +99,7 @@ ggplot(user.score, aes(x = continent, y = idi)) + geom_boxplot(outlier.colour = 
     shape = 23, size = 4)
 ```
 
-![](FactorAnalysis-NoOfDevices_files/figure-html/score_n-1.png)<!-- -->
+![](FactorAnalysis-Combined_files/figure-html/score_n-1.png)<!-- -->
 
 ##Outlier detection
 Use Tukey's method to update all scores that were outliers
@@ -161,37 +127,139 @@ apply(user.outlier, 1, markoutlier, exp_no = exp_no, period_no = period_no,
 ```
 
 ```
-## $`14`
+## $`9`
 ## <PostgreSQLResult>
 ## 
-## $`24`
+## $`29`
 ## <PostgreSQLResult>
 ## 
-## $`27`
+## $`30`
+## <PostgreSQLResult>
+## 
+## $`31`
+## <PostgreSQLResult>
+## 
+## $`32`
+## <PostgreSQLResult>
+## 
+## $`34`
+## <PostgreSQLResult>
+## 
+## $`35`
+## <PostgreSQLResult>
+## 
+## $`36`
+## <PostgreSQLResult>
+## 
+## $`37`
+## <PostgreSQLResult>
+## 
+## $`38`
+## <PostgreSQLResult>
+## 
+## $`39`
 ## <PostgreSQLResult>
 ## 
 ## $`40`
 ## <PostgreSQLResult>
 ## 
-## $`44`
+## $`41`
+## <PostgreSQLResult>
+## 
+## $`42`
+## <PostgreSQLResult>
+## 
+## $`43`
 ## <PostgreSQLResult>
 ## 
 ## $`45`
 ## <PostgreSQLResult>
 ## 
+## $`46`
+## <PostgreSQLResult>
+## 
+## $`47`
+## <PostgreSQLResult>
+## 
+## $`48`
+## <PostgreSQLResult>
+## 
+## $`49`
+## <PostgreSQLResult>
+## 
+## $`50`
+## <PostgreSQLResult>
+## 
+## $`51`
+## <PostgreSQLResult>
+## 
 ## $`52`
 ## <PostgreSQLResult>
 ## 
-## $`57`
+## $`53`
+## <PostgreSQLResult>
+## 
+## $`55`
+## <PostgreSQLResult>
+## 
+## $`56`
+## <PostgreSQLResult>
+## 
+## $`58`
 ## <PostgreSQLResult>
 ## 
 ## $`59`
 ## <PostgreSQLResult>
 ## 
-## $`62`
+## $`60`
 ## <PostgreSQLResult>
 ## 
-## $`71`
+## $`63`
+## <PostgreSQLResult>
+## 
+## $`64`
+## <PostgreSQLResult>
+## 
+## $`65`
+## <PostgreSQLResult>
+## 
+## $`66`
+## <PostgreSQLResult>
+## 
+## $`67`
+## <PostgreSQLResult>
+## 
+## $`68`
+## <PostgreSQLResult>
+## 
+## $`69`
+## <PostgreSQLResult>
+## 
+## $`70`
+## <PostgreSQLResult>
+## 
+## $`72`
+## <PostgreSQLResult>
+## 
+## $`73`
+## <PostgreSQLResult>
+## 
+## $`74`
+## <PostgreSQLResult>
+## 
+## $`75`
+## <PostgreSQLResult>
+## 
+## $`76`
+## <PostgreSQLResult>
+## 
+## $`77`
+## <PostgreSQLResult>
+## 
+## $`78`
+## <PostgreSQLResult>
+## 
+## $`79`
 ## <PostgreSQLResult>
 ## 
 ## $`80`
@@ -200,58 +268,220 @@ apply(user.outlier, 1, markoutlier, exp_no = exp_no, period_no = period_no,
 ## $`81`
 ## <PostgreSQLResult>
 ## 
+## $`82`
+## <PostgreSQLResult>
+## 
+## $`83`
+## <PostgreSQLResult>
+## 
+## $`84`
+## <PostgreSQLResult>
+## 
+## $`85`
+## <PostgreSQLResult>
+## 
 ## $`86`
 ## <PostgreSQLResult>
 ## 
-## $`89`
+## $`87`
 ## <PostgreSQLResult>
 ## 
-## $`101`
+## $`90`
+## <PostgreSQLResult>
+## 
+## $`92`
+## <PostgreSQLResult>
+## 
+## $`93`
+## <PostgreSQLResult>
+## 
+## $`94`
+## <PostgreSQLResult>
+## 
+## $`95`
+## <PostgreSQLResult>
+## 
+## $`96`
+## <PostgreSQLResult>
+## 
+## $`97`
+## <PostgreSQLResult>
+## 
+## $`99`
+## <PostgreSQLResult>
+## 
+## $`100`
+## <PostgreSQLResult>
+## 
+## $`104`
+## <PostgreSQLResult>
+## 
+## $`105`
+## <PostgreSQLResult>
+## 
+## $`106`
+## <PostgreSQLResult>
+## 
+## $`107`
+## <PostgreSQLResult>
+## 
+## $`108`
+## <PostgreSQLResult>
+## 
+## $`109`
+## <PostgreSQLResult>
+## 
+## $`110`
+## <PostgreSQLResult>
+## 
+## $`111`
+## <PostgreSQLResult>
+## 
+## $`112`
+## <PostgreSQLResult>
+## 
+## $`113`
+## <PostgreSQLResult>
+## 
+## $`114`
+## <PostgreSQLResult>
+## 
+## $`115`
+## <PostgreSQLResult>
+## 
+## $`116`
+## <PostgreSQLResult>
+## 
+## $`117`
+## <PostgreSQLResult>
+## 
+## $`118`
+## <PostgreSQLResult>
+## 
+## $`119`
+## <PostgreSQLResult>
+## 
+## $`120`
+## <PostgreSQLResult>
+## 
+## $`122`
+## <PostgreSQLResult>
+## 
+## $`123`
+## <PostgreSQLResult>
+## 
+## $`124`
+## <PostgreSQLResult>
+## 
+## $`125`
+## <PostgreSQLResult>
+## 
+## $`126`
+## <PostgreSQLResult>
+## 
+## $`127`
+## <PostgreSQLResult>
+## 
+## $`128`
+## <PostgreSQLResult>
+## 
+## $`129`
+## <PostgreSQLResult>
+## 
+## $`130`
 ## <PostgreSQLResult>
 ## 
 ## $`131`
 ## <PostgreSQLResult>
 ## 
+## $`132`
+## <PostgreSQLResult>
+## 
+## $`133`
+## <PostgreSQLResult>
+## 
+## $`134`
+## <PostgreSQLResult>
+## 
+## $`135`
+## <PostgreSQLResult>
+## 
+## $`136`
+## <PostgreSQLResult>
+## 
+## $`137`
+## <PostgreSQLResult>
+## 
+## $`139`
+## <PostgreSQLResult>
+## 
+## $`143`
+## <PostgreSQLResult>
+## 
+## $`144`
+## <PostgreSQLResult>
+## 
 ## $`146`
 ## <PostgreSQLResult>
 ## 
-## $`169`
+## $`147`
 ## <PostgreSQLResult>
 ## 
-## $`170`
+## $`148`
 ## <PostgreSQLResult>
 ## 
-## $`179`
+## $`150`
 ## <PostgreSQLResult>
 ## 
-## $`184`
+## $`151`
 ## <PostgreSQLResult>
 ## 
-## $`186`
+## $`153`
 ## <PostgreSQLResult>
 ## 
-## $`187`
+## $`154`
 ## <PostgreSQLResult>
 ## 
-## $`191`
+## $`156`
 ## <PostgreSQLResult>
 ## 
-## $`192`
+## $`208`
 ## <PostgreSQLResult>
 ## 
-## $`197`
-## <PostgreSQLResult>
-## 
-## $`198`
-## <PostgreSQLResult>
-## 
-## $`207`
-## <PostgreSQLResult>
-## 
-## $`209`
+## $`222`
 ## <PostgreSQLResult>
 ## 
 ## $`223`
+## <PostgreSQLResult>
+## 
+## $`225`
+## <PostgreSQLResult>
+## 
+## $`227`
+## <PostgreSQLResult>
+## 
+## $`229`
+## <PostgreSQLResult>
+## 
+## $`230`
+## <PostgreSQLResult>
+## 
+## $`232`
+## <PostgreSQLResult>
+## 
+## $`233`
+## <PostgreSQLResult>
+## 
+## $`234`
+## <PostgreSQLResult>
+## 
+## $`235`
+## <PostgreSQLResult>
+## 
+## $`236`
+## <PostgreSQLResult>
+## 
+## $`237`
 ## <PostgreSQLResult>
 ## 
 ## $`238`
@@ -260,142 +490,160 @@ apply(user.outlier, 1, markoutlier, exp_no = exp_no, period_no = period_no,
 ## $`249`
 ## <PostgreSQLResult>
 ## 
-## $`251`
+## $`256`
 ## <PostgreSQLResult>
 ## 
-## $`261`
+## $`305`
 ## <PostgreSQLResult>
 ## 
-## $`271`
+## $`336`
 ## <PostgreSQLResult>
 ## 
-## $`273`
+## $`337`
 ## <PostgreSQLResult>
 ## 
-## $`286`
+## $`338`
 ## <PostgreSQLResult>
 ## 
-## $`290`
+## $`339`
 ## <PostgreSQLResult>
 ## 
-## $`313`
+## $`340`
 ## <PostgreSQLResult>
 ## 
-## $`324`
+## $`341`
 ## <PostgreSQLResult>
 ## 
 ## $`343`
 ## <PostgreSQLResult>
 ## 
+## $`347`
+## <PostgreSQLResult>
+## 
+## $`348`
+## <PostgreSQLResult>
+## 
+## $`349`
+## <PostgreSQLResult>
+## 
+## $`350`
+## <PostgreSQLResult>
+## 
 ## $`351`
 ## <PostgreSQLResult>
 ## 
-## $`355`
+## $`415`
 ## <PostgreSQLResult>
 ## 
-## $`357`
-## <PostgreSQLResult>
-## 
-## $`359`
-## <PostgreSQLResult>
-## 
-## $`360`
-## <PostgreSQLResult>
-## 
-## $`387`
-## <PostgreSQLResult>
-## 
-## $`403`
-## <PostgreSQLResult>
-## 
-## $`404`
-## <PostgreSQLResult>
-## 
-## $`410`
-## <PostgreSQLResult>
-## 
-## $`431`
-## <PostgreSQLResult>
-## 
-## $`438`
+## $`443`
 ## <PostgreSQLResult>
 ## 
 ## $`444`
 ## <PostgreSQLResult>
 ## 
-## $`445`
+## $`446`
 ## <PostgreSQLResult>
 ## 
-## $`448`
+## $`447`
+## <PostgreSQLResult>
+## 
+## $`449`
+## <PostgreSQLResult>
+## 
+## $`450`
+## <PostgreSQLResult>
+## 
+## $`451`
+## <PostgreSQLResult>
+## 
+## $`453`
+## <PostgreSQLResult>
+## 
+## $`454`
+## <PostgreSQLResult>
+## 
+## $`455`
+## <PostgreSQLResult>
+## 
+## $`458`
+## <PostgreSQLResult>
+## 
+## $`459`
 ## <PostgreSQLResult>
 ## 
 ## $`460`
 ## <PostgreSQLResult>
 ## 
-## $`462`
+## $`463`
 ## <PostgreSQLResult>
 ## 
-## $`465`
+## $`464`
 ## <PostgreSQLResult>
 ## 
 ## $`466`
 ## <PostgreSQLResult>
 ## 
-## $`482`
+## $`491`
 ## <PostgreSQLResult>
 ## 
-## $`503`
+## $`554`
 ## <PostgreSQLResult>
 ## 
-## $`518`
+## $`558`
 ## <PostgreSQLResult>
 ## 
-## $`519`
+## $`561`
 ## <PostgreSQLResult>
 ## 
-## $`535`
+## $`562`
 ## <PostgreSQLResult>
 ## 
-## $`539`
+## $`563`
 ## <PostgreSQLResult>
 ## 
-## $`551`
+## $`564`
+## <PostgreSQLResult>
+## 
+## $`565`
+## <PostgreSQLResult>
+## 
+## $`566`
+## <PostgreSQLResult>
+## 
+## $`567`
 ## <PostgreSQLResult>
 ## 
 ## $`568`
 ## <PostgreSQLResult>
 ## 
-## $`585`
+## $`569`
 ## <PostgreSQLResult>
 ## 
-## $`597`
+## $`570`
 ## <PostgreSQLResult>
 ## 
-## $`598`
+## $`572`
 ## <PostgreSQLResult>
 ## 
-## $`602`
+## $`573`
 ## <PostgreSQLResult>
 ## 
-## $`617`
+## $`574`
 ## <PostgreSQLResult>
 ## 
-## $`631`
+## $`576`
 ## <PostgreSQLResult>
 ## 
-## $`637`
+## $`668`
 ## <PostgreSQLResult>
 ## 
-## $`638`
-## <PostgreSQLResult>
-## 
-## $`648`
-## <PostgreSQLResult>
-## 
-## $`661`
+## $`669`
 ## <PostgreSQLResult>
 ## 
 ## $`670`
+## <PostgreSQLResult>
+## 
+## $`672`
 ## <PostgreSQLResult>
 ## 
 ## $`673`
@@ -404,7 +652,16 @@ apply(user.outlier, 1, markoutlier, exp_no = exp_no, period_no = period_no,
 ## $`674`
 ## <PostgreSQLResult>
 ## 
-## $`682`
+## $`677`
+## <PostgreSQLResult>
+## 
+## $`678`
+## <PostgreSQLResult>
+## 
+## $`679`
+## <PostgreSQLResult>
+## 
+## $`680`
 ## <PostgreSQLResult>
 ## 
 ## $`683`
@@ -413,178 +670,142 @@ apply(user.outlier, 1, markoutlier, exp_no = exp_no, period_no = period_no,
 ## $`684`
 ## <PostgreSQLResult>
 ## 
-## $`685`
-## <PostgreSQLResult>
-## 
 ## $`687`
 ## <PostgreSQLResult>
 ## 
-## $`692`
+## $`688`
 ## <PostgreSQLResult>
 ## 
-## $`702`
+## $`721`
 ## <PostgreSQLResult>
 ## 
-## $`704`
-## <PostgreSQLResult>
-## 
-## $`707`
-## <PostgreSQLResult>
-## 
-## $`711`
-## <PostgreSQLResult>
-## 
-## $`714`
-## <PostgreSQLResult>
-## 
-## $`715`
-## <PostgreSQLResult>
-## 
-## $`720`
-## <PostgreSQLResult>
-## 
-## $`722`
-## <PostgreSQLResult>
-## 
-## $`727`
-## <PostgreSQLResult>
-## 
-## $`728`
-## <PostgreSQLResult>
-## 
-## $`729`
-## <PostgreSQLResult>
-## 
-## $`748`
-## <PostgreSQLResult>
-## 
-## $`754`
-## <PostgreSQLResult>
-## 
-## $`756`
-## <PostgreSQLResult>
-## 
-## $`760`
+## $`732`
 ## <PostgreSQLResult>
 ## 
 ## $`763`
 ## <PostgreSQLResult>
 ## 
-## $`764`
+## $`788`
 ## <PostgreSQLResult>
 ## 
-## $`766`
-## <PostgreSQLResult>
-## 
-## $`772`
-## <PostgreSQLResult>
-## 
-## $`773`
-## <PostgreSQLResult>
-## 
-## $`775`
-## <PostgreSQLResult>
-## 
-## $`777`
-## <PostgreSQLResult>
-## 
-## $`779`
-## <PostgreSQLResult>
-## 
-## $`781`
-## <PostgreSQLResult>
-## 
-## $`783`
-## <PostgreSQLResult>
-## 
-## $`790`
+## $`789`
 ## <PostgreSQLResult>
 ## 
 ## $`791`
 ## <PostgreSQLResult>
 ## 
-## $`815`
+## $`792`
 ## <PostgreSQLResult>
 ## 
-## $`816`
+## $`795`
+## <PostgreSQLResult>
+## 
+## $`796`
+## <PostgreSQLResult>
+## 
+## $`797`
+## <PostgreSQLResult>
+## 
+## $`798`
+## <PostgreSQLResult>
+## 
+## $`799`
+## <PostgreSQLResult>
+## 
+## $`800`
+## <PostgreSQLResult>
+## 
+## $`802`
+## <PostgreSQLResult>
+## 
+## $`803`
 ## <PostgreSQLResult>
 ## 
 ## $`820`
 ## <PostgreSQLResult>
 ## 
-## $`832`
-## <PostgreSQLResult>
-## 
-## $`834`
-## <PostgreSQLResult>
-## 
-## $`835`
-## <PostgreSQLResult>
-## 
-## $`840`
-## <PostgreSQLResult>
-## 
-## $`845`
-## <PostgreSQLResult>
-## 
-## $`852`
-## <PostgreSQLResult>
-## 
-## $`864`
-## <PostgreSQLResult>
-## 
-## $`867`
-## <PostgreSQLResult>
-## 
-## $`880`
-## <PostgreSQLResult>
-## 
 ## $`881`
 ## <PostgreSQLResult>
 ## 
-## $`883`
+## $`893`
 ## <PostgreSQLResult>
 ## 
-## $`885`
+## $`894`
+## <PostgreSQLResult>
+## 
+## $`895`
+## <PostgreSQLResult>
+## 
+## $`896`
+## <PostgreSQLResult>
+## 
+## $`897`
+## <PostgreSQLResult>
+## 
+## $`898`
+## <PostgreSQLResult>
+## 
+## $`900`
+## <PostgreSQLResult>
+## 
+## $`901`
+## <PostgreSQLResult>
+## 
+## $`903`
 ## <PostgreSQLResult>
 ## 
 ## $`904`
 ## <PostgreSQLResult>
 ## 
-## $`909`
+## $`905`
 ## <PostgreSQLResult>
 ## 
-## $`910`
+## $`906`
 ## <PostgreSQLResult>
 ## 
-## $`942`
+## $`908`
 ## <PostgreSQLResult>
 ## 
-## $`963`
+## $`911`
 ## <PostgreSQLResult>
 ## 
-## $`971`
+## $`912`
 ## <PostgreSQLResult>
 ## 
-## $`976`
+## $`913`
 ## <PostgreSQLResult>
 ## 
-## $`978`
+## $`914`
 ## <PostgreSQLResult>
 ## 
-## $`983`
+## $`915`
 ## <PostgreSQLResult>
 ## 
-## $`988`
+## $`917`
 ## <PostgreSQLResult>
 ## 
-## $`991`
+## $`934`
 ## <PostgreSQLResult>
 ## 
-## $`1006`
+## $`1009`
 ## <PostgreSQLResult>
 ## 
-## $`1007`
+## $`1010`
+## <PostgreSQLResult>
+## 
+## $`1011`
+## <PostgreSQLResult>
+## 
+## $`1012`
+## <PostgreSQLResult>
+## 
+## $`1013`
+## <PostgreSQLResult>
+## 
+## $`1015`
+## <PostgreSQLResult>
+## 
+## $`1016`
 ## <PostgreSQLResult>
 ## 
 ## $`1017`
@@ -593,52 +814,58 @@ apply(user.outlier, 1, markoutlier, exp_no = exp_no, period_no = period_no,
 ## $`1018`
 ## <PostgreSQLResult>
 ## 
+## $`1019`
+## <PostgreSQLResult>
+## 
+## $`1021`
+## <PostgreSQLResult>
+## 
+## $`1022`
+## <PostgreSQLResult>
+## 
+## $`1023`
+## <PostgreSQLResult>
+## 
+## $`1024`
+## <PostgreSQLResult>
+## 
+## $`1025`
+## <PostgreSQLResult>
+## 
+## $`1026`
+## <PostgreSQLResult>
+## 
+## $`1027`
+## <PostgreSQLResult>
+## 
 ## $`1028`
 ## <PostgreSQLResult>
 ## 
-## $`1037`
+## $`1049`
 ## <PostgreSQLResult>
 ## 
-## $`1040`
+## $`1105`
 ## <PostgreSQLResult>
 ## 
-## $`1044`
+## $`1122`
 ## <PostgreSQLResult>
 ## 
-## $`1061`
+## $`1124`
 ## <PostgreSQLResult>
 ## 
-## $`1066`
+## $`1125`
 ## <PostgreSQLResult>
 ## 
-## $`1076`
+## $`1126`
 ## <PostgreSQLResult>
 ## 
-## $`1077`
+## $`1128`
 ## <PostgreSQLResult>
 ## 
-## $`1078`
+## $`1129`
 ## <PostgreSQLResult>
 ## 
-## $`1079`
-## <PostgreSQLResult>
-## 
-## $`1082`
-## <PostgreSQLResult>
-## 
-## $`1089`
-## <PostgreSQLResult>
-## 
-## $`1090`
-## <PostgreSQLResult>
-## 
-## $`1099`
-## <PostgreSQLResult>
-## 
-## $`1103`
-## <PostgreSQLResult>
-## 
-## $`1109`
+## $`1131`
 ## <PostgreSQLResult>
 ## 
 ## $`1132`
@@ -647,298 +874,196 @@ apply(user.outlier, 1, markoutlier, exp_no = exp_no, period_no = period_no,
 ## $`1133`
 ## <PostgreSQLResult>
 ## 
+## $`1134`
+## <PostgreSQLResult>
+## 
 ## $`1136`
 ## <PostgreSQLResult>
 ## 
-## $`1138`
+## $`1141`
 ## <PostgreSQLResult>
 ## 
-## $`1142`
+## $`1153`
 ## <PostgreSQLResult>
 ## 
-## $`1144`
-## <PostgreSQLResult>
-## 
-## $`1147`
-## <PostgreSQLResult>
-## 
-## $`1149`
-## <PostgreSQLResult>
-## 
-## $`1161`
-## <PostgreSQLResult>
-## 
-## $`1164`
-## <PostgreSQLResult>
-## 
-## $`1170`
-## <PostgreSQLResult>
-## 
-## $`1178`
-## <PostgreSQLResult>
-## 
-## $`1179`
-## <PostgreSQLResult>
-## 
-## $`1185`
-## <PostgreSQLResult>
-## 
-## $`1190`
-## <PostgreSQLResult>
-## 
-## $`1191`
-## <PostgreSQLResult>
-## 
-## $`1198`
-## <PostgreSQLResult>
-## 
-## $`1206`
-## <PostgreSQLResult>
-## 
-## $`1208`
-## <PostgreSQLResult>
-## 
-## $`1211`
-## <PostgreSQLResult>
-## 
-## $`1214`
-## <PostgreSQLResult>
-## 
-## $`1216`
+## $`1224`
 ## <PostgreSQLResult>
 ## 
 ## $`1225`
 ## <PostgreSQLResult>
 ## 
+## $`1226`
+## <PostgreSQLResult>
+## 
 ## $`1227`
 ## <PostgreSQLResult>
 ## 
-## $`1234`
+## $`1228`
+## <PostgreSQLResult>
+## 
+## $`1230`
+## <PostgreSQLResult>
+## 
+## $`1231`
+## <PostgreSQLResult>
+## 
+## $`1232`
+## <PostgreSQLResult>
+## 
+## $`1233`
+## <PostgreSQLResult>
+## 
+## $`1235`
 ## <PostgreSQLResult>
 ## 
 ## $`1236`
 ## <PostgreSQLResult>
 ## 
-## $`1242`
+## $`1239`
 ## <PostgreSQLResult>
 ## 
-## $`1255`
+## $`1240`
 ## <PostgreSQLResult>
 ## 
-## $`1257`
+## $`1241`
 ## <PostgreSQLResult>
 ## 
-## $`1259`
+## $`1243`
 ## <PostgreSQLResult>
 ## 
-## $`1261`
+## $`1244`
 ## <PostgreSQLResult>
 ## 
-## $`1264`
+## $`1245`
 ## <PostgreSQLResult>
 ## 
-## $`1266`
+## $`1247`
 ## <PostgreSQLResult>
 ## 
-## $`1269`
+## $`1248`
 ## <PostgreSQLResult>
 ## 
-## $`1270`
+## $`1249`
 ## <PostgreSQLResult>
 ## 
-## $`1271`
+## $`1250`
 ## <PostgreSQLResult>
 ## 
-## $`1275`
+## $`1251`
 ## <PostgreSQLResult>
 ## 
-## $`1276`
+## $`1265`
 ## <PostgreSQLResult>
 ## 
-## $`1280`
+## $`1291`
 ## <PostgreSQLResult>
 ## 
-## $`1282`
+## $`1297`
 ## <PostgreSQLResult>
 ## 
-## $`1284`
+## $`1336`
 ## <PostgreSQLResult>
 ## 
-## $`1285`
+## $`1337`
 ## <PostgreSQLResult>
 ## 
-## $`1286`
+## $`1338`
 ## <PostgreSQLResult>
 ## 
-## $`1292`
+## $`1339`
 ## <PostgreSQLResult>
 ## 
-## $`1293`
+## $`1341`
 ## <PostgreSQLResult>
 ## 
-## $`1299`
+## $`1342`
 ## <PostgreSQLResult>
 ## 
-## $`1300`
-## <PostgreSQLResult>
-## 
-## $`1301`
-## <PostgreSQLResult>
-## 
-## $`1303`
-## <PostgreSQLResult>
-## 
-## $`1305`
-## <PostgreSQLResult>
-## 
-## $`1306`
-## <PostgreSQLResult>
-## 
-## $`1307`
-## <PostgreSQLResult>
-## 
-## $`1308`
-## <PostgreSQLResult>
-## 
-## $`1309`
-## <PostgreSQLResult>
-## 
-## $`1310`
-## <PostgreSQLResult>
-## 
-## $`1313`
-## <PostgreSQLResult>
-## 
-## $`1317`
-## <PostgreSQLResult>
-## 
-## $`1321`
-## <PostgreSQLResult>
-## 
-## $`1322`
-## <PostgreSQLResult>
-## 
-## $`1327`
-## <PostgreSQLResult>
-## 
-## $`1329`
-## <PostgreSQLResult>
-## 
-## $`1330`
-## <PostgreSQLResult>
-## 
-## $`1331`
-## <PostgreSQLResult>
-## 
-## $`1333`
-## <PostgreSQLResult>
-## 
-## $`1334`
+## $`1343`
 ## <PostgreSQLResult>
 ## 
 ## $`1344`
 ## <PostgreSQLResult>
 ## 
-## $`1349`
+## $`1345`
+## <PostgreSQLResult>
+## 
+## $`1346`
+## <PostgreSQLResult>
+## 
+## $`1347`
+## <PostgreSQLResult>
+## 
+## $`1348`
 ## <PostgreSQLResult>
 ## 
 ## $`1350`
 ## <PostgreSQLResult>
 ## 
-## $`1353`
+## $`1351`
 ## <PostgreSQLResult>
 ## 
-## $`1354`
+## $`1352`
+## <PostgreSQLResult>
+## 
+## $`1355`
+## <PostgreSQLResult>
+## 
+## $`1357`
+## <PostgreSQLResult>
+## 
+## $`1358`
+## <PostgreSQLResult>
+## 
+## $`1359`
 ## <PostgreSQLResult>
 ## 
 ## $`1360`
 ## <PostgreSQLResult>
 ## 
-## $`1361`
+## $`1362`
 ## <PostgreSQLResult>
 ## 
-## $`1368`
+## $`1363`
 ## <PostgreSQLResult>
 ## 
-## $`1369`
-## <PostgreSQLResult>
-## 
-## $`1374`
-## <PostgreSQLResult>
-## 
-## $`1376`
-## <PostgreSQLResult>
-## 
-## $`1378`
-## <PostgreSQLResult>
-## 
-## $`1379`
-## <PostgreSQLResult>
-## 
-## $`1383`
-## <PostgreSQLResult>
-## 
-## $`1384`
-## <PostgreSQLResult>
-## 
-## $`1386`
-## <PostgreSQLResult>
-## 
-## $`1395`
-## <PostgreSQLResult>
-## 
-## $`1398`
-## <PostgreSQLResult>
-## 
-## $`1410`
-## <PostgreSQLResult>
-## 
-## $`1411`
-## <PostgreSQLResult>
-## 
-## $`1416`
-## <PostgreSQLResult>
-## 
-## $`1425`
-## <PostgreSQLResult>
-## 
-## $`1426`
+## $`1403`
 ## <PostgreSQLResult>
 ## 
 ## $`1433`
 ## <PostgreSQLResult>
 ## 
-## $`1438`
+## $`1444`
 ## <PostgreSQLResult>
 ## 
-## $`1439`
+## $`1446`
 ## <PostgreSQLResult>
 ## 
-## $`1440`
+## $`1453`
 ## <PostgreSQLResult>
 ## 
-## $`1443`
+## $`1456`
 ## <PostgreSQLResult>
 ## 
-## $`1448`
-## <PostgreSQLResult>
-## 
-## $`1449`
-## <PostgreSQLResult>
-## 
-## $`1450`
+## $`1457`
 ## <PostgreSQLResult>
 ## 
 ## $`1458`
 ## <PostgreSQLResult>
 ## 
-## $`1460`
+## $`1461`
 ## <PostgreSQLResult>
 ## 
 ## $`1462`
 ## <PostgreSQLResult>
 ## 
+## $`1463`
+## <PostgreSQLResult>
+## 
 ## $`1464`
+## <PostgreSQLResult>
+## 
+## $`1465`
 ## <PostgreSQLResult>
 ## 
 ## $`1466`
@@ -950,124 +1075,16 @@ apply(user.outlier, 1, markoutlier, exp_no = exp_no, period_no = period_no,
 ## $`1469`
 ## <PostgreSQLResult>
 ## 
-## $`1471`
+## $`1470`
 ## <PostgreSQLResult>
 ## 
 ## $`1472`
 ## <PostgreSQLResult>
 ## 
+## $`1474`
+## <PostgreSQLResult>
+## 
 ## $`1475`
-## <PostgreSQLResult>
-## 
-## $`1476`
-## <PostgreSQLResult>
-## 
-## $`1477`
-## <PostgreSQLResult>
-## 
-## $`1478`
-## <PostgreSQLResult>
-## 
-## $`1482`
-## <PostgreSQLResult>
-## 
-## $`1483`
-## <PostgreSQLResult>
-## 
-## $`1486`
-## <PostgreSQLResult>
-## 
-## $`1488`
-## <PostgreSQLResult>
-## 
-## $`1491`
-## <PostgreSQLResult>
-## 
-## $`1497`
-## <PostgreSQLResult>
-## 
-## $`1502`
-## <PostgreSQLResult>
-## 
-## $`1503`
-## <PostgreSQLResult>
-## 
-## $`1507`
-## <PostgreSQLResult>
-## 
-## $`1512`
-## <PostgreSQLResult>
-## 
-## $`1521`
-## <PostgreSQLResult>
-## 
-## $`1523`
-## <PostgreSQLResult>
-## 
-## $`1524`
-## <PostgreSQLResult>
-## 
-## $`1525`
-## <PostgreSQLResult>
-## 
-## $`1526`
-## <PostgreSQLResult>
-## 
-## $`1528`
-## <PostgreSQLResult>
-## 
-## $`1532`
-## <PostgreSQLResult>
-## 
-## $`1533`
-## <PostgreSQLResult>
-## 
-## $`1534`
-## <PostgreSQLResult>
-## 
-## $`1537`
-## <PostgreSQLResult>
-## 
-## $`1538`
-## <PostgreSQLResult>
-## 
-## $`1540`
-## <PostgreSQLResult>
-## 
-## $`1546`
-## <PostgreSQLResult>
-## 
-## $`1549`
-## <PostgreSQLResult>
-## 
-## $`1551`
-## <PostgreSQLResult>
-## 
-## $`1553`
-## <PostgreSQLResult>
-## 
-## $`1554`
-## <PostgreSQLResult>
-## 
-## $`1555`
-## <PostgreSQLResult>
-## 
-## $`1557`
-## <PostgreSQLResult>
-## 
-## $`1558`
-## <PostgreSQLResult>
-## 
-## $`1560`
-## <PostgreSQLResult>
-## 
-## $`1561`
-## <PostgreSQLResult>
-## 
-## $`1562`
-## <PostgreSQLResult>
-## 
-## $`1566`
 ## <PostgreSQLResult>
 ## 
 ## $`1569`
@@ -1079,7 +1096,22 @@ apply(user.outlier, 1, markoutlier, exp_no = exp_no, period_no = period_no,
 ## $`1571`
 ## <PostgreSQLResult>
 ## 
+## $`1572`
+## <PostgreSQLResult>
+## 
 ## $`1574`
+## <PostgreSQLResult>
+## 
+## $`1575`
+## <PostgreSQLResult>
+## 
+## $`1576`
+## <PostgreSQLResult>
+## 
+## $`1578`
+## <PostgreSQLResult>
+## 
+## $`1580`
 ## <PostgreSQLResult>
 ## 
 ## $`1581`
@@ -1088,112 +1120,49 @@ apply(user.outlier, 1, markoutlier, exp_no = exp_no, period_no = period_no,
 ## $`1582`
 ## <PostgreSQLResult>
 ## 
-## $`1586`
+## $`1583`
 ## <PostgreSQLResult>
 ## 
-## $`1587`
+## $`1584`
 ## <PostgreSQLResult>
 ## 
-## $`1591`
+## $`1589`
 ## <PostgreSQLResult>
 ## 
-## $`1595`
-## <PostgreSQLResult>
-## 
-## $`1596`
-## <PostgreSQLResult>
-## 
-## $`1598`
-## <PostgreSQLResult>
-## 
-## $`1603`
-## <PostgreSQLResult>
-## 
-## $`1604`
-## <PostgreSQLResult>
-## 
-## $`1607`
-## <PostgreSQLResult>
-## 
-## $`1610`
-## <PostgreSQLResult>
-## 
-## $`1612`
-## <PostgreSQLResult>
-## 
-## $`1613`
-## <PostgreSQLResult>
-## 
-## $`1616`
-## <PostgreSQLResult>
-## 
-## $`1625`
-## <PostgreSQLResult>
-## 
-## $`1628`
-## <PostgreSQLResult>
-## 
-## $`1630`
-## <PostgreSQLResult>
-## 
-## $`1633`
-## <PostgreSQLResult>
-## 
-## $`1635`
-## <PostgreSQLResult>
-## 
-## $`1640`
-## <PostgreSQLResult>
-## 
-## $`1641`
+## $`1637`
 ## <PostgreSQLResult>
 ## 
 ## $`1642`
 ## <PostgreSQLResult>
 ## 
-## $`1643`
-## <PostgreSQLResult>
-## 
-## $`1645`
-## <PostgreSQLResult>
-## 
-## $`1653`
-## <PostgreSQLResult>
-## 
-## $`1654`
-## <PostgreSQLResult>
-## 
-## $`1655`
-## <PostgreSQLResult>
-## 
-## $`1657`
-## <PostgreSQLResult>
-## 
-## $`1659`
-## <PostgreSQLResult>
-## 
-## $`1661`
-## <PostgreSQLResult>
-## 
-## $`1663`
-## <PostgreSQLResult>
-## 
-## $`1664`
-## <PostgreSQLResult>
-## 
-## $`1670`
-## <PostgreSQLResult>
-## 
-## $`1671`
+## $`1649`
 ## <PostgreSQLResult>
 ## 
 ## $`1672`
 ## <PostgreSQLResult>
 ## 
-## $`1673`
+## $`1678`
 ## <PostgreSQLResult>
 ## 
-## $`1684`
+## $`1679`
+## <PostgreSQLResult>
+## 
+## $`1680`
+## <PostgreSQLResult>
+## 
+## $`1682`
+## <PostgreSQLResult>
+## 
+## $`1683`
+## <PostgreSQLResult>
+## 
+## $`1685`
+## <PostgreSQLResult>
+## 
+## $`1686`
+## <PostgreSQLResult>
+## 
+## $`1687`
 ## <PostgreSQLResult>
 ## 
 ## $`1688`
@@ -1202,310 +1171,346 @@ apply(user.outlier, 1, markoutlier, exp_no = exp_no, period_no = period_no,
 ## $`1689`
 ## <PostgreSQLResult>
 ## 
-## $`1691`
+## $`1690`
+## <PostgreSQLResult>
+## 
+## $`1692`
+## <PostgreSQLResult>
+## 
+## $`1693`
+## <PostgreSQLResult>
+## 
+## $`1694`
+## <PostgreSQLResult>
+## 
+## $`1695`
 ## <PostgreSQLResult>
 ## 
 ## $`1696`
 ## <PostgreSQLResult>
 ## 
-## $`1702`
+## $`1697`
 ## <PostgreSQLResult>
 ## 
-## $`1705`
+## $`1699`
 ## <PostgreSQLResult>
 ## 
-## $`1708`
+## $`1701`
 ## <PostgreSQLResult>
 ## 
-## $`1714`
+## $`1732`
 ## <PostgreSQLResult>
 ## 
-## $`1717`
+## $`1783`
 ## <PostgreSQLResult>
 ## 
-## $`1719`
+## $`1785`
 ## <PostgreSQLResult>
 ## 
-## $`1721`
-## <PostgreSQLResult>
-## 
-## $`1726`
-## <PostgreSQLResult>
-## 
-## $`1729`
-## <PostgreSQLResult>
-## 
-## $`1730`
-## <PostgreSQLResult>
-## 
-## $`1731`
-## <PostgreSQLResult>
-## 
-## $`1746`
-## <PostgreSQLResult>
-## 
-## $`1748`
-## <PostgreSQLResult>
-## 
-## $`1753`
-## <PostgreSQLResult>
-## 
-## $`1754`
-## <PostgreSQLResult>
-## 
-## $`1760`
-## <PostgreSQLResult>
-## 
-## $`1765`
+## $`1791`
 ## <PostgreSQLResult>
 ## 
 ## $`1792`
 ## <PostgreSQLResult>
 ## 
-## $`1796`
+## $`1793`
+## <PostgreSQLResult>
+## 
+## $`1794`
+## <PostgreSQLResult>
+## 
+## $`1795`
 ## <PostgreSQLResult>
 ## 
 ## $`1797`
 ## <PostgreSQLResult>
 ## 
+## $`1799`
+## <PostgreSQLResult>
+## 
+## $`1800`
+## <PostgreSQLResult>
+## 
+## $`1801`
+## <PostgreSQLResult>
+## 
 ## $`1802`
 ## <PostgreSQLResult>
 ## 
-## $`1803`
+## $`1804`
 ## <PostgreSQLResult>
 ## 
-## $`1811`
+## $`1805`
 ## <PostgreSQLResult>
 ## 
-## $`1812`
+## $`1806`
 ## <PostgreSQLResult>
 ## 
-## $`1819`
+## $`1807`
 ## <PostgreSQLResult>
 ## 
-## $`1823`
+## $`1809`
 ## <PostgreSQLResult>
 ## 
-## $`1827`
+## $`1905`
 ## <PostgreSQLResult>
 ## 
-## $`1837`
+## $`1906`
 ## <PostgreSQLResult>
 ## 
-## $`1841`
+## $`1907`
 ## <PostgreSQLResult>
 ## 
-## $`1852`
+## $`1908`
 ## <PostgreSQLResult>
 ## 
-## $`1856`
+## $`1909`
 ## <PostgreSQLResult>
 ## 
-## $`1857`
+## $`1910`
 ## <PostgreSQLResult>
 ## 
-## $`1859`
+## $`1911`
 ## <PostgreSQLResult>
 ## 
-## $`1860`
+## $`1912`
 ## <PostgreSQLResult>
 ## 
-## $`1861`
+## $`1913`
 ## <PostgreSQLResult>
 ## 
-## $`1862`
+## $`1914`
 ## <PostgreSQLResult>
 ## 
-## $`1871`
+## $`1915`
 ## <PostgreSQLResult>
 ## 
-## $`1884`
+## $`1916`
 ## <PostgreSQLResult>
 ## 
-## $`1930`
+## $`1917`
 ## <PostgreSQLResult>
 ## 
-## $`1931`
+## $`1918`
 ## <PostgreSQLResult>
 ## 
-## $`1933`
+## $`1920`
 ## <PostgreSQLResult>
 ## 
-## $`1952`
+## $`1921`
 ## <PostgreSQLResult>
 ## 
-## $`1966`
+## $`1922`
 ## <PostgreSQLResult>
 ## 
-## $`1968`
+## $`1999`
 ## <PostgreSQLResult>
 ## 
-## $`1970`
+## $`2013`
 ## <PostgreSQLResult>
 ## 
-## $`1974`
+## $`2015`
 ## <PostgreSQLResult>
 ## 
-## $`1985`
+## $`2016`
 ## <PostgreSQLResult>
 ## 
-## $`1989`
+## $`2017`
 ## <PostgreSQLResult>
 ## 
-## $`1995`
+## $`2018`
 ## <PostgreSQLResult>
 ## 
-## $`2003`
+## $`2020`
 ## <PostgreSQLResult>
 ## 
-## $`2008`
+## $`2021`
 ## <PostgreSQLResult>
 ## 
-## $`2010`
+## $`2022`
 ## <PostgreSQLResult>
 ## 
-## $`2036`
+## $`2023`
 ## <PostgreSQLResult>
 ## 
-## $`2040`
+## $`2024`
 ## <PostgreSQLResult>
 ## 
-## $`2041`
+## $`2025`
 ## <PostgreSQLResult>
 ## 
-## $`2047`
+## $`2026`
 ## <PostgreSQLResult>
 ## 
-## $`2050`
+## $`2028`
 ## <PostgreSQLResult>
 ## 
-## $`2055`
+## $`2029`
 ## <PostgreSQLResult>
 ## 
-## $`2064`
+## $`2031`
 ## <PostgreSQLResult>
 ## 
-## $`2066`
+## $`2033`
+## <PostgreSQLResult>
+## 
+## $`2034`
+## <PostgreSQLResult>
+## 
+## $`2035`
 ## <PostgreSQLResult>
 ## 
 ## $`2069`
 ## <PostgreSQLResult>
 ## 
-## $`2071`
+## $`2105`
 ## <PostgreSQLResult>
 ## 
-## $`2074`
+## $`2106`
 ## <PostgreSQLResult>
 ## 
-## $`2075`
+## $`2123`
 ## <PostgreSQLResult>
 ## 
-## $`2081`
+## $`2124`
 ## <PostgreSQLResult>
 ## 
-## $`2082`
+## $`2125`
 ## <PostgreSQLResult>
 ## 
-## $`2096`
+## $`2127`
 ## <PostgreSQLResult>
 ## 
-## $`2097`
+## $`2128`
 ## <PostgreSQLResult>
 ## 
-## $`2109`
+## $`2129`
 ## <PostgreSQLResult>
 ## 
-## $`2110`
-## <PostgreSQLResult>
-## 
-## $`2113`
-## <PostgreSQLResult>
-## 
-## $`2121`
+## $`2130`
 ## <PostgreSQLResult>
 ## 
 ## $`2133`
 ## <PostgreSQLResult>
 ## 
+## $`2134`
+## <PostgreSQLResult>
+## 
 ## $`2135`
+## <PostgreSQLResult>
+## 
+## $`2136`
+## <PostgreSQLResult>
+## 
+## $`2137`
+## <PostgreSQLResult>
+## 
+## $`2138`
+## <PostgreSQLResult>
+## 
+## $`2140`
 ## <PostgreSQLResult>
 ## 
 ## $`2141`
 ## <PostgreSQLResult>
 ## 
-## $`2150`
+## $`2142`
 ## <PostgreSQLResult>
 ## 
-## $`2156`
+## $`2143`
 ## <PostgreSQLResult>
 ## 
-## $`2159`
+## $`2144`
 ## <PostgreSQLResult>
 ## 
-## $`2162`
+## $`2145`
 ## <PostgreSQLResult>
 ## 
-## $`2167`
+## $`2146`
 ## <PostgreSQLResult>
 ## 
-## $`2176`
+## $`2154`
 ## <PostgreSQLResult>
 ## 
-## $`2196`
+## $`2206`
 ## <PostgreSQLResult>
 ## 
-## $`2200`
+## $`2244`
 ## <PostgreSQLResult>
 ## 
-## $`2212`
-## <PostgreSQLResult>
-## 
-## $`2228`
+## $`2245`
 ## <PostgreSQLResult>
 ## 
 ## $`2246`
 ## <PostgreSQLResult>
 ## 
+## $`2248`
+## <PostgreSQLResult>
+## 
 ## $`2250`
+## <PostgreSQLResult>
+## 
+## $`2251`
+## <PostgreSQLResult>
+## 
+## $`2252`
+## <PostgreSQLResult>
+## 
+## $`2253`
+## <PostgreSQLResult>
+## 
+## $`2254`
+## <PostgreSQLResult>
+## 
+## $`2256`
 ## <PostgreSQLResult>
 ## 
 ## $`2257`
 ## <PostgreSQLResult>
 ## 
-## $`2269`
+## $`2258`
 ## <PostgreSQLResult>
 ## 
-## $`2291`
+## $`2259`
 ## <PostgreSQLResult>
 ## 
-## $`2296`
+## $`2260`
 ## <PostgreSQLResult>
 ## 
-## $`2300`
+## $`2286`
 ## <PostgreSQLResult>
 ## 
-## $`2308`
+## $`2304`
 ## <PostgreSQLResult>
 ## 
-## $`2320`
+## $`2338`
 ## <PostgreSQLResult>
 ## 
-## $`2329`
+## $`2352`
 ## <PostgreSQLResult>
 ## 
-## $`2353`
+## $`2358`
 ## <PostgreSQLResult>
 ## 
-## $`2356`
+## $`2359`
 ## <PostgreSQLResult>
 ## 
-## $`2357`
+## $`2362`
 ## <PostgreSQLResult>
 ## 
-## $`2360`
+## $`2363`
+## <PostgreSQLResult>
+## 
+## $`2364`
 ## <PostgreSQLResult>
 ## 
 ## $`2365`
+## <PostgreSQLResult>
+## 
+## $`2367`
+## <PostgreSQLResult>
+## 
+## $`2368`
 ## <PostgreSQLResult>
 ## 
 ## $`2369`
@@ -1514,73 +1519,112 @@ apply(user.outlier, 1, markoutlier, exp_no = exp_no, period_no = period_no,
 ## $`2371`
 ## <PostgreSQLResult>
 ## 
-## $`2376`
+## $`2373`
 ## <PostgreSQLResult>
 ## 
-## $`2378`
+## $`2374`
 ## <PostgreSQLResult>
 ## 
-## $`2379`
+## $`2392`
 ## <PostgreSQLResult>
 ## 
-## $`2383`
-## <PostgreSQLResult>
-## 
-## $`2388`
-## <PostgreSQLResult>
-## 
-## $`2420`
-## <PostgreSQLResult>
-## 
-## $`2426`
-## <PostgreSQLResult>
-## 
-## $`2433`
-## <PostgreSQLResult>
-## 
-## $`2440`
+## $`2416`
 ## <PostgreSQLResult>
 ## 
 ## $`2450`
 ## <PostgreSQLResult>
 ## 
-## $`2469`
+## $`2468`
+## <PostgreSQLResult>
+## 
+## $`2470`
+## <PostgreSQLResult>
+## 
+## $`2471`
+## <PostgreSQLResult>
+## 
+## $`2472`
+## <PostgreSQLResult>
+## 
+## $`2473`
+## <PostgreSQLResult>
+## 
+## $`2475`
+## <PostgreSQLResult>
+## 
+## $`2477`
+## <PostgreSQLResult>
+## 
+## $`2478`
+## <PostgreSQLResult>
+## 
+## $`2479`
+## <PostgreSQLResult>
+## 
+## $`2480`
+## <PostgreSQLResult>
+## 
+## $`2481`
+## <PostgreSQLResult>
+## 
+## $`2482`
+## <PostgreSQLResult>
+## 
+## $`2483`
 ## <PostgreSQLResult>
 ## 
 ## $`2484`
 ## <PostgreSQLResult>
 ## 
+## $`2485`
+## <PostgreSQLResult>
+## 
 ## $`2486`
 ## <PostgreSQLResult>
 ## 
-## $`2497`
+## $`2487`
 ## <PostgreSQLResult>
 ## 
-## $`2521`
+## $`2579`
 ## <PostgreSQLResult>
 ## 
-## $`2525`
+## $`2581`
 ## <PostgreSQLResult>
 ## 
-## $`2528`
+## $`2583`
 ## <PostgreSQLResult>
 ## 
-## $`2536`
+## $`2584`
 ## <PostgreSQLResult>
 ## 
-## $`2551`
+## $`2586`
 ## <PostgreSQLResult>
 ## 
-## $`2554`
+## $`2587`
 ## <PostgreSQLResult>
 ## 
-## $`2570`
+## $`2589`
 ## <PostgreSQLResult>
 ## 
-## $`2571`
+## $`2590`
 ## <PostgreSQLResult>
 ## 
-## $`2574`
+## $`2592`
+## <PostgreSQLResult>
+## 
+## $`2593`
+## <PostgreSQLResult>
+## 
+## $`2594`
+## <PostgreSQLResult>
+## 
+## $`2595`
+## <PostgreSQLResult>
+## 
+## $`2596`
+## <PostgreSQLResult>
+## 
+## $`2597`
 ## <PostgreSQLResult>
 ## 
 ## $`2598`
@@ -1589,136 +1633,148 @@ apply(user.outlier, 1, markoutlier, exp_no = exp_no, period_no = period_no,
 ## $`2600`
 ## <PostgreSQLResult>
 ## 
-## $`2605`
+## $`2611`
 ## <PostgreSQLResult>
 ## 
-## $`2608`
+## $`2630`
 ## <PostgreSQLResult>
 ## 
-## $`2610`
+## $`2681`
 ## <PostgreSQLResult>
 ## 
-## $`2621`
+## $`2691`
 ## <PostgreSQLResult>
 ## 
-## $`2625`
+## $`2692`
 ## <PostgreSQLResult>
 ## 
-## $`2634`
+## $`2693`
 ## <PostgreSQLResult>
 ## 
-## $`2635`
-## <PostgreSQLResult>
-## 
-## $`2636`
-## <PostgreSQLResult>
-## 
-## $`2639`
-## <PostgreSQLResult>
-## 
-## $`2641`
-## <PostgreSQLResult>
-## 
-## $`2647`
-## <PostgreSQLResult>
-## 
-## $`2654`
-## <PostgreSQLResult>
-## 
-## $`2655`
-## <PostgreSQLResult>
-## 
-## $`2666`
-## <PostgreSQLResult>
-## 
-## $`2669`
-## <PostgreSQLResult>
-## 
-## $`2672`
-## <PostgreSQLResult>
-## 
-## $`2680`
+## $`2695`
 ## <PostgreSQLResult>
 ## 
 ## $`2696`
 ## <PostgreSQLResult>
 ## 
-## $`2716`
+## $`2697`
 ## <PostgreSQLResult>
 ## 
-## $`2728`
+## $`2698`
 ## <PostgreSQLResult>
 ## 
-## $`2729`
+## $`2700`
 ## <PostgreSQLResult>
 ## 
-## $`2735`
+## $`2704`
 ## <PostgreSQLResult>
 ## 
-## $`2747`
+## $`2705`
 ## <PostgreSQLResult>
 ## 
-## $`2748`
+## $`2706`
 ## <PostgreSQLResult>
 ## 
-## $`2753`
+## $`2708`
 ## <PostgreSQLResult>
 ## 
-## $`2764`
+## $`2709`
 ## <PostgreSQLResult>
 ## 
-## $`2769`
+## $`2710`
 ## <PostgreSQLResult>
 ## 
-## $`2780`
+## $`2802`
 ## <PostgreSQLResult>
 ## 
-## $`2781`
+## $`2803`
 ## <PostgreSQLResult>
 ## 
-## $`2782`
+## $`2805`
 ## <PostgreSQLResult>
 ## 
-## $`2783`
+## $`2806`
 ## <PostgreSQLResult>
 ## 
-## $`2785`
+## $`2807`
+## <PostgreSQLResult>
+## 
+## $`2808`
 ## <PostgreSQLResult>
 ## 
 ## $`2809`
 ## <PostgreSQLResult>
 ## 
+## $`2811`
+## <PostgreSQLResult>
+## 
+## $`2812`
+## <PostgreSQLResult>
+## 
 ## $`2813`
 ## <PostgreSQLResult>
 ## 
-## $`2836`
+## $`2814`
 ## <PostgreSQLResult>
 ## 
-## $`2844`
+## $`2815`
 ## <PostgreSQLResult>
 ## 
-## $`2845`
+## $`2816`
 ## <PostgreSQLResult>
 ## 
-## $`2846`
+## $`2817`
 ## <PostgreSQLResult>
 ## 
-## $`2848`
+## $`2819`
 ## <PostgreSQLResult>
 ## 
-## $`2855`
+## $`2820`
 ## <PostgreSQLResult>
 ## 
-## $`2868`
+## $`2822`
 ## <PostgreSQLResult>
 ## 
-## $`2870`
+## $`2823`
 ## <PostgreSQLResult>
 ## 
-## $`2871`
+## $`2905`
+## <PostgreSQLResult>
+## 
+## $`2914`
+## <PostgreSQLResult>
+## 
+## $`2916`
+## <PostgreSQLResult>
+## 
+## $`2917`
+## <PostgreSQLResult>
+## 
+## $`2918`
+## <PostgreSQLResult>
+## 
+## $`2919`
+## <PostgreSQLResult>
+## 
+## $`2920`
+## <PostgreSQLResult>
+## 
+## $`2921`
 ## <PostgreSQLResult>
 ## 
 ## $`2922`
+## <PostgreSQLResult>
+## 
+## $`2924`
+## <PostgreSQLResult>
+## 
+## $`2927`
+## <PostgreSQLResult>
+## 
+## $`2929`
+## <PostgreSQLResult>
+## 
+## $`2931`
 ## <PostgreSQLResult>
 ## 
 ## $`2932`
@@ -1727,76 +1783,55 @@ apply(user.outlier, 1, markoutlier, exp_no = exp_no, period_no = period_no,
 ## $`2933`
 ## <PostgreSQLResult>
 ## 
+## $`2934`
+## <PostgreSQLResult>
+## 
 ## $`2936`
-## <PostgreSQLResult>
-## 
-## $`2945`
-## <PostgreSQLResult>
-## 
-## $`2953`
-## <PostgreSQLResult>
-## 
-## $`2954`
-## <PostgreSQLResult>
-## 
-## $`2958`
-## <PostgreSQLResult>
-## 
-## $`2966`
-## <PostgreSQLResult>
-## 
-## $`2973`
-## <PostgreSQLResult>
-## 
-## $`2977`
-## <PostgreSQLResult>
-## 
-## $`2987`
-## <PostgreSQLResult>
-## 
-## $`2989`
-## <PostgreSQLResult>
-## 
-## $`3004`
-## <PostgreSQLResult>
-## 
-## $`3012`
 ## <PostgreSQLResult>
 ## 
 ## $`3032`
 ## <PostgreSQLResult>
 ## 
+## $`3033`
+## <PostgreSQLResult>
+## 
+## $`3034`
+## <PostgreSQLResult>
+## 
+## $`3036`
+## <PostgreSQLResult>
+## 
 ## $`3040`
+## <PostgreSQLResult>
+## 
+## $`3041`
 ## <PostgreSQLResult>
 ## 
 ## $`3044`
 ## <PostgreSQLResult>
 ## 
-## $`3059`
+## $`3045`
 ## <PostgreSQLResult>
 ## 
-## $`3061`
+## $`3046`
 ## <PostgreSQLResult>
 ## 
-## $`3069`
+## $`3047`
 ## <PostgreSQLResult>
 ## 
-## $`3086`
+## $`3048`
 ## <PostgreSQLResult>
 ## 
-## $`3095`
+## $`3049`
 ## <PostgreSQLResult>
 ## 
-## $`3102`
+## $`3060`
 ## <PostgreSQLResult>
 ## 
-## $`3105`
+## $`3131`
 ## <PostgreSQLResult>
 ## 
-## $`3116`
-## <PostgreSQLResult>
-## 
-## $`3127`
+## $`3135`
 ## <PostgreSQLResult>
 ## 
 ## $`3137`
@@ -1805,10 +1840,49 @@ apply(user.outlier, 1, markoutlier, exp_no = exp_no, period_no = period_no,
 ## $`3138`
 ## <PostgreSQLResult>
 ## 
+## $`3139`
+## <PostgreSQLResult>
+## 
+## $`3140`
+## <PostgreSQLResult>
+## 
 ## $`3141`
 ## <PostgreSQLResult>
 ## 
-## $`3152`
+## $`3142`
+## <PostgreSQLResult>
+## 
+## $`3143`
+## <PostgreSQLResult>
+## 
+## $`3144`
+## <PostgreSQLResult>
+## 
+## $`3145`
+## <PostgreSQLResult>
+## 
+## $`3146`
+## <PostgreSQLResult>
+## 
+## $`3147`
+## <PostgreSQLResult>
+## 
+## $`3148`
+## <PostgreSQLResult>
+## 
+## $`3149`
+## <PostgreSQLResult>
+## 
+## $`3150`
+## <PostgreSQLResult>
+## 
+## $`3151`
+## <PostgreSQLResult>
+## 
+## $`3153`
+## <PostgreSQLResult>
+## 
+## $`3154`
 ## <PostgreSQLResult>
 ## 
 ## $`3155`
@@ -1817,40 +1891,64 @@ apply(user.outlier, 1, markoutlier, exp_no = exp_no, period_no = period_no,
 ## $`3156`
 ## <PostgreSQLResult>
 ## 
-## $`3181`
+## $`3157`
 ## <PostgreSQLResult>
 ## 
-## $`3212`
+## $`3158`
 ## <PostgreSQLResult>
 ## 
-## $`3213`
+## $`3159`
 ## <PostgreSQLResult>
 ## 
-## $`3219`
+## $`3249`
 ## <PostgreSQLResult>
 ## 
-## $`3223`
+## $`3250`
 ## <PostgreSQLResult>
 ## 
-## $`3224`
+## $`3251`
 ## <PostgreSQLResult>
 ## 
-## $`3227`
+## $`3252`
 ## <PostgreSQLResult>
 ## 
-## $`3231`
+## $`3253`
 ## <PostgreSQLResult>
 ## 
-## $`3242`
-## <PostgreSQLResult>
-## 
-## $`3245`
+## $`3254`
 ## <PostgreSQLResult>
 ## 
 ## $`3255`
 ## <PostgreSQLResult>
 ## 
+## $`3256`
+## <PostgreSQLResult>
+## 
+## $`3257`
+## <PostgreSQLResult>
+## 
+## $`3258`
+## <PostgreSQLResult>
+## 
+## $`3259`
+## <PostgreSQLResult>
+## 
+## $`3260`
+## <PostgreSQLResult>
+## 
 ## $`3261`
+## <PostgreSQLResult>
+## 
+## $`3263`
+## <PostgreSQLResult>
+## 
+## $`3264`
+## <PostgreSQLResult>
+## 
+## $`3265`
+## <PostgreSQLResult>
+## 
+## $`3266`
 ## <PostgreSQLResult>
 ## 
 ## $`3267`
@@ -1859,106 +1957,73 @@ apply(user.outlier, 1, markoutlier, exp_no = exp_no, period_no = period_no,
 ## $`3268`
 ## <PostgreSQLResult>
 ## 
-## $`3272`
+## $`3269`
 ## <PostgreSQLResult>
 ## 
-## $`3277`
+## $`3270`
 ## <PostgreSQLResult>
 ## 
-## $`3278`
+## $`3292`
 ## <PostgreSQLResult>
 ## 
-## $`3284`
-## <PostgreSQLResult>
-## 
-## $`3286`
-## <PostgreSQLResult>
-## 
-## $`3294`
-## <PostgreSQLResult>
-## 
-## $`3305`
-## <PostgreSQLResult>
-## 
-## $`3313`
-## <PostgreSQLResult>
-## 
-## $`3317`
-## <PostgreSQLResult>
-## 
-## $`3318`
-## <PostgreSQLResult>
-## 
-## $`3319`
+## $`3297`
 ## <PostgreSQLResult>
 ## 
 ## $`3326`
 ## <PostgreSQLResult>
 ## 
-## $`3327`
+## $`3363`
 ## <PostgreSQLResult>
 ## 
-## $`3328`
+## $`3365`
 ## <PostgreSQLResult>
 ## 
-## $`3350`
+## $`3367`
 ## <PostgreSQLResult>
 ## 
-## $`3351`
+## $`3368`
 ## <PostgreSQLResult>
 ## 
 ## $`3369`
 ## <PostgreSQLResult>
 ## 
+## $`3370`
+## <PostgreSQLResult>
+## 
+## $`3371`
+## <PostgreSQLResult>
+## 
+## $`3372`
+## <PostgreSQLResult>
+## 
+## $`3373`
+## <PostgreSQLResult>
+## 
+## $`3374`
+## <PostgreSQLResult>
+## 
 ## $`3376`
 ## <PostgreSQLResult>
 ## 
-## $`3392`
+## $`3378`
 ## <PostgreSQLResult>
 ## 
-## $`3395`
+## $`3383`
 ## <PostgreSQLResult>
 ## 
-## $`3402`
+## $`3468`
 ## <PostgreSQLResult>
 ## 
-## $`3403`
+## $`3475`
 ## <PostgreSQLResult>
 ## 
-## $`3404`
+## $`3481`
 ## <PostgreSQLResult>
 ## 
-## $`3412`
+## $`3482`
 ## <PostgreSQLResult>
 ## 
-## $`3416`
-## <PostgreSQLResult>
-## 
-## $`3420`
-## <PostgreSQLResult>
-## 
-## $`3432`
-## <PostgreSQLResult>
-## 
-## $`3434`
-## <PostgreSQLResult>
-## 
-## $`3435`
-## <PostgreSQLResult>
-## 
-## $`3438`
-## <PostgreSQLResult>
-## 
-## $`3440`
-## <PostgreSQLResult>
-## 
-## $`3443`
-## <PostgreSQLResult>
-## 
-## $`3457`
-## <PostgreSQLResult>
-## 
-## $`3474`
+## $`3483`
 ## <PostgreSQLResult>
 ## 
 ## $`3484`
@@ -1967,73 +2032,157 @@ apply(user.outlier, 1, markoutlier, exp_no = exp_no, period_no = period_no,
 ## $`3485`
 ## <PostgreSQLResult>
 ## 
-## $`3494`
+## $`3486`
+## <PostgreSQLResult>
+## 
+## $`3488`
+## <PostgreSQLResult>
+## 
+## $`3489`
+## <PostgreSQLResult>
+## 
+## $`3490`
+## <PostgreSQLResult>
+## 
+## $`3491`
+## <PostgreSQLResult>
+## 
+## $`3492`
+## <PostgreSQLResult>
+## 
+## $`3493`
+## <PostgreSQLResult>
+## 
+## $`3496`
 ## <PostgreSQLResult>
 ## 
 ## $`3497`
 ## <PostgreSQLResult>
 ## 
-## $`3499`
-## <PostgreSQLResult>
-## 
-## $`3522`
-## <PostgreSQLResult>
-## 
-## $`3523`
-## <PostgreSQLResult>
-## 
-## $`3528`
-## <PostgreSQLResult>
-## 
-## $`3550`
-## <PostgreSQLResult>
-## 
-## $`3551`
-## <PostgreSQLResult>
-## 
-## $`3557`
-## <PostgreSQLResult>
-## 
-## $`3574`
-## <PostgreSQLResult>
-## 
-## $`3586`
-## <PostgreSQLResult>
-## 
 ## $`3587`
+## <PostgreSQLResult>
+## 
+## $`3588`
+## <PostgreSQLResult>
+## 
+## $`3589`
+## <PostgreSQLResult>
+## 
+## $`3590`
+## <PostgreSQLResult>
+## 
+## $`3591`
+## <PostgreSQLResult>
+## 
+## $`3592`
+## <PostgreSQLResult>
+## 
+## $`3593`
+## <PostgreSQLResult>
+## 
+## $`3594`
+## <PostgreSQLResult>
+## 
+## $`3595`
+## <PostgreSQLResult>
+## 
+## $`3596`
+## <PostgreSQLResult>
+## 
+## $`3597`
+## <PostgreSQLResult>
+## 
+## $`3598`
+## <PostgreSQLResult>
+## 
+## $`3599`
 ## <PostgreSQLResult>
 ## 
 ## $`3600`
 ## <PostgreSQLResult>
 ## 
+## $`3602`
+## <PostgreSQLResult>
+## 
+## $`3604`
+## <PostgreSQLResult>
+## 
+## $`3605`
+## <PostgreSQLResult>
+## 
 ## $`3606`
 ## <PostgreSQLResult>
 ## 
-## $`3633`
+## $`3607`
 ## <PostgreSQLResult>
 ## 
-## $`3637`
+## $`3608`
 ## <PostgreSQLResult>
 ## 
-## $`3646`
+## $`3635`
 ## <PostgreSQLResult>
 ## 
-## $`3648`
+## $`3696`
 ## <PostgreSQLResult>
 ## 
-## $`3653`
+## $`3697`
 ## <PostgreSQLResult>
 ## 
-## $`3655`
+## $`3698`
 ## <PostgreSQLResult>
 ## 
-## $`3672`
+## $`3699`
 ## <PostgreSQLResult>
 ## 
-## $`3684`
+## $`3700`
+## <PostgreSQLResult>
+## 
+## $`3701`
+## <PostgreSQLResult>
+## 
+## $`3702`
+## <PostgreSQLResult>
+## 
+## $`3703`
+## <PostgreSQLResult>
+## 
+## $`3704`
+## <PostgreSQLResult>
+## 
+## $`3705`
+## <PostgreSQLResult>
+## 
+## $`3706`
 ## <PostgreSQLResult>
 ## 
 ## $`3707`
+## <PostgreSQLResult>
+## 
+## $`3708`
+## <PostgreSQLResult>
+## 
+## $`3710`
+## <PostgreSQLResult>
+## 
+## $`3711`
+## <PostgreSQLResult>
+## 
+## $`3712`
+## <PostgreSQLResult>
+## 
+## $`3713`
+## <PostgreSQLResult>
+## 
+## $`3714`
+## <PostgreSQLResult>
+## 
+## $`3715`
+## <PostgreSQLResult>
+## 
+## $`3716`
+## <PostgreSQLResult>
+## 
+## $`3717`
 ## <PostgreSQLResult>
 ## 
 ## $`3718`
@@ -2042,358 +2191,373 @@ apply(user.outlier, 1, markoutlier, exp_no = exp_no, period_no = period_no,
 ## $`3719`
 ## <PostgreSQLResult>
 ## 
-## $`3723`
-## <PostgreSQLResult>
-## 
-## $`3728`
-## <PostgreSQLResult>
-## 
-## $`3739`
-## <PostgreSQLResult>
-## 
-## $`3753`
-## <PostgreSQLResult>
-## 
-## $`3755`
-## <PostgreSQLResult>
-## 
-## $`3763`
-## <PostgreSQLResult>
-## 
-## $`3765`
-## <PostgreSQLResult>
-## 
-## $`3768`
-## <PostgreSQLResult>
-## 
-## $`3769`
-## <PostgreSQLResult>
-## 
-## $`3770`
-## <PostgreSQLResult>
-## 
-## $`3771`
-## <PostgreSQLResult>
-## 
-## $`3772`
-## <PostgreSQLResult>
-## 
-## $`3775`
-## <PostgreSQLResult>
-## 
-## $`3779`
-## <PostgreSQLResult>
-## 
-## $`3785`
-## <PostgreSQLResult>
-## 
-## $`3796`
-## <PostgreSQLResult>
-## 
-## $`3798`
-## <PostgreSQLResult>
-## 
-## $`3801`
+## $`3720`
 ## <PostgreSQLResult>
 ## 
 ## $`3808`
 ## <PostgreSQLResult>
 ## 
-## $`3809`
+## $`3819`
 ## <PostgreSQLResult>
 ## 
-## $`3817`
-## <PostgreSQLResult>
-## 
-## $`3818`
+## $`3820`
 ## <PostgreSQLResult>
 ## 
 ## $`3821`
 ## <PostgreSQLResult>
 ## 
+## $`3822`
+## <PostgreSQLResult>
+## 
+## $`3823`
+## <PostgreSQLResult>
+## 
+## $`3824`
+## <PostgreSQLResult>
+## 
+## $`3825`
+## <PostgreSQLResult>
+## 
+## $`3827`
+## <PostgreSQLResult>
+## 
+## $`3829`
+## <PostgreSQLResult>
+## 
 ## $`3831`
 ## <PostgreSQLResult>
 ## 
-## $`3840`
+## $`3832`
 ## <PostgreSQLResult>
 ## 
-## $`3843`
-## <PostgreSQLResult>
-## 
-## $`3848`
-## <PostgreSQLResult>
-## 
-## $`3858`
-## <PostgreSQLResult>
-## 
-## $`3863`
+## $`3834`
 ## <PostgreSQLResult>
 ## 
 ## $`3870`
 ## <PostgreSQLResult>
 ## 
-## $`3887`
+## $`3872`
 ## <PostgreSQLResult>
 ## 
-## $`3896`
+## $`3923`
 ## <PostgreSQLResult>
 ## 
-## $`3911`
+## $`3924`
 ## <PostgreSQLResult>
 ## 
-## $`3913`
+## $`3925`
 ## <PostgreSQLResult>
 ## 
-## $`3915`
+## $`3926`
 ## <PostgreSQLResult>
 ## 
-## $`3918`
+## $`3927`
 ## <PostgreSQLResult>
 ## 
-## $`3921`
+## $`3930`
+## <PostgreSQLResult>
+## 
+## $`3931`
+## <PostgreSQLResult>
+## 
+## $`3932`
 ## <PostgreSQLResult>
 ## 
 ## $`3933`
 ## <PostgreSQLResult>
 ## 
+## $`3934`
+## <PostgreSQLResult>
+## 
+## $`3935`
+## <PostgreSQLResult>
+## 
+## $`3936`
+## <PostgreSQLResult>
+## 
+## $`3937`
+## <PostgreSQLResult>
+## 
+## $`3939`
+## <PostgreSQLResult>
+## 
+## $`3940`
+## <PostgreSQLResult>
+## 
+## $`3941`
+## <PostgreSQLResult>
+## 
+## $`3943`
+## <PostgreSQLResult>
+## 
+## $`3944`
+## <PostgreSQLResult>
+## 
 ## $`3945`
 ## <PostgreSQLResult>
 ## 
-## $`3947`
+## $`3946`
 ## <PostgreSQLResult>
 ## 
-## $`3961`
-## <PostgreSQLResult>
-## 
-## $`3965`
-## <PostgreSQLResult>
-## 
-## $`3966`
-## <PostgreSQLResult>
-## 
-## $`3975`
-## <PostgreSQLResult>
-## 
-## $`3979`
-## <PostgreSQLResult>
-## 
-## $`4012`
-## <PostgreSQLResult>
-## 
-## $`4022`
-## <PostgreSQLResult>
-## 
-## $`4036`
+## $`4014`
 ## <PostgreSQLResult>
 ## 
 ## $`4038`
 ## <PostgreSQLResult>
 ## 
+## $`4039`
+## <PostgreSQLResult>
+## 
 ## $`4040`
+## <PostgreSQLResult>
+## 
+## $`4042`
+## <PostgreSQLResult>
+## 
+## $`4044`
 ## <PostgreSQLResult>
 ## 
 ## $`4045`
 ## <PostgreSQLResult>
 ## 
+## $`4046`
+## <PostgreSQLResult>
+## 
+## $`4047`
+## <PostgreSQLResult>
+## 
+## $`4048`
+## <PostgreSQLResult>
+## 
+## $`4049`
+## <PostgreSQLResult>
+## 
 ## $`4050`
+## <PostgreSQLResult>
+## 
+## $`4051`
+## <PostgreSQLResult>
+## 
+## $`4052`
+## <PostgreSQLResult>
+## 
+## $`4053`
+## <PostgreSQLResult>
+## 
+## $`4054`
 ## <PostgreSQLResult>
 ## 
 ## $`4055`
 ## <PostgreSQLResult>
 ## 
-## $`4067`
+## $`4056`
 ## <PostgreSQLResult>
 ## 
-## $`4069`
+## $`4057`
 ## <PostgreSQLResult>
 ## 
-## $`4071`
+## $`4058`
 ## <PostgreSQLResult>
 ## 
-## $`4075`
+## $`4062`
 ## <PostgreSQLResult>
 ## 
-## $`4080`
+## $`4078`
 ## <PostgreSQLResult>
 ## 
-## $`4086`
-## <PostgreSQLResult>
-## 
-## $`4095`
-## <PostgreSQLResult>
-## 
-## $`4096`
-## <PostgreSQLResult>
-## 
-## $`4100`
-## <PostgreSQLResult>
-## 
-## $`4105`
-## <PostgreSQLResult>
-## 
-## $`4113`
-## <PostgreSQLResult>
-## 
-## $`4114`
-## <PostgreSQLResult>
-## 
-## $`4118`
-## <PostgreSQLResult>
-## 
-## $`4119`
-## <PostgreSQLResult>
-## 
-## $`4130`
-## <PostgreSQLResult>
-## 
-## $`4132`
-## <PostgreSQLResult>
-## 
-## $`4134`
-## <PostgreSQLResult>
-## 
-## $`4143`
-## <PostgreSQLResult>
-## 
-## $`4148`
+## $`4158`
 ## <PostgreSQLResult>
 ## 
 ## $`4160`
 ## <PostgreSQLResult>
 ## 
+## $`4161`
+## <PostgreSQLResult>
+## 
+## $`4163`
+## <PostgreSQLResult>
+## 
+## $`4165`
+## <PostgreSQLResult>
+## 
+## $`4166`
+## <PostgreSQLResult>
+## 
+## $`4167`
+## <PostgreSQLResult>
+## 
+## $`4168`
+## <PostgreSQLResult>
+## 
 ## $`4169`
 ## <PostgreSQLResult>
 ## 
-## $`4183`
+## $`4172`
 ## <PostgreSQLResult>
 ## 
-## $`4191`
+## $`4228`
 ## <PostgreSQLResult>
 ## 
-## $`4195`
+## $`4271`
 ## <PostgreSQLResult>
 ## 
-## $`4203`
-## <PostgreSQLResult>
-## 
-## $`4206`
-## <PostgreSQLResult>
-## 
-## $`4207`
-## <PostgreSQLResult>
-## 
-## $`4220`
-## <PostgreSQLResult>
-## 
-## $`4225`
-## <PostgreSQLResult>
-## 
-## $`4227`
-## <PostgreSQLResult>
-## 
-## $`4229`
-## <PostgreSQLResult>
-## 
-## $`4232`
-## <PostgreSQLResult>
-## 
-## $`4245`
-## <PostgreSQLResult>
-## 
-## $`4255`
-## <PostgreSQLResult>
-## 
-## $`4266`
-## <PostgreSQLResult>
-## 
-## $`4268`
-## <PostgreSQLResult>
-## 
-## $`4272`
+## $`4274`
 ## <PostgreSQLResult>
 ## 
 ## $`4275`
 ## <PostgreSQLResult>
 ## 
-## $`4282`
+## $`4276`
 ## <PostgreSQLResult>
 ## 
-## $`4302`
+## $`4277`
 ## <PostgreSQLResult>
 ## 
-## $`4306`
+## $`4278`
+## <PostgreSQLResult>
+## 
+## $`4279`
+## <PostgreSQLResult>
+## 
+## $`4280`
+## <PostgreSQLResult>
+## 
+## $`4281`
+## <PostgreSQLResult>
+## 
+## $`4283`
+## <PostgreSQLResult>
+## 
+## $`4284`
+## <PostgreSQLResult>
+## 
+## $`4285`
+## <PostgreSQLResult>
+## 
+## $`4298`
 ## <PostgreSQLResult>
 ## 
 ## $`4309`
 ## <PostgreSQLResult>
 ## 
-## $`4317`
-## <PostgreSQLResult>
-## 
-## $`4322`
-## <PostgreSQLResult>
-## 
 ## $`4335`
 ## <PostgreSQLResult>
 ## 
-## $`4343`
+## $`4369`
 ## <PostgreSQLResult>
 ## 
-## $`4348`
+## $`4370`
 ## <PostgreSQLResult>
 ## 
-## $`4361`
+## $`4371`
 ## <PostgreSQLResult>
 ## 
-## $`4367`
+## $`4372`
+## <PostgreSQLResult>
+## 
+## $`4374`
+## <PostgreSQLResult>
+## 
+## $`4375`
+## <PostgreSQLResult>
+## 
+## $`4377`
+## <PostgreSQLResult>
+## 
+## $`4378`
+## <PostgreSQLResult>
+## 
+## $`4379`
+## <PostgreSQLResult>
+## 
+## $`4380`
+## <PostgreSQLResult>
+## 
+## $`4383`
+## <PostgreSQLResult>
+## 
+## $`4385`
+## <PostgreSQLResult>
+## 
+## $`4386`
+## <PostgreSQLResult>
+## 
+## $`4387`
+## <PostgreSQLResult>
+## 
+## $`4388`
 ## <PostgreSQLResult>
 ## 
 ## $`4389`
 ## <PostgreSQLResult>
 ## 
-## $`4393`
+## $`4390`
 ## <PostgreSQLResult>
 ## 
-## $`4409`
+## $`4391`
 ## <PostgreSQLResult>
 ## 
-## $`4422`
+## $`4392`
+## <PostgreSQLResult>
+## 
+## $`4394`
+## <PostgreSQLResult>
+## 
+## $`4395`
+## <PostgreSQLResult>
+## 
+## $`4396`
 ## <PostgreSQLResult>
 ## 
 ## $`4429`
 ## <PostgreSQLResult>
 ## 
-## $`4438`
-## <PostgreSQLResult>
-## 
 ## $`4439`
 ## <PostgreSQLResult>
 ## 
-## $`4445`
+## $`4481`
 ## <PostgreSQLResult>
 ## 
-## $`4454`
+## $`4483`
 ## <PostgreSQLResult>
 ## 
-## $`4456`
+## $`4486`
 ## <PostgreSQLResult>
 ## 
-## $`4471`
-## <PostgreSQLResult>
-## 
-## $`4472`
-## <PostgreSQLResult>
-## 
-## $`4482`
-## <PostgreSQLResult>
-## 
-## $`4487`
+## $`4488`
 ## <PostgreSQLResult>
 ## 
 ## $`4489`
 ## <PostgreSQLResult>
 ## 
+## $`4490`
+## <PostgreSQLResult>
+## 
 ## $`4492`
+## <PostgreSQLResult>
+## 
+## $`4493`
+## <PostgreSQLResult>
+## 
+## $`4494`
+## <PostgreSQLResult>
+## 
+## $`4496`
+## <PostgreSQLResult>
+## 
+## $`4497`
+## <PostgreSQLResult>
+## 
+## $`4498`
+## <PostgreSQLResult>
+## 
+## $`4499`
+## <PostgreSQLResult>
+## 
+## $`4500`
+## <PostgreSQLResult>
+## 
+## $`4501`
 ## <PostgreSQLResult>
 ## 
 ## $`4502`
@@ -2402,40 +2566,43 @@ apply(user.outlier, 1, markoutlier, exp_no = exp_no, period_no = period_no,
 ## $`4503`
 ## <PostgreSQLResult>
 ## 
-## $`4521`
+## $`4504`
 ## <PostgreSQLResult>
 ## 
-## $`4546`
+## $`4505`
 ## <PostgreSQLResult>
 ## 
-## $`4550`
+## $`4506`
 ## <PostgreSQLResult>
 ## 
-## $`4572`
+## $`4507`
 ## <PostgreSQLResult>
 ## 
-## $`4578`
+## $`4548`
 ## <PostgreSQLResult>
 ## 
-## $`4587`
+## $`4579`
 ## <PostgreSQLResult>
 ## 
-## $`4592`
-## <PostgreSQLResult>
-## 
-## $`4594`
-## <PostgreSQLResult>
-## 
-## $`4596`
-## <PostgreSQLResult>
-## 
-## $`4597`
+## $`4607`
 ## <PostgreSQLResult>
 ## 
 ## $`4609`
 ## <PostgreSQLResult>
 ## 
-## $`4613`
+## $`4610`
+## <PostgreSQLResult>
+## 
+## $`4611`
+## <PostgreSQLResult>
+## 
+## $`4612`
+## <PostgreSQLResult>
+## 
+## $`4614`
+## <PostgreSQLResult>
+## 
+## $`4617`
 ## <PostgreSQLResult>
 ## 
 ## $`4618`
@@ -2444,301 +2611,376 @@ apply(user.outlier, 1, markoutlier, exp_no = exp_no, period_no = period_no,
 ## $`4619`
 ## <PostgreSQLResult>
 ## 
-## $`4621`
+## $`4620`
 ## <PostgreSQLResult>
 ## 
 ## $`4622`
 ## <PostgreSQLResult>
 ## 
-## $`4623`
-## <PostgreSQLResult>
-## 
 ## $`4625`
 ## <PostgreSQLResult>
 ## 
-## $`4630`
+## $`4660`
 ## <PostgreSQLResult>
 ## 
-## $`4648`
+## $`4682`
 ## <PostgreSQLResult>
 ## 
-## $`4662`
-## <PostgreSQLResult>
-## 
-## $`4677`
-## <PostgreSQLResult>
-## 
-## $`4679`
-## <PostgreSQLResult>
-## 
-## $`4688`
-## <PostgreSQLResult>
-## 
-## $`4698`
+## $`4713`
 ## <PostgreSQLResult>
 ## 
 ## $`4714`
 ## <PostgreSQLResult>
 ## 
+## $`4715`
+## <PostgreSQLResult>
+## 
+## $`4716`
+## <PostgreSQLResult>
+## 
+## $`4717`
+## <PostgreSQLResult>
+## 
+## $`4718`
+## <PostgreSQLResult>
+## 
+## $`4720`
+## <PostgreSQLResult>
+## 
+## $`4721`
+## <PostgreSQLResult>
+## 
+## $`4722`
+## <PostgreSQLResult>
+## 
 ## $`4723`
+## <PostgreSQLResult>
+## 
+## $`4724`
+## <PostgreSQLResult>
+## 
+## $`4727`
 ## <PostgreSQLResult>
 ## 
 ## $`4728`
 ## <PostgreSQLResult>
 ## 
-## $`4737`
+## $`4729`
+## <PostgreSQLResult>
+## 
+## $`4730`
+## <PostgreSQLResult>
+## 
+## $`4731`
+## <PostgreSQLResult>
+## 
+## $`4732`
+## <PostgreSQLResult>
+## 
+## $`4733`
+## <PostgreSQLResult>
+## 
+## $`4734`
 ## <PostgreSQLResult>
 ## 
 ## $`4741`
 ## <PostgreSQLResult>
 ## 
-## $`4745`
+## $`4767`
 ## <PostgreSQLResult>
 ## 
-## $`4752`
+## $`4809`
 ## <PostgreSQLResult>
 ## 
-## $`4759`
+## $`4820`
 ## <PostgreSQLResult>
 ## 
-## $`4766`
+## $`4823`
 ## <PostgreSQLResult>
 ## 
-## $`4807`
+## $`4824`
 ## <PostgreSQLResult>
 ## 
-## $`4815`
+## $`4825`
 ## <PostgreSQLResult>
 ## 
 ## $`4826`
 ## <PostgreSQLResult>
 ## 
+## $`4827`
+## <PostgreSQLResult>
+## 
+## $`4828`
+## <PostgreSQLResult>
+## 
+## $`4831`
+## <PostgreSQLResult>
+## 
+## $`4832`
+## <PostgreSQLResult>
+## 
+## $`4833`
+## <PostgreSQLResult>
+## 
+## $`4834`
+## <PostgreSQLResult>
+## 
+## $`4835`
+## <PostgreSQLResult>
+## 
+## $`4838`
+## <PostgreSQLResult>
+## 
 ## $`4840`
 ## <PostgreSQLResult>
 ## 
-## $`4851`
+## $`4841`
 ## <PostgreSQLResult>
 ## 
-## $`4852`
+## $`4842`
 ## <PostgreSQLResult>
 ## 
-## $`4865`
+## $`4843`
 ## <PostgreSQLResult>
 ## 
-## $`4868`
+## $`4844`
 ## <PostgreSQLResult>
 ## 
-## $`4870`
+## $`4845`
 ## <PostgreSQLResult>
 ## 
-## $`4873`
+## $`4846`
 ## <PostgreSQLResult>
 ## 
 ## $`4876`
 ## <PostgreSQLResult>
 ## 
-## $`4878`
+## $`4932`
 ## <PostgreSQLResult>
 ## 
-## $`4882`
+## $`4933`
 ## <PostgreSQLResult>
 ## 
-## $`4892`
+## $`4934`
 ## <PostgreSQLResult>
 ## 
-## $`4900`
+## $`4935`
 ## <PostgreSQLResult>
 ## 
-## $`4918`
+## $`4936`
 ## <PostgreSQLResult>
 ## 
-## $`4921`
+## $`4937`
 ## <PostgreSQLResult>
 ## 
-## $`4943`
+## $`4938`
 ## <PostgreSQLResult>
 ## 
-## $`4951`
+## $`4941`
+## <PostgreSQLResult>
+## 
+## $`4942`
+## <PostgreSQLResult>
+## 
+## $`4944`
+## <PostgreSQLResult>
+## 
+## $`4945`
+## <PostgreSQLResult>
+## 
+## $`4946`
+## <PostgreSQLResult>
+## 
+## $`4947`
+## <PostgreSQLResult>
+## 
+## $`4948`
+## <PostgreSQLResult>
+## 
+## $`4949`
+## <PostgreSQLResult>
+## 
+## $`4950`
+## <PostgreSQLResult>
+## 
+## $`4952`
+## <PostgreSQLResult>
+## 
+## $`4953`
+## <PostgreSQLResult>
+## 
+## $`4954`
 ## <PostgreSQLResult>
 ## 
 ## $`4955`
 ## <PostgreSQLResult>
 ## 
-## $`4968`
+## $`4956`
 ## <PostgreSQLResult>
 ## 
-## $`4970`
+## $`4957`
 ## <PostgreSQLResult>
 ## 
-## $`4973`
+## $`5055`
 ## <PostgreSQLResult>
 ## 
-## $`4975`
+## $`5057`
 ## <PostgreSQLResult>
 ## 
-## $`4978`
+## $`5058`
 ## <PostgreSQLResult>
 ## 
-## $`4980`
+## $`5059`
 ## <PostgreSQLResult>
 ## 
-## $`4984`
+## $`5060`
 ## <PostgreSQLResult>
 ## 
-## $`4995`
+## $`5061`
 ## <PostgreSQLResult>
 ## 
-## $`4999`
+## $`5062`
 ## <PostgreSQLResult>
 ## 
-## $`5013`
+## $`5063`
 ## <PostgreSQLResult>
 ## 
-## $`5014`
+## $`5064`
 ## <PostgreSQLResult>
 ## 
-## $`5043`
+## $`5065`
 ## <PostgreSQLResult>
 ## 
-## $`5052`
+## $`5066`
 ## <PostgreSQLResult>
 ## 
-## $`5074`
+## $`5067`
 ## <PostgreSQLResult>
 ## 
-## $`5076`
+## $`5068`
 ## <PostgreSQLResult>
 ## 
-## $`5081`
+## $`5069`
 ## <PostgreSQLResult>
 ## 
-## $`5083`
+## $`5070`
 ## <PostgreSQLResult>
 ## 
-## $`5085`
+## $`5147`
 ## <PostgreSQLResult>
 ## 
-## $`5107`
+## $`5154`
 ## <PostgreSQLResult>
 ## 
-## $`5118`
-## <PostgreSQLResult>
-## 
-## $`5121`
-## <PostgreSQLResult>
-## 
-## $`5126`
-## <PostgreSQLResult>
-## 
-## $`5134`
-## <PostgreSQLResult>
-## 
-## $`5137`
-## <PostgreSQLResult>
-## 
-## $`5151`
-## <PostgreSQLResult>
-## 
-## $`5158`
-## <PostgreSQLResult>
-## 
-## $`5160`
+## $`5163`
 ## <PostgreSQLResult>
 ## 
 ## $`5166`
 ## <PostgreSQLResult>
 ## 
-## $`5174`
+## $`5168`
 ## <PostgreSQLResult>
 ## 
-## $`5179`
+## $`5170`
+## <PostgreSQLResult>
+## 
+## $`5173`
+## <PostgreSQLResult>
+## 
+## $`5175`
+## <PostgreSQLResult>
+## 
+## $`5176`
+## <PostgreSQLResult>
+## 
+## $`5177`
+## <PostgreSQLResult>
+## 
+## $`5178`
 ## <PostgreSQLResult>
 ## 
 ## $`5181`
 ## <PostgreSQLResult>
 ## 
-## $`5185`
+## $`5182`
 ## <PostgreSQLResult>
 ## 
-## $`5186`
+## $`5183`
 ## <PostgreSQLResult>
 ## 
-## $`5190`
+## $`5268`
 ## <PostgreSQLResult>
 ## 
-## $`5208`
+## $`5270`
 ## <PostgreSQLResult>
 ## 
-## $`5223`
-## <PostgreSQLResult>
-## 
-## $`5229`
-## <PostgreSQLResult>
-## 
-## $`5230`
-## <PostgreSQLResult>
-## 
-## $`5243`
-## <PostgreSQLResult>
-## 
-## $`5244`
-## <PostgreSQLResult>
-## 
-## $`5248`
-## <PostgreSQLResult>
-## 
-## $`5267`
+## $`5271`
 ## <PostgreSQLResult>
 ## 
 ## $`5272`
 ## <PostgreSQLResult>
 ## 
-## $`5277`
+## $`5273`
 ## <PostgreSQLResult>
 ## 
-## $`5294`
+## $`5274`
 ## <PostgreSQLResult>
 ## 
-## $`5306`
+## $`5276`
 ## <PostgreSQLResult>
 ## 
-## $`5308`
+## $`5278`
 ## <PostgreSQLResult>
 ## 
-## $`5314`
+## $`5280`
 ## <PostgreSQLResult>
 ## 
-## $`5325`
+## $`5281`
 ## <PostgreSQLResult>
 ## 
-## $`5326`
+## $`5282`
 ## <PostgreSQLResult>
 ## 
-## $`5341`
+## $`5285`
 ## <PostgreSQLResult>
 ## 
-## $`5346`
+## $`5287`
 ## <PostgreSQLResult>
 ## 
-## $`5353`
+## $`5290`
 ## <PostgreSQLResult>
 ## 
-## $`5354`
+## $`5291`
 ## <PostgreSQLResult>
 ## 
-## $`5357`
+## $`5292`
 ## <PostgreSQLResult>
 ## 
-## $`5369`
+## $`5293`
 ## <PostgreSQLResult>
 ## 
-## $`5373`
+## $`5385`
 ## <PostgreSQLResult>
 ## 
-## $`5374`
+## $`5386`
+## <PostgreSQLResult>
+## 
+## $`5387`
+## <PostgreSQLResult>
+## 
+## $`5389`
+## <PostgreSQLResult>
+## 
+## $`5392`
+## <PostgreSQLResult>
+## 
+## $`5393`
 ## <PostgreSQLResult>
 ## 
 ## $`5394`
+## <PostgreSQLResult>
+## 
+## $`5395`
 ## <PostgreSQLResult>
 ## 
 ## $`5397`
@@ -2747,181 +2989,181 @@ apply(user.outlier, 1, markoutlier, exp_no = exp_no, period_no = period_no,
 ## $`5398`
 ## <PostgreSQLResult>
 ## 
+## $`5399`
+## <PostgreSQLResult>
+## 
 ## $`5401`
 ## <PostgreSQLResult>
 ## 
 ## $`5403`
 ## <PostgreSQLResult>
 ## 
-## $`5404`
+## $`5406`
 ## <PostgreSQLResult>
 ## 
-## $`5409`
+## $`5490`
 ## <PostgreSQLResult>
 ## 
-## $`5413`
+## $`5491`
 ## <PostgreSQLResult>
 ## 
-## $`5420`
+## $`5492`
 ## <PostgreSQLResult>
 ## 
-## $`5432`
+## $`5493`
 ## <PostgreSQLResult>
 ## 
-## $`5435`
+## $`5494`
 ## <PostgreSQLResult>
 ## 
-## $`5441`
+## $`5495`
 ## <PostgreSQLResult>
 ## 
-## $`5443`
+## $`5496`
 ## <PostgreSQLResult>
 ## 
-## $`5446`
-## <PostgreSQLResult>
-## 
-## $`5449`
-## <PostgreSQLResult>
-## 
-## $`5464`
-## <PostgreSQLResult>
-## 
-## $`5467`
-## <PostgreSQLResult>
-## 
-## $`5469`
-## <PostgreSQLResult>
-## 
-## $`5498`
+## $`5499`
 ## <PostgreSQLResult>
 ## 
 ## $`5500`
 ## <PostgreSQLResult>
 ## 
+## $`5502`
+## <PostgreSQLResult>
+## 
+## $`5503`
+## <PostgreSQLResult>
+## 
+## $`5504`
+## <PostgreSQLResult>
+## 
 ## $`5505`
+## <PostgreSQLResult>
+## 
+## $`5506`
 ## <PostgreSQLResult>
 ## 
 ## $`5507`
 ## <PostgreSQLResult>
 ## 
-## $`5524`
+## $`5510`
 ## <PostgreSQLResult>
 ## 
-## $`5539`
+## $`5511`
 ## <PostgreSQLResult>
 ## 
-## $`5552`
+## $`5512`
 ## <PostgreSQLResult>
 ## 
-## $`5557`
+## $`5513`
 ## <PostgreSQLResult>
 ## 
-## $`5558`
+## $`5514`
 ## <PostgreSQLResult>
 ## 
-## $`5581`
+## $`5515`
 ## <PostgreSQLResult>
 ## 
-## $`5583`
+## $`5516`
 ## <PostgreSQLResult>
 ## 
-## $`5593`
+## $`5551`
 ## <PostgreSQLResult>
 ## 
-## $`5597`
-## <PostgreSQLResult>
-## 
-## $`5604`
-## <PostgreSQLResult>
-## 
-## $`5611`
-## <PostgreSQLResult>
-## 
-## $`5612`
+## $`5570`
 ## <PostgreSQLResult>
 ## 
 ## $`5614`
 ## <PostgreSQLResult>
 ## 
-## $`5622`
+## $`5615`
 ## <PostgreSQLResult>
 ## 
-## $`5624`
+## $`5616`
 ## <PostgreSQLResult>
 ## 
-## $`5638`
+## $`5617`
 ## <PostgreSQLResult>
 ## 
-## $`5648`
+## $`5620`
 ## <PostgreSQLResult>
 ## 
-## $`5656`
+## $`5621`
 ## <PostgreSQLResult>
 ## 
-## $`5657`
+## $`5623`
 ## <PostgreSQLResult>
 ## 
-## $`5673`
+## $`5625`
 ## <PostgreSQLResult>
 ## 
-## $`5676`
+## $`5626`
 ## <PostgreSQLResult>
 ## 
-## $`5687`
+## $`5627`
 ## <PostgreSQLResult>
 ## 
-## $`5710`
+## $`5628`
 ## <PostgreSQLResult>
 ## 
-## $`5711`
+## $`5629`
 ## <PostgreSQLResult>
 ## 
-## $`5713`
+## $`5630`
 ## <PostgreSQLResult>
 ## 
-## $`5715`
+## $`5659`
+## <PostgreSQLResult>
+## 
+## $`5720`
+## <PostgreSQLResult>
+## 
+## $`5721`
+## <PostgreSQLResult>
+## 
+## $`5722`
+## <PostgreSQLResult>
+## 
+## $`5726`
+## <PostgreSQLResult>
+## 
+## $`5727`
+## <PostgreSQLResult>
+## 
+## $`5731`
+## <PostgreSQLResult>
+## 
+## $`5734`
+## <PostgreSQLResult>
+## 
+## $`5735`
 ## <PostgreSQLResult>
 ## 
 ## $`5736`
 ## <PostgreSQLResult>
 ## 
+## $`5737`
+## <PostgreSQLResult>
+## 
+## $`5738`
+## <PostgreSQLResult>
+## 
+## $`5740`
+## <PostgreSQLResult>
+## 
+## $`5741`
+## <PostgreSQLResult>
+## 
 ## $`5742`
 ## <PostgreSQLResult>
 ## 
-## $`5759`
+## $`5743`
 ## <PostgreSQLResult>
 ## 
-## $`5761`
+## $`5754`
 ## <PostgreSQLResult>
 ## 
-## $`5763`
-## <PostgreSQLResult>
-## 
-## $`5764`
-## <PostgreSQLResult>
-## 
-## $`5771`
-## <PostgreSQLResult>
-## 
-## $`5777`
-## <PostgreSQLResult>
-## 
-## $`5782`
-## <PostgreSQLResult>
-## 
-## $`5789`
-## <PostgreSQLResult>
-## 
-## $`5795`
-## <PostgreSQLResult>
-## 
-## $`5796`
-## <PostgreSQLResult>
-## 
-## $`5829`
-## <PostgreSQLResult>
-## 
-## $`5834`
+## $`5760`
 ## <PostgreSQLResult>
 ## 
 ## $`5836`
@@ -2930,10 +3172,19 @@ apply(user.outlier, 1, markoutlier, exp_no = exp_no, period_no = period_no,
 ## $`5837`
 ## <PostgreSQLResult>
 ## 
-## $`5842`
+## $`5838`
+## <PostgreSQLResult>
+## 
+## $`5840`
+## <PostgreSQLResult>
+## 
+## $`5841`
 ## <PostgreSQLResult>
 ## 
 ## $`5843`
+## <PostgreSQLResult>
+## 
+## $`5844`
 ## <PostgreSQLResult>
 ## 
 ## $`5845`
@@ -2945,70 +3196,31 @@ apply(user.outlier, 1, markoutlier, exp_no = exp_no, period_no = period_no,
 ## $`5847`
 ## <PostgreSQLResult>
 ## 
-## $`5860`
+## $`5848`
 ## <PostgreSQLResult>
 ## 
-## $`5863`
+## $`5853`
 ## <PostgreSQLResult>
 ## 
-## $`5865`
+## $`5854`
 ## <PostgreSQLResult>
 ## 
-## $`5868`
+## $`5855`
 ## <PostgreSQLResult>
 ## 
-## $`5877`
+## $`5856`
 ## <PostgreSQLResult>
 ## 
-## $`5892`
+## $`5949`
 ## <PostgreSQLResult>
 ## 
-## $`5893`
+## $`5950`
 ## <PostgreSQLResult>
 ## 
-## $`5894`
+## $`5951`
 ## <PostgreSQLResult>
 ## 
-## $`5895`
-## <PostgreSQLResult>
-## 
-## $`5896`
-## <PostgreSQLResult>
-## 
-## $`5906`
-## <PostgreSQLResult>
-## 
-## $`5911`
-## <PostgreSQLResult>
-## 
-## $`5912`
-## <PostgreSQLResult>
-## 
-## $`5914`
-## <PostgreSQLResult>
-## 
-## $`5915`
-## <PostgreSQLResult>
-## 
-## $`5916`
-## <PostgreSQLResult>
-## 
-## $`5917`
-## <PostgreSQLResult>
-## 
-## $`5924`
-## <PostgreSQLResult>
-## 
-## $`5934`
-## <PostgreSQLResult>
-## 
-## $`5941`
-## <PostgreSQLResult>
-## 
-## $`5946`
-## <PostgreSQLResult>
-## 
-## $`5947`
+## $`5952`
 ## <PostgreSQLResult>
 ## 
 ## $`5953`
@@ -3020,415 +3232,331 @@ apply(user.outlier, 1, markoutlier, exp_no = exp_no, period_no = period_no,
 ## $`5957`
 ## <PostgreSQLResult>
 ## 
+## $`5958`
+## <PostgreSQLResult>
+## 
+## $`5959`
+## <PostgreSQLResult>
+## 
+## $`5960`
+## <PostgreSQLResult>
+## 
 ## $`5961`
 ## <PostgreSQLResult>
 ## 
-## $`5963`
+## $`5962`
 ## <PostgreSQLResult>
 ## 
-## $`5974`
+## $`5966`
 ## <PostgreSQLResult>
 ## 
-## $`5981`
+## $`5967`
 ## <PostgreSQLResult>
 ## 
-## $`5990`
+## $`5968`
 ## <PostgreSQLResult>
 ## 
-## $`5992`
-## <PostgreSQLResult>
-## 
-## $`5993`
-## <PostgreSQLResult>
-## 
-## $`5995`
-## <PostgreSQLResult>
-## 
-## $`5996`
-## <PostgreSQLResult>
-## 
-## $`5999`
+## $`5969`
 ## <PostgreSQLResult>
 ## 
 ## $`6003`
 ## <PostgreSQLResult>
 ## 
-## $`6010`
-## <PostgreSQLResult>
-## 
-## $`6029`
-## <PostgreSQLResult>
-## 
-## $`6030`
-## <PostgreSQLResult>
-## 
-## $`6032`
-## <PostgreSQLResult>
-## 
-## $`6033`
-## <PostgreSQLResult>
-## 
-## $`6037`
-## <PostgreSQLResult>
-## 
-## $`6040`
-## <PostgreSQLResult>
-## 
-## $`6043`
-## <PostgreSQLResult>
-## 
-## $`6046`
+## $`6050`
 ## <PostgreSQLResult>
 ## 
 ## $`6051`
 ## <PostgreSQLResult>
 ## 
-## $`6052`
+## $`6053`
 ## <PostgreSQLResult>
 ## 
-## $`6055`
+## $`6054`
 ## <PostgreSQLResult>
 ## 
-## $`6056`
+## $`6057`
 ## <PostgreSQLResult>
 ## 
-## $`6061`
+## $`6058`
+## <PostgreSQLResult>
+## 
+## $`6059`
+## <PostgreSQLResult>
+## 
+## $`6060`
 ## <PostgreSQLResult>
 ## 
 ## $`6064`
 ## <PostgreSQLResult>
 ## 
+## $`6065`
+## <PostgreSQLResult>
+## 
 ## $`6066`
+## <PostgreSQLResult>
+## 
+## $`6067`
+## <PostgreSQLResult>
+## 
+## $`6068`
 ## <PostgreSQLResult>
 ## 
 ## $`6069`
 ## <PostgreSQLResult>
 ## 
-## $`6077`
+## $`6070`
+## <PostgreSQLResult>
+## 
+## $`6071`
+## <PostgreSQLResult>
+## 
+## $`6072`
+## <PostgreSQLResult>
+## 
+## $`6073`
+## <PostgreSQLResult>
+## 
+## $`6074`
+## <PostgreSQLResult>
+## 
+## $`6075`
 ## <PostgreSQLResult>
 ## 
 ## $`6080`
 ## <PostgreSQLResult>
 ## 
-## $`6082`
-## <PostgreSQLResult>
-## 
-## $`6083`
-## <PostgreSQLResult>
-## 
-## $`6084`
-## <PostgreSQLResult>
-## 
-## $`6096`
-## <PostgreSQLResult>
-## 
-## $`6105`
-## <PostgreSQLResult>
-## 
-## $`6106`
-## <PostgreSQLResult>
-## 
-## $`6113`
-## <PostgreSQLResult>
-## 
-## $`6116`
-## <PostgreSQLResult>
-## 
-## $`6123`
+## $`6093`
 ## <PostgreSQLResult>
 ## 
 ## $`6126`
 ## <PostgreSQLResult>
 ## 
-## $`6127`
-## <PostgreSQLResult>
-## 
-## $`6130`
-## <PostgreSQLResult>
-## 
-## $`6140`
-## <PostgreSQLResult>
-## 
-## $`6147`
-## <PostgreSQLResult>
-## 
-## $`6149`
-## <PostgreSQLResult>
-## 
-## $`6166`
-## <PostgreSQLResult>
-## 
-## $`6172`
-## <PostgreSQLResult>
-## 
 ## $`6178`
 ## <PostgreSQLResult>
 ## 
-## $`6179`
+## $`6180`
+## <PostgreSQLResult>
+## 
+## $`6181`
 ## <PostgreSQLResult>
 ## 
 ## $`6182`
 ## <PostgreSQLResult>
 ## 
-## $`6187`
+## $`6184`
 ## <PostgreSQLResult>
 ## 
-## $`6188`
+## $`6185`
+## <PostgreSQLResult>
+## 
+## $`6186`
 ## <PostgreSQLResult>
 ## 
 ## $`6189`
 ## <PostgreSQLResult>
 ## 
-## $`6194`
+## $`6191`
 ## <PostgreSQLResult>
 ## 
-## $`6215`
+## $`6192`
 ## <PostgreSQLResult>
 ## 
-## $`6219`
+## $`6193`
 ## <PostgreSQLResult>
 ## 
-## $`6229`
+## $`6282`
 ## <PostgreSQLResult>
 ## 
-## $`6233`
+## $`6284`
 ## <PostgreSQLResult>
 ## 
-## $`6243`
-## <PostgreSQLResult>
-## 
-## $`6247`
-## <PostgreSQLResult>
-## 
-## $`6250`
-## <PostgreSQLResult>
-## 
-## $`6251`
-## <PostgreSQLResult>
-## 
-## $`6278`
-## <PostgreSQLResult>
-## 
-## $`6280`
-## <PostgreSQLResult>
-## 
-## $`6285`
+## $`6288`
 ## <PostgreSQLResult>
 ## 
 ## $`6289`
 ## <PostgreSQLResult>
 ## 
+## $`6290`
+## <PostgreSQLResult>
+## 
+## $`6293`
+## <PostgreSQLResult>
+## 
 ## $`6294`
+## <PostgreSQLResult>
+## 
+## $`6295`
 ## <PostgreSQLResult>
 ## 
 ## $`6296`
 ## <PostgreSQLResult>
 ## 
+## $`6297`
+## <PostgreSQLResult>
+## 
+## $`6298`
+## <PostgreSQLResult>
+## 
+## $`6299`
+## <PostgreSQLResult>
+## 
+## $`6301`
+## <PostgreSQLResult>
+## 
+## $`6302`
+## <PostgreSQLResult>
+## 
 ## $`6304`
 ## <PostgreSQLResult>
 ## 
-## $`6308`
+## $`6306`
 ## <PostgreSQLResult>
 ## 
-## $`6309`
+## $`6394`
 ## <PostgreSQLResult>
 ## 
-## $`6318`
+## $`6398`
 ## <PostgreSQLResult>
 ## 
-## $`6320`
-## <PostgreSQLResult>
-## 
-## $`6340`
-## <PostgreSQLResult>
-## 
-## $`6342`
-## <PostgreSQLResult>
-## 
-## $`6345`
-## <PostgreSQLResult>
-## 
-## $`6349`
-## <PostgreSQLResult>
-## 
-## $`6352`
-## <PostgreSQLResult>
-## 
-## $`6361`
-## <PostgreSQLResult>
-## 
-## $`6366`
-## <PostgreSQLResult>
-## 
-## $`6367`
-## <PostgreSQLResult>
-## 
-## $`6369`
-## <PostgreSQLResult>
-## 
-## $`6373`
-## <PostgreSQLResult>
-## 
-## $`6375`
-## <PostgreSQLResult>
-## 
-## $`6376`
-## <PostgreSQLResult>
-## 
-## $`6377`
-## <PostgreSQLResult>
-## 
-## $`6379`
-## <PostgreSQLResult>
-## 
-## $`6393`
+## $`6399`
 ## <PostgreSQLResult>
 ## 
 ## $`6400`
 ## <PostgreSQLResult>
 ## 
-## $`6410`
+## $`6401`
+## <PostgreSQLResult>
+## 
+## $`6402`
+## <PostgreSQLResult>
+## 
+## $`6403`
+## <PostgreSQLResult>
+## 
+## $`6404`
+## <PostgreSQLResult>
+## 
+## $`6405`
+## <PostgreSQLResult>
+## 
+## $`6406`
+## <PostgreSQLResult>
+## 
+## $`6407`
+## <PostgreSQLResult>
+## 
+## $`6409`
 ## <PostgreSQLResult>
 ## 
 ## $`6411`
 ## <PostgreSQLResult>
 ## 
+## $`6412`
+## <PostgreSQLResult>
+## 
+## $`6413`
+## <PostgreSQLResult>
+## 
 ## $`6418`
 ## <PostgreSQLResult>
 ## 
-## $`6420`
+## $`6445`
 ## <PostgreSQLResult>
 ## 
-## $`6423`
+## $`6477`
 ## <PostgreSQLResult>
 ## 
-## $`6424`
+## $`6478`
 ## <PostgreSQLResult>
 ## 
-## $`6425`
+## $`6496`
 ## <PostgreSQLResult>
 ## 
-## $`6443`
+## $`6501`
 ## <PostgreSQLResult>
 ## 
-## $`6457`
+## $`6505`
 ## <PostgreSQLResult>
 ## 
-## $`6479`
+## $`6506`
 ## <PostgreSQLResult>
 ## 
-## $`6485`
+## $`6507`
 ## <PostgreSQLResult>
 ## 
-## $`6490`
-## <PostgreSQLResult>
-## 
-## $`6495`
-## <PostgreSQLResult>
-## 
-## $`6502`
-## <PostgreSQLResult>
-## 
-## $`6508`
+## $`6509`
 ## <PostgreSQLResult>
 ## 
 ## $`6510`
 ## <PostgreSQLResult>
 ## 
+## $`6511`
+## <PostgreSQLResult>
+## 
+## $`6512`
+## <PostgreSQLResult>
+## 
+## $`6514`
+## <PostgreSQLResult>
+## 
 ## $`6515`
+## <PostgreSQLResult>
+## 
+## $`6516`
 ## <PostgreSQLResult>
 ## 
 ## $`6517`
 ## <PostgreSQLResult>
 ## 
-## $`6518`
+## $`6519`
+## <PostgreSQLResult>
+## 
+## $`6521`
+## <PostgreSQLResult>
+## 
+## $`6522`
+## <PostgreSQLResult>
+## 
+## $`6523`
+## <PostgreSQLResult>
+## 
+## $`6524`
+## <PostgreSQLResult>
+## 
+## $`6525`
+## <PostgreSQLResult>
+## 
+## $`6526`
+## <PostgreSQLResult>
+## 
+## $`6527`
 ## <PostgreSQLResult>
 ## 
 ## $`6531`
 ## <PostgreSQLResult>
 ## 
-## $`6539`
-## <PostgreSQLResult>
-## 
-## $`6543`
-## <PostgreSQLResult>
-## 
-## $`6544`
-## <PostgreSQLResult>
-## 
-## $`6546`
-## <PostgreSQLResult>
-## 
-## $`6548`
-## <PostgreSQLResult>
-## 
-## $`6549`
-## <PostgreSQLResult>
-## 
-## $`6553`
-## <PostgreSQLResult>
-## 
-## $`6564`
-## <PostgreSQLResult>
-## 
-## $`6565`
-## <PostgreSQLResult>
-## 
-## $`6567`
+## $`6569`
 ## <PostgreSQLResult>
 ## 
 ## $`6570`
 ## <PostgreSQLResult>
 ## 
-## $`6573`
-## <PostgreSQLResult>
-## 
-## $`6575`
-## <PostgreSQLResult>
-## 
-## $`6576`
-## <PostgreSQLResult>
-## 
-## $`6577`
-## <PostgreSQLResult>
-## 
-## $`6584`
-## <PostgreSQLResult>
-## 
-## $`6595`
-## <PostgreSQLResult>
-## 
-## $`6598`
-## <PostgreSQLResult>
-## 
-## $`6602`
-## <PostgreSQLResult>
-## 
-## $`6609`
-## <PostgreSQLResult>
-## 
-## $`6616`
-## <PostgreSQLResult>
-## 
-## $`6622`
-## <PostgreSQLResult>
-## 
-## $`6623`
-## <PostgreSQLResult>
-## 
-## $`6631`
-## <PostgreSQLResult>
-## 
-## $`6637`
-## <PostgreSQLResult>
-## 
-## $`6639`
-## <PostgreSQLResult>
-## 
-## $`6645`
+## $`6572`
 ## <PostgreSQLResult>
 ## 
 ## $`6647`
+## <PostgreSQLResult>
+## 
+## $`6648`
+## <PostgreSQLResult>
+## 
+## $`6649`
+## <PostgreSQLResult>
+## 
+## $`6650`
+## <PostgreSQLResult>
+## 
+## $`6651`
 ## <PostgreSQLResult>
 ## 
 ## $`6652`
@@ -3437,64 +3565,61 @@ apply(user.outlier, 1, markoutlier, exp_no = exp_no, period_no = period_no,
 ## $`6653`
 ## <PostgreSQLResult>
 ## 
+## $`6654`
+## <PostgreSQLResult>
+## 
+## $`6655`
+## <PostgreSQLResult>
+## 
 ## $`6656`
+## <PostgreSQLResult>
+## 
+## $`6657`
+## <PostgreSQLResult>
+## 
+## $`6658`
+## <PostgreSQLResult>
+## 
+## $`6659`
+## <PostgreSQLResult>
+## 
+## $`6660`
+## <PostgreSQLResult>
+## 
+## $`6661`
+## <PostgreSQLResult>
+## 
+## $`6662`
+## <PostgreSQLResult>
+## 
+## $`6663`
 ## <PostgreSQLResult>
 ## 
 ## $`6664`
 ## <PostgreSQLResult>
 ## 
-## $`6676`
+## $`6665`
 ## <PostgreSQLResult>
 ## 
-## $`6681`
-## <PostgreSQLResult>
-## 
-## $`6688`
-## <PostgreSQLResult>
-## 
-## $`6692`
-## <PostgreSQLResult>
-## 
-## $`6705`
-## <PostgreSQLResult>
-## 
-## $`6708`
+## $`6666`
 ## <PostgreSQLResult>
 ## 
 ## $`6709`
 ## <PostgreSQLResult>
 ## 
-## $`6724`
-## <PostgreSQLResult>
-## 
-## $`6730`
-## <PostgreSQLResult>
-## 
-## $`6731`
-## <PostgreSQLResult>
-## 
-## $`6733`
-## <PostgreSQLResult>
-## 
-## $`6734`
-## <PostgreSQLResult>
-## 
-## $`6738`
-## <PostgreSQLResult>
-## 
-## $`6740`
-## <PostgreSQLResult>
-## 
-## $`6742`
-## <PostgreSQLResult>
-## 
-## $`6748`
+## $`6723`
 ## <PostgreSQLResult>
 ## 
 ## $`6750`
 ## <PostgreSQLResult>
 ## 
+## $`6751`
+## <PostgreSQLResult>
+## 
 ## $`6752`
+## <PostgreSQLResult>
+## 
+## $`6753`
 ## <PostgreSQLResult>
 ## 
 ## $`6754`
@@ -3503,10 +3628,61 @@ apply(user.outlier, 1, markoutlier, exp_no = exp_no, period_no = period_no,
 ## $`6756`
 ## <PostgreSQLResult>
 ## 
+## $`6757`
+## <PostgreSQLResult>
+## 
 ## $`6759`
 ## <PostgreSQLResult>
 ## 
-## $`6781`
+## $`6761`
+## <PostgreSQLResult>
+## 
+## $`6762`
+## <PostgreSQLResult>
+## 
+## $`6763`
+## <PostgreSQLResult>
+## 
+## $`6764`
+## <PostgreSQLResult>
+## 
+## $`6766`
+## <PostgreSQLResult>
+## 
+## $`6768`
+## <PostgreSQLResult>
+## 
+## $`6769`
+## <PostgreSQLResult>
+## 
+## $`6770`
+## <PostgreSQLResult>
+## 
+## $`6771`
+## <PostgreSQLResult>
+## 
+## $`6773`
+## <PostgreSQLResult>
+## 
+## $`6774`
+## <PostgreSQLResult>
+## 
+## $`6775`
+## <PostgreSQLResult>
+## 
+## $`6776`
+## <PostgreSQLResult>
+## 
+## $`6777`
+## <PostgreSQLResult>
+## 
+## $`6778`
+## <PostgreSQLResult>
+## 
+## $`6779`
+## <PostgreSQLResult>
+## 
+## $`6780`
 ## <PostgreSQLResult>
 ## 
 ## $`6783`
@@ -3515,37 +3691,157 @@ apply(user.outlier, 1, markoutlier, exp_no = exp_no, period_no = period_no,
 ## $`6786`
 ## <PostgreSQLResult>
 ## 
+## $`6787`
+## <PostgreSQLResult>
+## 
+## $`6789`
+## <PostgreSQLResult>
+## 
+## $`6790`
+## <PostgreSQLResult>
+## 
+## $`6791`
+## <PostgreSQLResult>
+## 
+## $`6792`
+## <PostgreSQLResult>
+## 
+## $`6793`
+## <PostgreSQLResult>
+## 
+## $`6794`
+## <PostgreSQLResult>
+## 
+## $`6795`
+## <PostgreSQLResult>
+## 
+## $`6796`
+## <PostgreSQLResult>
+## 
 ## $`6797`
 ## <PostgreSQLResult>
 ## 
-## $`6798`
+## $`6799`
 ## <PostgreSQLResult>
 ## 
-## $`6800`
+## $`6801`
+## <PostgreSQLResult>
+## 
+## $`6802`
+## <PostgreSQLResult>
+## 
+## $`6803`
 ## <PostgreSQLResult>
 ## 
 ## $`6804`
 ## <PostgreSQLResult>
 ## 
+## $`6805`
+## <PostgreSQLResult>
+## 
+## $`6806`
+## <PostgreSQLResult>
+## 
+## $`6807`
+## <PostgreSQLResult>
+## 
+## $`6808`
+## <PostgreSQLResult>
+## 
 ## $`6809`
 ## <PostgreSQLResult>
 ## 
-## $`6812`
+## $`6810`
+## <PostgreSQLResult>
+## 
+## $`6811`
+## <PostgreSQLResult>
+## 
+## $`6814`
 ## <PostgreSQLResult>
 ## 
 ## $`6815`
 ## <PostgreSQLResult>
 ## 
+## $`6816`
+## <PostgreSQLResult>
+## 
+## $`6817`
+## <PostgreSQLResult>
+## 
+## $`6818`
+## <PostgreSQLResult>
+## 
 ## $`6819`
 ## <PostgreSQLResult>
 ## 
+## $`6820`
+## <PostgreSQLResult>
+## 
 ## $`6821`
+## <PostgreSQLResult>
+## 
+## $`6822`
+## <PostgreSQLResult>
+## 
+## $`6823`
+## <PostgreSQLResult>
+## 
+## $`6824`
+## <PostgreSQLResult>
+## 
+## $`6825`
+## <PostgreSQLResult>
+## 
+## $`6826`
+## <PostgreSQLResult>
+## 
+## $`6827`
+## <PostgreSQLResult>
+## 
+## $`6829`
+## <PostgreSQLResult>
+## 
+## $`6830`
+## <PostgreSQLResult>
+## 
+## $`6831`
+## <PostgreSQLResult>
+## 
+## $`6832`
+## <PostgreSQLResult>
+## 
+## $`6833`
+## <PostgreSQLResult>
+## 
+## $`6834`
+## <PostgreSQLResult>
+## 
+## $`6836`
 ## <PostgreSQLResult>
 ## 
 ## $`6837`
 ## <PostgreSQLResult>
 ## 
 ## $`6838`
+## <PostgreSQLResult>
+## 
+## $`6839`
+## <PostgreSQLResult>
+## 
+## $`6840`
+## <PostgreSQLResult>
+## 
+## $`6842`
+## <PostgreSQLResult>
+## 
+## $`6843`
+## <PostgreSQLResult>
+## 
+## $`6844`
+## <PostgreSQLResult>
+## 
+## $`6845`
 ## <PostgreSQLResult>
 ```
 
@@ -3556,7 +3852,7 @@ na1
 ```
 
 ```
-## [1] 1129
+## [1] 1239
 ```
 
 ```r
@@ -3565,9 +3861,9 @@ round(na1/sum(!is.na(user.continent_score$idi)) * 100, 1)
 ```
 
 ```
-## [1] 16.5
+## [1] 18.1
 ```
 
-Total outliers: 1129 out of 6846
+Total outliers: 1239 out of 6846
 
 

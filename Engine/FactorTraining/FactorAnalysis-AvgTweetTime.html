@@ -171,6 +171,512 @@ ggplot(user.data, aes(x = continent, y = avg)) + geom_boxplot(outlier.colour = &
 <pre class="r"><code># geom_dotplot(binaxis='y', stackdir='center', dotsize=1)
 # geom_jitter(shape=16, position=position_jitter(0.2))</code></pre>
 </div>
+<div id="first-create-a-score" class="section level2">
+<h2>first create a score</h2>
+<pre class="r"><code>factor_no &lt;- 4
+exp_no &lt;- 1
+period_no &lt;- 1
+
+sql &lt;- paste(&quot;DELETE FROM main.experiment_user_score where factor_no = 4&quot;, sep = &quot;&quot;)
+dbSendQuery(con, sql)</code></pre>
+<pre><code>## &lt;PostgreSQLResult&gt;</code></pre>
+<pre class="r"><code>sql &lt;- paste(&quot;INSERT INTO main.experiment_user_score(experiment_no, period_no, userid, factor_no, idi_full)&quot;, 
+    sep = &quot;&quot;)
+sql &lt;- paste(sql, &quot;select experiment_no, period_no, userid, 4,&quot;, sep = &quot;&quot;)
+sql &lt;- paste(sql, &quot;avg_tweet_hour&quot;, sep = &quot;&quot;)
+sql &lt;- paste(sql, &quot; from main.experiment_user&quot;, sep = &quot;&quot;)
+dbSendQuery(con, sql)</code></pre>
+<pre><code>## &lt;PostgreSQLResult&gt;</code></pre>
+</div>
+<div id="normalise-the-score-and-show-results" class="section level2">
+<h2>normalise the score and show results</h2>
+<p>The standard formula to normalize data =(value-min)/(max-min) R has a built in function to do this</p>
+<pre class="r"><code>user.score &lt;- dbGetQuery(con, &quot;SELECT s.idi_full, tz.continent from main.experiment_user_score s join main.experiment_user u on u.userid = s.userid left join main.timezone_r tz on tz.timezone = u.timezone where s.factor_no = 4 and s.experiment_no = u.experiment_no and s.period_no = u.period_no&quot;)
+
+user.scaled_score &lt;- data.frame(as.data.frame(scale(user.score[1])), user.score[2])
+colnames(user.scaled_score) = c(&quot;idi&quot;, &quot;continent&quot;)
+
+ggplot(user.scaled_score, aes(x = continent, y = idi)) + geom_boxplot(outlier.colour = &quot;red&quot;, 
+    outlier.shape = 8, outlier.size = 4) + stat_summary(fun.y = mean, geom = &quot;point&quot;, 
+    shape = 23, size = 4)</code></pre>
+<p><img src="data:image/png;base64,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" alt /><!-- --></p>
+</div>
+<div id="outlier-detection" class="section level2">
+<h2>Outlier detection</h2>
+<p>Use Tukey’s method to update all scores that were outliers</p>
+<pre class="r"><code>markoutlier &lt;- function(x, exp_no, period_no, factor_no) {
+    sql &lt;- paste(&quot;update main.experiment_user_score set outlier_full=1&quot;, sep = &quot;&quot;)
+    sql &lt;- paste(sql, &quot; where userid='&quot;, x[&quot;userid&quot;], &quot;'&quot;, sep = &quot;&quot;)
+    sql &lt;- paste(sql, &quot; and experiment_no=&quot;, exp_no, sep = &quot;&quot;)
+    sql &lt;- paste(sql, &quot; and period_no=&quot;, period_no, sep = &quot;&quot;)
+    sql &lt;- paste(sql, &quot; and factor_no=&quot;, factor_no, sep = &quot;&quot;)
+    dbSendQuery(con, sql, echo = FALSE)
+}
+
+# TODO outliers per continent
+continents &lt;- unique(user.scaled_score$continent)
+
+user.continent_score &lt;- user.scaled_score
+outlier &lt;- boxplot.stats(user.continent_score$idi, coef = 1.5)$out
+user.outlier &lt;- user.continent_score[user.continent_score$idi %in% outlier, 
+    ]
+apply(user.outlier, 1, markoutlier, exp_no = exp_no, period_no = period_no, 
+    factor_no = factor_no)</code></pre>
+<pre><code>## $`341`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`399`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`444`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`445`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`486`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`571`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`633`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`736`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`781`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`798`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`864`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`881`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`976`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`997`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`1084`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`1089`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`1186`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`1190`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`1226`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`1272`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`1304`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`1306`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`1307`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`1309`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`1334`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`1365`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`1384`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`1413`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`1448`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`1469`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`1471`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`1472`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`1473`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`1477`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`1488`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`1490`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`1498`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`1499`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`1530`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`1540`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`1554`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`1558`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`1563`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`1571`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`1585`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`1595`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`1613`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`1641`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`1643`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`1645`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`1655`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`1664`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`1670`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`1674`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`1737`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`1761`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`1764`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`1770`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`1771`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`1800`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`1807`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`1938`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`1988`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`2001`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`2010`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`2047`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`2079`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`2232`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`2310`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`2351`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`2500`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`2503`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`2526`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`2590`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`2709`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`2740`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`2792`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`2812`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`2860`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`2902`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`3004`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`3027`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`3102`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`3227`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`3278`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`3326`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`3327`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`3357`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`3405`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`3428`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`3449`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`3553`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`3600`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`3689`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`3921`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`3947`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`3952`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`4066`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`4096`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`4148`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`4296`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`4333`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`4419`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`4423`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`4492`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`4667`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`4699`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`4740`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`4829`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`4838`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`4870`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`4879`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`4882`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`4965`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`4998`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`5009`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`5085`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`5120`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`5138`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`5243`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`5267`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`5268`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`5373`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`5409`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`5500`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`5539`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`5624`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`5632`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`5673`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`5737`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`5764`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`5843`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`5873`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`5942`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`5976`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`5984`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`6334`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`6347`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`6357`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`6376`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`6451`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`6457`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`6516`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`6659`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`6664`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`6674`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`6677`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`6783`
+## &lt;PostgreSQLResult&gt;
+## 
+## $`6786`
+## &lt;PostgreSQLResult&gt;</code></pre>
+<pre class="r"><code>na1 &lt;- nrow(user.outlier)
+# Outliers identified:
+na1</code></pre>
+<pre><code>## [1] 149</code></pre>
+<pre class="r"><code># Propotion (%) of outliers:
+round(na1/sum(!is.na(user.continent_score$idi)) * 100, 1)</code></pre>
+<pre><code>## [1] 2.2</code></pre>
+<p>Total outliers: 149 out of 6846</p>
+</div>
 
 
 

@@ -1,5 +1,5 @@
 ---
-title: "Attribute analysis - Type of Image"
+title: "Attribute analysis - Combined"
 output: 
   html_document: 
     keep_md: yes
@@ -33,44 +33,27 @@ read_chunk('../../DBConnection/ConnectPostgres.R')
 ```{r connectDB}
 ```
 
-##Get the tweets
-```{r gettwitterfeeddata, cache=FALSE, echo=FALSE}
-users <- dbGetQuery(con, "SELECT profile_image_type, background_image_type from main.experiment_user")
-```
-
-##Profile image type
-```{r profile}
-ggplot(data = users, aes(x = profile_image_type)) +
-  geom_bar() +
-  theme(legend.position = "none") +
-  xlab("Profile") + ylab("Count") + 
-  scale_fill_gradient(low = "midnightblue", high = "aquamarine4")
-```
-
-##Background image type
-```{r background}
-ggplot(data = users, aes(x = background_image_type)) +
-  geom_bar() +
-  theme(legend.position = "none") +
-  xlab("Background") + ylab("Count") + 
-  scale_fill_gradient(low = "midnightblue", high = "aquamarine4")
-```
-
 ##Score the data
 
 ###first create a score
 ```{r score}
-factor_no <- 3
+factor_no <- 0
 exp_no <- 1
 period_no <- 1
 
-sql <- paste("DELETE FROM main.experiment_user_score where factor_no = 3",sep="")
+sql <- paste("DELETE FROM main.experiment_user_score where factor_no = 0",sep="")
 dbSendQuery(con, sql)
 
 sql <- paste("INSERT INTO main.experiment_user_score(experiment_no, period_no, userid, factor_no, idi_full)",sep="")
-sql <- paste(sql, "select experiment_no, period_no, userid, 3,", sep="")
-sql <- paste(sql, "case when profile_image_type = 'unique' then 1 else 0 end", sep="")    
-sql <- paste(sql, " from main.experiment_user", sep="")
+sql <- paste(sql, "select u1.experiment_no, u1.period_no, u1.userid, 0,", sep="")
+sql <- paste(sql, "(coalesce(u1.idi_full,0)+coalesce(u2.idi_full,0)+coalesce(u3.idi_full,0)+coalesce(u4.idi_full,0)+coalesce(u5.idi_full,0)+coalesce(u6.idi_full,0))/6 as idi_full", sep="")    
+sql <- paste(sql, " from main.experiment_user_score u1", sep="")
+sql <- paste(sql, " left join main.experiment_user_score u2 on u1.userid = u2.userid and u2.factor_no=2", sep="")
+sql <- paste(sql, " left join main.experiment_user_score u3 on u1.userid = u3.userid and u3.factor_no=3", sep="")
+sql <- paste(sql, " left join main.experiment_user_score u4 on u1.userid = u4.userid and u4.factor_no=4", sep="")
+sql <- paste(sql, " left join main.experiment_user_score u5 on u1.userid = u5.userid and u5.factor_no=5", sep="")
+sql <- paste(sql, " left join main.experiment_user_score u6 on u1.userid = u6.userid and u6.factor_no=6", sep="")
+sql <- paste(sql, " where u1.factor_no=1", sep="")
 dbSendQuery(con, sql)
     
 ```
@@ -79,16 +62,17 @@ dbSendQuery(con, sql)
 No scaling required
 
 ```{r score_n}
-user.score <- dbGetQuery(con, "SELECT s.idi_full, tz.continent from main.experiment_user_score s join main.experiment_user u on u.userid = s.userid left join main.timezone_r tz on tz.timezone = u.timezone where s.factor_no = 3 and s.experiment_no = u.experiment_no and s.period_no = u.period_no")
+user.score <- dbGetQuery(con, "SELECT s.idi_full, tz.continent from main.experiment_user_score s join main.experiment_user u on u.userid = s.userid left join main.timezone_r tz on tz.timezone = u.timezone where s.factor_no = 0 and s.experiment_no = u.experiment_no and s.period_no = u.period_no")
 
-#user.scaled_score <- data.frame(as.data.frame( scale(user.score[1] )), user.score[2])
 colnames(user.score) = c("idi","continent")
 
 ggplot(user.score, aes(x=continent, y=idi)) +
   geom_boxplot(outlier.colour="red", outlier.shape=8, outlier.size=4) +
   stat_summary(fun.y=mean, geom="point", shape=23, size=4) 
 
+
 ```
+
 ##Outlier detection
 Use Tukey's method to update all scores that were outliers
 
