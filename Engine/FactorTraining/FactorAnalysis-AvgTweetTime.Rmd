@@ -30,7 +30,7 @@ knitr::opts_chunk$set(warning = FALSE)
 read_chunk('../../DBConnection/ConnectPostgres.R')
 ```
 
-```{r connectDB}
+```{r connectDB, echo=FALSE}
 ```
 
 ##Get the tweets
@@ -83,10 +83,10 @@ dbSendQuery(con, sql)
 The standard formula to normalize data =(value-min)/(max-min) 
 R has a built in function to do this
 ```{r score_n}
-user.score <- dbGetQuery(con, "SELECT s.idi_full, tz.continent from main.experiment_user_score s join main.experiment_user u on u.userid = s.userid left join main.timezone_r tz on tz.timezone = u.timezone where s.factor_no = 4 and s.experiment_no = u.experiment_no and s.period_no = u.period_no")
+user.score <- dbGetQuery(con, "SELECT s.userid, s.idi_full, tz.continent from main.experiment_user_score s join main.experiment_user u on u.userid = s.userid left join main.timezone_r tz on tz.timezone = u.timezone where s.factor_no = 4 and s.experiment_no = u.experiment_no and s.period_no = u.period_no")
 
-user.scaled_score <- data.frame(as.data.frame( scale(user.score[1] )), user.score[2])
-colnames(user.scaled_score) = c("idi","continent")
+user.scaled_score <- data.frame( user.score[1], scale(user.score[2]), user.score[3])
+colnames(user.scaled_score) = c("userid","idi","continent")
 
 ggplot(user.scaled_score, aes(x=continent, y=idi)) +
   geom_boxplot(outlier.colour="red", outlier.shape=8, outlier.size=4) +
@@ -98,7 +98,7 @@ ggplot(user.scaled_score, aes(x=continent, y=idi)) +
 ##Outlier detection
 Use Tukey's method to update all scores that were outliers
 
-```{r outlier}
+```{r outlier, results='hide'}
 
 markoutlier <- function(x, exp_no, period_no, factor_no){
   sql <- paste("update main.experiment_user_score set outlier_full=1",sep="")
@@ -116,11 +116,11 @@ continents <- unique(user.scaled_score$continent)
   outlier <- boxplot.stats(user.continent_score$idi, coef = 1.5)$out
   user.outlier <- user.continent_score[user.continent_score$idi %in% outlier,]
   apply(user.outlier, 1, markoutlier, exp_no=exp_no, period_no=period_no,factor_no=factor_no)
-  na1 <- nrow(user.outlier)
+  #na1 <- nrow(user.outlier)
   #Outliers identified:
-  na1
+  #na1
   #Propotion (%) of outliers:
-  round(na1 / sum(!is.na(user.continent_score$idi))*100, 1)
+  #round(na1 / sum(!is.na(user.continent_score$idi))*100, 1)
 
 ```
 

@@ -31,7 +31,7 @@ knitr::opts_chunk$set(warning = FALSE)
 read_chunk('../../DBConnection/ConnectPostgres.R')
 ```
 
-```{r connectDB}
+```{r connectDB, echo=FALSE}
 ```
 
 ##Get the tweets
@@ -135,7 +135,7 @@ ggplot(user.scaled_score, aes(x=continent, y=idi)) +
 ##Outlier detection
 Use Tukey's method to update all scores that were outliers
 
-```{r outlier}
+```{r outlier, results='hide'}
 
 markoutlier <- function(x, exp_no, period_no, factor_no){
   sql <- paste("update main.experiment_user_score set outlier_full=1",sep="")
@@ -153,11 +153,11 @@ continents <- unique(user.scaled_score$continent)
   outlier <- boxplot.stats(user.continent_score$idi, coef = 1.5)$out
   user.outlier <- user.continent_score[user.continent_score$idi %in% outlier,]
   apply(user.outlier, 1, markoutlier, exp_no=exp_no, period_no=period_no,factor_no=factor_no)
-  na1 <- nrow(user.outlier)
+  #na1 <- nrow(user.outlier)
   #Outliers identified:
-  na1
+  #na1
   #Propotion (%) of outliers:
-  round(na1 / sum(!is.na(user.continent_score$idi))*100, 1)
+  #round(na1 / sum(!is.na(user.continent_score$idi))*100, 1)
 
 ```
 
