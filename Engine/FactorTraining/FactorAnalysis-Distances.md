@@ -137,12 +137,30 @@ user.scaled_score <- data.frame(as.data.frame(scale(user.score[1])), user.score[
     user.score[3])
 colnames(user.scaled_score) = c("idi", "continent", "userid")
 
-ggplot(user.scaled_score, aes(x = continent, y = idi)) + geom_boxplot(outlier.colour = "red", 
+science_theme = theme(panel.grid.major = element_line(size = 0.5, color = "grey"), 
+    axis.line = element_line(size = 0.7, color = "black"), legend.position = c(0.85, 
+        0.7), text = element_text(size = 14))
+
+distplot <- ggplot(user.scaled_score, aes(x = continent, y = idi)) + geom_boxplot(outlier.colour = "red", 
     outlier.shape = 8, outlier.size = 4) + stat_summary(fun.y = mean, geom = "point", 
-    shape = 23, size = 4)
+    shape = 23, size = 4) + theme_bw() + science_theme + theme(axis.text.x = element_text(angle = 90, 
+    hjust = 1)) + labs(x = "Count", y = "DS")
+
+distplot
 ```
 
 ![](FactorAnalysis-Distances_files/figure-html/score_n-1.png)<!-- -->
+
+```r
+svg(filename = "distplot.svg", width = 6, height = 4)
+distplot
+dev.off()
+```
+
+```
+## png 
+##   2
+```
 
 
 ##Outlier detection

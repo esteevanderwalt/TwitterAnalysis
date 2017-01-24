@@ -35,12 +35,30 @@ ggplot(data = user.s, aes(x = sentiment)) + geom_bar() + theme(legend.position =
 ##Display sentiment per continent
 
 ```r
-ggplot(data = user.s, aes(x = sentiment)) + geom_bar() + theme(legend.position = "none") + 
+science_theme = theme(panel.grid.major = element_line(size = 0.5, color = "grey"), 
+    axis.line = element_line(size = 0.7, color = "black"), legend.position = c(0.85, 
+        0.7), text = element_text(size = 14))
+
+sentiplot <- ggplot(data = user.s, aes(x = sentiment)) + geom_bar() + theme(legend.position = "none") + 
     facet_wrap(~continent) + xlab("Sentiment") + ylab("Count") + scale_fill_gradient(low = "midnightblue", 
-    high = "aquamarine4") + theme(axis.text.x = element_text(angle = 90, hjust = 1))
+    high = "aquamarine4") + # theme_bw(base_size = 12, base_family = 'Helvetica') +
+theme_bw() + science_theme + theme(axis.text.x = element_text(angle = 90, hjust = 1))
+
+sentiplot
 ```
 
 ![](FactorAnalysis-Sentiment_files/figure-html/sentiment_continent-1.png)<!-- -->
+
+```r
+svg(filename = "sentiplot.svg", width = 6, height = 4)
+sentiplot
+dev.off()
+```
+
+```
+## png 
+##   2
+```
 ##Sentiment for only Africa
 
 ```r
@@ -67,12 +85,27 @@ ggplot(data = users, aes(x = sentiment_pos_neg)) + geom_bar() + theme(legend.pos
 ##Display sentiment per continent
 
 ```r
-ggplot(data = user.s, aes(x = sentiment_pos_neg)) + geom_bar() + theme(legend.position = "none") + 
-    facet_wrap(~continent) + xlab("Sentiment") + ylab("Count") + scale_fill_gradient(low = "midnightblue", 
-    high = "aquamarine4") + theme(axis.text.x = element_text(angle = 90, hjust = 1))
+sentiplot2 <- ggplot(data = user.s, aes(x = sentiment_pos_neg)) + geom_bar() + 
+    theme(legend.position = "none") + facet_wrap(~continent) + xlab("Sentiment") + 
+    ylab("Count") + scale_fill_gradient(low = "midnightblue", high = "aquamarine4") + 
+    theme_bw() + science_theme + theme(axis.text.x = element_text(angle = 90, 
+    hjust = 1))
+
+sentiplot2
 ```
 
 ![](FactorAnalysis-Sentiment_files/figure-html/sentiment_pos_neg_continent-1.png)<!-- -->
+
+```r
+svg(filename = "sentiplot2.svg", width = 6, height = 4)
+sentiplot2
+dev.off()
+```
+
+```
+## png 
+##   2
+```
 ##Sentiment for only Africa
 
 ```r

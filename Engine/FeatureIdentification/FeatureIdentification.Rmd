@@ -1,0 +1,242 @@
+---
+title: "Feature Identification"
+output: 
+  html_document: 
+    keep_md: yes
+---
+
+```{r echo=FALSE, messages=FALSE, results='hide'}
+#garbage collection + clear RAM
+rm(list = ls(all.name = TRUE))
+gc()
+```
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+knitr::opts_chunk$set(tidy = TRUE)
+knitr::opts_chunk$set(warning = FALSE)
+```
+
+```{r include=FALSE}
+  #load libraries
+  suppressMessages(library(knitr))
+  suppressMessages(library(ggplot2))
+  suppressMessages(library(scales))
+
+```
+
+```{r echo=FALSE}
+# Connect to the database first
+read_chunk('../../DBConnection/ConnectPostgres.R')
+```
+
+```{r connectDB, echo=FALSE}
+```
+
+```{r gettwitterfeeddata, cache=FALSE, echo=FALSE}
+#Get the users
+users <- dbGetQuery(con, "SELECT * from main.zz_users")
+```
+
+##Investigate all attributes of the user set
+```{r list}
+##show all available attribues
+names(users)
+
+##fix dates
+suppressMessages(library(lubridate))
+users$created <- ymd_hms(users$created)
+users$snapshot_date <- year(users$snapshot_date)
+users$snapshot_end_date <- year(users$snapshot_end_date)
+
+##describes the data
+suppressMessages(library(psych))
+describe(users)
+
+#plot distribution of numeric type attributes
+suppressMessages(library(reshape2))
+suppressMessages(library(ggplot2))
+d <- melt(users)
+
+science_theme = theme(panel.grid.major = element_line(size = 0.5, color = "grey"), 
+                      axis.line = element_line(size = 0.7, color = "black"), 
+                      legend.position = c(0.85, 0.7), text = element_text(size = 14))
+
+ggplot(d,aes(x = value)) + 
+  facet_wrap(~variable,scales = "free_x",ncol=6) + 
+  geom_histogram() +
+  theme_bw() +
+  theme(axis.text.x = element_text(angle = 90, hjust = 0)) +
+  science_theme +
+  labs(y = "Count", x = "Attributes")
+
+#cleaned up a bit
+users.n <- users[,c(12,13,14,15,17,18,19,20,21,22,23,24)]
+d <- melt(users.n)
+
+options(scipen = 999) # remove exponential notation in numbers, ie amount of decimals to show
+ggplot(d,aes(x = value)) + 
+  facet_wrap(~variable,scales = "free_x",ncol=6) + 
+  geom_histogram() +
+  theme_bw() +
+  theme(axis.text.x = element_text(angle = 90, hjust = 0)) +
+  science_theme +
+  labs(y = "Count", x = "Attributes")
+
+users.t <- users[,c(11,16,17,18,21,22,23,24,25,26)]
+ #Categorical features
+ggplot(data = users.t, aes(x = language)) +
+  geom_bar(stat = "count") +
+  theme_bw() +
+  theme(axis.text.x = element_text(angle = 90, hjust = 0)) +
+  xlab("Language") + ylab("Number of users") + 
+  science_theme 
+
+ggplot(data = users.t, aes(x = timezone)) +
+  geom_bar(stat = "count") +
+  theme_bw() +
+  theme(axis.text.x = element_text(angle = 90, hjust = 0)) +
+  xlab("Timezone") + ylab("Number of users") + 
+  science_theme 
+
+ggplot(data = users.t, aes(x = profile_text_color)) +
+  geom_bar(stat = "count") +
+  theme_bw() +
+  theme(axis.text.x = element_text(angle = 90, hjust = 0)) +
+  xlab("Profile text color") + ylab("Number of users") + 
+  science_theme 
+
+ggplot(data = users.t, aes(x = profile_bg_color)) +
+  geom_bar(stat = "count") +
+  theme_bw() +
+  theme(axis.text.x = element_text(angle = 90, hjust = 0)) +
+  xlab("Profile bg color") + ylab("Number of users") + 
+  science_theme 
+
+##profile most prominent
+##profile timezone
+suppressMessages(library(dplyr))
+set.seed(1)
+users.t %>% 
+  group_by(timezone) %>%
+  summarise(n=n()) %>%
+  arrange(desc(n))
+
+##profile color
+users.t %>% 
+  group_by(profile_text_color) %>%
+  summarise(n=n()) %>%
+  arrange(desc(n))
+```
+
+##Investigate all attributes of the tweets set
+```{r list_tweets}
+suppressMessages(library(RODBC))
+
+#### connect to DB
+myconn<-odbcConnect("FSOC", uid="SYSTEM", pwd="oEqm66jccx", believeNRows=FALSE, rows_at_time=1, DBMSencoding="UTF-8") 
+
+##get the tweet data from HANA
+tweets <- sqlQuery(myconn, "SELECT t.userid, count(distinct t.source) no_of_devices, 
+  max(e.sentiment) sentiment, max(e.emotion) emotion, 
+  round(avg(to_number(to_char(t.createdat, 'HH')))) avg_tweet_hour, count(0) as no_of_tweets 
+  from twitter.zz_tweets t	
+  left join twitter.zz_users_enrich e on e.id = t.userid 
+  where t.userid in (select id from twitter.zz_users) group by userid;")
+
+##show all available attribues
+names(tweets)
+
+##describes the data
+suppressMessages(library(psych))
+describe(tweets)
+
+#plot distribution of numeric type attributes
+d <- melt(tweets)
+
+ggplot(d,aes(x = value)) + 
+  facet_wrap(~variable,scales = "free_x") + 
+  geom_histogram() +
+  theme_bw() +
+  theme(axis.text.x = element_text(angle = 90, hjust = 0)) +
+  science_theme +
+  labs(y = "Count", x = "Attributes")
+
+#cleaned up a bit
+tweets.n <- tweets[,c(2,5,6)]
+d <- melt(tweets.n)
+
+options(scipen = 999) # remove exponential notation in numbers, ie amount of decimals to show
+ggplot(d,aes(x = value)) + 
+  facet_wrap(~variable,scales = "free_x",ncol=6) + 
+  geom_histogram() +
+  theme_bw() +
+  theme(axis.text.x = element_text(angle = 90, hjust = 0)) +
+  science_theme +
+  labs(y = "Count", x = "Attributes")
+
+tweets.t <- tweets[,c(3,4)]
+ #Categorical features
+ggplot(data = tweets.t, aes(x = SENTIMENT)) +
+  geom_bar(stat = "count") +
+  theme_bw() +
+  theme(axis.text.x = element_text(angle = 90, hjust = 0)) +
+  xlab("Sentiment") + ylab("Number of users") + 
+  science_theme 
+
+ggplot(data = tweets.t, aes(x = EMOTION)) +
+  geom_bar(stat = "count") +
+  theme_bw() +
+  theme(axis.text.x = element_text(angle = 90, hjust = 0)) +
+  xlab("Emotion") + ylab("Number of users") + 
+  science_theme 
+
+##profile most prominent
+##profile sentiment
+suppressMessages(library(dplyr))
+set.seed(1)
+tweets.t %>% 
+  group_by(SENTIMENT) %>%
+  summarise(n=n()) %>%
+  arrange(desc(n))
+
+##profile emotion
+tweets.t %>% 
+  group_by(EMOTION) %>%
+  summarise(n=n()) %>%
+  arrange(desc(n))
+```
+
+
+##Evaluate features
+
+```{r plotall, cache=FALSE, echo=FALSE}
+suppressMessages(library("GGally"))
+#user correlation
+ggpairs(users.n) 
+#ggpairs(users.t) --to high cardinality
+
+#tweet correlation
+ggpairs(tweets.n)
+ggpairs(tweets.t) 
+
+
+
+#plot numbers
+##users.numbers <- users[,c(5:8,16)]
+##ggpairs(users.numbers, ggplot2::aes(colour=continent)) 
+
+#plot sentiment
+##users.sentiment <- users[,c(12:13,16)]
+##ggpairs(users.sentiment, ggplot2::aes(colour=continent)) 
+
+#plot images
+##users.images <- users[,c(9:10,16)]
+##ggpairs(users.images, ggplot2::aes(colour=continent)) 
+
+#plot distances
+##users.distances <- users[,c(4,14,16)]
+##ggpairs(users.distances, ggplot2::aes(colour=continent)) 
+
+```
+
