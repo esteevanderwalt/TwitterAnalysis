@@ -17,9 +17,9 @@ Some [definitions](/Definitions/Definitions.md)
 
 The study consists of the following phases
 
-1. [Understanding the data](/Phase_Data_Mining.md)
-2. The experiment - [the features](/Phase_Experiment_Variables.md)
-3. [The results](/Phase_Experiment_Results.md)
+1. [Understanding the data](/Engine/Phase_Data_Mining.md)
+2. The experiment - [the features](/Engine/Phase_Experiment_Variables.md)
+3. [The results](/Engine/Phase_Experiment_Results.md)
 4. Future Potential work
 
 ##The Identity Deception Detection Engine

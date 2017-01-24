@@ -1,6 +1,9 @@
 # TwitterAnalysis
 ## The experiment variables
 
+First the existing attributes must be analysed to understand which will contribute to the model.
+[Feature selection/filtering](/Engine/FeatureIdentification/FeatureIdentification.md) is firstly very important to eliminate those attributes which does not contribute and also to detect potential new features to be engineered.
+
 The following attributes were identified to contribute to deception. The below is the analysis of each individual attributes to understand how they could be scored and contribute towards the overall IDI
 
 1. [No of devices] (/Engine/FactorTraining/FactorAnalysis-NoOfDevices.md)
