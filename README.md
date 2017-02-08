@@ -10,8 +10,8 @@ The current corpus was scraped using specific key words to identify a target gro
 
 Hypothesis to potentially answer during our study:
 
-1. Indentity features can be used to identify deception in social media data.
-2. It is possible to identify identity features that can be used towards identity deception
+1. Features can be engineered to enrich an identity's profile.
+2. Identity features can be used to identify deception in social media data.
 
 Some [definitions](/Definitions/Definitions.md)
 
@@ -23,50 +23,57 @@ The study consists of the following phases
 4. Future Potential work
 
 ##The Identity Deception Detection Engine
-The identity deception engine that is built has part of this research has 3 main components
+The identity deception engine that is built has part of this research has a few main components
 
-1. The factor training engine
-2. The deception scoring
-3. Network analytics and results
+1. Factor selection/engineering
+2. The deception classification
+3. Evaluation of results
+4. A IDI over time
 
 ###Inner workings of the engine
+
+
 ####Data cleaning
 Here we will start with a trained dataset. 
 (Data Cleaning) The following was done to clean data
 
 1. Remove all retweets
-2. Remove all accounts with more than 1000 tweets a day
-3. Remove all accounts with more than 1000 followers
-4. Remove all celebrity accounts
-5. Remove all accounts with less than 10 tweets
+2. Remove all accounts with more than 1000 tweets a day (probably bot)
+3. Remove all accounts with more than 10000 followers (probably celeb)
+4. Remove all accounts marked as verified (probably celeb)
+5. Remove all accounts with less than 10 tweets (new accounts)
+6. Remove all users which do not exist anymore (probably closed/banned)
+
 
 ####Data protection
 With regards to privacy protection the following measures have been taken
 
-1. Names are obfuscated
+1. Names are obfuscated by not reporting on them
 
-####Data enrichment
+
+####Data enrichment for feature engineering
 A few additional features will be added via various means
 
-1. Distance between geo location and stated location
-2. Overall sentiment and emotion of the user
-3. The continent of the user
-4. Male/Female indicator
+1. Names (levenshtein distance between screenname and actual account name, does the actual name exist, get gender of name)
+2. Residency (get the coords of the stated location and timezone, calculate distances between location, timezone and lon/lat)
+3. ID (get details from the images, whether it is face or not, age, gender, amount of people in picture)
+4. Social (get sentiment of tweets and hashtags, get the distance per user against that of total group)
+
 
 ####Feature extraction
 The next step is to identify those identity features that could indicate deception.
-The idea is to take each feature, model it via some clustering algorithm, compare the results and rank than according to entropy.
-These results will then be matched with the pshycological literature review that was done as part of the research to determine to best set of features for identity deception.
+The idea is to take each attribute, find correlations to others and determine whether they will be useful input to a anomoly detection model.
+
 
 ####Injection of dummy accounts
 Some dummy accounts will be generated that are deceptive. These will be injected into the result set
 
-####Scoring (DS)
-For each user a deception score (DS) will be calculated per feature.
-First the scoring will be done without entropy and then with the entropy results from the feature extraction done previously.
-An overall IDI (identity deception indicator) will be created per user.
+
+####Scoring
+For each user a deception score (DS) will be calculated per day.
+An overall IDI (identity deception indicator) will be created per user as a combination of all DS over several days to understand the average deceptiveness of the user.
+
 
 ####Evaluating results
 Calculate f-scores will determine the effectiveness of the IDI concept introduced.
 This mechanism differ from previous research in that previous research focussed on text only and not user attributes as well. The believe is that by adding these identity features to the process, detection can be enhanced.
-

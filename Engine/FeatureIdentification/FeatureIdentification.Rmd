@@ -27,7 +27,11 @@ knitr::opts_chunk$set(warning = FALSE)
 
 ```{r echo=FALSE}
 # Connect to the database first
-read_chunk('../../DBConnection/ConnectPostgres.R')
+suppressMessages(library(RODBC))
+#### connect to DB
+myconn<-odbcConnect("FSOC", uid="SYSTEM", pwd="oEqm66jccx", believeNRows=FALSE, rows_at_time=1, DBMSencoding="UTF-8") 
+
+#read_chunk('../../DBConnection/ConnectPostgres.R')
 ```
 
 ```{r connectDB, echo=FALSE}
@@ -35,7 +39,9 @@ read_chunk('../../DBConnection/ConnectPostgres.R')
 
 ```{r gettwitterfeeddata, cache=FALSE, echo=FALSE}
 #Get the users
-users <- dbGetQuery(con, "SELECT * from main.zz_users")
+users <- sqlQuery(myconn, "SELECT id, null as name, null as screenname, created, null as original_profile_image, null as profile_image, null as background_image, null as last_tweet, null as description, null as location, language, friends_count, followers_count, status_count, listed_count, timezone, utc_offset, geo_enabled, latitude, longitude, is_celebrity, is_default_profile, is_default_profile_image, is_background_image_used, profile_text_color, profile_bg_color, snapshot_date, snapshot_end_date from twitter.zz_users")
+
+#users <- dbGetQuery(con, "SELECT * from main.zz_users")
 ```
 
 ##Investigate all attributes of the user set
@@ -45,9 +51,9 @@ names(users)
 
 ##fix dates
 suppressMessages(library(lubridate))
-users$created <- ymd_hms(users$created)
-users$snapshot_date <- year(users$snapshot_date)
-users$snapshot_end_date <- year(users$snapshot_end_date)
+users$CREATED <- ymd_hms(users$CREATED)
+users$SNAPSHOT_DATE <- year(users$SNAPSHOT_DATE)
+users$SNAPSHOT_END_DATE <- year(users$SNAPSHOT_END_DATE)
 
 ##describes the data
 suppressMessages(library(psych))
@@ -85,28 +91,28 @@ ggplot(d,aes(x = value)) +
 
 users.t <- users[,c(11,16,17,18,21,22,23,24,25,26)]
  #Categorical features
-ggplot(data = users.t, aes(x = language)) +
+ggplot(data = users.t, aes(x = LANGUAGE)) +
   geom_bar(stat = "count") +
   theme_bw() +
   theme(axis.text.x = element_text(angle = 90, hjust = 0)) +
   xlab("Language") + ylab("Number of users") + 
   science_theme 
 
-ggplot(data = users.t, aes(x = timezone)) +
+ggplot(data = users.t, aes(x = TIMEZONE)) +
   geom_bar(stat = "count") +
   theme_bw() +
   theme(axis.text.x = element_text(angle = 90, hjust = 0)) +
   xlab("Timezone") + ylab("Number of users") + 
   science_theme 
 
-ggplot(data = users.t, aes(x = profile_text_color)) +
+ggplot(data = users.t, aes(x = PROFILE_TEXT_COLOR)) +
   geom_bar(stat = "count") +
   theme_bw() +
   theme(axis.text.x = element_text(angle = 90, hjust = 0)) +
   xlab("Profile text color") + ylab("Number of users") + 
   science_theme 
 
-ggplot(data = users.t, aes(x = profile_bg_color)) +
+ggplot(data = users.t, aes(x = PROFILE_BG_COLOR)) +
   geom_bar(stat = "count") +
   theme_bw() +
   theme(axis.text.x = element_text(angle = 90, hjust = 0)) +
@@ -118,23 +124,23 @@ ggplot(data = users.t, aes(x = profile_bg_color)) +
 suppressMessages(library(dplyr))
 set.seed(1)
 users.t %>% 
-  group_by(timezone) %>%
+  group_by(TIMEZONE) %>%
   summarise(n=n()) %>%
   arrange(desc(n))
 
 ##profile color
 users.t %>% 
-  group_by(profile_text_color) %>%
+  group_by(PROFILE_TEXT_COLOR) %>%
   summarise(n=n()) %>%
   arrange(desc(n))
 ```
 
 ##Investigate all attributes of the tweets set
 ```{r list_tweets}
-suppressMessages(library(RODBC))
+#suppressMessages(library(RODBC))
 
 #### connect to DB
-myconn<-odbcConnect("FSOC", uid="SYSTEM", pwd="oEqm66jccx", believeNRows=FALSE, rows_at_time=1, DBMSencoding="UTF-8") 
+#myconn<-odbcConnect("FSOC", uid="SYSTEM", pwd="oEqm66jccx", believeNRows=FALSE, rows_at_time=1, #DBMSencoding="UTF-8") 
 
 ##get the tweet data from HANA
 tweets <- sqlQuery(myconn, "SELECT t.userid, count(distinct t.source) no_of_devices, 
@@ -148,7 +154,7 @@ tweets <- sqlQuery(myconn, "SELECT t.userid, count(distinct t.source) no_of_devi
 names(tweets)
 
 ##describes the data
-suppressMessages(library(psych))
+#suppressMessages(library(psych))
 describe(tweets)
 
 #plot distribution of numeric type attributes
@@ -214,6 +220,7 @@ tweets.t %>%
 suppressMessages(library("GGally"))
 #user correlation
 ggpairs(users.n) 
+ggcorr(users.n, palette = "RdYlGn", label = FALSE)
 #ggpairs(users.t) --to high cardinality
 
 #tweet correlation
