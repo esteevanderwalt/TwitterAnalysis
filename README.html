@@ -128,25 +128,26 @@ $(document).ready(function () {
 <p>The current corpus was scraped using specific key words to identify a target group of people. In our case we used the words ‘school’ and ‘homework’ as these will hopefully give us a corpus of children or young adults. Note these two words were found to be most common in a research study on internet usage across age bands. We would like to ultimately identify outliers, i.e. people who are not children but talking to them (potentially identifying threats).</p>
 <p>Hypothesis to potentially answer during our study:</p>
 <ol style="list-style-type: decimal">
-<li>Indentity features can be used to identify deception in social media data.</li>
-<li>It is possible to identify identity features that can be used towards identity deception</li>
+<li>Features can be engineered to enrich an identity’s profile.</li>
+<li>Identity features can be used to identify deception in social media data.</li>
 </ol>
 <p>Some <a href="/Definitions/Definitions.md">definitions</a></p>
 <p>The study consists of the following phases</p>
 <ol style="list-style-type: decimal">
-<li><a href="/Phase_Data_Mining.md">Understanding the data</a></li>
-<li>The experiment - <a href="/Phase_Experiment_Variables.md">the features</a></li>
-<li><a href="/Phase_Experiment_Results.md">The results</a></li>
+<li><a href="/Engine/Phase_Data_Mining.md">Understanding the data</a></li>
+<li>The experiment - <a href="/Engine/Phase_Experiment_Variables.md">the features</a></li>
+<li><a href="/Engine/Phase_Experiment_Results.md">The results</a></li>
 <li>Future Potential work</li>
 </ol>
 </div>
 <div id="the-identity-deception-detection-engine" class="section level2">
 <h2>The Identity Deception Detection Engine</h2>
-<p>The identity deception engine that is built has part of this research has 3 main components</p>
+<p>The identity deception engine that is built has part of this research has a few main components</p>
 <ol style="list-style-type: decimal">
-<li>The factor training engine</li>
-<li>The deception scoring</li>
-<li>Network analytics and results</li>
+<li>Factor selection/engineering</li>
+<li>The deception classification</li>
+<li>Evaluation of results</li>
+<li>A IDI over time</li>
 </ol>
 <div id="inner-workings-of-the-engine" class="section level3">
 <h3>Inner workings of the engine</h3>
@@ -155,40 +156,41 @@ $(document).ready(function () {
 <p>Here we will start with a trained dataset. (Data Cleaning) The following was done to clean data</p>
 <ol style="list-style-type: decimal">
 <li>Remove all retweets</li>
-<li>Remove all accounts with more than 1000 tweets a day</li>
-<li>Remove all accounts with more than 1000 followers</li>
-<li>Remove all celebrity accounts</li>
-<li>Remove all accounts with less than 10 tweets</li>
+<li>Remove all accounts with more than 1000 tweets a day (probably bot)</li>
+<li>Remove all accounts with more than 10000 followers (probably celeb)</li>
+<li>Remove all accounts marked as verified (probably celeb)</li>
+<li>Remove all accounts with less than 10 tweets (new accounts)</li>
+<li>Remove all users which do not exist anymore (probably closed/banned)</li>
 </ol>
 </div>
 <div id="data-protection" class="section level4">
 <h4>Data protection</h4>
 <p>With regards to privacy protection the following measures have been taken</p>
 <ol style="list-style-type: decimal">
-<li>Names are obfuscated</li>
+<li>Names are obfuscated by not reporting on them</li>
 </ol>
 </div>
-<div id="data-enrichment" class="section level4">
-<h4>Data enrichment</h4>
+<div id="data-enrichment-for-feature-engineering" class="section level4">
+<h4>Data enrichment for feature engineering</h4>
 <p>A few additional features will be added via various means</p>
 <ol style="list-style-type: decimal">
-<li>Distance between geo location and stated location</li>
-<li>Overall sentiment and emotion of the user</li>
-<li>The continent of the user</li>
-<li>Male/Female indicator</li>
+<li>Names (levenshtein distance between screenname and actual account name, does the actual name exist, get gender of name)</li>
+<li>Residency (get the coords of the stated location and timezone, calculate distances between location, timezone and lon/lat)</li>
+<li>ID (get details from the images, whether it is face or not, age, gender, amount of people in picture)</li>
+<li>Social (get sentiment of tweets and hashtags, get the distance per user against that of total group)</li>
 </ol>
 </div>
 <div id="feature-extraction" class="section level4">
 <h4>Feature extraction</h4>
-<p>The next step is to identify those identity features that could indicate deception. The idea is to take each feature, model it via some clustering algorithm, compare the results and rank than according to entropy. These results will then be matched with the pshycological literature review that was done as part of the research to determine to best set of features for identity deception.</p>
+<p>The next step is to identify those identity features that could indicate deception. The idea is to take each attribute, find correlations to others and determine whether they will be useful input to a anomoly detection model.</p>
 </div>
 <div id="injection-of-dummy-accounts" class="section level4">
 <h4>Injection of dummy accounts</h4>
 <p>Some dummy accounts will be generated that are deceptive. These will be injected into the result set</p>
 </div>
-<div id="scoring-ds" class="section level4">
-<h4>Scoring (DS)</h4>
-<p>For each user a deception score (DS) will be calculated per feature. First the scoring will be done without entropy and then with the entropy results from the feature extraction done previously. An overall IDI (identity deception indicator) will be created per user.</p>
+<div id="scoring" class="section level4">
+<h4>Scoring</h4>
+<p>For each user a deception score (DS) will be calculated per day. An overall IDI (identity deception indicator) will be created per user as a combination of all DS over several days to understand the average deceptiveness of the user.</p>
 </div>
 <div id="evaluating-results" class="section level4">
 <h4>Evaluating results</h4>
