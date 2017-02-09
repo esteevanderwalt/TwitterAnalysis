@@ -1,44 +1,19 @@
----
-title: "Experiment results - Engineered features"
-output: 
-  html_document: 
-    keep_md: yes
----
 
-```{r echo=FALSE, messages=FALSE, results='hide'}
-#garbage collection + clear RAM
-rm(list = ls(all.name = TRUE))
-gc()
-```
+library(RPostgreSQL)
+library(caret)
+library(lubridate)
+library(doParallel)
+library(pROC)
+library(dplyr)
+library(ggplot2)
 
-```{r setup, include=FALSE}
-knitr::opts_chunk$set(echo = TRUE)
-knitr::opts_chunk$set(tidy = TRUE)
-knitr::opts_chunk$set(warning = FALSE)
-```
+#loads the PostgreSQL driver
+drv <- dbDriver("PostgreSQL")
+con <- dbConnect(drv, dbname = "twitter",
+                 host = "localhost", port = 5432,
+                 user = "postgres", password = "")
+#rm(pw) # removes the password
 
-```{r include=FALSE}
-  #load libraries
-  suppressMessages(library(knitr))
-  suppressMessages(library(ggplot2))
-  suppressMessages(library(scales))
-  suppressMessages(library(caret))
-  suppressMessages(library(lubridate))
-  suppressMessages(library(doParallel))
-  suppressMessages(library(pROC))
-  suppressMessages(library(dplyr))
-  
-```
-
-```{r echo=FALSE}
-# Connect to the database first
-read_chunk('../../DBConnection/ConnectPostgres.R')
-```
-
-```{r connectDB, echo=FALSE}
-```
-
-```{r gettwitterfeeddata, cache=FALSE, echo=FALSE}
 users.all <- dbGetQuery(con, "SELECT * from main.zz_full_set") 
 myvars <- c("sentiment","emotion","distance_location","distance_tz","continent",
             "sub_region","gender","avg_tweet_time","no_of_devices","levenshtein",
@@ -46,11 +21,12 @@ myvars <- c("sentiment","emotion","distance_location","distance_tz","continent",
             "last_tweet_time", "class")
 users1.data <- users.all[myvars]
 rm(myvars)
-```
 
-##Pre-processing
-```{r preprocessing}
-suppressMessages(library(reshape2))
+#CHECK MISSING DATA
+# A function that plots missingness
+# requires `reshape2`
+library(reshape2)
+library(ggplot2)
 
 ggplot_missing <- function(x){
   
@@ -68,10 +44,9 @@ ggplot_missing <- function(x){
     labs(x = "Variables in Dataset",
          y = "Rows / observations")
 }
-ggplot_missing(users1.data)
+ggplot_missing(users.all)
 
 #PREPROCESSING OF DATA
-#first replace NA with other
 users1.data$sentiment[is.na(users1.data$sentiment)] <- 'Other'
 users1.data$emotion[is.na(users1.data$emotion)] <- 'Other'
 users1.data$distance_location[is.na(users1.data$distance_location)] <- 0
@@ -105,14 +80,11 @@ rm(d, l)
 users1.data$image_age <- round(users1.data$image_age)
 users1.data$avg_tweet_time <- round(users1.data$avg_tweet_time)
 
-#update name
 users1.data[users1.data$valid_name != 0,]$valid_name <- 1
-
-ggplot_missing(users1.data)
 
 #select only those attributes worthy of ML
 myvars <- c("distance_location","distance_tz","continent",
-            "gender","avg_tweet_time","no_of_devices","levenshtein",
+            "sub_region","gender","avg_tweet_time","no_of_devices","levenshtein",
             "hamming","valid_name","image_gender","image_age","no_of_faces",
             "last_tweet_time", "class")
 ml1.full <- users1.data[myvars]
@@ -130,12 +102,9 @@ rm(dmy)
 #identify correlated predictors
 descrCor <-  cor(ml1)
 highCorr <- sum(abs(descrCor[upper.tri(descrCor)]) > .999)
-highCorr
 rm(descrCor, highCorr)
 
-```
-
-```{r train_control}
+#start training of data
 set.seed(123)
 inTrain <- createDataPartition(y = ml1.full$class, p = .75, list = FALSE)
 #str(inTrain)
@@ -152,10 +121,7 @@ ctrl <- trainControl(method = "repeatedcv",
                      repeats = 3,
                      classProbs = TRUE,
                      summaryFunction = twoClassSummary)
-```
 
-##PLS - Partial Lease Squares
-```{r pls, error=TRUE}
 #cl <- makeCluster(detectCores())
 #registerDoParallel(cl)
 plsFit <- train(x = training, y = training.class,
@@ -164,11 +130,9 @@ plsFit <- train(x = training, y = training.class,
                 trControl = ctrl, 
                 metric = "ROC",
                 preProc = c("center", "scale"))
-save(plsFit,file="eplsFit.RData")
+save(plsFit,file="plsFit.RData")
 
-#load("eplsFit.RData")
-#plsFit <- eplsFit
-#rm(eplsFit)
+#load("plsFit.RData")
 #stopCluster(cl)
 #registerDoSEQ()
 
@@ -210,15 +174,13 @@ plsRoc <- roc(testing.class,plsProbs[,"deceptive"], levels = c("trustworthy","de
 plsRoc
 plot(plsRoc, print.thres="best", print.thres.best.method="closest.topleft")
 plsRocCoords <- coords(  plsRoc, "best", best.method="closest.topleft",
-                                 ret=c("threshold", "accuracy"))
+                         ret=c("threshold", "accuracy"))
 plsRocCoords
 
 rm(plsRoc, plsRocCoords, plsProbs, plsClasses, plsImportance)
 
-```
-
-##RDA - Regularized Discriminant Analysis
-```{r rda, error=TRUE}
+#For example, to fit a regularized discriminant model to these data, the following syntax can be used:
+## To illustrate, a custom grid is used
 rdaGrid = data.frame(gamma = (0:4)/4, lambda = 3/4)
 set.seed(123)
 
@@ -227,11 +189,9 @@ rdaFit <- train(x = training, y = training.class,
                 tuneGrid = rdaGrid,
                 trControl = ctrl,
                 metric = "ROC")
-save(rdaFit,file="erdaFit.RData")
+save(rdaFit,file="rdaFit.RData")
 
-#load("erdaFit.RData")
-#rdaFit <- erdaFit
-#rm(erdaFit)
+#load("rdaFit.RData")
 rdaFit
 plot(rdaFit)
 
@@ -250,25 +210,25 @@ rdaRocCoords <- coords(  rdaRoc, "best", best.method="closest.topleft",
 rdaRocCoords
 
 rm(rdaRoc, rdaRocCoords, rdaProbs, rdaClasses, rdaImportance)
-```
 
-###Linear SVM
-```{r linearsvm, error=TRUE}
+##############################
+#Linear SVM
+##############################
+# creation of weights - also fast for very big datasets
+#weights <- as.numeric(y[-indexes_y_test])
+#for(val in unique(weights)) {weights[weights==val]=1/sum(weights==val)*length(weights)/2} # normalized to sum to length(samples)
 set.seed(123)
 
 svmFit <- train(x = training, y = training.class,
                 method = "svmLinear",
                 #weights = weights,
                 maximize = T,
-                tuneGrid = expand.grid(.C=3^(-15:15)),
+                #tuneGrid = expand.grid(.C=3^(-15:15)),
                 trControl = ctrl,
                 metric = "ROC")
-save(svmFit,file="esvmFit.RData")
+save(svmFit,file="svmFit.RData")
 
-#load("esvmFit.RData")
-#svmFit <- esvmFit
-#rm(esvmFit)
-
+#load("svmFit.RData")
 svmFit
 plot(svmFit)
 
@@ -276,9 +236,8 @@ svmImportance <- varImp(svmFit, scale=FALSE)
 plot(svmImportance)
 
 svmClasses <- predict(svmFit, newdata = testing)
-head(svmClasses)
 svmProbs <- predict(svmFit, newdata = testing, type = "prob")
-head(svmProbs)
+svmProbs
 confusionMatrix(svmClasses, testing.class)
 
 svmRoc <- roc(testing.class,svmProbs[,"deceptive"], levels = c("trustworthy","deceptive"))
@@ -289,23 +248,20 @@ svmRocCoords <- coords(  svmRoc, "best", best.method="closest.topleft",
 svmRocCoords
 
 rm(svmRoc, svmRocCoords, svmProbs, svmClasses, svmImportance)
-```
 
-##RF - Random Forest
-```{r rf, error=TRUE}
+##############################
+#Random forest
+##############################
 set.seed(123)
 rfFit <- train(x = training, y = training.class,
                method = "rf",
                trControl = ctrl,
                metric = "ROC",
                preProcess = c("center","scale"), 
-               tuneLength = 20)
-save(rfFit,file="erfFit.RData")
+               tuneLength = 15)
+save(rfFit,file="rfFit.RData")
 
-#load("erfFit.RData")
-#rfFit <- erfFit
-#rm(erfFit)
-
+#load("rfFit.RData")
 rfFit
 plot(rfFit)
 
@@ -318,36 +274,32 @@ rfImportance <- varImp(rfFit, scale=FALSE)
 plot(rfImportance)
 
 rfClasses <- predict(rfFit, newdata = testing)
-head(rfClasses)
 rfProbs <- predict(rfFit, newdata = testing, type = "prob")
-head(rfProbs)
+rfProbs
 confusionMatrix(rfClasses, testing.class)
 
 rfRoc <- roc(testing.class,rfProbs[,"deceptive"], levels = c("trustworthy","deceptive"))
 rfRoc
 plot(rfRoc, print.thres="best", print.thres.best.method="closest.topleft")
 rfRocCoords <- coords(  rfRoc, "best", best.method="closest.topleft",
-                         ret=c("threshold", "accuracy"))
+                        ret=c("threshold", "accuracy"))
 rfRocCoords
 
 rm(rfRoc, rfRocCoords, rfProbs, rfClasses, rfImportance)
-```
 
-##KNN - K-Nearest Neighbour
-```{r knn, error=TRUE}
+##############################
+#KNN
+##############################
 set.seed(123)
 knnFit <- train(x = training, y = training.class,
-               method = "kknn",
-               trControl = ctrl,
-               metric = "ROC",
-               preProcess = c("center","scale"), 
-               tuneLength = 20)
-save(knnFit,file="eknnFit.RData")
+                method = "knn",
+                trControl = ctrl,
+                metric = "ROC",
+                preProcess = c("center","scale"), 
+                tuneLength = 20)
+save(knnFit,file="knnFit.RData")
 
-#load("eknnFit.RData")
-#knnFit <- eknnFit
-#rm(eknnFit)
-
+#load("knnFit.RData")
 knnFit
 plot(knnFit)
 
@@ -355,35 +307,31 @@ knnImportance <- varImp(knnFit, scale=FALSE)
 plot(knnImportance)
 
 knnClasses <- predict(knnFit, newdata = testing)
-head(knnClasses)
 knnProbs <- predict(knnFit, newdata = testing, type = "prob")
-head(knnProbs)
+knnProbs
 confusionMatrix(knnClasses, testing.class)
 
 knnRoc <- roc(testing.class,knnProbs[,"deceptive"], levels = c("trustworthy","deceptive"))
 knnRoc
 plot(knnRoc, print.thres="best", print.thres.best.method="closest.topleft")
 knnRocCoords <- coords(  knnRoc, "best", best.method="closest.topleft",
-                        ret=c("threshold", "accuracy"))
+                         ret=c("threshold", "accuracy"))
 knnRocCoords
 
 rm(knnRoc, knnRocCoords, knnProbs, knnClasses, knnImportance)
-```
 
-##C5.0 - Boosting
-```{r c50, error=TRUE}
+##############################
+# C5.0 - Boosting
+##############################
 set.seed(123)
-c50fit <- train(x=training, y=training.class, 
+c50fit <- train(x=training, y=ctraining, 
                 method = "C5.0", 
                 metric = "ROC", 
                 trControl=control,
                 verbose=FALSE)
-save(c50fit,file="ec50fit.RData")
+save(c50fit,file="c50fit.RData")
 
-#load("ec50Fit.RData")
-#c50Fit <- ec50Fit
-#rm(ec50Fit)
-
+#load("c50Fit.RData")
 c50fit
 # visualize the resample distributions
 xyplot(c50fit,type = c("g", "p", "smooth"))
@@ -394,9 +342,8 @@ c50Importance <- varImp(c50fit, scale=FALSE)
 plot(c50Importance)
 
 c50Classes <- predict(c50fit, newdata = testing)
-head(c50Classes)
 c50Probs <- predict(c50fit, newdata = testing, type = "prob")
-head(c50Probs)
+c50Probs
 confusionMatrix(c50Classes, testing.class)
 
 c50Roc <- roc(testing.class,c50Probs[,"deceptive"], levels = c("trustworthy","deceptive"))
@@ -407,13 +354,8 @@ c50RocCoords <- coords(  c50Roc, "best", best.method="closest.topleft",
 c50RocCoords
 
 rm(c50Roc, c50RocCoords, c50Probs, c50Classes, c50Importance)
-   
-```
 
-###################
-##Final comparison
-###################
-```{r compare, error=TRUE}
+
 #How do these models compare in terms of their resampling results? The resamples function can be
 #used to collect, summarize and contrast the resampling results. Since the random number seeds
 #were initialized to the same value prior to calling train, the same folds were used for each model.
@@ -426,4 +368,4 @@ xyplot(resamps, what = "BlandAltman")
 #can be used to compute this:
 diffs <- diff(resamps)
 summary(diffs)
-```
+

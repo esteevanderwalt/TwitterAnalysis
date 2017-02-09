@@ -108,6 +108,8 @@ rm(d, l)
 users1.data$latitude <- round(users1.data$latitude)
 users1.data$longitude <- round(users1.data$longitude)
 
+ggplot_missing(users1.data)
+
 #select only those attributes worthy of ML
 myvars <- c("utc_offset",
             "geo_enabled", "latitude", "longitude",  
