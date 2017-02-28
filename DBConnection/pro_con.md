@@ -23,16 +23,16 @@ Other problems with SAP HANA
 In terms of machine learning, I could not play around with the libraries due to the current memory problems. Vizualizations did however seem still in its infancy compared to R or mathlab.
 
 In the meantime a smaller dataset was exported an imported in PostgreSQL. 
-This worked quote well except that all emoticons are lost as mentioned before. In the end Latin1 encoding produced the best result.
+This worked well except that all emoticons are lost as mentioned before. In the end Latin1 encoding produced the best result.
 
 For working with the data we are currently using RStudio.
 My current VM only has 8GB of RAM and therefor I have also installed RStudio server on the VM in Potsdam with 12GB of RAM. The alternative is to add more RAM to my laptop or request more RAM at Potsdam.
-My idea was also to be able to connect and use the data directly from SAP HANA via RStudio. The problem again however is the emoticons. I cannot get the ODBC drivers to read the tweets with these encoded characters.
+The idea was also to be able to connect and use the data directly from SAP HANA via RStudio. The problem again however is the emoticons. I cannot get the ODBC drivers to read the tweets with these encoded characters.
 An alternative would be to first clean the data in SAP HANA itself.
-It was also found that RStudio in Windows will not display emoticons (UTF-8) encoded. Linux should but I cannot confirm yet.
+It was also found that RStudio in Windows will not display emoticons (UTF-8) encoded. Linux should but I cannot confirm yet. The problem is that I require an ODBC connection to SAP HANA from the Linux VM.
 
 Current standings
-- smaller (3GB) tweets data created from the large 1TB set
-- data imported into PostgreSQL
+- full set of data in SAP HANA (44GB tweets - after cleaned and reduced from Hadoop)
+- only data required for the experiment (50MB) imported into PostgreSQL
 - RStudio on Windows
 - Rmarkdown published results hosted in github
