@@ -31,5 +31,5 @@ In linear algebra, an eigenvector or characteristic vector of a linear transform
 ### Multivariate analysis
 Multivariate analysis (MVA) is based on the statistical principle of multivariate statistics, which involves observation and analysis of more than one statistical outcome variable at a time.
 
-## Discrete variables
+### Discrete variables
 Variables that can only take on a finite number of values are called "discrete variables." All qualitative variables are discrete. Some quantitative variables are discrete, such as performance rated as 1,2,3,4, or 5, or temperature rounded to the nearest degree.

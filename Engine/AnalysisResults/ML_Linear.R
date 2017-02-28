@@ -1,51 +1,23 @@
----
-title: "Results Original Data"
-output: 
-  html_document: 
-    keep_md: yes
----
 
-```{r echo=FALSE, messages=FALSE, results='hide'}
-#garbage collection + clear RAM
-rm(list = ls(all.name = TRUE))
-gc()
-```
+library(RPostgreSQL)
+library(caret)
+library(lubridate)
+library(doParallel)
+library(pROC)
+library(dplyr)
+library(ggplot2)
+library(reshape2)
 
-```{r setup, include=FALSE}
-knitr::opts_chunk$set(echo = TRUE)
-knitr::opts_chunk$set(tidy = TRUE)
-knitr::opts_chunk$set(warning = FALSE)
-```
+#loads the PostgreSQL driver
+drv <- dbDriver("PostgreSQL")
+con <- dbConnect(drv, dbname = "twitter",
+                 host = "localhost", port = 5432,
+                 user = "postgres", password = "")
+#rm(pw) # removes the password
 
-```{r include=FALSE}
-  #load libraries
-  suppressMessages(library(knitr))
-  suppressMessages(library(ggplot2))
-  suppressMessages(library(scales))
-  suppressMessages(library(caret))
-  suppressMessages(library(lubridate))
-  suppressMessages(library(doParallel))
-  suppressMessages(library(pROC))
-  suppressMessages(library(dplyr))
-  suppressMessages(library(reshape2))
-  
-```
-
-```{r echo=FALSE}
-# Connect to the database first
-read_chunk('../../DBConnection/ConnectPostgres.R')
-```
-
-```{r connectDB, echo=FALSE}
-```
-
-```{r gettwitterfeeddata, cache=FALSE, echo=FALSE}
 data.original <- dbGetQuery(con, "SELECT * from main.zz_full_set") 
 data.full <- data.original
-```
 
-##Pre-processing
-```{r dowork}
 #CHECK MISSING DATA
 # A function that plots missingness
 
@@ -66,9 +38,6 @@ ggplot_missing <- function(x){
          y = "Rows / observations")
 }
 
-p <- ggplot_missing(data.full)
-print(p)
-  
 ######################################
 ##  CLEANUP AND PREPROCESSING
 ######################################
@@ -251,7 +220,7 @@ resampling <- function(x){
   #used to collect, summarize and contrast the resampling results. Since the random number seeds
   #were initialized to the same value prior to calling train, the same folds were used for each model.
   resamps <- resamples(x)
-  print(summary(resamps))
+  summary(resamps)
   p <- xyplot(resamps, what = "BlandAltman") 
   print(p)
   # boxplots of results
@@ -271,11 +240,19 @@ resampling <- function(x){
 
 #data = full set with class
 #dummy = dummyVars set without class
-plsFit.o <- runModel(data.o, "original","pls", 1)
-plsFit.e <- runModel(data.e, "engineer","pls", 1)
+plsFit.o <- runModel(data.o, "original","pls", 0)
+plsFit.e <- runModel(data.e, "engineer","pls", 0)
 resampling(list(opls = plsFit.o, epls = plsFit.e))
 
-#svmFit.o <- runModel(data.o, "original","svmRadial", 0)
-#svmFit.e <- runModel(data.e, "engineer","svmRadial", 0)
-#resampling(list(osvm = svmFit.o, esvm = svmFit.e))
-```
+adaFit.o <- runModel(data.o, "original","adaboost", 0)
+adaFit.e <- runModel(data.e, "engineer","adaboost", 0)
+resampling(list(oada = adaFit.o, eada = adaFit.e))
+
+xyfFit.o <- runModel(data.o, "original","xyf", 0)
+xyfFit.e <- runModel(data.e, "engineer","xyf", 0)
+resampling(list(oxyf = xyfFit.o, exyf = xyfFit.e))
+
+svmFit.o <- runModel(data.o, "original","svmRadial", 0)
+svmFit.e <- runModel(data.e, "engineer","svmRadial", 0)
+resampling(list(osvm = svmFit.o, esvm = svmFit.e))
+
