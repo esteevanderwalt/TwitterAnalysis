@@ -21,7 +21,7 @@ We also have three datasets to work with, each grouping the data as above:
 
 The first experiments just tried to 
 
-- use the datasets and perform one simple linear regression algo on them ([..see results](/ML_linear_regression.md))
+- use the datasets and perform one simple linear regression algo on them ([..see results](ML_linear_regression.md))
 - use the datasets and perform one simple svm algo on them
 - use the datasets and perform one simple random forest algo on them
 Not sure if the rest is required yet (need to understand anomaly detection / skewed sets better as well is how the algo's cater for them)
@@ -30,9 +30,9 @@ Not sure if the rest is required yet (need to understand anomaly detection / ske
 
 Thereafter the following experiments were done:
 
-1. Use the attributes, by default part of the Twitter feed, to try and create a model that correctly classifies the accounts ([..see results](/Results_asis.md)).
+1. Use the attributes, by default part of the Twitter feed, to try and create a model that correctly classifies the accounts ([..see results](Results_asis.md)).
 2. Add each engineered feature to the as-is model to understand the information gain / entropy.
-3. Enrich the data with additional information from other sources to build new models ([..see results](/Results_engineered.md)).
+3. Enrich the data with additional information from other sources to build new models ([..see results](Results_engineered.md)).
 4. Score the enriched data as being deceptive or not before building a new model
 5. Add social media knowledge to 1,2,3
 6. Add weights to 1,2,3
