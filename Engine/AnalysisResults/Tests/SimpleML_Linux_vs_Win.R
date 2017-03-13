@@ -169,7 +169,7 @@ m1.t <- system.time(fit.m1 <- train(CLASS~., data=training,
                                     trControl = fit.m1.fc,
                                     tuneLength = tune))
 
-filename <- "./Results/test.txt"
+filename <- "~/Projects/RStudio/TwitterAnalysis/Engine/AnalysisResults/Results/test.txt"
 
 sink(filename, append = TRUE)
 
