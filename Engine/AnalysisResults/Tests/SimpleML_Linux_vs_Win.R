@@ -3,13 +3,24 @@ suppressMessages(library(caret))
 suppressMessages(library(dplyr))
 suppressMessages(library(lubridate))
 
-#WIN
-filename <- "Results/A_WIN_NP_5fold_0repeat_3tune.txt"
-#LINUX
-filename <- "~/Projects/RStudio/TwitterAnalysis/Engine/AnalysisResults/Results/A_LNX_NP_5fold_0repeat_3tune.txt"
+z <- "WIN"
+
+if(z=="WIN"){
+  #WIN
+  filename <- "Results/A_WIN_NP_5fold_0repeat_3tune.txt"
+}else{  
+  #LINUX
+  filename <- "~/Projects/RStudio/TwitterAnalysis/Engine/AnalysisResults/Results/A_LNX_NP_5fold_0repeat_3tune.txt"
+}  
 
 #### connect to DB
-myconn<-odbcConnect("SAPHANA", uid="SYSTEM", pwd="oEqm66jccx", believeNRows=FALSE, rows_at_time=1, DBMSencoding="UTF-8") 
+if(z=="WIN"){
+  #WIN
+  myconn<-odbcConnect("FSOC", uid="SYSTEM", pwd="oEqm66jccx", believeNRows=FALSE, rows_at_time=1, DBMSencoding="UTF-8") 
+}else{  
+  #LINUX
+  myconn<-odbcConnect("SAPHANA", uid="SYSTEM", pwd="oEqm66jccx", believeNRows=FALSE, rows_at_time=1, DBMSencoding="UTF-8") 
+}  
 
 #' ###Load data
 #+ get_data
@@ -105,10 +116,13 @@ data.full$LONGITUDE <- round(data.full$LONGITUDE)
 myvars <- c("UTC_OFFSET",
             "GEO_ENABLED", "LATITUDE", "LONGITUDE",  
             "IS_DEFAULT_PROFILE", "IS_DEFAULT_PROFILE_IMAGE", "CLASS")
-#WIN
-setwd("C:/PhD/ProjectsV2/RStudio/TwitterAnalysis/Engine/AnalysisResults/Tests")
-#LINUX
-setwd("~/Projects/RStudio/TwitterAnalysis/Engine/AnalysisResults/Tests")
+if(z=="WIN"){
+  #WIN
+  setwd("C:/PhD/ProjectsV2/RStudio/TwitterAnalysis/Engine/AnalysisResults/Tests")
+}else{  
+  #LINUX
+  setwd("~/Projects/RStudio/TwitterAnalysis/Engine/AnalysisResults/Tests")
+} 
 source("LIB_ML_Helper.R")
 source("LIB_ML_Models_ROC.R")
 data.o <- prepareData(data.full[myvars])
