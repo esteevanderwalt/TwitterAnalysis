@@ -1,6 +1,6 @@
 ## library to run all 8 algorithms based on given parameters
 
-run_ML <- function(training, resamp, folds, tune, r, filename){
+ML_Models_Accuracy <- function(training, resamp, folds, tune, r, filename){
   
   #--------------------------------------
   # Model 1 - SVM Radial
@@ -14,14 +14,12 @@ run_ML <- function(training, resamp, folds, tune, r, filename){
   fit.m1.fc <- trainControl(method = resamp,
                             number = folds,
                             repeats = r,
-                            classProbs = T,
-                            summaryFunction = twoClassSummary)
+                            classProbs = T)
   
   # Build model
   set.seed(123)
-  m1.t <- system.time(fit.m1 <- train(class~., data=training,
+  m1.t <- system.time(fit.m1 <- train(CLASS~., data=training,
                                       method = "svmRadial",
-                                      metric = "ROC",
                                       preProcess = c("center", "scale"),
                                       trControl = fit.m1.fc,
                                       tuneLength = tune))
@@ -37,13 +35,13 @@ run_ML <- function(training, resamp, folds, tune, r, filename){
   # In-sample fit
   fit.m1.trn.pred = predict(fit.m1, newdata = testing)
   fit.m1.trn.prob = predict(fit.m1, newdata = testing, type = "prob")
-  fit.m1.trn.cm = confusionMatrix(fit.m1.trn.pred, testing$class)
+  fit.m1.trn.cm = confusionMatrix(fit.m1.trn.pred, testing$CLASS)
   fit.m1.trn.cm$table
   fit.m1.trn.cm$overall[1:2]
   a <- varImp(fit.m1)$importance
   a[,2] <- NULL
   fit.m1.imp <- a
-  fit.m1.mRoc <- roc(testing$class,fit.m1.trn.prob[,"deceptive"], levels = c("trustworthy","deceptive"))
+  fit.m1.mRoc <- roc(testing$CLASS,fit.m1.trn.prob[,"deceptive"], levels = c("trustworthy","deceptive"))
   
   #--------------------------------------
   # Model 2 - Random forest
@@ -55,14 +53,12 @@ run_ML <- function(training, resamp, folds, tune, r, filename){
   fit.m2.fc <- trainControl(method = resamp, 
                             number = folds,
                             repeats = r,
-                            classProbs = TRUE,
-                            summaryFunction = twoClassSummary)
+                            classProbs = TRUE)
   
   # Build model
   set.seed(123)
-  m2.t <- system.time(fit.m2 <- train(class~., data=training,
+  m2.t <- system.time(fit.m2 <- train(CLASS~., data=training,
                                       method = "rf",
-                                      metric = "ROC",
                                       preProcess = c("center", "scale"),
                                       trControl = fit.fc,
                                       tuneLength = tune))
@@ -78,12 +74,12 @@ run_ML <- function(training, resamp, folds, tune, r, filename){
   # In-sample fit
   fit.m2.trn.pred = predict(fit.m2, newdata = testing)
   fit.m2.trn.prob = predict(fit.m2, newdata = testing, type = "prob")
-  fit.m2.trn.cm = confusionMatrix(fit.m2.trn.pred, testing$class)
+  fit.m2.trn.cm = confusionMatrix(fit.m2.trn.pred, testing$CLASS)
   fit.m2.trn.cm$table
   fit.m2.trn.cm$overall[1:2]
   a <- varImp(fit.m2)$importance
   fit.m2.imp <- a
-  fit.m2.mRoc <- roc(testing$class,fit.m2.trn.prob[,"deceptive"], levels = c("trustworthy","deceptive"))
+  fit.m2.mRoc <- roc(testing$CLASS,fit.m2.trn.prob[,"deceptive"], levels = c("trustworthy","deceptive"))
   
   #--------------------------------------
   # Model 3 - Decision tree (J48)
@@ -95,14 +91,12 @@ run_ML <- function(training, resamp, folds, tune, r, filename){
   fit.m3.fc <- trainControl(method = resamp, 
                             number = folds,
                             repeats = r,
-                            classProbs = TRUE,
-                            summaryFunction = twoClassSummary)
+                            classProbs = TRUE)
   
   # Build model
   set.seed(123)
-  m3.t <- system.time(fit.m3 <- train(class~., data=training,
+  m3.t <- system.time(fit.m3 <- train(CLASS~., data=training,
                                       method = "J48",
-                                      metric = "ROC",
                                       preProcess = c("center", "scale"),
                                       trControl = fit.m3.fc,
                                       tuneLength = tune))
@@ -118,13 +112,13 @@ run_ML <- function(training, resamp, folds, tune, r, filename){
   # In-sample fit
   fit.m3.trn.pred = predict(fit.m3, newdata = testing)
   fit.m3.trn.prob = predict(fit.m3, newdata = testing, type = "prob")
-  fit.m3.trn.cm = confusionMatrix(fit.m3.trn.pred, testing$class)
+  fit.m3.trn.cm = confusionMatrix(fit.m3.trn.pred, testing$CLASS)
   fit.m3.trn.cm$table
   fit.m3.trn.cm$overall[1:2]
   a <- varImp(fit.m3)$importance
   a[,2] <- NULL
   fit.m3.imp <- a
-  fit.m3.mRoc <- roc(testing$class,fit.m3.trn.prob[,"deceptive"], levels = c("trustworthy","deceptive"))
+  fit.m3.mRoc <- roc(testing$CLASS,fit.m3.trn.prob[,"deceptive"], levels = c("trustworthy","deceptive"))
   
   
   #--------------------------------------
@@ -136,14 +130,12 @@ run_ML <- function(training, resamp, folds, tune, r, filename){
   fit.m4.fc <- trainControl(method = resamp, 
                             number = folds,
                             repeats = r,
-                            classProbs = TRUE,
-                            summaryFunction = twoClassSummary)
+                            classProbs = TRUE)
   
   # Build model
   set.seed(123)
-  m4.t <- system.time(fit.m4 <- train(class~., data=training,
+  m4.t <- system.time(fit.m4 <- train(CLASS~., data=training,
                                       method = "bayesglm",
-                                      metric = "ROC",
                                       preProcess = c("center", "scale"),
                                       trControl = fit.m4.fc))
   
@@ -158,13 +150,13 @@ run_ML <- function(training, resamp, folds, tune, r, filename){
   # In-sample fit
   fit.m4.trn.pred = predict(fit.m4, newdata = testing)
   fit.m4.trn.prob = predict(fit.m4, newdata = testing, type = "prob")
-  fit.m4.trn.cm = confusionMatrix(fit.m4.trn.pred, testing$class)
+  fit.m4.trn.cm = confusionMatrix(fit.m4.trn.pred, testing$CLASS)
   fit.m4.trn.cm$table
   fit.m4.trn.cm$overall[1:2]
   a <- varImp(fit.m4)$importance
   a[,2] <- NULL
   fit.m4.imp <- a
-  fit.m4.mRoc <- roc(testing$class,fit.m4.trn.prob[,"deceptive"], levels = c("trustworthy","deceptive"))
+  fit.m4.mRoc <- roc(testing$CLASS,fit.m4.trn.prob[,"deceptive"], levels = c("trustworthy","deceptive"))
   
   
   #--------------------------------------
@@ -182,14 +174,12 @@ run_ML <- function(training, resamp, folds, tune, r, filename){
   fit.m5.fc <- trainControl(method = resamp, 
                             number = folds,
                             repeats = r,
-                            classProbs = TRUE,
-                            summaryFunction = twoClassSummary)
+                            classProbs = TRUE)
   
   # Build model
   set.seed(123)
-  m5.t <- system.time(fit.m5 <- train(class~., data=training,
+  m5.t <- system.time(fit.m5 <- train(CLASS~., data=training,
                                       method = "kknn",
-                                      metric = "ROC",
                                       preProcess = c("center", "scale"),
                                       trControl = fit.m5.fc,
                                       tuneLength = tune))
@@ -201,13 +191,13 @@ run_ML <- function(training, resamp, folds, tune, r, filename){
   # In-sample fit
   fit.m5.trn.pred = predict(fit.m5, newdata = testing)
   fit.m5.trn.prob = predict(fit.m5, newdata = testing, type = "prob")
-  fit.m5.trn.cm = confusionMatrix(fit.m5.trn.pred, testing$class)
+  fit.m5.trn.cm = confusionMatrix(fit.m5.trn.pred, testing$CLASS)
   fit.m5.trn.cm$table
   fit.m5.trn.cm$overall[1:2]
   a <- varImp(fit.m5)$importance
   a[,2] <- NULL
   fit.m5.imp <- a
-  fit.m5.mRoc <- roc(testing$class,fit.m5.trn.prob[,"deceptive"], levels = c("trustworthy","deceptive"))
+  fit.m5.mRoc <- roc(testing$CLASS,fit.m5.trn.prob[,"deceptive"], levels = c("trustworthy","deceptive"))
   
   
   #--------------------------------------
@@ -222,14 +212,12 @@ run_ML <- function(training, resamp, folds, tune, r, filename){
   fit.m6.fc <- trainControl(method = resamp, 
                             number = folds,
                             repeats = r,
-                            classProbs = TRUE,
-                            summaryFunction = twoClassSummary)
+                            classProbs = TRUE)
   
   # Build model
   set.seed(123)
-  m6.t <- system.time(fit.m6 <- train(class~., data=training,
+  m6.t <- system.time(fit.m6 <- train(CLASS~., data=training,
                                       method = "adaboost",
-                                      metric = "ROC",
                                       preProcess = c("center", "scale"),
                                       trControl = fit.m6.fc,
                                       tuneLength = tune))
@@ -241,13 +229,13 @@ run_ML <- function(training, resamp, folds, tune, r, filename){
   # In-sample fit
   fit.m6.trn.pred = predict(fit.m6, newdata = testing)
   fit.m6.trn.prob = predict(fit.m6, newdata = testing, type = "prob")
-  fit.m6.trn.cm = confusionMatrix(fit.m6.trn.pred, testing$class)
+  fit.m6.trn.cm = confusionMatrix(fit.m6.trn.pred, testing$CLASS)
   fit.m6.trn.cm$table
   fit.m6.trn.cm$overall[1:2]
   a <- varImp(fit.m6)$importance
   a[,2] <- NULL
   fit.m6.imp <- a
-  fit.m6.mRoc <- roc(testing$class,fit.m6.trn.prob[,"deceptive"], levels = c("trustworthy","deceptive"))
+  fit.m6.mRoc <- roc(testing$CLASS,fit.m6.trn.prob[,"deceptive"], levels = c("trustworthy","deceptive"))
   
   
   #--------------------------------------
@@ -261,14 +249,12 @@ run_ML <- function(training, resamp, folds, tune, r, filename){
   fit.m7.fc <- trainControl(method = resamp, 
                             number = folds,
                             repeats = r,
-                            classProbs = TRUE,
-                            summaryFunction = twoClassSummary)
+                            classProbs = TRUE)
   
   # Build model
   set.seed(123)
-  m7.t <- system.time(fit.m7 <- train(class~., data=training,
+  m7.t <- system.time(fit.m7 <- train(CLASS~., data=training,
                                       method = "rpart",
-                                      metric = "ROC",
                                       preProcess = c("center", "scale"),
                                       trControl = fit.m7.fc,
                                       tuneLength = tune))
@@ -280,13 +266,12 @@ run_ML <- function(training, resamp, folds, tune, r, filename){
   # In-sample fit
   fit.m7.trn.pred = predict(fit.m7, newdata = testing)
   fit.m7.trn.prob = predict(fit.m7, newdata = testing, type = "prob")
-  fit.m7.trn.cm = confusionMatrix(fit.m7.trn.pred, testing$class)
+  fit.m7.trn.cm = confusionMatrix(fit.m7.trn.pred, testing$CLASS)
   fit.m7.trn.cm$table
   fit.m7.trn.cm$overall[1:2]
-  fit.m7.trn.cm$byClass
   a <- varImp(fit.m7)$importance
   fit.m7.imp <- a
-  fit.m7.mRoc <- roc(testing$class,fit.m7.trn.prob[,"deceptive"], levels = c("trustworthy","deceptive"))
+  fit.m7.mRoc <- roc(testing$CLASS,fit.m7.trn.prob[,"deceptive"], levels = c("trustworthy","deceptive"))
   
   
   #--------------------------------------
@@ -301,14 +286,12 @@ run_ML <- function(training, resamp, folds, tune, r, filename){
   fit.m8.fc <- trainControl(method = resamp, 
                             number = folds,
                             repeats = r,
-                            classProbs = TRUE,
-                            summaryFunction = twoClassSummary)
+                            classProbs = TRUE)
   
   # Build model
   set.seed(123)
-  m8.t <- system.time(fit.m8 <- train(class~., data=training,
+  m8.t <- system.time(fit.m8 <- train(CLASS~., data=training,
                                       method = "nnet",
-                                      metric = "ROC",
                                       preProcess = c("center", "scale"),
                                       trControl = fit.m8.fc,
                                       tuneLength = tune))
@@ -320,13 +303,12 @@ run_ML <- function(training, resamp, folds, tune, r, filename){
   # In-sample fit
   fit.m8.trn.pred = predict(fit.m8, newdata = testing)
   fit.m8.trn.prob = predict(fit.m8, newdata = testing, type = "prob")
-  fit.m8.trn.cm = confusionMatrix(fit.m8.trn.pred, testing$class)
+  fit.m8.trn.cm = confusionMatrix(fit.m8.trn.pred, testing$CLASS)
   fit.m8.trn.cm$table
   fit.m8.trn.cm$overall[1:2]
-  fit.m8.trn.cm$byClass
   a <- varImp(fit.m8)$importance
   fit.m8.imp <- a
-  fit.m8.mRoc <- roc(testing$class,fit.m8.trn.prob[,"deceptive"], levels = c("trustworthy","deceptive"))
+  fit.m8.mRoc <- roc(testing$CLASS,fit.m8.trn.prob[,"deceptive"], levels = c("trustworthy","deceptive"))
   
   
   #--------------------------------------
