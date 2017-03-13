@@ -1,125 +1,105 @@
-# Results Original Data
+# Using Linear Regression - Example
 
 
 
+###Load data
 
-
-
-
-
-
-
-```
-## Loading required package: DBI
-```
-
-```
-## [1] TRUE
-```
-
-
-
-##Pre-processing
 
 ```r
-# CHECK MISSING DATA A function that plots missingness
+data.original <- dbGetQuery(con, "SELECT * from main.zz_full_set") 
+data.full <- data.original
+```
 
-ggplot_missing <- function(x) {
-    
-    x %>% is.na %>% melt %>% ggplot(data = ., aes(x = Var2, y = Var1)) + geom_raster(aes(fill = value)) + 
-        scale_fill_grey(name = "", labels = c("Present", "Missing")) + theme_minimal() + 
-        theme(axis.text.x = element_text(angle = 45, vjust = 0.5)) + labs(x = "Variables in Dataset", 
-        y = "Rows / observations")
-}
+###Plot missing data
 
+
+```r
 p <- ggplot_missing(data.full)
 print(p)
 ```
 
-![](Results_original_data_files/figure-html/dowork-1.png)<!-- -->
+![](ML_linear_V2_files/figure-html/plot-1.png)<!-- -->
+
+######################################
+###  Cleanup and preprocessing
+######################################
+
 
 ```r
-###################################### CLEANUP AND PREPROCESSING
-data.full$sentiment[is.na(data.full$sentiment)] <- "Other"
-data.full$emotion[is.na(data.full$emotion)] <- "Other"
+data.full$sentiment[is.na(data.full$sentiment)] <- 'Other'
+data.full$emotion[is.na(data.full$emotion)] <- 'Other'
 data.full$distance_location[is.na(data.full$distance_location)] <- 0
 data.full$distance_tz[is.na(data.full$distance_tz)] <- 0
-data.full$continent[is.na(data.full$continent)] <- "Other"
-data.full$sub_region[is.na(data.full$sub_region)] <- "Other"
-data.full$gender[is.na(data.full$gender)] <- "Other"
+data.full$continent[is.na(data.full$continent)] <- 'Other'
+data.full$sub_region[is.na(data.full$sub_region)] <- 'Other'
+data.full$gender[is.na(data.full$gender)] <- 'Other'
 data.full$avg_tweet_time[is.na(data.full$avg_tweet_time)] <- 12
 data.full$no_of_devices[is.na(data.full$no_of_devices)] <- 1
 data.full$levenshtein[is.na(data.full$levenshtein)] <- 1
 data.full$hamming[is.na(data.full$hamming)] <- 1
 data.full$valid_name[is.na(data.full$valid_name)] <- 0
-data.full$image_gender[is.na(data.full$image_gender)] <- "Other"
+data.full$image_gender[is.na(data.full$image_gender)] <- 'Other'
 data.full$image_age[is.na(data.full$image_age)] <- 20
 data.full$no_of_faces[is.na(data.full$no_of_faces)] <- 20
-# change last tweet time
+#change last tweet time
 data.full$last_tweet_time <- year(ymd_hms(data.full$last_tweet_time))
 data.full$last_tweet_time[is.na(data.full$last_tweet_time)] <- 2000
-# change location, language, timezone to only have top50 and other
-d <- data.full %>% group_by(continent) %>% summarise(n = n()) %>% arrange(desc(n))
+#change location, language, timezone to only have top50 and other
+d <- data.full %>% 
+  group_by(continent) %>%
+  summarise(n=n()) %>%
+  arrange(desc(n))
 l <- subset(data.full, !(continent %in% d$continent[1:50]))$continent
-data.full$continent[data.full$continent %in% l] <- "Other"
+data.full$continent[data.full$continent %in% l] <- 'Other'
 rm(d, l)
-# remove decimals from numerics
+#remove decimals from numerics
 data.full$image_age <- round(data.full$image_age)
 data.full$avg_tweet_time <- round(data.full$avg_tweet_time)
-# update name
-data.full[data.full$valid_name != 0, ]$valid_name <- 1
-# first replace NA with other
-data.full$timezone[is.na(data.full$timezone)] <- "Other"
+#update name
+data.full[data.full$valid_name != 0,]$valid_name <- 1
+#first replace NA with other
+data.full$timezone[is.na(data.full$timezone)] <- 'Other'
 data.full$latitude[is.na(data.full$latitude)] <- 0
 data.full$longitude[is.na(data.full$longitude)] <- 0
-# change created to be year of creation
+#change created to be year of creation
 data.full$created <- year(ymd_hms(data.full$created))
 data.full$created[is.na(data.full$created)] <- 2000
-# change location, language, timezone to only have top50 and other
-d <- data.full %>% group_by(location) %>% summarise(n = n()) %>% arrange(desc(n))
+#change location, language, timezone to only have top50 and other
+d <- data.full %>% 
+  group_by(location) %>%
+  summarise(n=n()) %>%
+  arrange(desc(n))
 l <- subset(data.full, !(location %in% d$location[1:50]))$location
-data.full$location[data.full$location %in% l] <- "Other"
+data.full$location[data.full$location %in% l] <- 'Other'
 rm(d, l)
-d <- data.full %>% group_by(timezone) %>% summarise(n = n()) %>% arrange(desc(n))
+d <- data.full %>% 
+  group_by(timezone) %>%
+  summarise(n=n()) %>%
+  arrange(desc(n))
 l <- subset(data.full, !(timezone %in% d$timezone[1:20]))$timezone
-data.full$timezone[data.full$timezone %in% l] <- "Other"
+data.full$timezone[data.full$timezone %in% l] <- 'Other'
 rm(d, l)
-d <- data.full %>% group_by(language) %>% summarise(n = n()) %>% arrange(desc(n))
+d <- data.full %>% 
+  group_by(language) %>%
+  summarise(n=n()) %>%
+  arrange(desc(n))
 l <- subset(data.full, !(language %in% d$language[1:20]))$language
-data.full$language[data.full$language %in% l] <- "Other"
+data.full$language[data.full$language %in% l] <- 'Other'
 rm(d, l)
-# remove decimals from lat/lon
+#remove decimals from lat/lon
 data.full$latitude <- round(data.full$latitude)
 data.full$longitude <- round(data.full$longitude)
+```
 
-######################################## BUILD SETS
-prepareData <- function(x) {
-    
-    # identify nonzero attributes that can influence result
-    nzv <- nearZeroVar(x, saveMetrics = TRUE)
-    print(nzv[nzv$nzv, ])
-    
-    # check that there are no missing values
-    p <- ggplot_missing(x)
-    print(p)
-    
-    dmy <- dummyVars("class ~ .", data = x, fullRank = T)
-    y <- data.frame(predict(dmy, newdata = x))
-    
-    # identify correlated predictors
-    descrCor <- cor(y)
-    highCorr <- sum(abs(descrCor[upper.tri(descrCor)]) > 0.999)
-    print(highCorr)
-    
-    # done automatically? rm(dmy, nzv, descrCor, highCorr)
-    y <- cbind(y, x$class)
-    colnames(y)[colnames(y) == "x$class"] <- "class"
-    return(y)
-}
+######################################
+### Prepare Datasets with dummy vars
+######################################
 
-############################### PREPARE DATASETS
-myvars <- c("utc_offset", "geo_enabled", "latitude", "longitude", "is_default_profile", 
-    "is_default_profile_image", "created", "class")
+
+```r
+myvars <- c("utc_offset",
+            "geo_enabled", "latitude", "longitude",  
+            "is_default_profile", "is_default_profile_image", "created", "class")
 data.o <- prepareData(data.full[myvars])
 ```
 
@@ -131,15 +111,16 @@ data.o <- prepareData(data.full[myvars])
 ## class                      73.63000   0.002679887   FALSE TRUE
 ```
 
-![](Results_original_data_files/figure-html/dowork-2.png)<!-- -->
+![](ML_linear_V2_files/figure-html/prepare-1.png)<!-- -->
 
 ```
 ## [1] 0
 ```
 
 ```r
-myvars <- c("distance_location", "distance_tz", "gender", "levenshtein", "hamming", 
-    "valid_name", "image_gender", "image_age", "no_of_faces", "class")
+myvars <- c("distance_location","distance_tz",
+            "gender","levenshtein","hamming","valid_name","image_gender","image_age",
+            "no_of_faces", "class")
 data.e <- prepareData(data.full[myvars])
 ```
 
@@ -151,103 +132,45 @@ data.e <- prepareData(data.full[myvars])
 ## class                73.63000   0.002679887   FALSE TRUE
 ```
 
-![](Results_original_data_files/figure-html/dowork-3.png)<!-- -->
+![](ML_linear_V2_files/figure-html/prepare-2.png)<!-- -->
 
 ```
 ## [1] 2
 ```
 
+######################################
+### Run model and print results
+######################################
+
+
 ```r
-#################################### FUNCTION for partial least squares
-runModel <- function(x, s, m, saved) {
-    set.seed(123)
-    inTrain <- createDataPartition(y = x$class, p = 0.75, list = FALSE)
-    # str(inTrain)
-    
-    training <- x[inTrain, ]
-    testing <- x[-inTrain, ]
-    rm(inTrain)
-    
-    ctrl <- trainControl(method = "repeatedcv", repeats = 3, classProbs = TRUE, 
-        summaryFunction = twoClassSummary)
-    
-    # cl <- makeCluster(detectCores()) registerDoParallel(cl)
-    s <- paste(s, m, "Fit.RData", sep = "_")
-    if (saved == 0) {
-        plsFit <- train(class ~ ., data = training, method = m, tuneLength = 15, 
-            trControl = ctrl, metric = "ROC", preProc = c("center", "scale"))
-        save(plsFit, file = s)
-    } else {
-        load(s)
-        # stopCluster(cl) registerDoSEQ()
-    }
-    
-    # show result
-    print(plsFit)
-    p <- plot(plsFit)
-    print(p)
-    # plot(plsFit, metric='Kappa') ggplot(plsFit)
-    
-    plsImportance <- varImp(plsFit, scale = FALSE)
-    p <- plot(plsImportance)
-    print(p)
-    
-    # predict new values
-    plsClasses <- predict(plsFit, newdata = testing)
-    print(head(plsClasses))
-    
-    plsProbs <- predict(plsFit, newdata = testing, type = "prob")
-    print(head(plsProbs))
-    
-    p <- confusionMatrix(data = plsClasses, testing$class)
-    print(p)
-    
-    # ROC
-    plsRoc <- roc(testing$class, plsProbs[, "deceptive"], levels = c("trustworthy", 
-        "deceptive"))
-    print(plsRoc)
-    p <- plot(plsRoc, print.thres = "best", print.thres.best.method = "closest.topleft")
-    print(p)
-    plsRocCoords <- coords(plsRoc, "best", best.method = "closest.topleft", 
-        ret = c("threshold", "accuracy"))
-    print(plsRocCoords)
-    
-    rm(plsRoc, plsRocCoords, plsProbs, plsClasses, plsImportance)
-    
-    return(plsFit)
-}
-
-resampling <- function(x) {
-    # How do these models compare in terms of their resampling results? The
-    # resamples function can be used to collect, summarize and contrast the
-    # resampling results. Since the random number seeds were initialized to the
-    # same value prior to calling train, the same folds were used for each
-    # model.
-    resamps <- resamples(x)
-    print(summary(resamps))
-    p <- xyplot(resamps, what = "BlandAltman")
-    print(p)
-    # boxplots of results
-    p <- bwplot(resamps)
-    print(p)
-    # dot plots of results
-    p <- dotplot(resamps)
-    print(p)
-    
-    # Since, for each resample, there are paired results a paired t–test can be
-    # used to assess whether there is a difference in the average resampled area
-    # under the ROC curve. The diff.resamples function can be used to compute
-    # this:
-    diffs <- diff(resamps)
-    print(summary(diffs))
-    
-}
-
-# data = full set with class dummy = dummyVars set without class
-plsFit.o <- runModel(data.o, "original", "pls", 1)
+#data = full set with class
+#dummy = dummyVars set without class
+plsFit.o <- runModel(data.o, "original","pls", 15, 0)
 ```
 
 ```
+## [1] "Create partition"
+## [1] "Run model"
+```
+
+```
+## Loading required package: pls
+```
+
+```
+## 
+## Attaching package: 'pls'
+```
+
+```
+## The following object is masked from 'package:stats':
+## 
+##     loadings
+```
+
+```
+## [1] "Show model results"
 ## Partial Least Squares 
 ## 
 ## 55973 samples
@@ -271,24 +194,26 @@ plsFit.o <- runModel(data.o, "original", "pls", 1)
 ## The final value used for the model was ncomp = 3.
 ```
 
-```
-## Loading required package: pls
-```
+![](ML_linear_V2_files/figure-html/run_models-1.png)<!-- -->
 
 ```
+## [1] "Show variable importance"
+## pls variable importance
 ## 
-## Attaching package: 'pls'
+##                           Overall
+## is_default_profile_image 0.035050
+## created                  0.023809
+## utc_offset               0.009893
+## latitude                 0.005313
+## geo_enabled              0.005184
+## is_default_profile       0.003272
+## longitude                0.001786
 ```
 
-```
-## The following object is masked from 'package:stats':
-## 
-##     loadings
-```
-
-![](Results_original_data_files/figure-html/dowork-4.png)<!-- -->![](Results_original_data_files/figure-html/dowork-5.png)<!-- -->
+![](ML_linear_V2_files/figure-html/run_models-2.png)<!-- -->
 
 ```
+## [1] "Predict new values - evaluate model"
 ## [1] trustworthy trustworthy trustworthy trustworthy trustworthy trustworthy
 ## Levels: deceptive trustworthy
 ##    deceptive trustworthy
@@ -298,6 +223,7 @@ plsFit.o <- runModel(data.o, "original", "pls", 1)
 ## 18 0.2651795   0.7348205
 ## 21 0.2810238   0.7189762
 ## 22 0.3691070   0.6308930
+## [1] "Show evaluation results"
 ## Confusion Matrix and Statistics
 ## 
 ##              Reference
@@ -326,30 +252,33 @@ plsFit.o <- runModel(data.o, "original", "pls", 1)
 ##                                           
 ## 
 ## Call:
-## roc.default(response = testing$class, predictor = plsProbs[,     "deceptive"], levels = c("trustworthy", "deceptive"))
+## roc.default(response = testing$class, predictor = mProbs[, "deceptive"],     levels = c("trustworthy", "deceptive"))
 ## 
-## Data: plsProbs[, "deceptive"] in 18407 controls (testing$class trustworthy) < 250 cases (testing$class deceptive).
+## Data: mProbs[, "deceptive"] in 18407 controls (testing$class trustworthy) < 250 cases (testing$class deceptive).
 ## Area under the curve: 0.8789
 ```
 
-![](Results_original_data_files/figure-html/dowork-6.png)<!-- -->
+![](ML_linear_V2_files/figure-html/run_models-3.png)<!-- -->
 
 ```
 ## 
 ## Call:
-## roc.default(response = testing$class, predictor = plsProbs[,     "deceptive"], levels = c("trustworthy", "deceptive"))
+## roc.default(response = testing$class, predictor = mProbs[, "deceptive"],     levels = c("trustworthy", "deceptive"))
 ## 
-## Data: plsProbs[, "deceptive"] in 18407 controls (testing$class trustworthy) < 250 cases (testing$class deceptive).
+## Data: mProbs[, "deceptive"] in 18407 controls (testing$class trustworthy) < 250 cases (testing$class deceptive).
 ## Area under the curve: 0.8789
 ## threshold  accuracy 
 ## 0.2843366 0.8699148
 ```
 
 ```r
-plsFit.e <- runModel(data.e, "engineer", "pls", 1)
+plsFit.e <- runModel(data.e, "engineer","pls", 15, 0)
 ```
 
 ```
+## [1] "Create partition"
+## [1] "Run model"
+## [1] "Show model results"
 ## Partial Least Squares 
 ## 
 ## 55973 samples
@@ -380,9 +309,33 @@ plsFit.e <- runModel(data.e, "engineer", "pls", 1)
 ## The final value used for the model was ncomp = 13.
 ```
 
-![](Results_original_data_files/figure-html/dowork-7.png)<!-- -->![](Results_original_data_files/figure-html/dowork-8.png)<!-- -->
+![](ML_linear_V2_files/figure-html/run_models-4.png)<!-- -->
 
 ```
+## [1] "Show variable importance"
+## pls variable importance
+## 
+##                     Overall
+## distance_location 0.0456450
+## no_of_faces       0.0129314
+## image_genderOther 0.0128099
+## distance_tz       0.0102708
+## image_genderM     0.0076838
+## levenshtein       0.0072602
+## genderOther       0.0065878
+## valid_name1       0.0065878
+## image_age         0.0059795
+## hamming           0.0057869
+## genderM           0.0040818
+## genderF           0.0039368
+## gender1M          0.0003670
+## gender1F          0.0001895
+```
+
+![](ML_linear_V2_files/figure-html/run_models-5.png)<!-- -->
+
+```
+## [1] "Predict new values - evaluate model"
 ## [1] trustworthy trustworthy trustworthy trustworthy trustworthy trustworthy
 ## Levels: deceptive trustworthy
 ##    deceptive trustworthy
@@ -392,6 +345,7 @@ plsFit.e <- runModel(data.e, "engineer", "pls", 1)
 ## 18 0.2709149   0.7290851
 ## 21 0.2817269   0.7182731
 ## 22 0.2665578   0.7334422
+## [1] "Show evaluation results"
 ## Confusion Matrix and Statistics
 ## 
 ##              Reference
@@ -420,24 +374,29 @@ plsFit.e <- runModel(data.e, "engineer", "pls", 1)
 ##                                           
 ## 
 ## Call:
-## roc.default(response = testing$class, predictor = plsProbs[,     "deceptive"], levels = c("trustworthy", "deceptive"))
+## roc.default(response = testing$class, predictor = mProbs[, "deceptive"],     levels = c("trustworthy", "deceptive"))
 ## 
-## Data: plsProbs[, "deceptive"] in 18407 controls (testing$class trustworthy) < 250 cases (testing$class deceptive).
+## Data: mProbs[, "deceptive"] in 18407 controls (testing$class trustworthy) < 250 cases (testing$class deceptive).
 ## Area under the curve: 0.9945
 ```
 
-![](Results_original_data_files/figure-html/dowork-9.png)<!-- -->
+![](ML_linear_V2_files/figure-html/run_models-6.png)<!-- -->
 
 ```
 ## 
 ## Call:
-## roc.default(response = testing$class, predictor = plsProbs[,     "deceptive"], levels = c("trustworthy", "deceptive"))
+## roc.default(response = testing$class, predictor = mProbs[, "deceptive"],     levels = c("trustworthy", "deceptive"))
 ## 
-## Data: plsProbs[, "deceptive"] in 18407 controls (testing$class trustworthy) < 250 cases (testing$class deceptive).
+## Data: mProbs[, "deceptive"] in 18407 controls (testing$class trustworthy) < 250 cases (testing$class deceptive).
 ## Area under the curve: 0.9945
 ## threshold  accuracy 
 ## 0.2824900 0.9596934
 ```
+
+######################################
+### Compare models
+######################################
+
 
 ```r
 resampling(list(opls = plsFit.o, epls = plsFit.e))
@@ -467,7 +426,7 @@ resampling(list(opls = plsFit.o, epls = plsFit.e))
 ## epls 0.9995  0.9997 0.9998 0.9998       1    1    0
 ```
 
-![](Results_original_data_files/figure-html/dowork-10.png)<!-- -->![](Results_original_data_files/figure-html/dowork-11.png)<!-- -->![](Results_original_data_files/figure-html/dowork-12.png)<!-- -->
+![](ML_linear_V2_files/figure-html/compare_models-1.png)<!-- -->![](ML_linear_V2_files/figure-html/compare_models-2.png)<!-- -->![](ML_linear_V2_files/figure-html/compare_models-3.png)<!-- -->
 
 ```
 ## 
@@ -495,7 +454,14 @@ resampling(list(opls = plsFit.o, epls = plsFit.e))
 ```
 
 ```r
-# svmFit.o <- runModel(data.o, 'original','svmRadial', 0) svmFit.e <-
-# runModel(data.e, 'engineer','svmRadial', 0) resampling(list(osvm =
-# svmFit.o, esvm = svmFit.e))
+#svmFit.o <- runModel(data.o, "original","svmRadial", 0)
+#svmFit.e <- runModel(data.e, "engineer","svmRadial", 0)
+#resampling(list(osvm = svmFit.o, esvm = svmFit.e))
 ```
+
+
+---
+title: "ML_linear_V2.R"
+author: "Estee"
+date: "Thu Mar 02 08:24:57 2017"
+---
