@@ -3,16 +3,21 @@ suppressMessages(library(caret))
 suppressMessages(library(dplyr))
 suppressMessages(library(lubridate))
 
+#WIN
+filename <- "Results/A_WIN_NP_5fold_0repeat_3tune.txt"
+#LINUX
+filename <- "~/Projects/RStudio/TwitterAnalysis/Engine/AnalysisResults/Results/A_LNX_NP_5fold_0repeat_3tune.txt"
+
 #### connect to DB
 myconn<-odbcConnect("SAPHANA", uid="SYSTEM", pwd="oEqm66jccx", believeNRows=FALSE, rows_at_time=1, DBMSencoding="UTF-8") 
 
 #' ###Load data
 #+ get_data
-data.original <- sqlQuery(myconn, "SELECT * from twitter.zz_full_set_win")
+tl <- system.time(data.original <- sqlQuery(myconn, "SELECT * from twitter.zz_full_set_win") )
 data.full <- data.original
 
 #get unique values in set
-rapply(data.original,function(x)length(unique(x)))
+#rapply(data.original,function(x)length(unique(x)))
 
 #' ######################################
 #' ###  Cleanup and preprocessing
@@ -100,28 +105,12 @@ data.full$LONGITUDE <- round(data.full$LONGITUDE)
 myvars <- c("UTC_OFFSET",
             "GEO_ENABLED", "LATITUDE", "LONGITUDE",  
             "IS_DEFAULT_PROFILE", "IS_DEFAULT_PROFILE_IMAGE", "CLASS")
-
-prepareData <- function(x){
-  
-  #identify nonzero attributes that can influence result
-  nzv <- nearZeroVar(x, saveMetrics= TRUE)
-  print(nzv[nzv$nzv,])
-  
-  dmy <- dummyVars("CLASS ~ .", data = x, fullRank=T)
-  y <- data.frame(predict(dmy, newdata = x))
-  
-  #identify correlated predictors
-  descrCor <-  cor(y)
-  highCorr <- sum(abs(descrCor[upper.tri(descrCor)]) > .999)
-  print(highCorr)
-  
-  #done automatically?
-  #rm(dmy, nzv, descrCor, highCorr)
-  y <- cbind(y,x$CLASS)
-  colnames(y)[colnames(y) == 'x$CLASS'] <- 'CLASS'
-  return(y)
-}
-
+#WIN
+setwd("C:/PhD/ProjectsV2/RStudio/TwitterAnalysis/Engine/AnalysisResults/Tests")
+#LINUX
+setwd("~/Projects/RStudio/TwitterAnalysis/Engine/AnalysisResults/Tests")
+source("LIB_ML_Helper.R")
+source("LIB_ML_Models_ROC.R")
 data.o <- prepareData(data.full[myvars])
 
 #' ######################################
@@ -142,47 +131,18 @@ repeats <- 0
 resamp <- "cv"
 tune <- 3
 
-#--------------------------------------
-# Model 1 - SVM Radial
-#--------------------------------------
-# Model notes:
-#   warnings() == F
-#   sigma == constant (0.547204984213807)
-#   C == varied, 3 times (0.25,0.5,1.0)
-
-# Specify fit parameters
-fit.m1.fc <- trainControl(method = resamp,
-                          number = folds,
-                          repeats = repeats,
-                          classProbs = T,
-                          summaryFunction = twoClassSummary)
-
-# Build model
-set.seed(123)
-#find missing values
-sapply(training, function(x) sum(is.na(x)))
-
-m1.t <- system.time(fit.m1 <- train(CLASS~., data=training,
-                                    method = "svmRadial",
-                                    metric = "ROC",
-                                    preProcess = c("center", "scale"),
-                                    trControl = fit.m1.fc,
-                                    tuneLength = tune))
-
-filename <- "~/Projects/RStudio/TwitterAnalysis/Engine/AnalysisResults/Results/test.txt"
+t <- system.time(ML_Models_ROC(training, resamp, folds, tune, repeats, filename))
 
 sink(filename, append = TRUE)
 
-# In-sample summary
-fit.m1$finalModel
-fit.m1$results
+cat("\n")
+print("Query loading run time")
+print("==============")
+print(tl)
 
 cat("\n")
-print("Total run time")
+print("Models run time")
 print("==============")
-print(m1.t)
+print(t)
 
 sink()
-
-
-
