@@ -1,3 +1,5 @@
+suppressMessages(library(pROC))
+
 ## library to run all 8 algorithms based on given parameters
 
 ML_Models_Accuracy <- function(training, resamp, folds, tune, r, filename){
