@@ -7,7 +7,7 @@ z <- "WIN"
 
 if(z=="WIN"){
   #WIN
-  filename <- "Results/A_WIN_NP_5fold_0repeat_3tune.txt"
+  filename <- "C:/PhD/ProjectsV2/RStudio/TwitterAnalysis/Engine/AnalysisResults/Results/A_WIN_NP_5fold_0repeat_3tune.txt"
 }else{  
   #LINUX
   filename <- "~/Projects/RStudio/TwitterAnalysis/Engine/AnalysisResults/Results/A_LNX_NP_5fold_0repeat_3tune.txt"

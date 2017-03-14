@@ -1,3 +1,5 @@
+suppressMessages(library(pROC))
+
 ## library to run all 8 algorithms based on given parameters
 
 ML_Models_ROC <- function(training, resamp, folds, tune, r, filename){
@@ -64,7 +66,7 @@ ML_Models_ROC <- function(training, resamp, folds, tune, r, filename){
                                       method = "rf",
                                       metric = "ROC",
                                       preProcess = c("center", "scale"),
-                                      trControl = fit.fc,
+                                      trControl = fit.m2.fc,
                                       tuneLength = tune))
   
   # In-sample summary
