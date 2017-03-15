@@ -502,6 +502,7 @@ ML_Models_ROC <- function(training, resamp, folds, tune, r, filename){
   
   sink(filename, append = TRUE)
   
+  cat("\n")
   print("Model engine summary")
   print("====================")
   
