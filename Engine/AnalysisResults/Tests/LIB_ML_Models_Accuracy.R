@@ -44,6 +44,11 @@ ML_Models_Accuracy <- function(training, resamp, folds, tune, r, filename){
   a[,2] <- NULL
   fit.m1.imp <- a
   fit.m1.mRoc <- roc(testing$CLASS,fit.m1.trn.prob[,"deceptive"], levels = c("trustworthy","deceptive"))
+
+  sink(filename, append = TRUE)
+  print("M1 complete")
+  print(m1.t)
+  sink()
   
   #--------------------------------------
   # Model 2 - Random forest
@@ -62,7 +67,7 @@ ML_Models_Accuracy <- function(training, resamp, folds, tune, r, filename){
   m2.t <- system.time(fit.m2 <- train(CLASS~., data=training,
                                       method = "rf",
                                       preProcess = c("center", "scale"),
-                                      trControl = fit.fc,
+                                      trControl = fit.m2.fc,
                                       tuneLength = tune))
   
   # In-sample summary
@@ -82,6 +87,11 @@ ML_Models_Accuracy <- function(training, resamp, folds, tune, r, filename){
   a <- varImp(fit.m2)$importance
   fit.m2.imp <- a
   fit.m2.mRoc <- roc(testing$CLASS,fit.m2.trn.prob[,"deceptive"], levels = c("trustworthy","deceptive"))
+
+  sink(filename, append = TRUE)
+  print("M2 complete")
+  print(m2.t)
+  sink()
   
   #--------------------------------------
   # Model 3 - Decision tree (J48)
@@ -122,6 +132,10 @@ ML_Models_Accuracy <- function(training, resamp, folds, tune, r, filename){
   fit.m3.imp <- a
   fit.m3.mRoc <- roc(testing$CLASS,fit.m3.trn.prob[,"deceptive"], levels = c("trustworthy","deceptive"))
   
+  sink(filename, append = TRUE)
+  print("M3 complete")
+  print(m3.t)
+  sink()
   
   #--------------------------------------
   # Model 4 - Bayesian Network
@@ -160,6 +174,10 @@ ML_Models_Accuracy <- function(training, resamp, folds, tune, r, filename){
   fit.m4.imp <- a
   fit.m4.mRoc <- roc(testing$CLASS,fit.m4.trn.prob[,"deceptive"], levels = c("trustworthy","deceptive"))
   
+  sink(filename, append = TRUE)
+  print("M4 complete")
+  print(m4.t)
+  sink()
   
   #--------------------------------------
   # Model 5 - knn
@@ -201,6 +219,10 @@ ML_Models_Accuracy <- function(training, resamp, folds, tune, r, filename){
   fit.m5.imp <- a
   fit.m5.mRoc <- roc(testing$CLASS,fit.m5.trn.prob[,"deceptive"], levels = c("trustworthy","deceptive"))
   
+  sink(filename, append = TRUE)
+  print("M5 complete")
+  print(m5.t)
+  sink()
   
   #--------------------------------------
   # Model 6 - Adaboost
@@ -239,6 +261,10 @@ ML_Models_Accuracy <- function(training, resamp, folds, tune, r, filename){
   fit.m6.imp <- a
   fit.m6.mRoc <- roc(testing$CLASS,fit.m6.trn.prob[,"deceptive"], levels = c("trustworthy","deceptive"))
   
+  sink(filename, append = TRUE)
+  print("M6 complete")
+  print(m6.t)
+  sink()
   
   #--------------------------------------
   # Model 7 - CART
@@ -275,6 +301,10 @@ ML_Models_Accuracy <- function(training, resamp, folds, tune, r, filename){
   fit.m7.imp <- a
   fit.m7.mRoc <- roc(testing$CLASS,fit.m7.trn.prob[,"deceptive"], levels = c("trustworthy","deceptive"))
   
+  sink(filename, append = TRUE)
+  print("M7 complete")
+  print(m7.t)
+  sink()
   
   #--------------------------------------
   # Model 8 - Neural network
@@ -312,6 +342,10 @@ ML_Models_Accuracy <- function(training, resamp, folds, tune, r, filename){
   fit.m8.imp <- a
   fit.m8.mRoc <- roc(testing$CLASS,fit.m8.trn.prob[,"deceptive"], levels = c("trustworthy","deceptive"))
   
+  sink(filename, append = TRUE)
+  print("M8 complete")
+  print(m8.t)
+  sink()
   
   #--------------------------------------
   # Model Comparison
@@ -452,6 +486,7 @@ ML_Models_Accuracy <- function(training, resamp, folds, tune, r, filename){
   
   sink(filename, append = TRUE)
   
+  cat("\n")
   print("Model engine summary")
   print("====================")
   

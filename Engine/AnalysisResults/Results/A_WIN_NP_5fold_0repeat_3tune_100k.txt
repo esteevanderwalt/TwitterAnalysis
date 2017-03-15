@@ -1,0 +1,13 @@
+[1] "M1 complete"
+   user  system elapsed 
+ 949.58    1.14  968.86 
+
+[1] "Query loading run time"
+[1] "=============="
+   user  system elapsed 
+   9.36    0.06  544.93 
+
+[1] "Models run time"
+[1] "=============="
+   user  system elapsed 
+1901.88   19.70 2123.06 

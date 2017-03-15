@@ -1,15 +1,16 @@
 suppressMessages(library(RODBC))
 suppressMessages(library(FSelector))
-suppressMessages(library(entropy))
+suppressMessages(library(caret))
 
-z <- "WIN"
+#only suppose to run on Linux
+z <- "LNX"
 
 if(z=="WIN"){
   #WIN
-  filename <- "C:/PhD/ProjectsV2/RStudio/TwitterAnalysis/Engine/AnalysisResults/Results/A_WIN_NP_5fold_0repeat_3tune.txt"
+  filename <- "C:/PhD/ProjectsV2/RStudio/TwitterAnalysis/Engine/AnalysisResults/Results/B_WIN_EDA.txt"
 }else{  
   #LINUX
-  filename <- "~/Projects/RStudio/TwitterAnalysis/Engine/AnalysisResults/Results/A_LNX_NP_5fold_0repeat_3tune.txt"
+  filename <- "~/Projects/RStudio/TwitterAnalysis/Engine/AnalysisResults/Results/C_LNX_EDA.txt"
 }  
 
 #### connect to DB
@@ -23,35 +24,69 @@ if(z=="WIN"){
 
 #' ###Load data
 #+ get_data
-tl <- system.time(data.original <- sqlQuery(myconn, "SELECT * from twitter.zz_full_set_win") )
+tl <- system.time(data.original <- sqlQuery(myconn, "SELECT ID, NAME, SCREENNAME, CREATED, ORIGINAL_PROFILE_IMAGE, PROFILE_IMAGE, BACKGROUND_IMAGE, LAST_TWEET, DESCRIPTION, LOCATION, LANGUAGE, FRIENDS_COUNT, FOLLOWERS_COUNT, STATUS_COUNT, LISTED_COUNT, TIMEZONE, UTC_OFFSET, GEO_ENABLED, LATITUDE, LONGITUDE, IS_CELEBRITY, IS_DEFAULT_PROFILE, IS_DEFAULT_PROFILE_IMAGE, IS_BACKGROUND_IMAGE_USED, PROFILE_TEXT_COLOR, PROFILE_BG_COLOR from twitter.zz_full_set") )
 data.full <- data.original
 
-#change factors to characters
-i <- sapply(data.full, is.factor)
-data.full[i] <- lapply(data.full[i], as.character)
-
-#str(data.full)
-#summary(data.full)
+#load external libraries
+if(z=="WIN"){
+  #WIN
+  setwd("C:/PhD/ProjectsV2/RStudio/TwitterAnalysis/Engine/AnalysisResults/Tests")
+}else{  
+  #LINUX
+  setwd("~/Projects/RStudio/TwitterAnalysis/Engine/AnalysisResults/Tests")
+} 
+source("LIB_Cleanup.R")
 
 print("List all attributes available")
 print("=============================") 
-colnames(data.original)
+colnames(data.full)
 
 cat("\n")
 print("Amount of data in the dataset")
 print("=============================") 
-count(data.original)
+nrow(data.full)
+
+#change factors to characters in dataframe
+data.full <- cleanup.factors(data.full)
 
 cat("\n")
-print("Get unique values in set")
+print("Data structure")
+print("==============") 
+str(data.full)
+#summary(data.full)
+
+cat("\n")
+print("Get unique value count in set")
+print("=============================")      
+rapply(data.full,function(x)length(unique(x)))
+
+cat("\n")
+print("Get null values in set")
 print("========================")      
-rapply(data.original,function(x)length(unique(x)))
+rapply(data.full,function(x)sum(is.na(x)))
+
+#Convert all null values to None
+data.full <- cleanup.nulls(data.full)
+
+#Confirm no null values anymore after cleanup
+print("Confirm cleanup of nulls")
+rapply(data.full,function(x)sum(is.na(x)))
 
 cat("\n")
 print("Non/Near zero variance")
 print("=======================")      
-nzv <- nearZeroVar(data.original, saveMetrics= TRUE)
+nzv <- nearZeroVar(data.full, saveMetrics= TRUE)
 print(nzv[nzv$nzv,])
+
+#handle nzv
+LATITUDE
+LONGITUDE
+IS_DEFAULT_PROFILE_IMAGE
+PROFILE_TEXT_COLOR
+
+#handle characters (convert to numbers / bin)
+
+
 
 cat("\n")
 print("Correlation")
@@ -64,25 +99,42 @@ highCorr <- sum(abs(descrCor[upper.tri(descrCor)]) > .7) #more than 70% correlat
 cat("\n")
 print("Entropy, IG, IG Ratio")
 print("=======================")
-entropy(data.full[i])
-IG <- information.gain(CLASS~., data.full)
-IGR <- gain.ratio(CLASS~., data.full)
+#add class column
 
+
+entropy <- function(x,b) {
+  #for each column in x
+  dfu <- NULL
+  for (j in names(x)) {
+    print(j)
+    if(j != "CLASS"){
+      if(is.numeric(x[,j])){
+        print(IG_numeric(x, j, "CLASS", bins=b))
+        dfu <- rbind(dfu, data.frame(Attribute=j, IG=IG_numeric(x, j, "CLASS", bins=b)))
+      }else{
+        #print("no")
+        dfu <- rbind(dfu, data.frame(Attribute=j, IG=IG_cat(x, j, "CLASS")))
+      }
+    }
+  }
+  return(dfu)
+}
+
+df <- entropy(data.full,5)
+
+
+ggplot(aes(y = FRIENDS_COUNT, x = CLASS), data = data.full) + 
+  stat_summary(fun.y=mean, geom="point", shape=23, size=4) 
+
+geom_boxplot(outlier.colour="black", outlier.shape=16,
+             outlier.size=2, notch=FALSE) + 
+  
 
 #' ######################################
 #' ###  Cleanup and preprocessing
 #' ######################################
 #+ clean_preprocess
 
-data.full$SENTIMENT[is.na(data.full$SENTIMENT)] <- 'Other'
-data.full$EMOTION[is.na(data.full$EMOTION)] <- 'Other'
-data.full$DISTANCE_LOCATION[is.na(data.full$DISTANCE_LOCATION)] <- 0
-data.full$DISTANCE_TZ[is.na(data.full$DISTANCE_TZ)] <- 0
-data.full$UTC_OFFSET[is.na(data.full$UTC_OFFSET)] <- 0
-data.full$IS_DEFAULT_PROFILE_IMAGE[is.na(data.full$IS_DEFAULT_PROFILE_IMAGE)] <- 0
-data.full$CONTINENT[is.na(data.full$CONTINENT)] <- 'Other'
-data.full$SUB_REGION[is.na(data.full$SUB_REGION)] <- 'Other'
-data.full$GENDER[is.na(data.full$GENDER)] <- 'Other'
 data.full$GENDER[data.full$GENDER=='1M'] <- 'M'
 data.full$GENDER[data.full$GENDER=='?M'] <- 'M'
 data.full$GENDER[data.full$GENDER=='1F'] <- 'F'
