@@ -1,5 +1,5 @@
 suppressMessages(library(lubridate))
-suppressMessages(library(dplyr))
+suppressMessages(library(plyr))
 
 color.names <- function(d) {
   # get RGB components of d and convert to data frame
@@ -53,11 +53,17 @@ cleanup.Twitter <- function(data) {
   
   #images -> determine if it is a default image or not, convert to binary
   #ORIGINAL_PROFILE_IMAGE
-  data$ORIGINAL_PROFILE_IMAGE[is.na(data$ORIGINAL_PROFILE_IMAGE)] <- ' '
+  data$ORIGINAL_PROFILE_IMAGE[is.na(data$ORIGINAL_PROFILE_IMAGE)] <- 'Null'
+  data[grep("default", data$ORIGINAL_PROFILE_IMAGE), ]$ORIGINAL_PROFILE_IMAGE <- 1
+  data[data$ORIGINAL_PROFILE_IMAGE != 1, ]$ORIGINAL_PROFILE_IMAGE <- 0
   #PROFILE_IMAGE
-  data$PROFILE_IMAGE[is.na(data$PROFILE_IMAGE)] <- ' '
+  data$PROFILE_IMAGE[is.na(data$PROFILE_IMAGE)] <- 'Null'
+  data[grep("default", data$PROFILE_IMAGE), ]$PROFILE_IMAGE <- 1
+  data[data$PROFILE_IMAGE != 1, ]$PROFILE_IMAGE <- 0
   #BACKGROUND_IMAGE
-  data$BACKGROUND_IMAGE[is.na(data$BACKGROUND_IMAGE)] <- ' '
+  data$BACKGROUND_IMAGE[is.na(data$BACKGROUND_IMAGE)] <- 'Null'
+  data[grep("default", data$BACKGROUND_IMAGE), ]$BACKGROUND_IMAGE <- 1
+  data[data$BACKGROUND_IMAGE != 1, ]$BACKGROUND_IMAGE <- 0
   
   #continious strings -> get top 29 entries, rest = 'Other', convert to numeric based on rank
   #LOCATION
