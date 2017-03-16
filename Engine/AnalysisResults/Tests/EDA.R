@@ -65,27 +65,17 @@ print("Get null values in set")
 print("========================")      
 rapply(data.full,function(x)sum(is.na(x)))
 
-#Convert all null values to None
-data.full <- cleanup.nulls(data.full)
-
-#Confirm no null values anymore after cleanup
-print("Confirm cleanup of nulls")
-rapply(data.full,function(x)sum(is.na(x)))
-
 cat("\n")
 print("Non/Near zero variance")
 print("=======================")      
 nzv <- nearZeroVar(data.full, saveMetrics= TRUE)
 print(nzv[nzv$nzv,])
 
-#handle nzv
-LATITUDE
-LONGITUDE
-IS_DEFAULT_PROFILE_IMAGE
-PROFILE_TEXT_COLOR
-
-#handle characters (convert to numbers / bin)
-
+#Cleanup of twitter data
+#which will also convert all data to numeric values
+source("LIB_Cleanup.R")
+data.full2 <- cleanup.Twitter(data.full)
+rapply(data.full2,function(x)length(unique(x)))
 
 
 cat("\n")
