@@ -1,5 +1,4 @@
 suppressMessages(library(lubridate))
-suppressMessages(library(plyr))
 
 color.names <- function(d) {
   # get RGB components of d and convert to data frame

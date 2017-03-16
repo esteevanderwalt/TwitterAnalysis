@@ -1,9 +1,9 @@
+suppressMessages(library(dplyr))
 suppressMessages(library(RODBC))
 suppressMessages(library(caret))
-suppressMessages(library(dplyr))
 suppressMessages(library(lubridate))
 
-z <- "WIN"
+z <- "LNX"
 
 #load external libraries
 if(z=="WIN"){
@@ -47,7 +47,10 @@ data.full <- data.original
 #+ clean_preprocess
 #change factors to characters
 data.full <- cleanup.factors(data.full)
+#detach("package:dplyr", unload=TRUE)
 data.clean <- cleanup.Twitter(data.full)
+
+data.clean %>% distinct(CREATED)
 
 #' ######################################
 #' ### Prepare Datasets with dummy vars
@@ -57,6 +60,9 @@ data.clean <- cleanup.Twitter(data.full)
 myvars <- c("UTC_OFFSET", "GEO_ENABLED", "LATITUDE", "LONGITUDE",  
             "IS_DEFAULT_PROFILE", "IS_DEFAULT_PROFILE_IMAGE", "CLASS")
 #data.o <- prepareData(data.full[myvars])
+#dataset B - remove null columns
+data.clean <- data.clean[ , -which(names(data.clean) %in% c("CREATED"))]
+
 data.o <- data.clean
   
 #' ######################################
