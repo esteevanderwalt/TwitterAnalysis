@@ -22,6 +22,17 @@ cleanup.factors <- function(data) {
   return(data)
 }
 
+#convert all chr to int
+cleanup.chr <- function(data) {
+  for (i in colnames(data)) {
+    #print(typeof(data[,i]))
+    if(i != "CLASS" && is.character(data[,i])){
+      data[,i] <- as.numeric(data[,i])
+    }
+  }
+  return(data)
+}
+
 #convert NA values
 #this function is not working - needs some work
 cleanup.nulls <- function(data) {
@@ -55,14 +66,17 @@ cleanup.Twitter <- function(data) {
   data$ORIGINAL_PROFILE_IMAGE[is.na(data$ORIGINAL_PROFILE_IMAGE)] <- 'Null'
   data[grep("default", data$ORIGINAL_PROFILE_IMAGE), ]$ORIGINAL_PROFILE_IMAGE <- 1
   data[data$ORIGINAL_PROFILE_IMAGE != 1, ]$ORIGINAL_PROFILE_IMAGE <- 0
+  data$ORIGINAL_PROFILE_IMAGE <- as.numeric(data$ORIGINAL_PROFILE_IMAGE)
   #PROFILE_IMAGE
   data$PROFILE_IMAGE[is.na(data$PROFILE_IMAGE)] <- 'Null'
   data[grep("default", data$PROFILE_IMAGE), ]$PROFILE_IMAGE <- 1
   data[data$PROFILE_IMAGE != 1, ]$PROFILE_IMAGE <- 0
+  data$PROFILE_IMAGE <- as.numeric(data$PROFILE_IMAGE)
   #BACKGROUND_IMAGE
   data$BACKGROUND_IMAGE[is.na(data$BACKGROUND_IMAGE)] <- 'Null'
   data[grep("default", data$BACKGROUND_IMAGE), ]$BACKGROUND_IMAGE <- 1
   data[data$BACKGROUND_IMAGE != 1, ]$BACKGROUND_IMAGE <- 0
+  data$BACKGROUND_IMAGE <- as.numeric(data$BACKGROUND_IMAGE)
   
   #continious strings -> get top 29 entries, rest = 'Other', convert to numeric based on rank
   #LOCATION
