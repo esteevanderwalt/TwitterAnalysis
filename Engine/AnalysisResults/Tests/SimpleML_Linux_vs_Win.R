@@ -50,8 +50,6 @@ data.full <- cleanup.factors(data.full)
 #detach("package:dplyr", unload=TRUE)
 data.clean <- cleanup.Twitter(data.full)
 
-data.clean %>% distinct(CREATED)
-
 #' ######################################
 #' ### Prepare Datasets with dummy vars
 #' ######################################
@@ -61,7 +59,9 @@ myvars <- c("UTC_OFFSET", "GEO_ENABLED", "LATITUDE", "LONGITUDE",
             "IS_DEFAULT_PROFILE", "IS_DEFAULT_PROFILE_IMAGE", "CLASS")
 #data.o <- prepareData(data.full[myvars])
 #dataset B - remove null columns
-data.clean <- data.clean[ , -which(names(data.clean) %in% c("CREATED"))]
+data.clean <- data.clean[ , -which(names(data.clean) %in% c("CREATED","LOCATION"))]
+#check that there are more than 1 distinct value in a column
+#rapply(data.clean,function(x)length(unique(x)))
 
 data.o <- data.clean
   
