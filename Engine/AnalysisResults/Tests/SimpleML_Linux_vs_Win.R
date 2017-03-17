@@ -64,7 +64,7 @@ data.clean <- data.clean[ , -which(names(data.clean) %in% c("CREATED","LOCATION"
 #rapply(data.clean,function(x)length(unique(x)))
 
 data.o <- data.clean
-  
+
 #' ######################################
 #' ### Run model and print results
 #' ######################################
