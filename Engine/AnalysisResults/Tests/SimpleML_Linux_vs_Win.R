@@ -18,10 +18,10 @@ source("LIB_ML_Models_ROC.R")
 
 if(z=="WIN"){
   #WIN
-  filename <- "C:/PhD/ProjectsV2/RStudio/TwitterAnalysis/Engine/AnalysisResults/Results/B_WIN_NP_5fold_0repeat_3tune.txt"
+  filename <- "C:/PhD/ProjectsV2/RStudio/TwitterAnalysis/Engine/AnalysisResults/Results/B2_WIN_NP_5fold_0repeat_3tune.txt"
 }else{  
   #LINUX
-  filename <- "~/Projects/RStudio/TwitterAnalysis/Engine/AnalysisResults/Results/B_LNX_NP_5fold_0repeat_3tune.txt"
+  filename <- "~/Projects/RStudio/TwitterAnalysis/Engine/AnalysisResults/Results/B2_LNX_NP_5fold_0repeat_3tune.txt"
 }  
 
 #### connect to DB
@@ -60,6 +60,8 @@ myvars <- c("UTC_OFFSET", "GEO_ENABLED", "LATITUDE", "LONGITUDE",
 #data.o <- prepareData(data.full[myvars])
 #dataset B - remove null columns
 data.clean <- data.clean[ , -which(names(data.clean) %in% c("CREATED","LOCATION"))]
+#dataset B2 - remove columns not used by fake accounts
+data.clean <- data.clean[ , -which(names(data.clean) %in% c("ORIGINAL_PROFILE_IMAGE","BACKGROUND_IMAGE","PROFILE_TEXT_COLOR","PROFILE_BG_COLOR"))]
 #check that there are more than 1 distinct value in a column
 #rapply(data.clean,function(x)length(unique(x)))
 
