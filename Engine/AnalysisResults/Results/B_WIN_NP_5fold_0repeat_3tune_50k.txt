@@ -1,0 +1,244 @@
+[1] "M1 complete"
+   user  system elapsed 
+3713.01   25.65 3900.41 
+[1] "M2 complete"
+   user  system elapsed 
+ 129.93   10.99  145.41 
+[1] "M3 complete"
+   user  system elapsed 
+  21.39    1.39   24.81 
+[1] "M4 complete"
+   user  system elapsed 
+   8.39    0.02    9.28 
+[1] "M5 complete"
+   user  system elapsed 
+ 476.95    0.11  505.72 
+[1] "M6 complete"
+   user  system elapsed 
+  14.83    0.00   15.63 
+[1] "M7 complete"
+   user  system elapsed 
+   2.12    0.00    2.26 
+[1] "M8 complete"
+   user  system elapsed 
+ 137.67    0.03  146.44 
+
+[1] "Model engine summary"
+[1] "===================="
+  Model Type Model Name Accuracy     Kappa Sensitivity Specificity Precision Recall        F1
+1        SVM  svmRadial  0.99368 0.8092525       0.684           1         1  0.684 0.8123515
+2       tree         rf  1.00000 1.0000000       1.000           1         1  1.000 1.0000000
+3       tree        J48  1.00000 1.0000000       1.000           1         1  1.000 1.0000000
+4   bayesian   bayesglm  1.00000 1.0000000       1.000           1         1  1.000 1.0000000
+5    cluster        knn  1.00000 1.0000000       1.000           1         1  1.000 1.0000000
+6       tree   Adaboost  1.00000 1.0000000       1.000           1         1  1.000 1.0000000
+7       tree      rpart  1.00000 1.0000000       1.000           1         1  1.000 1.0000000
+8  neuralnet       nnet  1.00000 1.0000000       1.000           1         1  1.000 1.0000000
+  Prevalence       AUC    Cost
+1       0.02 0.9982599 3900.41
+2       0.02 1.0000000  145.41
+3       0.02 1.0000000   24.81
+4       0.02 1.0000000    9.28
+5       0.02 1.0000000  505.72
+6       0.02 1.0000000   15.63
+7       0.02 1.0000000    2.26
+8       0.02 1.0000000  146.44
+
+[1] "Model attribute importance"
+[1] "=========================="
+                          svmRadial          rf        J48   bayesglm        knn   Adaboost     rpart
+BACKGROUND_IMAGE         100.000000  87.3947173 100.000000 100.000000 100.000000 100.000000 100.00000
+FOLLOWERS_COUNT           66.879086   0.9838923  66.879086  66.879086  66.879086  66.879086   0.00000
+FRIENDS_COUNT             69.248337   1.4948086  69.248337  69.248337  69.248337  69.248337   0.00000
+GEO_ENABLED               45.059864   0.1954403  45.059864  45.059864  45.059864  45.059864   0.00000
+IS_BACKGROUND_IMAGE_USED  99.976871  78.0140464  99.976871  99.976871  99.976871  99.976871  97.73834
+IS_DEFAULT_PROFILE        75.696599  20.6610568  75.696599  75.696599  75.696599  75.696599   0.00000
+IS_DEFAULT_PROFILE_IMAGE  24.529252  28.4375844  24.529252  24.529252  24.529252  24.529252  33.45877
+LANGUAGE                  53.297959   0.2575278  53.297959  53.297959  53.297959  53.297959   0.00000
+LATITUDE                  51.466667  13.9537096  51.466667  51.466667  51.466667  51.466667   0.00000
+LISTED_COUNT              51.118367   0.0000000  51.118367  51.118367  51.118367  51.118367   0.00000
+LONGITUDE                 48.533333  13.8011567  48.533333  48.533333  48.533333  48.533333   0.00000
+ORIGINAL_PROFILE_IMAGE    50.262585   2.0991182  50.262585  50.262585  50.262585  50.262585   0.00000
+PROFILE_BG_COLOR           0.000000  83.2541479   0.000000   0.000000   0.000000   0.000000 100.00000
+PROFILE_IMAGE             50.262585   2.1471719  50.262585  50.262585  50.262585  50.262585   0.00000
+PROFILE_TEXT_COLOR         0.000000 100.0000000   0.000000   0.000000   0.000000   0.000000 100.00000
+STATUS_COUNT              71.899155   2.5839635  71.899155  71.899155  71.899155  71.899155   0.00000
+TIMEZONE                   9.549315  10.2394817   9.549315   9.549315   9.549315   9.549315   0.00000
+                                nnet
+BACKGROUND_IMAGE          99.9904645
+FOLLOWERS_COUNT            1.3821882
+FRIENDS_COUNT              0.0000000
+GEO_ENABLED                1.0974414
+IS_BACKGROUND_IMAGE_USED  48.7745474
+IS_DEFAULT_PROFILE         0.1657140
+IS_DEFAULT_PROFILE_IMAGE  47.7790859
+LANGUAGE                   0.3394037
+LATITUDE                   3.9268736
+LISTED_COUNT               0.3989279
+LONGITUDE                  1.7710729
+ORIGINAL_PROFILE_IMAGE    12.6698681
+PROFILE_BG_COLOR          99.9961200
+PROFILE_IMAGE             12.6782339
+PROFILE_TEXT_COLOR       100.0000000
+STATUS_COUNT               1.3273862
+TIMEZONE                   3.7810627
+
+[1] "Model engine results"
+[1] "===================="
+
+[1] "+++++++++++++"
+[1] "rf"
+[1] "+++++++++++++"
+
+Call:
+ randomForest(x = x, y = y, mtry = param$mtry) 
+               Type of random forest: classification
+                     Number of trees: 500
+No. of variables tried at each split: 2
+
+        OOB estimate of  error rate: 0%
+Confusion matrix:
+            deceptive trustworthy class.error
+deceptive         750           0           0
+trustworthy         0       36750           0
+
+  mtry ROC Sens Spec ROCSD SensSD SpecSD
+1    2   1    1    1     0      0      0
+2    9   1    1    1     0      0      0
+3   17   1    1    1     0      0      0
+
+[1] "+++++++++++++"
+[1] "J48"
+[1] "+++++++++++++"
+J48 pruned tree
+------------------
+
+BACKGROUND_IMAGE <= -6.999907: deceptive (750.0)
+BACKGROUND_IMAGE > -6.999907: trustworthy (36750.0)
+
+Number of Leaves  : 	2
+
+Size of the tree : 	3
+
+
+      C M ROC Sens Spec ROCSD SensSD SpecSD
+1 0.010 1   1    1    1     0      0      0
+2 0.010 2   1    1    1     0      0      0
+3 0.010 3   1    1    1     0      0      0
+4 0.255 1   1    1    1     0      0      0
+5 0.255 2   1    1    1     0      0      0
+6 0.255 3   1    1    1     0      0      0
+7 0.500 1   1    1    1     0      0      0
+8 0.500 2   1    1    1     0      0      0
+9 0.500 3   1    1    1     0      0      0
+
+[1] "+++++++++++++"
+[1] "bayesglm"
+[1] "+++++++++++++"
+NULL
+                         coef.est coef.se
+(Intercept)              12.00     2.48  
+ORIGINAL_PROFILE_IMAGE    0.00     0.18  
+PROFILE_IMAGE             0.00     0.18  
+BACKGROUND_IMAGE          0.05     0.35  
+LANGUAGE                  0.01     1.07  
+FRIENDS_COUNT             0.01     1.09  
+FOLLOWERS_COUNT           0.01     1.10  
+STATUS_COUNT              0.02     1.09  
+LISTED_COUNT              0.01     1.09  
+TIMEZONE                 -0.07     0.92  
+GEO_ENABLED              -0.01     1.01  
+LATITUDE                  0.01     0.53  
+LONGITUDE                 0.00     0.53  
+IS_DEFAULT_PROFILE        0.02     0.32  
+IS_DEFAULT_PROFILE_IMAGE -0.02     0.29  
+IS_BACKGROUND_IMAGE_USED  0.05     0.35  
+PROFILE_TEXT_COLOR       -0.05     0.35  
+PROFILE_BG_COLOR         -2.91     0.93  
+---
+n = 37500, k = 18
+residual deviance = 0.4, null deviance = 7352.9 (difference = 7352.5)
+
+  parameter ROC Sens Spec ROCSD SensSD SpecSD
+1      none   1    1    1     0      0      0
+
+[1] "+++++++++++++"
+[1] "kknn"
+[1] "+++++++++++++"
+
+Call:
+train.kknn(formula = .outcome ~ ., data = dat, kmax = param$kmax,     distance = param$distance, kernel = as.character(param$kernel))
+
+Type of response variable: nominal
+Minimal misclassification: 0
+Best kernel: optimal
+Best k: 1
+
+  kmax distance  kernel ROC Sens Spec ROCSD SensSD SpecSD
+1    5        2 optimal   1    1    1     0      0      0
+2    7        2 optimal   1    1    1     0      0      0
+3    9        2 optimal   1    1    1     0      0      0
+
+[1] "+++++++++++++"
+[1] "adaboost"
+[1] "+++++++++++++"
+adaboost(formula = .outcome ~ ., data = dat, nIter = param$nIter)
+.outcome ~ .
+<environment: 0x700ae9bc>
+Dependent Variable: .outcome
+No of trees:1
+The weights of the trees are:1
+
+  nIter        method ROC Sens Spec ROCSD SensSD SpecSD
+1    50   Adaboost.M1   1    1    1     0      0      0
+2    50 Real adaboost   1    1    1     0      0      0
+3   100   Adaboost.M1   1    1    1     0      0      0
+4   100 Real adaboost   1    1    1     0      0      0
+5   150   Adaboost.M1   1    1    1     0      0      0
+6   150 Real adaboost   1    1    1     0      0      0
+
+[1] "+++++++++++++"
+[1] "rpart"
+[1] "+++++++++++++"
+n= 37500 
+
+node), split, n, loss, yval, (yprob)
+      * denotes terminal node
+
+1) root 37500 750 trustworthy (0.0200000 0.9800000)  
+  2) BACKGROUND_IMAGE< -3.428526 750   0 deceptive (1.0000000 0.0000000) *
+  3) BACKGROUND_IMAGE>=-3.428526 36750   0 trustworthy (0.0000000 1.0000000) *
+
+   cp ROC Sens Spec ROCSD SensSD SpecSD
+1 0.0 1.0    1    1     0      0      0
+2 0.5 1.0    1    1     0      0      0
+3 1.0 0.5    0    1     0      0      0
+
+[1] "+++++++++++++"
+[1] "nnet"
+[1] "+++++++++++++"
+a 17-1-1 network with 20 weights
+inputs: ORIGINAL_PROFILE_IMAGE PROFILE_IMAGE BACKGROUND_IMAGE LANGUAGE FRIENDS_COUNT FOLLOWERS_COUNT STATUS_COUNT LISTED_COUNT TIMEZONE GEO_ENABLED LATITUDE LONGITUDE IS_DEFAULT_PROFILE IS_DEFAULT_PROFILE_IMAGE IS_BACKGROUND_IMAGE_USED PROFILE_TEXT_COLOR PROFILE_BG_COLOR 
+output(s): .outcome 
+options were - entropy fitting  decay=0.1
+
+  size decay       ROC Sens      Spec        ROCSD SensSD       SpecSD
+1    1 0e+00 0.9982309    1 0.9964626 2.715306e-03      0 5.431111e-03
+2    1 1e-04 0.9999592    1 0.9999184 9.126808e-05      0 1.825362e-04
+3    1 1e-01 1.0000000    1 1.0000000 0.000000e+00      0 0.000000e+00
+4    3 0e+00 0.9987347    1 0.9974694 2.829311e-03      0 5.658621e-03
+5    3 1e-04 1.0000000    1 1.0000000 0.000000e+00      0 0.000000e+00
+6    3 1e-01 1.0000000    1 1.0000000 0.000000e+00      0 0.000000e+00
+7    5 0e+00 0.9999887    1 0.9999728 2.535224e-05      0 6.084539e-05
+8    5 1e-04 0.9999884    1 0.9999728 2.596070e-05      0 6.084539e-05
+9    5 1e-01 1.0000000    1 1.0000000 0.000000e+00      0 0.000000e+00
+
+[1] "Query loading run time"
+[1] "=============="
+   user  system elapsed 
+   3.84    0.00   64.09 
+
+[1] "Models run time"
+[1] "=============="
+   user  system elapsed 
+4536.28   39.34 4784.30 
