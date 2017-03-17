@@ -1,16 +1,16 @@
+suppressMessages(library(dplyr))
 suppressMessages(library(RODBC))
 suppressMessages(library(caret))
-suppressMessages(library(dplyr))
 suppressMessages(library(lubridate))
 
-#load external libraries
 #LINUX
 setwd("~/Projects/RStudio/TwitterAnalysis/Engine/AnalysisResults/Tests")
+
 source("LIB_Cleanup.R")
 source("LIB_ML_Models_ROC.R")
 
 #LINUX
-filename <- "~/Projects/RStudio/TwitterAnalysis/Engine/AnalysisResults/Results/C_LNX_NP_5fold_0repeat_3tune.txt"
+filename <- "~/Projects/RStudio/TwitterAnalysis/Engine/AnalysisResults/Results/B2R_LNX_NP_5fold_0repeat_3tune.txt"
 
 #### connect to DB
 #LINUX
@@ -18,7 +18,7 @@ myconn<-odbcConnect("SAPHANA", uid="SYSTEM", pwd="oEqm66jccx", believeNRows=FALS
 
 #' ###Load data
 #+ get_data
-tl <- system.time(data.original <- sqlQuery(myconn, "SELECT ID, NAME, SCREENNAME, CREATED, ORIGINAL_PROFILE_IMAGE, PROFILE_IMAGE, BACKGROUND_IMAGE, LAST_TWEET, DESCRIPTION, LOCATION, LANGUAGE, FRIENDS_COUNT, FOLLOWERS_COUNT, STATUS_COUNT, LISTED_COUNT, TIMEZONE, UTC_OFFSET, GEO_ENABLED, LATITUDE, LONGITUDE, IS_CELEBRITY, IS_DEFAULT_PROFILE, IS_DEFAULT_PROFILE_IMAGE, IS_BACKGROUND_IMAGE_USED, PROFILE_TEXT_COLOR, PROFILE_BG_COLOR, CLASS from twitter.zz_full_set_win") )
+tl <- system.time(data.original <- sqlQuery(myconn, "SELECT ID, NAME, SCREENNAME, CREATED, ORIGINAL_PROFILE_IMAGE, PROFILE_IMAGE, BACKGROUND_IMAGE, LAST_TWEET, DESCRIPTION, LOCATION, LANGUAGE, FRIENDS_COUNT, FOLLOWERS_COUNT, STATUS_COUNT, LISTED_COUNT, TIMEZONE, UTC_OFFSET, GEO_ENABLED, LATITUDE, LONGITUDE, IS_CELEBRITY, IS_DEFAULT_PROFILE, IS_DEFAULT_PROFILE_IMAGE, IS_BACKGROUND_IMAGE_USED, PROFILE_TEXT_COLOR, PROFILE_BG_COLOR, CLASS from twitter.zz_full_set") )
 data.full <- data.original
 
 #get unique values in set
@@ -30,12 +30,18 @@ data.full <- data.original
 #+ clean_preprocess
 #change factors to characters
 data.full <- cleanup.factors(data.full)
+#detach("package:dplyr", unload=TRUE)
 data.clean <- cleanup.Twitter(data.full)
 
 #' ######################################
 #' ### Prepare Datasets with dummy vars
 #' ######################################
 #+ prepare
+#check that there are more than 1 distinct value in a column
+#rapply(data.clean,function(x)length(unique(x)))
+#dataset B2 - remove columns not used by fake accounts
+data.clean <- data.clean[ , -which(names(data.clean) %in% c("ORIGINAL_PROFILE_IMAGE","BACKGROUND_IMAGE","PROFILE_TEXT_COLOR","PROFILE_BG_COLOR"))]
+
 data.o <- data.clean
 
 #' ######################################

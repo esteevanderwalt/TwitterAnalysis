@@ -18,10 +18,10 @@ source("LIB_ML_Models_ROC.R")
 
 if(z=="WIN"){
   #WIN
-  filename <- "C:/PhD/ProjectsV2/RStudio/TwitterAnalysis/Engine/AnalysisResults/Results/B2_WIN_NP_5fold_0repeat_3tune.txt"
+  filename <- "C:/PhD/ProjectsV2/RStudio/TwitterAnalysis/Engine/AnalysisResults/Results/B2R_WIN_NP_5fold_0repeat_3tune.txt"
 }else{  
   #LINUX
-  filename <- "~/Projects/RStudio/TwitterAnalysis/Engine/AnalysisResults/Results/B2_LNX_NP_5fold_0repeat_3tune.txt"
+  filename <- "~/Projects/RStudio/TwitterAnalysis/Engine/AnalysisResults/Results/B2R_LNX_NP_5fold_0repeat_3tune.txt"
 }  
 
 #### connect to DB
