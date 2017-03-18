@@ -86,18 +86,18 @@ cleanup.Twitter <- function(data) {
     summarise(n=n()) %>%
     arrange(desc(n))
   c <- data %>% distinct(LOCATION) %>% summarise(count=n())
-  print("1")
+
   if(c > 30){
     l <- subset(data, !(LOCATION %in% d$LOCATION[1:b]))$LOCATION
     data$LOCATION[data$LOCATION %in% l] <- 'Other'
   }
   #convert to ranked
-  print("2")
+
   r <- data %>% count(LOCATION, sort = TRUE) %>% mutate(rank = row_number(desc(n)))
   data <- left_join(data, r, by=c('LOCATION'='LOCATION')) %>%
     mutate(LOCATION = rank) %>% 
     select(-rank, -n)
-  print("3")
+
   #data$LOCATION <- as.numeric(factor(data$LOCATION))
   #LANGUAGE
   data$LANGUAGE[is.na(data$LANGUAGE)] <- 'Null'
@@ -111,7 +111,7 @@ cleanup.Twitter <- function(data) {
     l <- subset(data, !(LANGUAGE %in% d$LANGUAGE[1:b]))$LANGUAGE
     data$LANGUAGE[data$LANGUAGE %in% l] <- 'Other'
   } 
-  print("4")
+
   #convert to ranked
   r <- data %>% count(LANGUAGE, sort = TRUE) %>% mutate(rank = row_number(desc(n)))
   data <- left_join(data, r, by=c('LANGUAGE'='LANGUAGE')) %>%
@@ -204,7 +204,7 @@ cleanup.Twitter <- function(data) {
   #data$PROFILE_BG_COLOR <- as.numeric(factor(data$PROFILE_BG_COLOR))
   
   #convert class to factor
-  #data$CLASS <- as.factor(data$CLASS)
+  data$CLASS <- as.factor(data$CLASS)
   
   return(data)
 }
