@@ -5,20 +5,21 @@ suppressMessages(library(lubridate))
 
 #LINUX
 setwd("~/Projects/RStudio/TwitterAnalysis/Engine/AnalysisResults/Tests")
-
+ 
 source("LIB_Cleanup.R")
 source("LIB_ML_Models_ROC.R")
 
 #LINUX
-filename <- "~/Projects/RStudio/TwitterAnalysis/Engine/AnalysisResults/Results/B2R_LNX_NP_5fold_0repeat_3tune.txt"
-
-#### connect to DB
+filename <- "~/Projects/RStudio/TwitterAnalysis/Engine/AnalysisResults/Results/B2_LNX_NP_5fold_0repeat_3tune.txt"
+  
 #LINUX
 myconn<-odbcConnect("SAPHANA", uid="SYSTEM", pwd="oEqm66jccx", believeNRows=FALSE, rows_at_time=1, DBMSencoding="UTF-8") 
 
 #' ###Load data
 #+ get_data
-tl <- system.time(data.original <- sqlQuery(myconn, "SELECT ID, NAME, SCREENNAME, CREATED, ORIGINAL_PROFILE_IMAGE, PROFILE_IMAGE, BACKGROUND_IMAGE, LAST_TWEET, DESCRIPTION, LOCATION, LANGUAGE, FRIENDS_COUNT, FOLLOWERS_COUNT, STATUS_COUNT, LISTED_COUNT, TIMEZONE, UTC_OFFSET, GEO_ENABLED, LATITUDE, LONGITUDE, IS_CELEBRITY, IS_DEFAULT_PROFILE, IS_DEFAULT_PROFILE_IMAGE, IS_BACKGROUND_IMAGE_USED, PROFILE_TEXT_COLOR, PROFILE_BG_COLOR, CLASS from twitter.zz_full_set") )
+tl <- system.time(data.original <- sqlQuery(myconn, "SELECT ID, NAME, SCREENNAME, CREATED, ORIGINAL_PROFILE_IMAGE, PROFILE_IMAGE, BACKGROUND_IMAGE, LAST_TWEET, DESCRIPTION, LOCATION, LANGUAGE, FRIENDS_COUNT, FOLLOWERS_COUNT, STATUS_COUNT, LISTED_COUNT, TIMEZONE, UTC_OFFSET, GEO_ENABLED, LATITUDE, LONGITUDE, IS_CELEBRITY, IS_DEFAULT_PROFILE, IS_DEFAULT_PROFILE_IMAGE, IS_BACKGROUND_IMAGE_USED, PROFILE_TEXT_COLOR, PROFILE_BG_COLOR, CLASS from twitter.zz_full_set_win") )
+save(data.original,file="data.original.RData")
+#load("data.original.RData")
 data.full <- data.original
 
 #get unique values in set
@@ -37,10 +38,16 @@ data.clean <- cleanup.Twitter(data.full)
 #' ### Prepare Datasets with dummy vars
 #' ######################################
 #+ prepare
-#check that there are more than 1 distinct value in a column
-#rapply(data.clean,function(x)length(unique(x)))
+#dataset A vars
+myvars <- c("UTC_OFFSET", "GEO_ENABLED", "LATITUDE", "LONGITUDE",  
+            "IS_DEFAULT_PROFILE", "IS_DEFAULT_PROFILE_IMAGE", "CLASS")
+#data.o <- prepareData(data.full[myvars])
+#dataset B - remove null columns
+data.clean <- data.clean[ , -which(names(data.clean) %in% c("CREATED","LOCATION"))]
 #dataset B2 - remove columns not used by fake accounts
 data.clean <- data.clean[ , -which(names(data.clean) %in% c("ORIGINAL_PROFILE_IMAGE","BACKGROUND_IMAGE","PROFILE_TEXT_COLOR","PROFILE_BG_COLOR"))]
+#check that there are more than 1 distinct value in a column
+#rapply(data.clean,function(x)length(unique(x)))
 
 data.o <- data.clean
 
