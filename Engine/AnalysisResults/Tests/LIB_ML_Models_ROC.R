@@ -558,3 +558,59 @@ ML_Models_ROC <- function(training, resamp, folds, tune, r, filename){
   
   
 }
+
+ML_Models_ROC_Test <- function(training, resamp, folds, tune, r, filename){
+  
+  
+  #--------------------------------------
+  # Model 7 - CART
+  #--------------------------------------
+  # Model notes:
+  #   warnings() == F
+  #   cp == varied, 3 times (0.05, 0.13, 0.31)
+  
+  # Specify fit parameters
+  fit.m7.fc <- trainControl(method = resamp, 
+                            number = folds,
+                            repeats = r,
+                            classProbs = TRUE,
+                            summaryFunction = twoClassSummary)
+  
+  # Build model
+  set.seed(123)
+  m7.t <- system.time(fit.m7 <- train(CLASS~., data=training,
+                                      method = "rpart",
+                                      metric = "ROC",
+                                      preProcess = c("center", "scale"),
+                                      trControl = fit.m7.fc,
+                                      tuneLength = tune))
+  
+  # In-sample summary
+  fit.m7$finalModel
+  fit.m7$results
+  
+  # In-sample fit
+  fit.m7.trn.pred = predict(fit.m7, newdata = testing)
+  fit.m7.trn.prob = predict(fit.m7, newdata = testing, type = "prob")
+  fit.m7.trn.cm = confusionMatrix(fit.m7.trn.pred, testing$CLASS)
+  fit.m7.trn.cm$table
+  fit.m7.trn.cm$overall[1:2]
+  a <- varImp(fit.m7)$importance
+  fit.m7.imp <- a
+  fit.m7.mRoc <- roc(testing$CLASS,fit.m7.trn.prob[,"deceptive"], levels = c("trustworthy","deceptive"))
+  
+  sink(filename, append = TRUE)
+  print("M7 complete")
+  print(m7.t)
+  
+  cat("\n")
+  print(fit.m7$finalModel)
+  cat("\n")
+  print(fit.m7$results)
+  cat("\n")
+  print(fit.m7.imp)
+  
+  sink()
+  
+  
+}
