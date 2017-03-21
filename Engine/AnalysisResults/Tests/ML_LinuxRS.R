@@ -8,7 +8,6 @@ setwd("~/Projects/RStudio/TwitterAnalysis/Engine/AnalysisResults/Tests")
 
 source("LIB_Cleanup.R")
 source("LIB_ML_Models_ROC.R")
-source("LIB_ML_Models_Accuracy.R")
 
 #LINUX
 myconn<-odbcConnect("SAPHANA", uid="SYSTEM", pwd="oEqm66jccx", believeNRows=FALSE, rows_at_time=1, DBMSencoding="UTF-8") 
@@ -61,63 +60,13 @@ rm(inTrain)
 ###############################
 ## Run CV
 ###############################
-filename <- "~/Projects/RStudio/TwitterAnalysis/Engine/AnalysisResults/Results/C_LNX_NP_cv_5fold_0repeat_3tune.txt"
+filename <- "~/Projects/RStudio/TwitterAnalysis/Engine/AnalysisResults/Results/CRS_LNX_NP_cv_5fold_0repeat_3tune.txt"
 folds <- 5
 repeats <- 0
 resamp <- "cv"
 tune <- 3
 
-t <- system.time(ML_Models_ROC_Test(training, resamp, folds, tune, repeats, filename))
-
-sink(filename, append = TRUE)
-
-cat("\n")
-print("Query loading run time")
-print("==============")
-print(tl)
-
-cat("\n")
-print("Models run time")
-print("==============")
-print(t)
-
-sink()
-
-###############################
-## Run Repeated CV
-###############################
-filename <- "~/Projects/RStudio/TwitterAnalysis/Engine/AnalysisResults/Results/C_LNX_NP_rcv_5fold_0repeat_3tune.txt"
-folds <- 5
-repeats <- 0
-resamp <- "repeatedcv"
-tune <- 3
-
 t <- system.time(ML_Models_ROC(training, resamp, folds, tune, repeats, filename))
-
-sink(filename, append = TRUE)
-
-cat("\n")
-print("Query loading run time")
-print("==============")
-print(tl)
-
-cat("\n")
-print("Models run time")
-print("==============")
-print(t)
-
-sink()
-
-########################################
-## Run Repeated CV with accuracy iso ROC
-########################################
-filename <- "~/Projects/RStudio/TwitterAnalysis/Engine/AnalysisResults/Results/C_LNX_NP_rcv_5fold_0repeat_3tune_acc.txt"
-folds <- 5
-repeats <- 0
-resamp <- "repeatedcv"
-tune <- 3
-
-t <- system.time(ML_Models_Accuracy(training, resamp, folds, tune, repeats, filename))
 
 sink(filename, append = TRUE)
 
