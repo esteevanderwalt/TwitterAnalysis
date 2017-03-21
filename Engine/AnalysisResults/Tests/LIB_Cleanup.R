@@ -63,17 +63,17 @@ cleanup.Twitter <- function(data) {
   
   #images -> determine if it is a default image or not, convert to binary
   #ORIGINAL_PROFILE_IMAGE
-  data$ORIGINAL_PROFILE_IMAGE[is.na(data$ORIGINAL_PROFILE_IMAGE)] <- 'Null'
+  data$ORIGINAL_PROFILE_IMAGE[is.na(data$ORIGINAL_PROFILE_IMAGE)] <- 0
   data[grep("default", data$ORIGINAL_PROFILE_IMAGE), "ORIGINAL_PROFILE_IMAGE"] <- 1
   data[data$ORIGINAL_PROFILE_IMAGE != 1, "ORIGINAL_PROFILE_IMAGE"] <- 0
   data$ORIGINAL_PROFILE_IMAGE <- as.numeric(data$ORIGINAL_PROFILE_IMAGE)
   #PROFILE_IMAGE
-  data$PROFILE_IMAGE[is.na(data$PROFILE_IMAGE)] <- 'Null'
+  data$PROFILE_IMAGE[is.na(data$PROFILE_IMAGE)] <- 0
   data[grep("default", data$PROFILE_IMAGE), "PROFILE_IMAGE"] <- 1
   data[data$PROFILE_IMAGE != 1, "PROFILE_IMAGE"] <- 0
   data$PROFILE_IMAGE <- as.numeric(data$PROFILE_IMAGE)
   #BACKGROUND_IMAGE
-  data$BACKGROUND_IMAGE[is.na(data$BACKGROUND_IMAGE)] <- 'Null'
+  data$BACKGROUND_IMAGE[is.na(data$BACKGROUND_IMAGE)] <- 0
   data[grep("themes", data$BACKGROUND_IMAGE), "BACKGROUND_IMAGE"] <- 1
   data[data$BACKGROUND_IMAGE != 1, "BACKGROUND_IMAGE"] <- 0
   data$BACKGROUND_IMAGE <- as.numeric(data$BACKGROUND_IMAGE)
