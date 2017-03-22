@@ -1,0 +1,15 @@
+[1] "M1 complete"
+    user   system  elapsed 
+9919.184    3.296 9916.042 
+[1] "M2 complete"
+    user   system  elapsed 
+2395.252   57.204 2450.044 
+[1] "M3 complete"
+   user  system elapsed 
+479.972   1.480 424.717 
+[1] "M4 complete"
+   user  system elapsed 
+101.900   0.100 102.084 
+[1] "M5 complete"
+    user   system  elapsed 
+8306.836    1.612 8302.051 

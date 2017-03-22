@@ -117,6 +117,7 @@ cleanup.Twitter <- function(data) {
   data <- left_join(data, r, by=c('LANGUAGE'='LANGUAGE')) %>%
     mutate(LANGUAGE = rank) %>% 
     select(-rank, -n)
+  
   #data$LANGUAGE <- as.numeric(factor(data$LANGUAGE))
   #TIMEZONE
   data$TIMEZONE[is.na(data$TIMEZONE)] <- 'Null'
@@ -135,6 +136,7 @@ cleanup.Twitter <- function(data) {
   data <- left_join(data, r, by=c('TIMEZONE'='TIMEZONE')) %>%
     mutate(TIMEZONE = rank) %>% 
     select(-rank, -n)
+  
   #data$TIMEZONE <- as.numeric(factor(data$TIMEZONE))
   #UTC_OFFSET ignore as it is the same as timezone
   data <- data[ , -which(names(data) %in% c("UTC_OFFSET"))]

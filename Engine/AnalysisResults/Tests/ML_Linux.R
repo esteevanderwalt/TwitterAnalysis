@@ -67,7 +67,7 @@ repeats <- 0
 resamp <- "cv"
 tune <- 3
 
-t <- system.time(ML_Models_ROC_Test(training, resamp, folds, tune, repeats, filename))
+t <- system.time(ML_Models_ROC(training, resamp, folds, tune, repeats, filename))
 
 sink(filename, append = TRUE)
 
