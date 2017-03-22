@@ -9,7 +9,6 @@ setwd("~/Projects/RStudio/TwitterAnalysis/Engine/AnalysisResults/Tests")
 
 source("LIB_Cleanup.R")
 source("LIB_ML_Models_ROC.R")
-source("LIB_ML_Models_Accuracy.R")
 
 #LINUX
 myconn<-odbcConnect("SAPHANA", uid="SYSTEM", pwd="oEqm66jccx", believeNRows=FALSE, rows_at_time=1, DBMSencoding="UTF-8") 
@@ -17,7 +16,8 @@ myconn<-odbcConnect("SAPHANA", uid="SYSTEM", pwd="oEqm66jccx", believeNRows=FALS
 #' ###Load data
 #+ get_data
 tl <- system.time(data.original <- sqlQuery(myconn, "SELECT ID, NAME, SCREENNAME, CREATED, ORIGINAL_PROFILE_IMAGE, PROFILE_IMAGE, BACKGROUND_IMAGE, LAST_TWEET, DESCRIPTION, LOCATION, LANGUAGE, FRIENDS_COUNT, FOLLOWERS_COUNT, STATUS_COUNT, LISTED_COUNT, TIMEZONE, UTC_OFFSET, GEO_ENABLED, LATITUDE, LONGITUDE, IS_CELEBRITY, IS_DEFAULT_PROFILE, IS_DEFAULT_PROFILE_IMAGE, IS_BACKGROUND_IMAGE_USED, PROFILE_TEXT_COLOR, PROFILE_BG_COLOR, CLASS from twitter.zz_full_set") )
-save(data.original,file="data.original.RData")
+#dim(data.original)
+#save(data.original,file="data.original.RData")
 #load("data.original.RData")
 data.full <- data.original
 
@@ -37,16 +37,11 @@ data.clean <- cleanup.Twitter(data.full)
 #' ### Prepare Datasets with dummy vars
 #' ######################################
 #+ prepare
-#dataset A vars
-myvars <- c("UTC_OFFSET", "GEO_ENABLED", "LATITUDE", "LONGITUDE",  
-            "IS_DEFAULT_PROFILE", "IS_DEFAULT_PROFILE_IMAGE", "CLASS")
-#data.o <- prepareData(data.full[myvars])
-#dataset B - remove null columns
-data.clean <- data.clean[ , -which(names(data.clean) %in% c("CREATED","LOCATION"))]
-#dataset B2 - remove columns not used by fake accounts
+#rapply(data.full,function(x)length(unique(x)))
+#rapply(data.full,function(x)sum(is.na(x)))
+#dataset C - remove columns not used by fake accounts
+data.clean <- data.clean[ , -which(names(data.clean) %in% c("CREATED"))]
 data.clean <- data.clean[ , -which(names(data.clean) %in% c("ORIGINAL_PROFILE_IMAGE","BACKGROUND_IMAGE","PROFILE_TEXT_COLOR","PROFILE_BG_COLOR"))]
-#check that there are more than 1 distinct value in a column
-#rapply(data.clean,function(x)length(unique(x)))
 
 data.o <- data.clean
 
@@ -64,12 +59,13 @@ testing <- data.o[-inTrain,]
 rm(inTrain)  
 
 ###############################
-## Run Parallel Repeated CV
+## Run Normal
 ###############################
-filename <- "~/Projects/RStudio/TwitterAnalysis/Engine/AnalysisResults/Results/C_LNX_P_rcv_5fold_0repeat_3tune.txt"
+filename <- "~/Projects/RStudio/TwitterAnalysis/Engine/AnalysisResults/Results/C_LNX_NP_cv_5fold_0repeat_3tune.txt"
+
 folds <- 5
 repeats <- 0
-resamp <- "repeatedcv"
+resamp <- "cv"
 tune <- 3
 
 t <- system.time(ML_Models_ROC(training, resamp, folds, tune, repeats, filename))
@@ -87,3 +83,60 @@ print("==============")
 print(t)
 
 sink()
+
+###############################
+## Run Normal - repeated cv
+###############################
+filename <- "~/Projects/RStudio/TwitterAnalysis/Engine/AnalysisResults/Results/C_LNX_NP_rcv_5fold_1repeat_3tune.txt"
+
+folds <- 5
+repeats <- 1
+resamp <- "repeatedcv"
+tune <- 3
+
+t1 <- system.time(ML_Models_ROC_P(training, resamp, folds, tune, repeats, filename))
+
+sink(filename, append = TRUE)
+
+cat("\n")
+print("Query loading run time")
+print("==============")
+print(tl)
+
+cat("\n")
+print("Models run time")
+print("==============")
+print(t)
+
+sink()
+
+###############################
+## Run Parrallel
+###############################
+filename <- "~/Projects/RStudio/TwitterAnalysis/Engine/AnalysisResults/Results/C_LNX_P_rcv_5fold_1repeat_3tune.txt"
+
+folds <- 5
+repeats <- 1
+resamp <- "repeatedcv"
+tune <- 3
+
+cl <- makeCluster(detectCores())
+registerDoParallel(cores=6)
+t1 <- system.time(ML_Models_ROC_P(training, resamp, folds, tune, repeats, filename))
+stopCluster(cl)
+
+sink(filename, append = TRUE)
+
+cat("\n")
+print("Query loading run time")
+print("==============")
+print(tl)
+
+cat("\n")
+print("Models run time")
+print("==============")
+print(t)
+
+sink()
+
+
