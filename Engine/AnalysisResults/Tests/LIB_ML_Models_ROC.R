@@ -2,17 +2,37 @@ suppressMessages(library(pROC))
 
 ## library to run all 8 algorithms based on given parameters
 
+# function to set up random seeds
+setSeeds <- function(method = "cv", numbers = 1, repeats = 1, tunes = NULL, seed = 1237) {
+  #B is the number of resamples and integer vector of M (numbers + tune length if any)
+  B <- if (method == "cv") numbers
+  else if(method == "repeatedcv") numbers * repeats
+  else NULL
+  
+  if(is.null(length)) {
+    seeds <- NULL
+  } else {
+    set.seed(seed = seed)
+    seeds <- vector(mode = "list", length = B)
+    seeds <- lapply(seeds, function(x) sample.int(n = 1000000, size = numbers + ifelse(is.null(tunes), 0, tunes)))
+    seeds[[length(seeds) + 1]] <- sample.int(n = 1000000, size = 1)
+  }
+  # return seeds
+  seeds
+}
+
 ML_Models_ROC_P <- function(training, resamp, folds, tune, r, filename){
   
   #build seeds vector
   #length is = (n_repeats*nresampling)+1
-  seeds <- vector(mode = "list", length = ((r*folds)+1) )
+  #seeds <- vector(mode = "list", length = ((r*folds)+1) )
   
   #(3 is the number of tuning parameter, mtry for rf, here equal to ncol(iris)-2)
-  for(i in 1:(r*folds)) seeds[[i]]<- sample.int(n=1000, tune)
+  #for(i in 1:(r*folds)) seeds[[i]]<- sample.int(n=1000, tune)
   
   #for the last model
-  seeds[[((r*folds)+1)]]<-sample.int(1000, 1)
+  #seeds[[((r*folds)+1)]]<-sample.int(1000, 1)
+  seeds <- setSeeds(resamp, folds, r, tune)
   
   #--------------------------------------
   # Model 1 - SVM Radial

@@ -41,7 +41,7 @@ data.clean <- cleanup.Twitter(data.full)
 #rapply(data.full,function(x)sum(is.na(x)))
 #dataset C - remove columns not used by fake accounts
 data.clean <- data.clean[ , -which(names(data.clean) %in% c("CREATED"))]
-data.clean <- data.clean[ , -which(names(data.clean) %in% c("ORIGINAL_PROFILE_IMAGE","BACKGROUND_IMAGE","PROFILE_TEXT_COLOR","PROFILE_BG_COLOR"))]
+data.clean <- data.clean[ , -which(names(data.clean) %in% c("IS_BACKGROUND_IMAGE_USED","ORIGINAL_PROFILE_IMAGE","BACKGROUND_IMAGE","PROFILE_TEXT_COLOR","PROFILE_BG_COLOR"))]
 
 data.o <- data.clean
 
@@ -58,59 +58,46 @@ training <- data.o[inTrain,]
 testing <- data.o[-inTrain,]
 rm(inTrain)  
 
-###############################
-## Run Normal - repeated cv
-###############################
-filename <- "~/Projects/RStudio/TwitterAnalysis/Engine/AnalysisResults/Results/C_LNX_NP_rcv_5fold_1repeat_3tune.txt"
 
-folds <- 5
-repeats <- 1
+################################
+## Run various params on dataset
+################################
 resamp <- "repeatedcv"
-tune <- 3
-
-t <- system.time(ML_Models_ROC_P(training, resamp, folds, tune, repeats, filename))
-
-sink(filename, append = TRUE)
-
-cat("\n")
-print("Query loading run time")
-print("==============")
-print(tl)
-
-cat("\n")
-print("Models run time")
-print("==============")
-print(t)
-
-sink()
-
-###############################
-## Run Parrallel
-###############################
-filename <- "~/Projects/RStudio/TwitterAnalysis/Engine/AnalysisResults/Results/C_LNX_P_rcv_5fold_1repeat_3tune.txt"
-
-folds <- 5
-repeats <- 1
-resamp <- "repeatedcv"
-tune <- 3
+#folds
+folds <- c(5,10)
+#repeats
+repeats <- c(1,3,5)
+#tune
+tune <- c(3,5,10)
 
 cl <- makeCluster(detectCores())
-registerDoParallel(cores=6)
-t <- system.time(ML_Models_ROC_P(training, resamp, folds, tune, repeats, filename))
+registerDoParallel(cores=6) #or cl
+for (x in folds) {
+  for (y in repeats) {
+    for (z in tune) {
+      filename <- paste("~/Projects/RStudio/TwitterAnalysis/Engine/AnalysisResults/Results/C2_LNX_P_rcv_",x,"fold_",y,"repeat_",z,"tune.txt",sep="")
+      #print(filename)
+      t <- system.time(ML_Models_ROC_P(training, resamp, x, z, y, filename))
+      
+      sink(filename, append = TRUE)
+      
+      cat("\n")
+      print("Query loading run time")
+      print("==============")
+      print(tl)
+      
+      cat("\n")
+      print("Models run time")
+      print("==============")
+      print(t)
+      
+      sink()
+    }
+  }
+}
 stopCluster(cl)
 
-sink(filename, append = TRUE)
 
-cat("\n")
-print("Query loading run time")
-print("==============")
-print(tl)
 
-cat("\n")
-print("Models run time")
-print("==============")
-print(t)
-
-sink()
 
 
