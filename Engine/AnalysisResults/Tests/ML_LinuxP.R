@@ -61,28 +61,28 @@ rm(inTrain)
 ###############################
 ## Run Normal - repeated cv
 ###############################
-filename <- "~/Projects/RStudio/TwitterAnalysis/Engine/AnalysisResults/Results/C_LNX_NP_rcv_5fold_1repeat_3tune.txt"
+#filename <- "~/Projects/RStudio/TwitterAnalysis/Engine/AnalysisResults/Results/C_LNX_NP_rcv_5fold_1repeat_3tune.txt"
 
 folds <- 5
 repeats <- 1
 resamp <- "repeatedcv"
 tune <- 3
 
-t <- system.time(ML_Models_ROC_P(training, resamp, folds, tune, repeats, filename))
+#t <- system.time(ML_Models_ROC_P(training, resamp, folds, tune, repeats, filename))
 
-sink(filename, append = TRUE)
+#sink(filename, append = TRUE)
 
-cat("\n")
-print("Query loading run time")
-print("==============")
-print(tl)
+#cat("\n")
+#print("Query loading run time")
+#print("==============")
+#print(tl)
 
-cat("\n")
-print("Models run time")
-print("==============")
-print(t)
+#cat("\n")
+#print("Models run time")
+#print("==============")
+#print(t)
 
-sink()
+#sink()
 
 ###############################
 ## Run Parrallel

@@ -32,7 +32,6 @@ ML_Models_ROC_P <- function(training, resamp, folds, tune, r, filename){
   
   #for the last model
   #seeds[[((r*folds)+1)]]<-sample.int(1000, 1)
-  seeds <- setSeeds(resamp, folds, r, tune)
   
   #--------------------------------------
   # Model 1 - SVM Radial
@@ -42,13 +41,19 @@ ML_Models_ROC_P <- function(training, resamp, folds, tune, r, filename){
   #   sigma == constant (0.547204984213807)
   #   C == varied, 3 times (0.25,0.5,1.0)
   
+  fit.m1.seeds <- setSeeds(resamp, folds, r, tune)
+  
   # Specify fit parameters
   fit.m1.fc <- trainControl(method = resamp,
                             number = folds,
                             repeats = r,
-                            seeds = seeds,
+                            seeds = fit.m1.seeds,
                             classProbs = T,
                             summaryFunction = twoClassSummary)
+
+  sink(filename, append = TRUE)
+  print("M1 started")
+  sink()
   
   # Build model
   set.seed(123)
@@ -90,12 +95,18 @@ ML_Models_ROC_P <- function(training, resamp, folds, tune, r, filename){
   #   warnings() == T
   #   mtry == varied, 3 times (2,4,7)
   
+  fit.m2.seeds <- setSeeds(resamp, folds, r, tune)
+  
   fit.m2.fc <- trainControl(method = resamp, 
                             number = folds,
                             repeats = r,
-                            seeds = seeds,
+                            seeds = fit.m2.seeds,
                             classProbs = TRUE,
                             summaryFunction = twoClassSummary)
+
+  sink(filename, append = TRUE)
+  print("M2 started")
+  sink()
   
   # Build model
   set.seed(123)
@@ -136,12 +147,19 @@ ML_Models_ROC_P <- function(training, resamp, folds, tune, r, filename){
   #   M == varied (1,2,3)
   #   C == varied (0.01, 0.255, 0.5), 3 times
   
+  fit.m3.seeds <- setSeeds(resamp, folds, r, tune*tune)
+  
   fit.m3.fc <- trainControl(method = resamp, 
                             number = folds,
                             repeats = r,
-                            seeds = seeds,
+                            seeds = fit.m3.seeds,
                             classProbs = TRUE,
+                            allowParallel = FALSE,
                             summaryFunction = twoClassSummary)
+
+  sink(filename, append = TRUE)
+  print("M3 started")
+  sink()
   
   # Build model
   set.seed(123)
@@ -182,12 +200,18 @@ ML_Models_ROC_P <- function(training, resamp, folds, tune, r, filename){
   # Model notes:
   #   no tuning
   
+  fit.m4.seeds <- setSeeds(resamp, folds, r, 1)
+  
   fit.m4.fc <- trainControl(method = resamp, 
                             number = folds,
                             repeats = r,
-                            seeds = seeds,
+                            seeds = fit.m4.seeds,
                             classProbs = TRUE,
                             summaryFunction = twoClassSummary)
+
+  sink(filename, append = TRUE)
+  print("M4 started")
+  sink()
   
   # Build model
   set.seed(123)
@@ -231,14 +255,19 @@ ML_Models_ROC_P <- function(training, resamp, folds, tune, r, filename){
   #   kernel (fixed = optimal)
   
   #   k == varied, 30 times, each = 1 (knn)
+  fit.m5.seeds <- setSeeds(resamp, folds, r, tune)
   
   # Specify fit parameters
   fit.m5.fc <- trainControl(method = resamp, 
                             number = folds,
                             repeats = r,
-                            seeds = seeds,
+                            seeds = fit.m5.seeds,
                             classProbs = TRUE,
                             summaryFunction = twoClassSummary)
+
+  sink(filename, append = TRUE)
+  print("M5 started")
+  sink()
   
   # Build model
   set.seed(123)
@@ -277,13 +306,19 @@ ML_Models_ROC_P <- function(training, resamp, folds, tune, r, filename){
   #   nlter == varied, 3 times (50, 100, 150)
   #   method == varied, 2 times (Adaboost.M1, Real adaboost)
   
+  fit.m6.seeds <- setSeeds(resamp, folds, r, tune*2)
+  
   # Specify fit parameters
   fit.m6.fc <- trainControl(method = resamp, 
                             number = folds,
                             repeats = r,
-                            seeds = seeds,
+                            seeds = fit.m6.seeds,
                             classProbs = TRUE,
                             summaryFunction = twoClassSummary)
+
+  sink(filename, append = TRUE)
+  print("M6 started")
+  sink()
   
   # Build model
   set.seed(123)
@@ -321,13 +356,19 @@ ML_Models_ROC_P <- function(training, resamp, folds, tune, r, filename){
   #   warnings() == F
   #   cp == varied, 3 times (0.05, 0.13, 0.31)
   
+  fit.m7.seeds <- setSeeds(resamp, folds, r, tune)
+  
   # Specify fit parameters
   fit.m7.fc <- trainControl(method = resamp, 
                             number = folds,
                             repeats = r,
-                            seeds = seeds,
+                            seeds = fit.m7.seeds,
                             classProbs = TRUE,
                             summaryFunction = twoClassSummary)
+
+  sink(filename, append = TRUE)
+  print("M7 started")
+  sink()
   
   # Build model
   set.seed(123)
@@ -362,16 +403,22 @@ ML_Models_ROC_P <- function(training, resamp, folds, tune, r, filename){
   #--------------------------------------
   # Model notes:
   #   warnings() == F
-  #   size
-  #   decay
+  #   size 3
+  #   decay 3
+  
+  fit.m8.seeds <- setSeeds(resamp, folds, r, tune*tune)
   
   # Specify fit parameters
   fit.m8.fc <- trainControl(method = resamp, 
                             number = folds,
                             repeats = r,
-                            seeds = seeds,
+                            seeds = fit.m8.seeds,
                             classProbs = TRUE,
                             summaryFunction = twoClassSummary)
+
+  sink(filename, append = TRUE)
+  print("M8 started")
+  sink()
   
   # Build model
   set.seed(123)
@@ -1156,15 +1203,7 @@ ML_Models_ROC <- function(training, resamp, folds, tune, r, filename){
 
 ML_Models_ROC_Test <- function(training, resamp, folds, tune, r, filename){
   
-  #build seeds vector
-  #length is = (n_repeats*nresampling)+1
-  seeds <- vector(mode = "list", length = ((r*folds)+1) )
-  
-  #(3 is the number of tuning parameter, mtry for rf, here equal to ncol(iris)-2)
-  for(i in 1:(r*folds)) seeds[[i]]<- sample.int(n=1000, tune)
-  
-  #for the last model
-  seeds[[((r*folds)+1)]]<-sample.int(1000, 1)
+  seeds <- setSeeds(resamp, folds, r, 3)
   
   #--------------------------------------
   # Model 7 - CART
@@ -1179,6 +1218,7 @@ ML_Models_ROC_Test <- function(training, resamp, folds, tune, r, filename){
                             repeats = r,
                             seeds = seeds,
                             classProbs = TRUE,
+                            allowParallel = FALSE,
                             summaryFunction = twoClassSummary)
   
   # Build model

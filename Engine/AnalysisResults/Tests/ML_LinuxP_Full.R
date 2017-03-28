@@ -16,6 +16,8 @@ myconn<-odbcConnect("SAPHANA", uid="SYSTEM", pwd="oEqm66jccx", believeNRows=FALS
 #' ###Load data
 #+ get_data
 tl <- system.time(data.original <- sqlQuery(myconn, "SELECT ID, NAME, SCREENNAME, CREATED, ORIGINAL_PROFILE_IMAGE, PROFILE_IMAGE, BACKGROUND_IMAGE, LAST_TWEET, DESCRIPTION, LOCATION, LANGUAGE, FRIENDS_COUNT, FOLLOWERS_COUNT, STATUS_COUNT, LISTED_COUNT, TIMEZONE, UTC_OFFSET, GEO_ENABLED, LATITUDE, LONGITUDE, IS_CELEBRITY, IS_DEFAULT_PROFILE, IS_DEFAULT_PROFILE_IMAGE, IS_BACKGROUND_IMAGE_USED, PROFILE_TEXT_COLOR, PROFILE_BG_COLOR, CLASS from twitter.zz_full_set") )
+close(myconn)
+
 #dim(data.original)
 #save(data.original,file="data.original.RData")
 #load("data.original.RData")
@@ -40,7 +42,7 @@ data.clean <- cleanup.Twitter(data.full)
 #rapply(data.full,function(x)length(unique(x)))
 #rapply(data.full,function(x)sum(is.na(x)))
 #dataset C - remove columns not used by fake accounts
-data.clean <- data.clean[ , -which(names(data.clean) %in% c("CREATED"))]
+data.clean <- data.clean[ , -which(names(data.clean) %in% c("CREATED","IS_DEFAULT_PROFILE","IS_DEFAULT_PROFILE_IMAGE"))]
 data.clean <- data.clean[ , -which(names(data.clean) %in% c("IS_BACKGROUND_IMAGE_USED","ORIGINAL_PROFILE_IMAGE","BACKGROUND_IMAGE","PROFILE_TEXT_COLOR","PROFILE_BG_COLOR"))]
 
 data.o <- data.clean

@@ -1,0 +1,501 @@
+
+[1] "Attribute importance - Dataset B"
+[1] "================================="
+
+[1] "Information Gain:"
+                         attr_importance
+ORIGINAL_PROFILE_IMAGE      0.0000000000
+PROFILE_IMAGE               0.0000000000
+BACKGROUND_IMAGE            0.0059738650
+LANGUAGE                    0.0005211467
+FRIENDS_COUNT               0.0037961163
+FOLLOWERS_COUNT             0.0045799137
+STATUS_COUNT                0.0074617951
+LISTED_COUNT                0.0004571414
+TIMEZONE                    0.0124623744
+GEO_ENABLED                 0.0000000000
+LATITUDE                    0.0126148519
+LONGITUDE                   0.0118371248
+IS_DEFAULT_PROFILE          0.0001147429
+IS_DEFAULT_PROFILE_IMAGE    0.0127374264
+IS_BACKGROUND_IMAGE_USED    0.0105760249
+PROFILE_TEXT_COLOR          0.0388609159
+PROFILE_BG_COLOR            0.0388609159
+
+[1] "Gain ratio:"
+                         attr_importance
+ORIGINAL_PROFILE_IMAGE      0.0000000000
+PROFILE_IMAGE               0.0000000000
+BACKGROUND_IMAGE            0.0088932873
+LANGUAGE                    0.0019098973
+FRIENDS_COUNT               0.0035775765
+FOLLOWERS_COUNT             0.0066085856
+STATUS_COUNT                0.0086668046
+LISTED_COUNT                0.0018322953
+TIMEZONE                    0.0092095728
+GEO_ENABLED                 0.0000000000
+LATITUDE                    0.2219101206
+LONGITUDE                   0.2342094622
+IS_DEFAULT_PROFILE          0.0001722508
+IS_DEFAULT_PROFILE_IMAGE    0.3088463348
+IS_BACKGROUND_IMAGE_USED    0.0213945933
+PROFILE_TEXT_COLOR          0.2385447766
+PROFILE_BG_COLOR            0.1893617837
+
+[1] "Symmetrical uncertainty:"
+                         attr_importance
+ORIGINAL_PROFILE_IMAGE       0.000000000
+PROFILE_IMAGE                0.000000000
+BACKGROUND_IMAGE             0.016813856
+LANGUAGE                     0.003343607
+FRIENDS_COUNT                0.006902363
+FOLLOWERS_COUNT              0.012515379
+STATUS_COUNT                 0.016585018
+LISTED_COUNT                 0.003170717
+TIMEZONE                     0.017904954
+GEO_ENABLED                  0.000000000
+LATITUDE                     0.263612366
+LONGITUDE                    0.264807664
+IS_DEFAULT_PROFILE           0.000325512
+IS_DEFAULT_PROFILE_IMAGE     0.318026717
+IS_BACKGROUND_IMAGE_USED     0.039670563
+PROFILE_TEXT_COLOR           0.385201700
+PROFILE_BG_COLOR             0.318425876
+
+[1] "OneR:"
+                         attr_importance
+ORIGINAL_PROFILE_IMAGE         1.3588952
+PROFILE_IMAGE                  1.3588952
+BACKGROUND_IMAGE               1.3491237
+LANGUAGE                       1.3583542
+FRIENDS_COUNT                  1.3415283
+FOLLOWERS_COUNT                1.3522606
+STATUS_COUNT                   1.3316680
+LISTED_COUNT                   1.3584230
+TIMEZONE                       1.2599147
+GEO_ENABLED                    1.3588952
+LATITUDE                       0.0000000
+LONGITUDE                      0.6075477
+IS_DEFAULT_PROFILE             1.3518823
+IS_DEFAULT_PROFILE_IMAGE       0.8891416
+IS_BACKGROUND_IMAGE_USED       1.3324620
+PROFILE_TEXT_COLOR             1.3653253
+PROFILE_BG_COLOR               1.3653253
+
+[1] "Random forest Accuracy:"
+                         attr_importance
+ORIGINAL_PROFILE_IMAGE         10.626730
+PROFILE_IMAGE                  10.937527
+BACKGROUND_IMAGE               18.812913
+LANGUAGE                        7.894853
+FRIENDS_COUNT                  15.824868
+FOLLOWERS_COUNT                17.992358
+STATUS_COUNT                   27.719202
+LISTED_COUNT                    4.734543
+TIMEZONE                       11.201708
+GEO_ENABLED                     2.877294
+LATITUDE                       10.109066
+LONGITUDE                       5.562648
+IS_DEFAULT_PROFILE             15.404577
+IS_DEFAULT_PROFILE_IMAGE       16.891350
+IS_BACKGROUND_IMAGE_USED       26.059453
+PROFILE_TEXT_COLOR             34.824359
+PROFILE_BG_COLOR               26.530781
+
+[1] "Random forest Impurity:"
+                         attr_importance
+ORIGINAL_PROFILE_IMAGE        50.0468731
+PROFILE_IMAGE                 42.8816317
+BACKGROUND_IMAGE              26.7315141
+LANGUAGE                       1.0509055
+FRIENDS_COUNT                 15.8186847
+FOLLOWERS_COUNT               38.8801664
+STATUS_COUNT                  92.6424925
+LISTED_COUNT                   0.5377421
+TIMEZONE                      37.3512838
+GEO_ENABLED                    1.0797540
+LATITUDE                     124.0634920
+LONGITUDE                     73.4537567
+IS_DEFAULT_PROFILE            96.6872191
+IS_DEFAULT_PROFILE_IMAGE     240.5501589
+IS_BACKGROUND_IMAGE_USED     196.6702119
+PROFILE_TEXT_COLOR           539.7796449
+PROFILE_BG_COLOR             406.7554241
+
+[1] "CFS:"
+[1] "LONGITUDE"                "IS_DEFAULT_PROFILE_IMAGE" "PROFILE_TEXT_COLOR"       "PROFILE_BG_COLOR"        
+
+[1] "Chi squared:"
+                         attr_importance
+ORIGINAL_PROFILE_IMAGE        0.00000000
+PROFILE_IMAGE                 0.00000000
+BACKGROUND_IMAGE              0.09917032
+LANGUAGE                      0.02333355
+FRIENDS_COUNT                 0.07352228
+FOLLOWERS_COUNT               0.08171594
+STATUS_COUNT                  0.12276766
+LISTED_COUNT                  0.02179913
+TIMEZONE                      0.24018748
+GEO_ENABLED                   0.00000000
+LATITUDE                      0.54748510
+LONGITUDE                     0.50531489
+IS_DEFAULT_PROFILE            0.01532792
+IS_DEFAULT_PROFILE_IMAGE      0.48676875
+IS_BACKGROUND_IMAGE_USED      0.16310822
+PROFILE_TEXT_COLOR            1.00000000
+PROFILE_BG_COLOR              1.00000000
+
+[1] "Linear correlation:"
+
+[1] "Attribute importance - Dataset B2"
+[1] "================================="
+
+[1] "Information Gain:"
+                         attr_importance
+PROFILE_IMAGE               0.0000000000
+LANGUAGE                    0.0005211467
+FRIENDS_COUNT               0.0037961163
+FOLLOWERS_COUNT             0.0045799137
+STATUS_COUNT                0.0074617951
+LISTED_COUNT                0.0004571414
+TIMEZONE                    0.0124623744
+GEO_ENABLED                 0.0000000000
+LATITUDE                    0.0126148519
+LONGITUDE                   0.0118371248
+IS_DEFAULT_PROFILE          0.0001147429
+IS_DEFAULT_PROFILE_IMAGE    0.0127374264
+IS_BACKGROUND_IMAGE_USED    0.0105760249
+
+[1] "Gain ratio:"
+                         attr_importance
+PROFILE_IMAGE               0.0000000000
+LANGUAGE                    0.0019098973
+FRIENDS_COUNT               0.0035775765
+FOLLOWERS_COUNT             0.0066085856
+STATUS_COUNT                0.0086668046
+LISTED_COUNT                0.0018322953
+TIMEZONE                    0.0092095728
+GEO_ENABLED                 0.0000000000
+LATITUDE                    0.2219101206
+LONGITUDE                   0.2342094622
+IS_DEFAULT_PROFILE          0.0001722508
+IS_DEFAULT_PROFILE_IMAGE    0.3088463348
+IS_BACKGROUND_IMAGE_USED    0.0213945933
+
+[1] "Symmetrical uncertainty:"
+                         attr_importance
+PROFILE_IMAGE                0.000000000
+LANGUAGE                     0.003343607
+FRIENDS_COUNT                0.006902363
+FOLLOWERS_COUNT              0.012515379
+STATUS_COUNT                 0.016585018
+LISTED_COUNT                 0.003170717
+TIMEZONE                     0.017904954
+GEO_ENABLED                  0.000000000
+LATITUDE                     0.263612366
+LONGITUDE                    0.264807664
+IS_DEFAULT_PROFILE           0.000325512
+IS_DEFAULT_PROFILE_IMAGE     0.318026717
+IS_BACKGROUND_IMAGE_USED     0.039670563
+
+[1] "OneR:"
+                         attr_importance
+PROFILE_IMAGE                1.365325337
+LANGUAGE                     1.364784384
+FRIENDS_COUNT                1.347958424
+FOLLOWERS_COUNT              1.358690780
+STATUS_COUNT                 1.338098150
+LISTED_COUNT                 1.364853191
+TIMEZONE                     1.266344848
+GEO_ENABLED                  1.365325337
+LATITUDE                     0.006430165
+LONGITUDE                    0.613977911
+IS_DEFAULT_PROFILE           1.358312445
+IS_DEFAULT_PROFILE_IMAGE     0.895571723
+IS_BACKGROUND_IMAGE_USED     1.338892116
+
+[1] "Random forest Accuracy:"
+                         attr_importance
+PROFILE_IMAGE                   23.08527
+LANGUAGE                        29.52706
+FRIENDS_COUNT                   43.05523
+FOLLOWERS_COUNT                 39.41662
+STATUS_COUNT                    53.19854
+LISTED_COUNT                    10.23562
+TIMEZONE                        51.43376
+GEO_ENABLED                     22.10766
+LATITUDE                        35.39794
+LONGITUDE                       33.54372
+IS_DEFAULT_PROFILE              31.23870
+IS_DEFAULT_PROFILE_IMAGE        35.87181
+IS_BACKGROUND_IMAGE_USED        35.70410
+
+[1] "Random forest Impurity:"
+                         attr_importance
+PROFILE_IMAGE                101.0219897
+LANGUAGE                      13.0544572
+FRIENDS_COUNT                 48.4302140
+FOLLOWERS_COUNT               42.2439991
+STATUS_COUNT                  78.9923698
+LISTED_COUNT                   0.5364373
+TIMEZONE                     153.1859076
+GEO_ENABLED                   13.1845744
+LATITUDE                     263.4170749
+LONGITUDE                    189.7879114
+IS_DEFAULT_PROFILE           211.4450132
+IS_DEFAULT_PROFILE_IMAGE     415.0050947
+IS_BACKGROUND_IMAGE_USED     210.5300337
+
+[1] "CFS:"
+[1] "LONGITUDE"                "IS_DEFAULT_PROFILE_IMAGE"
+
+[1] "Chi squared:"
+                         attr_importance
+PROFILE_IMAGE                 0.00000000
+LANGUAGE                      0.02333355
+FRIENDS_COUNT                 0.07352228
+FOLLOWERS_COUNT               0.08171594
+STATUS_COUNT                  0.12276766
+LISTED_COUNT                  0.02179913
+TIMEZONE                      0.24018748
+GEO_ENABLED                   0.00000000
+LATITUDE                      0.54748510
+LONGITUDE                     0.50531489
+IS_DEFAULT_PROFILE            0.01532792
+IS_DEFAULT_PROFILE_IMAGE      0.48676875
+IS_BACKGROUND_IMAGE_USED      0.16310822
+
+[1] "Linear correlation:"
+
+[1] "Attribute importance - Dataset C"
+[1] "================================="
+
+[1] "Information Gain:"
+                         attr_importance
+PROFILE_IMAGE               0.0000000000
+LOCATION                    0.0031799975
+LANGUAGE                    0.0005211467
+FRIENDS_COUNT               0.0037961163
+FOLLOWERS_COUNT             0.0045799137
+STATUS_COUNT                0.0074617951
+LISTED_COUNT                0.0004571414
+TIMEZONE                    0.0124623744
+GEO_ENABLED                 0.0000000000
+LATITUDE                    0.0126148519
+LONGITUDE                   0.0118371248
+IS_DEFAULT_PROFILE          0.0001147429
+IS_DEFAULT_PROFILE_IMAGE    0.0127374264
+IS_BACKGROUND_IMAGE_USED    0.0105760249
+
+[1] "Gain ratio:"
+                         attr_importance
+PROFILE_IMAGE               0.0000000000
+LOCATION                    0.0047333776
+LANGUAGE                    0.0019098973
+FRIENDS_COUNT               0.0035775765
+FOLLOWERS_COUNT             0.0066085856
+STATUS_COUNT                0.0086668046
+LISTED_COUNT                0.0018322953
+TIMEZONE                    0.0092095728
+GEO_ENABLED                 0.0000000000
+LATITUDE                    0.2219101206
+LONGITUDE                   0.2342094622
+IS_DEFAULT_PROFILE          0.0001722508
+IS_DEFAULT_PROFILE_IMAGE    0.3088463348
+IS_BACKGROUND_IMAGE_USED    0.0213945933
+
+[1] "Symmetrical uncertainty:"
+                         attr_importance
+PROFILE_IMAGE                0.000000000
+LOCATION                     0.008949104
+LANGUAGE                     0.003343607
+FRIENDS_COUNT                0.006902363
+FOLLOWERS_COUNT              0.012515379
+STATUS_COUNT                 0.016585018
+LISTED_COUNT                 0.003170717
+TIMEZONE                     0.017904954
+GEO_ENABLED                  0.000000000
+LATITUDE                     0.263612366
+LONGITUDE                    0.264807664
+IS_DEFAULT_PROFILE           0.000325512
+IS_DEFAULT_PROFILE_IMAGE     0.318026717
+IS_BACKGROUND_IMAGE_USED     0.039670563
+
+[1] "OneR:"
+                         attr_importance
+PROFILE_IMAGE                1.365325337
+LOCATION                     1.361078807
+LANGUAGE                     1.364784384
+FRIENDS_COUNT                1.347958424
+FOLLOWERS_COUNT              1.358690780
+STATUS_COUNT                 1.338098150
+LISTED_COUNT                 1.364853191
+TIMEZONE                     1.266344848
+GEO_ENABLED                  1.365325337
+LATITUDE                     0.006430165
+LONGITUDE                    0.613977911
+IS_DEFAULT_PROFILE           1.358312445
+IS_DEFAULT_PROFILE_IMAGE     0.895571723
+IS_BACKGROUND_IMAGE_USED     1.338892116
+
+[1] "Random forest Accuracy:"
+                         attr_importance
+PROFILE_IMAGE                  19.472270
+LOCATION                       37.663981
+LANGUAGE                       28.971529
+FRIENDS_COUNT                  42.251968
+FOLLOWERS_COUNT                38.712190
+STATUS_COUNT                   56.174263
+LISTED_COUNT                    9.759804
+TIMEZONE                       52.378171
+GEO_ENABLED                    22.436559
+LATITUDE                       35.862320
+LONGITUDE                      30.337823
+IS_DEFAULT_PROFILE             32.445302
+IS_DEFAULT_PROFILE_IMAGE       33.008059
+IS_BACKGROUND_IMAGE_USED       35.600987
+
+[1] "Random forest Impurity:"
+                         attr_importance
+PROFILE_IMAGE                 83.4477625
+LOCATION                      40.5903192
+LANGUAGE                      12.8931116
+FRIENDS_COUNT                 45.2655975
+FOLLOWERS_COUNT               42.1802380
+STATUS_COUNT                  79.0108751
+LISTED_COUNT                   0.6023612
+TIMEZONE                     150.0452802
+GEO_ENABLED                   12.8025649
+LATITUDE                     249.0796542
+LONGITUDE                    196.7387210
+IS_DEFAULT_PROFILE           199.2305021
+IS_DEFAULT_PROFILE_IMAGE     418.7654145
+IS_BACKGROUND_IMAGE_USED     201.7492548
+
+[1] "CFS:"
+[1] "LONGITUDE"                "IS_DEFAULT_PROFILE_IMAGE"
+
+[1] "Chi squared:"
+                         attr_importance
+PROFILE_IMAGE                 0.00000000
+LOCATION                      0.06496197
+LANGUAGE                      0.02333355
+FRIENDS_COUNT                 0.07352228
+FOLLOWERS_COUNT               0.08171594
+STATUS_COUNT                  0.12276766
+LISTED_COUNT                  0.02179913
+TIMEZONE                      0.24018748
+GEO_ENABLED                   0.00000000
+LATITUDE                      0.54748510
+LONGITUDE                     0.50531489
+IS_DEFAULT_PROFILE            0.01532792
+IS_DEFAULT_PROFILE_IMAGE      0.48676875
+IS_BACKGROUND_IMAGE_USED      0.16310822
+
+[1] "Linear correlation:"
+
+[1] "Attribute importance - Dataset C2"
+[1] "================================="
+
+[1] "Information Gain:"
+                attr_importance
+PROFILE_IMAGE      0.0000000000
+LOCATION           0.0031799975
+LANGUAGE           0.0005211467
+FRIENDS_COUNT      0.0037961163
+FOLLOWERS_COUNT    0.0045799137
+STATUS_COUNT       0.0074617951
+LISTED_COUNT       0.0004571414
+TIMEZONE           0.0124623744
+GEO_ENABLED        0.0000000000
+LATITUDE           0.0126148519
+LONGITUDE          0.0118371248
+
+[1] "Gain ratio:"
+                attr_importance
+PROFILE_IMAGE       0.000000000
+LOCATION            0.004733378
+LANGUAGE            0.001909897
+FRIENDS_COUNT       0.003577577
+FOLLOWERS_COUNT     0.006608586
+STATUS_COUNT        0.008666805
+LISTED_COUNT        0.001832295
+TIMEZONE            0.009209573
+GEO_ENABLED         0.000000000
+LATITUDE            0.221910121
+LONGITUDE           0.234209462
+
+[1] "Symmetrical uncertainty:"
+                attr_importance
+PROFILE_IMAGE       0.000000000
+LOCATION            0.008949104
+LANGUAGE            0.003343607
+FRIENDS_COUNT       0.006902363
+FOLLOWERS_COUNT     0.012515379
+STATUS_COUNT        0.016585018
+LISTED_COUNT        0.003170717
+TIMEZONE            0.017904954
+GEO_ENABLED         0.000000000
+LATITUDE            0.263612366
+LONGITUDE           0.264807664
+
+[1] "OneR:"
+                attr_importance
+PROFILE_IMAGE       1.365325337
+LOCATION            1.361078807
+LANGUAGE            1.364784384
+FRIENDS_COUNT       1.347958424
+FOLLOWERS_COUNT     1.358690780
+STATUS_COUNT        1.338098150
+LISTED_COUNT        1.364853191
+TIMEZONE            1.266344848
+GEO_ENABLED         1.365325337
+LATITUDE            0.006430165
+LONGITUDE           0.613977911
+
+[1] "Random forest Accuracy:"
+                attr_importance
+PROFILE_IMAGE          6.209427
+LOCATION              68.796336
+LANGUAGE              46.291016
+FRIENDS_COUNT         75.466994
+FOLLOWERS_COUNT       67.990932
+STATUS_COUNT         101.044204
+LISTED_COUNT          10.018677
+TIMEZONE              70.571930
+GEO_ENABLED           44.614060
+LATITUDE              51.492939
+LONGITUDE             44.049821
+
+[1] "Random forest Impurity:"
+                attr_importance
+PROFILE_IMAGE         0.3928311
+LOCATION             55.7885983
+LANGUAGE             34.4866677
+FRIENDS_COUNT        68.2973843
+FOLLOWERS_COUNT      79.0724045
+STATUS_COUNT        129.1783126
+LISTED_COUNT          0.8477592
+TIMEZONE            253.4902038
+GEO_ENABLED          48.4896125
+LATITUDE            385.5899751
+LONGITUDE           294.2036064
+
+[1] "CFS:"
+[1] "LATITUDE"  "LONGITUDE"
+
+[1] "Chi squared:"
+                attr_importance
+PROFILE_IMAGE        0.00000000
+LOCATION             0.06496197
+LANGUAGE             0.02333355
+FRIENDS_COUNT        0.07352228
+FOLLOWERS_COUNT      0.08171594
+STATUS_COUNT         0.12276766
+LISTED_COUNT         0.02179913
+TIMEZONE             0.24018748
+GEO_ENABLED          0.00000000
+LATITUDE             0.54748510
+LONGITUDE            0.50531489
+
+[1] "Linear correlation:"
