@@ -92,8 +92,6 @@ sink()
 data <- data.clean
 mytable <- table(data$LISTED_COUNT,data$CLASS)
 mytable
-ggplot(data.clean, aes(x=LISTED_COUNT, colour=CLASS)) +
-  geom_density()
 
 filename <- "~/Projects/RStudio/TwitterAnalysis/Engine/AnalysisResults/Results/After_VarTest.txt"
 sink(filename, append = TRUE)
@@ -108,6 +106,8 @@ print("=================================")
 imp(data.scaled)
 sink()
 
+#science_theme = theme(panel.grid.major = element_line(size = 0.5, color = "grey"), axis.line = element_line(size = 0.7, color = "black"), legend.position = c(0.85,0.7), text = element_text(size = 14))
+science_theme = theme(panel.grid.major = element_line(size = 0.5, color = "grey"), axis.line = element_line(size = 0.7, color = "black"), text = element_text(size = 10))
 
 library(ggplot2)
 library(reshape2)
@@ -117,7 +117,15 @@ p <- ggplot(d, aes(x=CLASS, y=value, fill=CLASS)) +
   facet_wrap(~variable,scales = "free_x") +
   geom_boxplot() +
   coord_flip() +
+  theme_bw() +
+  science_theme +
+  labs(x = "CLASS", y = "Metadata") +
   geom_boxplot(notch=FALSE)
-
 print(p)
 
+svg(filename = "metadata_distribution.svg", width = 6, height = 4)
+p
+dev.off()
+
+ggplot(data.clean, aes(x=LISTED_COUNT, colour=CLASS)) +
+  geom_density()
