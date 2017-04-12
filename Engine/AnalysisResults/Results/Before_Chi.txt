@@ -1,0 +1,133 @@
+[1] "Results of chi square test"
+[1] "================================="
+                    X-squared 
+"CREATED"     "NaN"     "NaN" 
+
+                                                                 X-squared 
+"ORIGINAL_PROFILE_IMAGE"    "0.00217577297820097"       "150107.000000001" 
+
+                                                        X-squared 
+      "PROFILE_IMAGE" "0.00688674071561257"    "155517.000000001" 
+
+                                               X-squared 
+"BACKGROUND_IMAGE"                "0"           "149342" 
+
+                                               X-squared 
+        "LOCATION"                "0" "138515.029267655" 
+
+                                                        X-squared 
+           "LANGUAGE" "0.00623065507491141"    "84.6719143296688" 
+
+                                                              X-squared 
+        "FRIENDS_COUNT" "2.49839519826978e-151"       "21627.849793253" 
+
+                                               X-squared 
+ "FOLLOWERS_COUNT"                "0" "70903.2925174989" 
+
+                                               X-squared 
+    "STATUS_COUNT"                "0" "51516.8722075244" 
+
+                                               X-squared 
+    "LISTED_COUNT"                "0" "100280.850090746" 
+
+                                               X-squared 
+        "TIMEZONE"                "0" "14165.9679909094" 
+
+                                               X-squared 
+      "UTC_OFFSET"                "0" "9300.28314407897" 
+
+                                                              X-squared 
+          "GEO_ENABLED" "8.91532658308231e-221"      "1005.99976435884" 
+
+                                                                              
+                            "LATITUDE" "0.0000000000000000000272341844544772" 
+                             X-squared 
+                                "1827" 
+
+                                                                              
+                           "LONGITUDE" "0.0000000000000000000272341844544772" 
+                             X-squared 
+                                "1827" 
+
+                                                                          X-squared 
+       "IS_DEFAULT_PROFILE" "0.00000000183188737254426"          "36.1447777538051" 
+
+                                                                       X-squared 
+"IS_DEFAULT_PROFILE_IMAGE"                        "0"          "35477.857672807" 
+
+                                                                       X-squared 
+"IS_BACKGROUND_IMAGE_USED"                        "0"         "5027.21315658603" 
+
+                                                     X-squared 
+"PROFILE_TEXT_COLOR"                  "0"             "150107" 
+
+                                               X-squared 
+"PROFILE_BG_COLOR"                "0"           "150107" 
+
+
+[1] "Results of chi square test"
+[1] "================================="
+                    X-squared 
+"CREATED"     "NaN"     "NaN" 
+
+                                                                 X-squared 
+"ORIGINAL_PROFILE_IMAGE"    "0.00217577297820097"       "150107.000000001" 
+
+                                                        X-squared 
+      "PROFILE_IMAGE" "0.00688674071561257"    "155517.000000001" 
+
+                                               X-squared 
+"BACKGROUND_IMAGE"                "0"           "149342" 
+
+                                               X-squared 
+        "LOCATION"                "0" "138515.029267655" 
+
+                                                        X-squared 
+           "LANGUAGE" "0.00623065507491141"    "84.6719143296688" 
+
+                                                              X-squared 
+        "FRIENDS_COUNT" "2.49839519826978e-151"       "21627.849793253" 
+
+                                               X-squared 
+ "FOLLOWERS_COUNT"                "0" "70903.2925174989" 
+
+                                               X-squared 
+    "STATUS_COUNT"                "0" "51516.8722075244" 
+
+                                               X-squared 
+    "LISTED_COUNT"                "0" "100280.850090746" 
+
+                                               X-squared 
+        "TIMEZONE"                "0" "14165.9679909094" 
+
+                                               X-squared 
+      "UTC_OFFSET"                "0" "9300.28314407897" 
+
+                                                              X-squared 
+          "GEO_ENABLED" "8.91532658308231e-221"      "1005.99976435884" 
+
+                                                                              
+                            "LATITUDE" "0.0000000000000000000272341844544772" 
+                             X-squared 
+                                "1827" 
+
+                                                                              
+                           "LONGITUDE" "0.0000000000000000000272341844544772" 
+                             X-squared 
+                                "1827" 
+
+                                                                          X-squared 
+       "IS_DEFAULT_PROFILE" "0.00000000183188737254426"          "36.1447777538051" 
+
+                                                                       X-squared 
+"IS_DEFAULT_PROFILE_IMAGE"                        "0"          "35477.857672807" 
+
+                                                                       X-squared 
+"IS_BACKGROUND_IMAGE_USED"                        "0"         "5027.21315658603" 
+
+                                                     X-squared 
+"PROFILE_TEXT_COLOR"                  "0"             "150107" 
+
+                                               X-squared 
+"PROFILE_BG_COLOR"                "0"           "150107" 
+

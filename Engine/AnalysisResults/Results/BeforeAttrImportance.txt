@@ -1,0 +1,51 @@
+
+[1] "Attribute importance - Corpus"
+[1] "================================="
+
+[1] "Information Gain:"
+                         attr_importance
+CREATED                        0.0388609
+ORIGINAL_PROFILE_IMAGE         0.0388609
+PROFILE_IMAGE                  0.0388609
+BACKGROUND_IMAGE               0.0388609
+LOCATION                       0.0365016
+LANGUAGE                       0.0005211
+FRIENDS_COUNT                  0.0057458
+FOLLOWERS_COUNT                0.0127597
+STATUS_COUNT                   0.0057078
+LISTED_COUNT                   0.0223892
+TIMEZONE                       0.0155738
+UTC_OFFSET                     0.0089743
+GEO_ENABLED                    0.0044828
+LATITUDE                       0.0357310
+LONGITUDE                      0.0351425
+IS_DEFAULT_PROFILE             0.0001147
+IS_DEFAULT_PROFILE_IMAGE       0.0128504
+IS_BACKGROUND_IMAGE_USED       0.0118582
+PROFILE_TEXT_COLOR             0.0388609
+PROFILE_BG_COLOR               0.0388609
+
+[1] "Gain ratio:"
+                         attr_importance
+CREATED                        0.4712199
+ORIGINAL_PROFILE_IMAGE         0.0033515
+PROFILE_IMAGE                  0.0032581
+BACKGROUND_IMAGE               0.0072671
+LOCATION                       0.0051896
+LANGUAGE                       0.0010928
+FRIENDS_COUNT                  0.0041592
+FOLLOWERS_COUNT                0.0083871
+STATUS_COUNT                   0.0031586
+LISTED_COUNT                   0.0212560
+TIMEZONE                       0.0063667
+UTC_OFFSET                     0.0065348
+GEO_ENABLED                    0.0064673
+LATITUDE                       0.4186777
+LONGITUDE                      0.4061019
+IS_DEFAULT_PROFILE             0.0001723
+IS_DEFAULT_PROFILE_IMAGE       0.0669277
+IS_BACKGROUND_IMAGE_USED       0.0202391
+PROFILE_TEXT_COLOR             0.0200243
+PROFILE_BG_COLOR               0.0118510
+
+[1] "Random forest Accuracy:"

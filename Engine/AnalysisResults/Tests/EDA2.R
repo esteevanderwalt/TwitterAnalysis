@@ -150,6 +150,12 @@ p <- ggplot(d, aes(x=CLASS, y=value, fill=CLASS)) +
   
 print(p)
 
+p <- ggplot(d, aes(x=value, fill=CLASS)) + 
+  facet_wrap(~variable,scales = "free_x") +
+  geom_histogram(bins=100)
+
+print(p)
+
 p <- ggplot(d, aes(value, fill=CLASS)) + 
   facet_wrap(~variable, scales = "free_x") +
   geom_density(alpha = 0.2)
