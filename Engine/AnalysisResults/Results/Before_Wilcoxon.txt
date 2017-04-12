@@ -1,0 +1,67 @@
+
+
+[1] "Results of Wilcoxon Signed Rank test"
+[1] "================================="
+                                                                      V 
+              "CREATED" "7.49608040056674e-185"                "415416" 
+
+                                                                         V 
+"ORIGINAL_PROFILE_IMAGE"                      "0"            "11033476975" 
+
+                                              V 
+"PROFILE_IMAGE"             "0"   "11880725878" 
+
+                                                       V 
+"BACKGROUND_IMAGE"                "0"       "1487278530" 
+
+                                     V 
+  "LOCATION"          "0" "1207246953" 
+
+                                                                                        V 
+                   "LANGUAGE" "0.0000000000516015619268003"                        "1653" 
+
+                                              V 
+"FRIENDS_COUNT"             "0"     "149705556" 
+
+                                                    V 
+"FOLLOWERS_COUNT"               "0"       "473904291" 
+
+                                           V 
+"STATUS_COUNT"            "0"    "764346351" 
+
+                                           V 
+"LISTED_COUNT"            "0"      "6119751" 
+
+                                                                            
+                                                                 "TIMEZONE" 
+                                                                            
+"0.00000000000000000000000000000000000000000000000000000000235682231685198" 
+                                                                          V 
+                                                                    "57630" 
+
+                                                                                        V 
+                 "UTC_OFFSET" "0.0000000000166792573140816"                        "1830" 
+
+                                                       V 
+     "GEO_ENABLED" "0.18144920772142"                "6" 
+
+                                                                      V 
+             "LATITUDE" "1.43979955820318e-282"                "850860" 
+
+                                                                      V 
+            "LONGITUDE" "1.43979955820318e-282"                "850860" 
+
+                                                             V 
+"IS_DEFAULT_PROFILE"              "0.125"                 "10" 
+
+                                                                               V 
+"IS_DEFAULT_PROFILE_IMAGE"                    "0.125"                       "10" 
+
+                                                                               V 
+"IS_BACKGROUND_IMAGE_USED"         "0.18144920772142"                        "6" 
+
+                                                             V 
+"PROFILE_TEXT_COLOR"                  "0"           "33231628" 
+
+                                                       V 
+"PROFILE_BG_COLOR"                "0"         "91077756" 

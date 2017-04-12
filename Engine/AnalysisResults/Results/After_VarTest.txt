@@ -1,0 +1,102 @@
+
+[1] "Results of Variable test"
+[1] "================================="
+[1] "PROFILE_IMAGE"
+
+	F test to compare two variances
+
+data:  success and fake
+F = Inf, num df = 150000, denom df = 1000, p-value <0.0000000000000002
+alternative hypothesis: true ratio of variances is not equal to 1
+95 percent confidence interval:
+ Inf Inf
+sample estimates:
+ratio of variances 
+               Inf 
+
+
+[1] "LANGUAGE"
+
+	F test to compare two variances
+
+data:  success and fake
+F = 0.91, num df = 150000, denom df = 1000, p-value = 0.04
+alternative hypothesis: true ratio of variances is not equal to 1
+95 percent confidence interval:
+ 0.8358 0.9967
+sample estimates:
+ratio of variances 
+            0.9145 
+
+
+[1] "FRIENDS_COUNT"
+
+	F test to compare two variances
+
+data:  success and fake
+F = 2.5, num df = 150000, denom df = 1000, p-value <0.0000000000000002
+alternative hypothesis: true ratio of variances is not equal to 1
+95 percent confidence interval:
+ 2.275 2.713
+sample estimates:
+ratio of variances 
+             2.489 
+
+
+[1] "FOLLOWERS_COUNT"
+
+	F test to compare two variances
+
+data:  success and fake
+F = 27, num df = 150000, denom df = 1000, p-value <0.0000000000000002
+alternative hypothesis: true ratio of variances is not equal to 1
+95 percent confidence interval:
+ 24.43 29.13
+sample estimates:
+ratio of variances 
+             26.73 
+
+
+[1] "STATUS_COUNT"
+
+	F test to compare two variances
+
+data:  success and fake
+F = 1.8, num df = 150000, denom df = 1000, p-value <0.0000000000000002
+alternative hypothesis: true ratio of variances is not equal to 1
+95 percent confidence interval:
+ 1.620 1.932
+sample estimates:
+ratio of variances 
+             1.773 
+
+
+[1] "LISTED_COUNT"
+
+	F test to compare two variances
+
+data:  success and fake
+F = 9000, num df = 150000, denom df = 1000, p-value <0.0000000000000002
+alternative hypothesis: true ratio of variances is not equal to 1
+95 percent confidence interval:
+ 8246 9833
+sample estimates:
+ratio of variances 
+              9022 
+
+
+[1] "TIMEZONE"
+
+	F test to compare two variances
+
+data:  success and fake
+F = 1.2, num df = 150000, denom df = 1000, p-value = 0.0003
+alternative hypothesis: true ratio of variances is not equal to 1
+95 percent confidence interval:
+ 1.081 1.289
+sample estimates:
+ratio of variances 
+             1.183 
+
+
+[1] "CLASS"

@@ -49,17 +49,11 @@ cleanup.Twitter <- function(data) {
   b <- 29
   
   #unique variables/nzv which will be ignored <- drop columns
-  #ID
-  #NAME
-  #SCREENNAME
-  #DESCRIPTION
-  #IS_CELEBRITY
-  #LAST_TWEET
-  data <- data[ , -which(names(data) %in% c("ID","NAME","SCREENNAME","DESCRIPTION","IS_CELEBRITY","LAST_TWEET"))]
+  data <- data[ , -which(names(data) %in% c("CREATED", "ID","NAME","SCREENNAME","DESCRIPTION","IS_CELEBRITY","LAST_TWEET"))]
   
   #dates -> get year, convert to number
   #CREATED
-  data$CREATED <- year(ymd_hms(data$CREATED))
+  #data$CREATED <- year(ymd_hms(data$CREATED))
   
   #images -> determine if it is a default image or not, convert to binary
   #ORIGINAL_PROFILE_IMAGE
@@ -139,21 +133,21 @@ cleanup.Twitter <- function(data) {
   
   #data$TIMEZONE <- as.numeric(factor(data$TIMEZONE))
   #UTC_OFFSET ignore as it is the same as timezone
-  data <- data[ , -which(names(data) %in% c("UTC_OFFSET"))]
+  #data <- data[ , -which(names(data) %in% c("UTC_OFFSET"))]
 
   #numeric counts -> convert to hundreds
   #FRIENDS_COUNT
   data$FRIENDS_COUNT[is.na(data$FRIENDS_COUNT)] <- 0
-  data$FRIENDS_COUNT <- round(data$FRIENDS_COUNT/500)
+  data$FRIENDS_COUNT <- floor(data$FRIENDS_COUNT/500)
   #FOLLOWERS_COUNT
   data$FOLLOWERS_COUNT[is.na(data$FOLLOWERS_COUNT)] <- 0
-  data$FOLLOWERS_COUNT <- round(data$FOLLOWERS_COUNT/500)
+  data$FOLLOWERS_COUNT <- floor(data$FOLLOWERS_COUNT/500)
   #STATUS_COUNT 
   data$STATUS_COUNT[is.na(data$STATUS_COUNT)] <- 0
-  data$STATUS_COUNT <- round(data$STATUS_COUNT/500)
+  data$STATUS_COUNT <- floor(data$STATUS_COUNT/500)
   #LISTED_COUNT
   data$LISTED_COUNT[is.na(data$LISTED_COUNT)] <- 0
-  data$LISTED_COUNT <- round(data$LISTED_COUNT/500)
+  data$LISTED_COUNT <- floor(data$LISTED_COUNT/500)
   
   #binary - dont need to do anything here
   #GEO_ENABLED
@@ -168,10 +162,10 @@ cleanup.Twitter <- function(data) {
   #geo -> divide long by 30 and lat by 15 to get 12 bins each
   #LATITUDE 
   data$LATITUDE[is.na(data$LATITUDE)] <- 0
-  data$LATITUDE <- round(data$LATITUDE/15)
+  data$LATITUDE <- floor(data$LATITUDE/15)
   #LONGITUDE
   data$LONGITUDE[is.na(data$LONGITUDE)] <- 0
-  data$LONGITUDE <- round(data$LONGITUDE/30)
+  data$LONGITUDE <- floor(data$LONGITUDE/30)
 
   #colors -> convert to name, get top 29, rest is other, convert to numeric based on rank
   #PROFILE_TEXT_COLOR
@@ -207,6 +201,53 @@ cleanup.Twitter <- function(data) {
   
   #convert class to factor
   data$CLASS <- as.factor(data$CLASS)
+  
+  return(data)
+}
+
+#cleanup of original Twitter dataset and categorical vars
+cleanup.Twitter.NA <- function(data) {
+  
+  data <- data[ , -which(names(data) %in% c("ID","NAME","SCREENNAME","DESCRIPTION","IS_CELEBRITY","LAST_TWEET"))]
+  
+  data$CREATED <- as.character(data$CREATED)
+  data$ORIGINAL_PROFILE_IMAGE <- as.character(data$ORIGINAL_PROFILE_IMAGE)
+  data$PROFILE_IMAGE <- as.character(data$PROFILE_IMAGE)
+  data$BACKGROUND_IMAGE <- as.character(data$BACKGROUND_IMAGE)
+  data$LOCATION <- as.character(data$LOCATION)
+  data$LANGUAGE <- as.character(data$LANGUAGE)
+  data$TIMEZONE <- as.character(data$TIMEZONE)
+  data$PROFILE_TEXT_COLOR <- as.character(data$PROFILE_TEXT_COLOR)
+  data$PROFILE_BG_COLOR <- as.character(data$PROFILE_BG_COLOR)
+  
+  data$ORIGINAL_PROFILE_IMAGE[is.na(data$ORIGINAL_PROFILE_IMAGE)] <- 0
+  data$PROFILE_IMAGE[is.na(data$PROFILE_IMAGE)] <- 0
+  data$BACKGROUND_IMAGE[is.na(data$BACKGROUND_IMAGE)] <- 0
+  data$LOCATION[is.na(data$LOCATION)] <- 'Null'
+  data$LANGUAGE[is.na(data$LANGUAGE)] <- 'Null'
+  data$TIMEZONE[is.na(data$TIMEZONE)] <- 'Null'
+  data$FRIENDS_COUNT[is.na(data$FRIENDS_COUNT)] <- 0
+  data$FOLLOWERS_COUNT[is.na(data$FOLLOWERS_COUNT)] <- 0
+  data$STATUS_COUNT[is.na(data$STATUS_COUNT)] <- 0
+  data$LISTED_COUNT[is.na(data$LISTED_COUNT)] <- 0
+  data$GEO_ENABLED[is.na(data$GEO_ENABLED)] <- 0
+  data$IS_DEFAULT_PROFILE[is.na(data$IS_DEFAULT_PROFILE)] <- 0
+  data$IS_DEFAULT_PROFILE_IMAGE[is.na(data$IS_DEFAULT_PROFILE_IMAGE)] <- 0
+  data$IS_BACKGROUND_IMAGE_USED[is.na(data$IS_BACKGROUND_IMAGE_USED)] <- 0
+  data$LATITUDE[is.na(data$LATITUDE)] <- 0
+  data$LONGITUDE[is.na(data$LONGITUDE)] <- 0
+  data$PROFILE_TEXT_COLOR[is.na(data$PROFILE_TEXT_COLOR)] <- 'Null'
+  data$PROFILE_BG_COLOR[is.na(data$PROFILE_BG_COLOR)] <- 'Null'
+
+  data$CREATED <- as.factor(data$CREATED)
+  data$ORIGINAL_PROFILE_IMAGE <- as.factor(data$ORIGINAL_PROFILE_IMAGE)
+  data$PROFILE_IMAGE <- as.factor(data$PROFILE_IMAGE)
+  data$BACKGROUND_IMAGE <- as.factor(data$BACKGROUND_IMAGE)
+  data$LOCATION <- as.factor(data$LOCATION)
+  data$LANGUAGE <- as.factor(data$LANGUAGE)
+  data$TIMEZONE <- as.factor(data$TIMEZONE)
+  data$PROFILE_TEXT_COLOR <- as.factor(data$PROFILE_TEXT_COLOR)
+  data$PROFILE_BG_COLOR <- as.factor(data$PROFILE_BG_COLOR)
   
   return(data)
 }
