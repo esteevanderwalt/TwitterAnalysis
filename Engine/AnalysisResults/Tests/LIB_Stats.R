@@ -22,6 +22,36 @@ chi <- function(data) {
   rm(d)
 }
 
+fisher <- function(data) {
+  cat("\n")
+  print("Results of fisher exact test")
+  print("=================================")  
+  
+  d <- data
+  options("scipen"=100, "digits"=4)
+  attach(d)
+  #for each name in dataset except CLASS
+  for (i in colnames(d)) {
+    print(i)
+    #if(i != "CLASS"){
+    if(i == "TIMEZONE"){
+      mytable <- table(d[,i],CLASS)
+      if(nrow(mytable)>10) {
+        z<-10 
+      } else {
+        z<-nrow(mytable)
+      }
+      x <- fisher.test(mytable[1:z,], workspace = 2e8)  
+      #save results
+      a <- c(i, x$p.value, x$statistic["X-squared"])
+      print(x)
+      cat("\n")
+    }
+  }
+  detach(d)
+  rm(d)
+}
+
 wilcoxon <- function(data) {
   cat("\n")
   print("Results of Wilcoxon Signed Rank test")

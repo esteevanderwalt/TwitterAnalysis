@@ -38,11 +38,14 @@ data.clean <- cleanup.Twitter(data.full)
 #data.clean <- data.clean[ , -which(names(data.clean) %in% c("ID","NAME","SCREENNAME","DESCRIPTION","IS_CELEBRITY","LAST_TWEET"))]
 #remove fields not in fake accounts
 data.clean <- data.clean[ , -which(names(data.clean) %in% c("BACKGROUND_IMAGE", "IS_BACKGROUND_IMAGE_USED", "PROFILE_TEXT_COLOR", "PROFILE_BG_COLOR"))]
-data.clean <- data.clean[ , -which(names(data.clean) %in% c("CREATED", "ORIGINAL_PROFILE_IMAGE","UTC_OFFSET"))]
+data.clean <- data.clean[ , -which(names(data.clean) %in% c("CREATED", "ORIGINAL_PROFILE_IMAGE"))]
 data.clean <- data.clean[ , -which(names(data.clean) %in% c("GEO_ENABLED", "IS_DEFAULT_PROFILE", "IS_DEFAULT_PROFILE_IMAGE"))]
 
 #remove unique values
 data.clean <- data.clean[ , -which(names(data.clean) %in% c("LOCATION", "LONGITUDE", "LATITUDE"))]
+
+#remove language and timezone
+data.clean <- data.clean[ , -which(names(data.clean) %in% c("LANGUAGE", "TIMEZONE", "PROFILE_IMAGE"))]
 
 #perform machine learning
 data.o <- data.clean
@@ -66,34 +69,38 @@ rm(inTrain)
 ################################
 resamp <- "repeatedcv"
 #folds
-folds <- c(5,10)
+folds <- c(10)
 #repeats
 repeats <- c(3)
 #tune
 tune <- c(3)
+#sampling
+sampling <- c("smote","rose")
 
 cl <- makeCluster(detectCores())
 registerDoParallel(cores=6) #or cl
-for (x in folds) {
-  for (y in repeats) {
-    for (z in tune) {
-      filename <- paste("~/Projects/RStudio/TwitterAnalysis/Engine/AnalysisResults/Results/META_LNX_P_rcv_",x,"fold_",y,"repeat_",z,"tune.txt",sep="")
-      #print(filename)
-      t <- system.time(ML_Models_ROC_P(training, resamp, x, z, y, filename))
-      
-      sink(filename, append = TRUE)
-      
-      cat("\n")
-      print("Query loading run time")
-      print("==============")
-      print(tl)
-      
-      cat("\n")
-      print("Models run time")
-      print("==============")
-      print(t)
-      
-      sink()
+for (m in sampling) {
+  for (x in folds) {
+    for (y in repeats) {
+      for (z in tune) {
+        filename <- paste("~/Projects/RStudio/TwitterAnalysis/Engine/AnalysisResults/Results/META_LTP_rcv_",x,"fold_",y,"repeat_",z,"tune_",m,".txt",sep="")
+        #print(filename)
+        t <- system.time(ML_Models_ROC_P(training, resamp, x, z, y, m, filename))
+        
+        sink(filename, append = TRUE)
+        
+        cat("\n")
+        print("Query loading run time")
+        print("==============")
+        print(tl)
+        
+        cat("\n")
+        print("Models run time")
+        print("==============")
+        print(t)
+        
+        sink()
+      }
     }
   }
 }

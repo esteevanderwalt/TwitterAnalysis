@@ -24,7 +24,7 @@ alternative hypothesis: true location shift is not equal to 0
 	Wilcoxon rank sum test with continuity correction
 
 data:  success and fake
-W = 64000000, p-value <0.0000000000000002
+W = 77000000, p-value = 1
 alternative hypothesis: true location shift is not equal to 0
 
 
@@ -33,7 +33,7 @@ alternative hypothesis: true location shift is not equal to 0
 	Wilcoxon rank sum test with continuity correction
 
 data:  success and fake
-W = 69000000, p-value = 0.0000000004
+W = 77000000, p-value = 0.9
 alternative hypothesis: true location shift is not equal to 0
 
 
@@ -42,7 +42,7 @@ alternative hypothesis: true location shift is not equal to 0
 	Wilcoxon rank sum test with continuity correction
 
 data:  success and fake
-W = 74000000, p-value = 0.02
+W = 77000000, p-value = 1
 alternative hypothesis: true location shift is not equal to 0
 
 
@@ -61,6 +61,15 @@ alternative hypothesis: true location shift is not equal to 0
 
 data:  success and fake
 W = 77000000, p-value = 0.9
+alternative hypothesis: true location shift is not equal to 0
+
+
+[1] "UTC_OFFSET"
+
+	Wilcoxon rank sum test with continuity correction
+
+data:  success and fake
+W = 72000000, p-value = 0.8
 alternative hypothesis: true location shift is not equal to 0
 
 

@@ -22,7 +22,7 @@ X-squared = 15, df = 29, p-value = 1
 	Pearson's Chi-squared test
 
 data:  mytable
-X-squared = 600, df = 700, p-value = 1
+X-squared = 590, df = 700, p-value = 1
 
 
 [1] "FOLLOWERS_COUNT"
@@ -30,7 +30,7 @@ X-squared = 600, df = 700, p-value = 1
 	Pearson's Chi-squared test
 
 data:  mytable
-X-squared = 570, df = 1700, p-value = 1
+X-squared = 1500, df = 1700, p-value = 1
 
 
 [1] "STATUS_COUNT"
@@ -38,7 +38,7 @@ X-squared = 570, df = 1700, p-value = 1
 	Pearson's Chi-squared test
 
 data:  mytable
-X-squared = 420, df = 730, p-value = 1
+X-squared = 550, df = 730, p-value = 1
 
 
 [1] "LISTED_COUNT"
@@ -55,6 +55,14 @@ X-squared = 8.9, df = 51, p-value = 1
 
 data:  mytable
 X-squared = 15, df = 29, p-value = 1
+
+
+[1] "UTC_OFFSET"
+
+	Pearson's Chi-squared test
+
+data:  mytable
+X-squared = 39, df = 32, p-value = 0.2
 
 
 [1] "CLASS"

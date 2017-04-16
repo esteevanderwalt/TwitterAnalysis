@@ -133,6 +133,7 @@ cleanup.Twitter <- function(data) {
   
   #data$TIMEZONE <- as.numeric(factor(data$TIMEZONE))
   #UTC_OFFSET ignore as it is the same as timezone
+  data$UTC_OFFSET[is.na(data$UTC_OFFSET)] <- 999
   #data <- data[ , -which(names(data) %in% c("UTC_OFFSET"))]
 
   #numeric counts -> convert to hundreds
