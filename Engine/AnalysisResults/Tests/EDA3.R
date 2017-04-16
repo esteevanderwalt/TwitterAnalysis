@@ -63,15 +63,15 @@ data.clean <- cleanup.Twitter(data.full)
 #data.clean <- data.clean[ , -which(names(data.clean) %in% c("ID","NAME","SCREENNAME","DESCRIPTION","IS_CELEBRITY","LAST_TWEET"))]
 #remove fields not in fake accounts
 data.clean <- data.clean[ , -which(names(data.clean) %in% c("BACKGROUND_IMAGE", "IS_BACKGROUND_IMAGE_USED", "PROFILE_TEXT_COLOR", "PROFILE_BG_COLOR"))]
-data.clean <- data.clean[ , -which(names(data.clean) %in% c("CREATED", "ORIGINAL_PROFILE_IMAGE","UTC_OFFSET"))]
+data.clean <- data.clean[ , -which(names(data.clean) %in% c("CREATED", "ORIGINAL_PROFILE_IMAGE"))]
 data.clean <- data.clean[ , -which(names(data.clean) %in% c("GEO_ENABLED", "IS_DEFAULT_PROFILE", "IS_DEFAULT_PROFILE_IMAGE"))]
 
 #remove unique values
-data.clean <- data.clean[ , -which(names(data.clean) %in% c("LOCATION", "LONGITUDE", "LATITUDE"))]
+#data.clean <- data.clean[ , -which(names(data.clean) %in% c("LOCATION", "LONGITUDE", "LATITUDE"))]
 
-data.scaled <- as.data.frame(scale(data.clean[1:7], center = TRUE, scale = TRUE))
+data.scaled <- as.data.frame(scale(data.clean[1:11], center = TRUE, scale = TRUE))
 #add class back
-data.scaled <- cbind(data.scaled,CLASS=data.clean[,8])
+data.scaled <- cbind(data.scaled,CLASS=data.clean[,12])
 
 #show mean per CLASS
 require(dplyr)
@@ -84,14 +84,33 @@ sink(filename, append = TRUE)
 chi(data.scaled)
 sink()
 
+filename <- "~/Projects/RStudio/TwitterAnalysis/Engine/AnalysisResults/Results/After_Fisher.txt"
+sink(filename, append = TRUE)
+fisher(data.scaled)
+sink()
+source("LIB_Stats.R")
+
 filename <- "~/Projects/RStudio/TwitterAnalysis/Engine/AnalysisResults/Results/After_Wilcoxon.txt"
 sink(filename, append = TRUE)
 wilcoxon(data.scaled)
 sink()
 
+#options(max.print=100)
+#getOption("max.print")
+
 data <- data.clean
-mytable <- table(data$LISTED_COUNT,data$CLASS)
+mytable <- table(data$TIMEZONE,data$CLASS)
+#filename <- "~/Projects/RStudio/TwitterAnalysis/Engine/AnalysisResults/Results/test.txt"
+#sink(filename, append = TRUE)
 mytable
+if(nrow(mytable)>10) {
+  x<-10 
+} else {
+  x<-nrow(mytable)
+}
+mytable[1:x,]
+
+#sink()
 
 filename <- "~/Projects/RStudio/TwitterAnalysis/Engine/AnalysisResults/Results/After_VarTest.txt"
 sink(filename, append = TRUE)
@@ -106,8 +125,10 @@ print("=================================")
 imp(data.scaled)
 sink()
 
-#science_theme = theme(panel.grid.major = element_line(size = 0.5, color = "grey"), axis.line = element_line(size = 0.7, color = "black"), legend.position = c(0.85,0.7), text = element_text(size = 14))
+science_themel = theme(panel.grid.major = element_line(size = 0.5, color = "grey"), axis.line = element_line(size = 0.7, color = "black"), legend.position = c(0.85,0.7), text = element_text(size = 10))
 science_theme = theme(panel.grid.major = element_line(size = 0.5, color = "grey"), axis.line = element_line(size = 0.7, color = "black"), text = element_text(size = 10))
+science_themell = theme(panel.grid.major = element_line(size = 0.5, color = "grey"), axis.line = element_line(size = 0.7, color = "black"), legend.position = c(0.85,0.1), text = element_text(size = 10))
+
 
 library(ggplot2)
 library(reshape2)
@@ -118,14 +139,21 @@ p <- ggplot(d, aes(x=CLASS, y=value, fill=CLASS)) +
   geom_boxplot() +
   coord_flip() +
   theme_bw() +
-  science_theme +
+  science_themell +
   labs(x = "CLASS", y = "Metadata") +
   geom_boxplot(notch=FALSE)
 print(p)
 
-svg(filename = "metadata_distribution.svg", width = 6, height = 4)
+png(filename = "metadata_distribution.png", width = 500, height = 250)
 p
 dev.off()
 
-ggplot(data.clean, aes(x=LISTED_COUNT, colour=CLASS)) +
-  geom_density()
+p <- ggplot(data.scaled, aes(x=TIMEZONE, colour=CLASS)) +
+  theme_bw() +
+  science_themel +
+  labs(y = "Scaled value", x = "TIMEZONE") +
+  geom_density(size=1.0)
+
+png(filename = "metadata_TIMEZONE.png", width = 500, height = 250)
+p
+dev.off()

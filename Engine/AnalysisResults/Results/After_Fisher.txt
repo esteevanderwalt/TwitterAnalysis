@@ -1,0 +1,176 @@
+
+[1] "Results of fisher exact test"
+[1] "================================="
+[1] "PROFILE_IMAGE"
+
+	Fisher's Exact Test for Count Data
+
+data:  mytable[1:z, ]
+p-value = 0.06
+alternative hypothesis: true odds ratio is not equal to 1
+95 percent confidence interval:
+ 1.02  Inf
+sample estimates:
+odds ratio 
+       Inf 
+
+
+[1] "LANGUAGE"
+
+	Fisher's Exact Test for Count Data
+
+data:  mytable[1:z, ]
+p-value = 1
+alternative hypothesis: two.sided
+
+
+[1] "FRIENDS_COUNT"
+
+	Fisher's Exact Test for Count Data
+
+data:  mytable[1:z, ]
+p-value = 1
+alternative hypothesis: two.sided
+
+
+[1] "FOLLOWERS_COUNT"
+
+	Fisher's Exact Test for Count Data
+
+data:  mytable[1:z, ]
+p-value = 1
+alternative hypothesis: two.sided
+
+
+[1] "STATUS_COUNT"
+
+	Fisher's Exact Test for Count Data
+
+data:  mytable[1:z, ]
+p-value = 1
+alternative hypothesis: two.sided
+
+
+[1] "LISTED_COUNT"
+
+	Fisher's Exact Test for Count Data
+
+data:  mytable[1:z, ]
+p-value = 0.8
+alternative hypothesis: two.sided
+
+
+[1] "TIMEZONE"
+
+[1] "Results of fisher exact test"
+[1] "================================="
+[1] "PROFILE_IMAGE"
+
+	Fisher's Exact Test for Count Data
+
+data:  mytable[1:z, ]
+p-value = 0.06
+alternative hypothesis: true odds ratio is not equal to 1
+95 percent confidence interval:
+ 1.02  Inf
+sample estimates:
+odds ratio 
+       Inf 
+
+
+[1] "LANGUAGE"
+
+	Fisher's Exact Test for Count Data
+
+data:  mytable[1:z, ]
+p-value = 1
+alternative hypothesis: two.sided
+
+
+[1] "FRIENDS_COUNT"
+
+	Fisher's Exact Test for Count Data
+
+data:  mytable[1:z, ]
+p-value = 1
+alternative hypothesis: two.sided
+
+
+[1] "FOLLOWERS_COUNT"
+
+	Fisher's Exact Test for Count Data
+
+data:  mytable[1:z, ]
+p-value = 1
+alternative hypothesis: two.sided
+
+
+[1] "STATUS_COUNT"
+
+	Fisher's Exact Test for Count Data
+
+data:  mytable[1:z, ]
+p-value = 1
+alternative hypothesis: two.sided
+
+
+[1] "LISTED_COUNT"
+
+	Fisher's Exact Test for Count Data
+
+data:  mytable[1:z, ]
+p-value = 0.8
+alternative hypothesis: two.sided
+
+
+[1] "TIMEZONE"
+
+[1] "Results of fisher exact test"
+[1] "================================="
+[1] "PROFILE_IMAGE"
+[1] "LANGUAGE"
+[1] "FRIENDS_COUNT"
+[1] "FOLLOWERS_COUNT"
+[1] "STATUS_COUNT"
+[1] "LISTED_COUNT"
+[1] "TIMEZONE"
+
+[1] "Results of fisher exact test"
+[1] "================================="
+[1] "PROFILE_IMAGE"
+[1] "LANGUAGE"
+[1] "FRIENDS_COUNT"
+[1] "FOLLOWERS_COUNT"
+[1] "STATUS_COUNT"
+[1] "LISTED_COUNT"
+[1] "TIMEZONE"
+
+[1] "Results of fisher exact test"
+[1] "================================="
+[1] "PROFILE_IMAGE"
+[1] "LANGUAGE"
+[1] "FRIENDS_COUNT"
+[1] "FOLLOWERS_COUNT"
+[1] "STATUS_COUNT"
+[1] "LISTED_COUNT"
+[1] "TIMEZONE"
+[1] "UTC_OFFSET"
+
+	Fisher's Exact Test for Count Data
+
+data:  mytable[1:z, ]
+p-value = 1
+alternative hypothesis: two.sided
+
+
+[1] "CLASS"
+
+[1] "Results of fisher exact test"
+[1] "================================="
+[1] "PROFILE_IMAGE"
+[1] "LANGUAGE"
+[1] "FRIENDS_COUNT"
+[1] "FOLLOWERS_COUNT"
+[1] "STATUS_COUNT"
+[1] "LISTED_COUNT"
+[1] "TIMEZONE"

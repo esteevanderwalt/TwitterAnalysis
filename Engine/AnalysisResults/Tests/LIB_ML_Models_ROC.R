@@ -21,7 +21,7 @@ setSeeds <- function(method = "cv", numbers = 1, repeats = 1, tunes = NULL, seed
   seeds
 }
 
-ML_Models_ROC_P <- function(training, resamp, folds, tune, r, filename){
+ML_Models_ROC_P <- function(training, resamp, folds, tune, r, samp, filename){
   
   #build seeds vector
   #length is = (n_repeats*nresampling)+1
@@ -49,7 +49,8 @@ ML_Models_ROC_P <- function(training, resamp, folds, tune, r, filename){
                             repeats = r,
                             seeds = fit.m1.seeds,
                             classProbs = T,
-                            summaryFunction = twoClassSummary)
+                            summaryFunction = twoClassSummary,
+                            sampling = samp)
 
   sink(filename, append = TRUE)
   print("M1 started")
@@ -102,7 +103,8 @@ ML_Models_ROC_P <- function(training, resamp, folds, tune, r, filename){
                             repeats = r,
                             seeds = fit.m2.seeds,
                             classProbs = TRUE,
-                            summaryFunction = twoClassSummary)
+                            summaryFunction = twoClassSummary,
+                            sampling = samp)
 
   sink(filename, append = TRUE)
   print("M2 started")
@@ -155,7 +157,8 @@ ML_Models_ROC_P <- function(training, resamp, folds, tune, r, filename){
                             seeds = fit.m3.seeds,
                             classProbs = TRUE,
                             allowParallel = FALSE,
-                            summaryFunction = twoClassSummary)
+                            summaryFunction = twoClassSummary,
+                            sampling = samp)
 
   sink(filename, append = TRUE)
   print("M3 started")
@@ -207,7 +210,8 @@ ML_Models_ROC_P <- function(training, resamp, folds, tune, r, filename){
                             repeats = r,
                             seeds = fit.m4.seeds,
                             classProbs = TRUE,
-                            summaryFunction = twoClassSummary)
+                            summaryFunction = twoClassSummary,
+                            sampling = samp)
 
   sink(filename, append = TRUE)
   print("M4 started")
@@ -263,7 +267,8 @@ ML_Models_ROC_P <- function(training, resamp, folds, tune, r, filename){
                             repeats = r,
                             seeds = fit.m5.seeds,
                             classProbs = TRUE,
-                            summaryFunction = twoClassSummary)
+                            summaryFunction = twoClassSummary,
+                            sampling = samp)
 
   sink(filename, append = TRUE)
   print("M5 started")
@@ -314,7 +319,8 @@ ML_Models_ROC_P <- function(training, resamp, folds, tune, r, filename){
                             repeats = r,
                             seeds = fit.m6.seeds,
                             classProbs = TRUE,
-                            summaryFunction = twoClassSummary)
+                            summaryFunction = twoClassSummary,
+                            sampling = samp)
 
   sink(filename, append = TRUE)
   print("M6 started")
@@ -364,7 +370,8 @@ ML_Models_ROC_P <- function(training, resamp, folds, tune, r, filename){
                             repeats = r,
                             seeds = fit.m7.seeds,
                             classProbs = TRUE,
-                            summaryFunction = twoClassSummary)
+                            summaryFunction = twoClassSummary,
+                            sampling = samp)
 
   sink(filename, append = TRUE)
   print("M7 started")
@@ -414,7 +421,8 @@ ML_Models_ROC_P <- function(training, resamp, folds, tune, r, filename){
                             repeats = r,
                             seeds = fit.m8.seeds,
                             classProbs = TRUE,
-                            summaryFunction = twoClassSummary)
+                            summaryFunction = twoClassSummary,
+                            sampling = samp)
 
   sink(filename, append = TRUE)
   print("M8 started")
