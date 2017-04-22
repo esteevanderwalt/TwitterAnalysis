@@ -45,7 +45,7 @@ data.clean <- data.clean[ , -which(names(data.clean) %in% c("GEO_ENABLED", "IS_D
 data.clean <- data.clean[ , -which(names(data.clean) %in% c("LOCATION", "LONGITUDE", "LATITUDE"))]
 
 #remove language and timezone
-data.clean <- data.clean[ , -which(names(data.clean) %in% c("LANGUAGE", "TIMEZONE", "PROFILE_IMAGE"))]
+#data.clean <- data.clean[ , -which(names(data.clean) %in% c("LANGUAGE", "TIMEZONE", "PROFILE_IMAGE"))]
 
 #perform machine learning
 data.o <- data.clean
@@ -75,7 +75,7 @@ repeats <- c(3)
 #tune
 tune <- c(3)
 #sampling
-sampling <- c("smote","rose")
+sampling <- c("smote")
 
 cl <- makeCluster(detectCores())
 registerDoParallel(cores=6) #or cl
@@ -83,7 +83,7 @@ for (m in sampling) {
   for (x in folds) {
     for (y in repeats) {
       for (z in tune) {
-        filename <- paste("~/Projects/RStudio/TwitterAnalysis/Engine/AnalysisResults/Results/META_LTP_rcv_",x,"fold_",y,"repeat_",z,"tune_",m,".txt",sep="")
+        filename <- paste("~/Projects/RStudio/TwitterAnalysis/Engine/AnalysisResults/Results/META_rcv_",x,"fold_",y,"repeat_",z,"tune_",m,".txt",sep="")
         #print(filename)
         t <- system.time(ML_Models_ROC_P(training, resamp, x, z, y, m, filename))
         
