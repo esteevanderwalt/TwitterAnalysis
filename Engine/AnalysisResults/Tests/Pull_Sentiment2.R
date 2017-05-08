@@ -6,14 +6,9 @@ suppressMessages(library(tidyr))
 suppressMessages(library(stringr))
 suppressMessages(library(SnowballC))  
 suppressMessages(library(syuzhet))
+suppressMessages(library(reshape))
 
-coalesce <- function(...) {
-  Reduce(function(x, y) {
-    i <- which(length(x)==0)
-    x[i] <- y[i]
-    x},
-    list(...))
-}
+options(scipen=999)
 
 suppressMessages(library(RODBC))
 myconn<-odbcConnect("SAPHANA", uid="SYSTEM", pwd="oEqm66jccx", believeNRows=FALSE, rows_at_time=1, DBMSencoding="UTF-8") 
@@ -28,18 +23,26 @@ sqlSaveTable <- "TWITTER.EXP_SENTIMENT_TWEETS"
 ff <- as.data.frame(setNames(replicate(16,character(0), simplify = F), letters[1:16]))
 colnames(ff) <- c("ID", "ANGER", "ANTICIPIATION", "DISGUST", "FEAR", "JOY", "SADNESS", "SURPRISE", "TRUST", "POSTIVE","NEGATIVE","BING","AFINN","S","CONTENT","USERID")
 
+library(foreach)
+library(doParallel)
+
+#setup parallel backend to use many processors
+#cores=detectCores()
+#cl <- makeCluster(cores[1]-2) #not to overload your computer
+#registerDoParallel(cl)
+
 #get data
-tw <- sqlFetch(myconn, sqltable, max = 1, rows_at_time = 1)
+tw <- sqlFetch(myconn, sqltable, max = 1000000, rows_at_time = 1)
 
 while(!is.null(tw)){
   #clear any previous results
   ff <- ff[0,]
   
-  print(paste("R_SENTIMENT - TWEET:",tw$ID))
+  #print(paste("R_SENTIMENT - TWEET:",tw$ID))
   
-  df <- data.frame(tw$CONTENT)
+  df <- data.frame(tw$ID, tw$USERID, tw$CONTENT)
   #rename column
-  df <- setNames(df, c("CONTENT"))
+  df <- setNames(df, c("ID","USERID","CONTENT"))
   #get only ASCII characters
   df$CONTENT <- sapply(df$CONTENT,function(row) iconv(row, "latin1", "ASCII", sub=""))
   
@@ -57,8 +60,14 @@ while(!is.null(tw)){
   #lastly - treat your preprocessed documents as text documents
   tweetcorpus <- tm_map(tweetcorpus, PlainTextDocument) 
   
-  df <-data.frame(text=unlist(sapply(tweetcorpus, `[`, "content")), stringsAsFactors=F)
-  df <- setNames(df, c("CONTENT"))
+  #sapply(tweetcorpus, function(x){as.character(x$content[2])})
+  #sapply(tweetcorpus, function(x){as.numeric(x$content[1])})
+  
+  df <-data.frame(id=unlist(sapply(tweetcorpus, function(x){as.numeric(x$content[1])})),
+                  userid=unlist(sapply(tweetcorpus, function(x){as.numeric(x$content[2])})),
+                  text=unlist(sapply(tweetcorpus, function(x){as.character(x$content[3])})), stringsAsFactors=F)
+  #df <-data.frame(text=unlist(sapply(tweetcorpus, `[`, "content")), stringsAsFactors=F)
+  df <- setNames(df, c("ID","USERID","CONTENT"))
   
   reg <- "([^A-Za-z\\d#@']|'(?![A-Za-z\\d#@]))"
   tweet_words <- df %>%
@@ -91,60 +100,55 @@ while(!is.null(tw)){
     
     suppressMessages(by_source_sentiment <- tweet_words %>%
                        inner_join(nrc, by = "word") %>%
-                       count(sentiment, word) %>%
+                       count(sentiment, ID, USERID, word) %>%
                        ungroup() %>%
-                       complete(sentiment, word, fill = list(n = 0)) %>%
-                       inner_join(sources) %>%
-                       group_by(sentiment, total_words) %>%
+                       #complete(sentiment, ID, USERID, word, fill = list(n = 0)) %>%
+                       #inner_join(sources) %>%
+                       group_by(ID, USERID, sentiment) %>%
                        summarize(words = sum(n)) %>%
                        ungroup())
     
-    #posneg <- by_source_sentiment[by_source_sentiment$sentiment %in% c("positive","negative"),]
-    #sentiment <- by_source_sentiment[!by_source_sentiment$sentiment %in% c("positive","negative"),]
-    #posneg.sorted <- posneg[rev(order(posneg$words)),]
-    #sentiment.sorted <- sentiment[rev(order(sentiment$words)),]
-    
-    anger <- coalesce(by_source_sentiment[by_source_sentiment$sentiment %in% c("anger"),]$words,0)
-    anticipation <- coalesce(by_source_sentiment[by_source_sentiment$sentiment %in% c("anticipation"),]$words,0)
-    disgust <- coalesce(by_source_sentiment[by_source_sentiment$sentiment %in% c("disgust"),]$words,0)
-    fear <- coalesce(by_source_sentiment[by_source_sentiment$sentiment %in% c("fear"),]$words,0)
-    joy <- coalesce(by_source_sentiment[by_source_sentiment$sentiment %in% c("joy"),]$words,0)
-    sadness <- coalesce(by_source_sentiment[by_source_sentiment$sentiment %in% c("sadness"),]$words,0)
-    surprise <- coalesce(by_source_sentiment[by_source_sentiment$sentiment %in% c("surprise"),]$words,0)
-    trust <- coalesce(by_source_sentiment[by_source_sentiment$sentiment %in% c("trust"),]$words,0)
-    positive <- coalesce(by_source_sentiment[by_source_sentiment$sentiment %in% c("positive"),]$words,0)
-    negative <- coalesce(by_source_sentiment[by_source_sentiment$sentiment %in% c("negative"),]$words,0)
-    
-  }else{
-    #insert 0 values
-    anger <- 0
-    anticipation <- 0
-    disgust <- 0
-    fear <- 0
-    joy <- 0
-    sadness <- 0
-    surprise <- 0
-    trust <- 0
-    positive <- 0
-    negative <- 0
+    t <- cast(data=by_source_sentiment, ID+USERID~sentiment, sum)
   }
   
+  final <- t %>%
+    inner_join(df, by = c("ID", "USERID")) 
+  
   #get other sentiment scores
-  afinn <- sum(get_sentiment(as.character(tweet_words), method="afinn"))
-  bing <- sum(get_sentiment(as.character(tweet_words), method="bing"))
-  s <- sum(get_sentiment(as.character(tweet_words), method="syuzhet"))
+  ff <-data.frame(ID=final$ID, 
+                  ANGER=final$anger,
+                  ANTICIPIATION=final$anticipation,
+                  DISGUST=final$disgust,
+                  FEAR=final$fear,
+                  JOY=final$joy,
+                  SADNESS=final$sadness,
+                  SURPRISE=final$surprise,
+                  TRUST=final$trust,
+                  POSTIVE=final$positive,
+                  NEGATIVE=final$negative,
+                  BING=(get_sentiment(as.character(final$CONTENT), method="bing")),
+                  AFINN=(get_sentiment(as.character(final$CONTENT), method="afinn")),
+                  S=(get_sentiment(as.character(final$CONTENT), method="syuzhet")),
+                  CONTENT=final$CONTENT,
+                  USERID=final$USERID)
+                  
+  #bing <- sum(get_sentiment(as.character(tweet_words), method="bing"))
+  #afinn <- sum(get_sentiment(as.character(tweet_words), method="afinn"))
+  #s <- sum(get_sentiment(as.character(tweet_words), method="syuzhet"))
   
   #insert sentiment scores
-  ff <- rbind(ff,list(tw$ID, anger, anticipation, disgust, fear, joy, sadness, surprise, trust, positive, negative, afinn, bing, s, tw$CONTENT, tw$USERID))
+  #ff <- rbind(ff,list(tw$ID, anger, anticipation, disgust, fear, joy, sadness, surprise, trust, positive, negative, afinn, bing, s, tw$CONTENT, tw$USERID))
   
-  colnames(ff) <- c("ID", "ANGER", "ANTICIPIATION", "DISGUST", "FEAR", "JOY", "SADNESS", "SURPRISE", "TRUST", "POSTIVE","NEGATIVE","BING","AFINN","S","CONTENT","USERID")
+  #colnames(ff) <- c("ID", "ANGER", "ANTICIPIATION", "DISGUST", "FEAR", "JOY", "SADNESS", "SURPRISE", "TRUST", "POSTIVE","NEGATIVE","BING","AFINN","S","CONTENT","USERID")
   sqlSave(channel=mysconn, ff, tablename=sqlSaveTable, append=TRUE, rownames=FALSE)
   
-  tw <- sqlFetchMore(myconn, max = 1)
+  tw <- sqlFetchMore(myconn, max = 1000000)
   #tw$CONTENT
   #tw <- NULL
-  print(!is.null(tw))
+  #print(!is.null(tw))
 }
+
+#stopCluster(cl)
 
 close(myconn)
 close(mysconn)
