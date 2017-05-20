@@ -148,12 +148,13 @@ png(filename = "metadata_distribution.png", width = 500, height = 250)
 p
 dev.off()
 
-p <- ggplot(data.scaled, aes(x=TIMEZONE, colour=CLASS)) +
+p <- ggplot(data.scaled, aes(x=STATUS_COUNT, colour=CLASS, linetype=CLASS)) +
   theme_bw() +
   science_themel +
-  labs(y = "Scaled value", x = "TIMEZONE") +
-  geom_density(size=1.0)
+  labs(y = "Scaled value", x = "STATUS_COUNT") +
+  geom_density(size=1.0) 
+print(p)
 
-png(filename = "metadata_TIMEZONE.png", width = 500, height = 250)
+png(filename = "metadata_STATUS_COUNT_v3.png", width = 500, height = 250)
 p
 dev.off()

@@ -1,0 +1,12 @@
+
+[1] "Results of fisher exact test"
+[1] "================================="
+[1] "FOLLOWERS_COUNT"
+[1] "FRIENDS_COUNT"
+[1] "FF_RATIO"
+[1] "LISTED_COUNT"
+[1] "LANGUAGE"
+[1] "HAS_NAME"
+[1] "HAS_IMAGE"
+[1] "STATUS_COUNT"
+[1] "CLASS"

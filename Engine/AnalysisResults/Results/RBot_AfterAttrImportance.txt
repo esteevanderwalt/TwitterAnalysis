@@ -1,0 +1,88 @@
+
+[1] "Attribute importance - Corpus"
+[1] "================================="
+
+[1] "Information Gain:"
+                      attr_importance
+FOLLOWERS_COUNT             0.0002067
+FRIENDS_COUNT               0.0008118
+FF_RATIO                    0.0000000
+LISTED_COUNT                0.0000000
+USERNAME_LENGTH             0.0001431
+GEO_ENABLED                 0.0006705
+PROFILE_HAS_URL             0.0000000
+ACCOUNT_AGE_IN_MONTHS       0.0016929
+LANGUAGE                    0.0015871
+HAS_NAME                    0.0000000
+HAS_IMAGE                   0.0000000
+DUP_PROFILE                 0.0006648
+HAS_PROFILE                 0.0007058
+STATUS_COUNT                0.0001499
+
+[1] "Gain ratio:"
+                      attr_importance
+FOLLOWERS_COUNT             0.0006137
+FRIENDS_COUNT               0.0008055
+FF_RATIO                    0.0000000
+LISTED_COUNT                0.0000000
+USERNAME_LENGTH             0.0002358
+GEO_ENABLED                 0.0009674
+PROFILE_HAS_URL             0.0000000
+ACCOUNT_AGE_IN_MONTHS       0.0019219
+LANGUAGE                    0.0043402
+HAS_NAME                    0.0000000
+HAS_IMAGE                   0.0000000
+DUP_PROFILE                 0.0016253
+HAS_PROFILE                 0.0018702
+STATUS_COUNT                0.0020571
+
+[1] "Random forest Accuracy:"
+                      attr_importance
+FOLLOWERS_COUNT               53.8166
+FRIENDS_COUNT                 41.7700
+FF_RATIO                      20.6610
+LISTED_COUNT                  21.8513
+USERNAME_LENGTH               23.9356
+GEO_ENABLED                   26.3223
+PROFILE_HAS_URL               11.1249
+ACCOUNT_AGE_IN_MONTHS         84.2288
+LANGUAGE                      17.8753
+HAS_NAME                       1.0005
+HAS_IMAGE                     -0.3276
+DUP_PROFILE                   28.8327
+HAS_PROFILE                   30.9032
+STATUS_COUNT                  68.9777
+
+[1] "Random forest Impurity:"
+                      attr_importance
+FOLLOWERS_COUNT             123.34899
+FRIENDS_COUNT               110.69856
+FF_RATIO                     12.40981
+LISTED_COUNT                  9.97740
+USERNAME_LENGTH             103.23846
+GEO_ENABLED                  19.40860
+PROFILE_HAS_URL              12.46555
+ACCOUNT_AGE_IN_MONTHS       170.09947
+LANGUAGE                     57.20261
+HAS_NAME                      0.01831
+HAS_IMAGE                     2.61597
+DUP_PROFILE                  13.59422
+HAS_PROFILE                  13.99303
+STATUS_COUNT                176.73873
+
+[1] "Chi squared:"
+                      attr_importance
+FOLLOWERS_COUNT               0.02244
+FRIENDS_COUNT                 0.04269
+FF_RATIO                      0.00000
+LISTED_COUNT                  0.00000
+USERNAME_LENGTH               0.01627
+GEO_ENABLED                   0.03593
+PROFILE_HAS_URL               0.00000
+ACCOUNT_AGE_IN_MONTHS         0.07012
+LANGUAGE                      0.08202
+HAS_NAME                      0.00000
+HAS_IMAGE                     0.00000
+DUP_PROFILE                   0.04142
+HAS_PROFILE                   0.04339
+STATUS_COUNT                  0.02212

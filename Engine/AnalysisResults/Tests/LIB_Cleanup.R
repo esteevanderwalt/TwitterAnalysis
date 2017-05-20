@@ -99,8 +99,8 @@ cleanup.Twitter <- function(data) {
     group_by(LANGUAGE) %>%
     summarise(n=n()) %>%
     arrange(desc(n))
-  l <- subset(data, !(LANGUAGE %in% d$LANGUAGE[1:b]))$LANGUAGE
-  data$LANGUAGE[data$LANGUAGE %in% l] <- 'Other'
+  c <- data %>% distinct(LANGUAGE) %>% summarise(count=n())
+  
   if(c > 30){
     l <- subset(data, !(LANGUAGE %in% d$LANGUAGE[1:b]))$LANGUAGE
     data$LANGUAGE[data$LANGUAGE %in% l] <- 'Other'
@@ -119,8 +119,8 @@ cleanup.Twitter <- function(data) {
     group_by(TIMEZONE) %>%
     summarise(n=n()) %>%
     arrange(desc(n))
-  l <- subset(data, !(TIMEZONE %in% d$TIMEZONE[1:b]))$TIMEZONE
-  data$TIMEZONE[data$TIMEZONE %in% l] <- 'Other'
+  c <- data %>% distinct(TIMEZONE) %>% summarise(count=n())
+  
   if(c > 30){
     l <- subset(data, !(TIMEZONE %in% d$TIMEZONE[1:b]))$TIMEZONE
     data$TIMEZONE[data$TIMEZONE %in% l] <- 'Other'
@@ -199,6 +199,72 @@ cleanup.Twitter <- function(data) {
     mutate(PROFILE_BG_COLOR = rank) %>% 
     select(-rank, -n)
   #data$PROFILE_BG_COLOR <- as.numeric(factor(data$PROFILE_BG_COLOR))
+  
+  #convert class to factor
+  data$CLASS <- as.factor(data$CLASS)
+  
+  return(data)
+}
+
+#cleanup of original Twitter dataset
+cleanup.TwitterBot <- function(data) {
+  
+  b <- 29
+  
+  #LANGUAGE
+  data$LANGUAGE[is.na(data$LANGUAGE)] <- 'Null'
+  d <- data %>% 
+    group_by(LANGUAGE) %>%
+    summarise(n=n()) %>%
+    arrange(desc(n))
+  c <- data %>% distinct(LANGUAGE) %>% summarise(count=n())
+  
+  if(c > 30){
+    l <- subset(data, !(LANGUAGE %in% d$LANGUAGE[1:b]))$LANGUAGE
+    data$LANGUAGE[data$LANGUAGE %in% l] <- 'Other'
+  } 
+  
+  #convert to ranked
+  r <- data %>% count(LANGUAGE, sort = TRUE) %>% mutate(rank = row_number(desc(n)))
+  data <- left_join(data, r, by=c('LANGUAGE'='LANGUAGE')) %>%
+    mutate(LANGUAGE = rank) %>% 
+    select(-rank, -n)
+  
+  #numeric counts -> convert to hundreds
+  #FRIENDS_COUNT
+  data$FRIENDS_COUNT[is.na(data$FRIENDS_COUNT)] <- 0
+  data$FRIENDS_COUNT <- floor(data$FRIENDS_COUNT/500)
+  #FOLLOWERS_COUNT
+  data$FOLLOWERS_COUNT[is.na(data$FOLLOWERS_COUNT)] <- 0
+  data$FOLLOWERS_COUNT <- floor(data$FOLLOWERS_COUNT/500)
+  #STATUS_COUNT 
+  data$STATUS_COUNT[is.na(data$STATUS_COUNT)] <- 0
+  data$STATUS_COUNT <- floor(data$STATUS_COUNT/500)
+  #LISTED_COUNT
+  data$LISTED_COUNT[is.na(data$LISTED_COUNT)] <- 0
+  data$LISTED_COUNT <- floor(data$LISTED_COUNT/500)
+  
+  #FF_RATIO
+  data$FF_RATIO[is.na(data$FF_RATIO)] <- 0
+  data$FF_RATIO <- floor(data$FF_RATIO/500)
+  #USERNAME_LENGTH
+  #data$USERNAME_LENGTH[is.na(data$USERNAME_LENGTH)] <- 0
+  #data$USERNAME_LENGTH <- floor(data$USERNAME_LENGTH/10)
+  #ACCOUNT_AGE_IN_MONTHS
+  #data$ACCOUNT_AGE_IN_MONTHS[is.na(data$ACCOUNT_AGE_IN_MONTHS)] <- 0
+  #data$ACCOUNT_AGE_IN_MONTHS <- floor(data$ACCOUNT_AGE_IN_MONTHS/10)
+  
+  #binary - dont need to do anything here
+  #GEO_ENABLED
+  data$GEO_ENABLED[is.na(data$GEO_ENABLED)] <- 0
+  #PROFILE_HAS_URL
+  data$PROFILE_HAS_URL[is.na(data$PROFILE_HAS_URL)] <- 0
+  #DUP_PROFILE 
+  data$DUP_PROFILE[is.na(data$DUP_PROFILE)] <- 0  
+  #HAS_NAME 
+  data$HAS_NAME[is.na(data$HAS_NAME)] <- 0
+  #HAS_IMAGE
+  data$HAS_IMAGE[is.na(data$HAS_IMAGE)] <- 0
   
   #convert class to factor
   data$CLASS <- as.factor(data$CLASS)
