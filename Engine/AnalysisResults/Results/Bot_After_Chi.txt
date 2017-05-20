@@ -1,0 +1,68 @@
+
+[1] "Results of chi square test"
+[1] "================================="
+[1] "FOLLOWERS_COUNT"
+
+	Pearson's Chi-squared test
+
+data:  mytable
+X-squared = 1500, df = 1700, p-value = 1
+
+
+[1] "FRIENDS_COUNT"
+
+	Pearson's Chi-squared test
+
+data:  mytable
+X-squared = 590, df = 700, p-value = 1
+
+
+[1] "FF_RATIO"
+
+	Pearson's Chi-squared test
+
+data:  mytable
+X-squared = 23, df = 350, p-value = 1
+
+
+[1] "LISTED_COUNT"
+
+	Pearson's Chi-squared test
+
+data:  mytable
+X-squared = 8.9, df = 51, p-value = 1
+
+
+[1] "LANGUAGE"
+
+	Pearson's Chi-squared test
+
+data:  mytable
+X-squared = 15, df = 29, p-value = 1
+
+
+[1] "HAS_NAME"
+
+	Pearson's Chi-squared test with Yates' continuity correction
+
+data:  mytable
+X-squared = 0.0000000000000000000000000000044, df = 1, p-value = 1
+
+
+[1] "HAS_IMAGE"
+
+	Pearson's Chi-squared test with Yates' continuity correction
+
+data:  mytable
+X-squared = 2.8, df = 1, p-value = 0.09
+
+
+[1] "STATUS_COUNT"
+
+	Pearson's Chi-squared test
+
+data:  mytable
+X-squared = 550, df = 730, p-value = 1
+
+
+[1] "CLASS"

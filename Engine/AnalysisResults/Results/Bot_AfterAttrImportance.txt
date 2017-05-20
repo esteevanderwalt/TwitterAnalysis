@@ -1,0 +1,118 @@
+
+[1] "Attribute importance - Corpus"
+[1] "================================="
+
+[1] "Information Gain:"
+                attr_importance
+FOLLOWERS_COUNT       0.0000000
+FRIENDS_COUNT         0.0000000
+FF_RATIO              0.0001467
+LISTED_COUNT          0.0000000
+LANGUAGE              0.0000000
+HAS_NAME              0.0000000
+HAS_IMAGE             0.0000000
+STATUS_COUNT          0.0000000
+
+[1] "Gain ratio:"
+                attr_importance
+FOLLOWERS_COUNT        0.000000
+FRIENDS_COUNT          0.000000
+FF_RATIO               0.001364
+LISTED_COUNT           0.000000
+LANGUAGE               0.000000
+HAS_NAME               0.000000
+HAS_IMAGE              0.000000
+STATUS_COUNT           0.000000
+
+[1] "Random forest Accuracy:"
+                attr_importance
+FOLLOWERS_COUNT          33.533
+FRIENDS_COUNT            33.808
+FF_RATIO                 13.112
+LISTED_COUNT             32.310
+LANGUAGE                 44.929
+HAS_NAME                  2.457
+HAS_IMAGE                 2.980
+STATUS_COUNT             35.815
+
+[1] "Random forest Impurity:"
+                attr_importance
+FOLLOWERS_COUNT        28.15517
+FRIENDS_COUNT          29.76535
+FF_RATIO                0.54286
+LISTED_COUNT            7.94994
+LANGUAGE               26.49909
+HAS_NAME                0.05050
+HAS_IMAGE               0.04557
+STATUS_COUNT           41.48710
+
+[1] "Chi squared:"
+                attr_importance
+FOLLOWERS_COUNT          0.0000
+FRIENDS_COUNT            0.0000
+FF_RATIO                 0.0122
+LISTED_COUNT             0.0000
+LANGUAGE                 0.0000
+HAS_NAME                 0.0000
+HAS_IMAGE                0.0000
+STATUS_COUNT             0.0000
+RStudioGD 
+        2 
+RStudioGD 
+        2 
+RStudioGD 
+        2 
+RStudioGD 
+        2 
+RStudioGD 
+        2 
+RStudioGD 
+        2 
+RStudioGD 
+        2 
+RStudioGD 
+        2 
+RStudioGD 
+        2 
+RStudioGD 
+        2 
+RStudioGD 
+        2 
+RStudioGD 
+        2 
+RStudioGD 
+        2 
+RStudioGD 
+        2 
+RStudioGD 
+        2 
+RStudioGD 
+        2 
+RStudioGD 
+        2 
+RStudioGD 
+        2 
+RStudioGD 
+        2 
+RStudioGD 
+        2 
+RStudioGD 
+        2 
+RStudioGD 
+        2 
+RStudioGD 
+        2 
+RStudioGD 
+        2 
+RStudioGD 
+        2 
+RStudioGD 
+        2 
+RStudioGD 
+        2 
+RStudioGD 
+        2 
+RStudioGD 
+        2 
+RStudioGD 
+        2 

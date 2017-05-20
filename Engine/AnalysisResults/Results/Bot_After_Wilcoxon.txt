@@ -1,0 +1,76 @@
+
+[1] "Results of Wilcoxon Signed Rank test"
+[1] "================================="
+[1] "FOLLOWERS_COUNT"
+
+	Wilcoxon rank sum test with continuity correction
+
+data:  success and fake
+W = 77000000, p-value = 0.9
+alternative hypothesis: true location shift is not equal to 0
+
+
+[1] "FRIENDS_COUNT"
+
+	Wilcoxon rank sum test with continuity correction
+
+data:  success and fake
+W = 77000000, p-value = 1
+alternative hypothesis: true location shift is not equal to 0
+
+
+[1] "FF_RATIO"
+
+	Wilcoxon rank sum test with continuity correction
+
+data:  success and fake
+W = 79000000, p-value = 0.000002
+alternative hypothesis: true location shift is not equal to 0
+
+
+[1] "LISTED_COUNT"
+
+	Wilcoxon rank sum test with continuity correction
+
+data:  success and fake
+W = 77000000, p-value = 1
+alternative hypothesis: true location shift is not equal to 0
+
+
+[1] "LANGUAGE"
+
+	Wilcoxon rank sum test with continuity correction
+
+data:  success and fake
+W = 77000000, p-value = 0.9
+alternative hypothesis: true location shift is not equal to 0
+
+
+[1] "HAS_NAME"
+
+	Wilcoxon rank sum test with continuity correction
+
+data:  success and fake
+W = 77000000, p-value = 0.7
+alternative hypothesis: true location shift is not equal to 0
+
+
+[1] "HAS_IMAGE"
+
+	Wilcoxon rank sum test with continuity correction
+
+data:  success and fake
+W = 77000000, p-value = 0.05
+alternative hypothesis: true location shift is not equal to 0
+
+
+[1] "STATUS_COUNT"
+
+	Wilcoxon rank sum test with continuity correction
+
+data:  success and fake
+W = 77000000, p-value = 1
+alternative hypothesis: true location shift is not equal to 0
+
+
+[1] "CLASS"

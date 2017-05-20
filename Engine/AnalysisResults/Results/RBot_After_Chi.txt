@@ -1,0 +1,116 @@
+
+[1] "Results of chi square test"
+[1] "================================="
+[1] "FOLLOWERS_COUNT"
+
+	Pearson's Chi-squared test
+
+data:  mytable
+X-squared = 4300, df = 1700, p-value <0.0000000000000002
+
+
+[1] "FRIENDS_COUNT"
+
+	Pearson's Chi-squared test
+
+data:  mytable
+X-squared = 2800, df = 700, p-value <0.0000000000000002
+
+
+[1] "FF_RATIO"
+
+	Pearson's Chi-squared test
+
+data:  mytable
+X-squared = 570, df = 350, p-value = 0.0000000000001
+
+
+[1] "LISTED_COUNT"
+
+	Pearson's Chi-squared test
+
+data:  mytable
+X-squared = 100, df = 51, p-value = 0.00003
+
+
+[1] "USERNAME_LENGTH"
+
+	Pearson's Chi-squared test
+
+data:  mytable
+X-squared = 58, df = 22, p-value = 0.00005
+
+
+[1] "GEO_ENABLED"
+
+	Pearson's Chi-squared test with Yates' continuity correction
+
+data:  mytable
+X-squared = 200, df = 1, p-value <0.0000000000000002
+
+
+[1] "PROFILE_HAS_URL"
+
+	Pearson's Chi-squared test with Yates' continuity correction
+
+data:  mytable
+X-squared = 4.6, df = 1, p-value = 0.03
+
+
+[1] "ACCOUNT_AGE_IN_MONTHS"
+
+	Pearson's Chi-squared test
+
+data:  mytable
+X-squared = 960, df = 120, p-value <0.0000000000000002
+
+
+[1] "LANGUAGE"
+
+	Pearson's Chi-squared test
+
+data:  mytable
+X-squared = 1300, df = 29, p-value <0.0000000000000002
+
+
+[1] "HAS_NAME"
+
+	Pearson's Chi-squared test with Yates' continuity correction
+
+data:  mytable
+X-squared = 0.000000000000000000000000000041, df = 1, p-value = 1
+
+
+[1] "HAS_IMAGE"
+
+	Pearson's Chi-squared test with Yates' continuity correction
+
+data:  mytable
+X-squared = 3.2, df = 1, p-value = 0.08
+
+
+[1] "DUP_PROFILE"
+
+	Pearson's Chi-squared test with Yates' continuity correction
+
+data:  mytable
+X-squared = 260, df = 1, p-value <0.0000000000000002
+
+
+[1] "HAS_PROFILE"
+
+	Pearson's Chi-squared test with Yates' continuity correction
+
+data:  mytable
+X-squared = 290, df = 1, p-value <0.0000000000000002
+
+
+[1] "STATUS_COUNT"
+
+	Pearson's Chi-squared test
+
+data:  mytable
+X-squared = 2500, df = 730, p-value <0.0000000000000002
+
+
+[1] "CLASS"
