@@ -1,0 +1,17 @@
+[1] "M1 started"
+[1] "M1 complete"
+      user     system    elapsed 
+140268.120   3538.256  54709.778 
+[1] "M2 started"
+[1] "M2 complete"
+     user    system   elapsed 
+29112.932  2398.048  4168.943 
+[1] "M3 started"
+[1] "M3 complete"
+    user   system  elapsed 
+1881.400   11.008 1680.415 
+[1] "M4 started"
+[1] "M4 complete"
+    user   system  elapsed 
+4032.832   94.572   44.489 
+[1] "M5 started"

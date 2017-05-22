@@ -1,0 +1,626 @@
+[1] "M1 started"
+[1] "M1 complete"
+    user   system  elapsed 
+1279.240   13.552  279.483 
+[1] "M2 started"
+[1] "M2 complete"
+   user  system elapsed 
+846.640  11.668 156.286 
+[1] "M3 started"
+[1] "M3 complete"
+   user  system elapsed 
+512.340   1.768 506.057 
+[1] "M4 started"
+[1] "M4 complete"
+   user  system elapsed 
+190.128   9.984  14.939 
+[1] "M5 started"
+[1] "M5 complete"
+   user  system elapsed 
+554.592   5.620 124.610 
+[1] "M6 started"
+[1] "M6 complete"
+    user   system  elapsed 
+4909.216   12.696 2041.311 
+[1] "M7 started"
+[1] "M7 complete"
+    user   system  elapsed 
+2052.304   12.424   26.284 
+[1] "M8 started"
+[1] "M8 complete"
+   user  system elapsed 
+455.184   9.200 112.089 
+
+[1] "Model engine summary"
+[1] "===================="
+  Model Type Model Name  Accuracy      Kappa Sensitivity Specificity  Precision
+1        SVM  svmRadial 0.8968106 0.03193297   0.4036697   0.8996095 0.02231237
+2       tree         rf 0.9157347 0.05600867   0.5275229   0.9179380 0.03520049
+3       tree        J48 0.8929533 0.04154554   0.5183486   0.8950794 0.02727492
+4   bayesian   bayesglm 0.7807031 0.01763274   0.5688073   0.7819058 0.01458652
+5    cluster        knn 0.8831418 0.02829779   0.4174312   0.8857850 0.02032157
+6       tree   Adaboost 0.9044734 0.04804596   0.5229358   0.9066389 0.03081081
+7       tree      rpart 0.8962411 0.03996064   0.4862385   0.8985681 0.02648676
+8  neuralnet       nnet 0.8372424 0.02733714   0.5688073   0.8387659 0.01962957
+     Recall         F1  Prevalence       AUC     Cost
+1 0.4036697 0.04228736 0.005643575 0.7630124  279.483
+2 0.5275229 0.06599713 0.005643575 0.8370628  156.286
+3 0.5183486 0.05182298 0.005643575 0.7714367  506.057
+4 0.5688073 0.02844363 0.005643575 0.7551501   14.939
+5 0.4174312 0.03875639 0.005643575 0.7621380  124.610
+6 0.5229358 0.05819296 0.005643575 0.8362195 2041.311
+7 0.4862385 0.05023697 0.005643575 0.7855240   26.284
+8 0.5688073 0.03794950 0.005643575 0.7851761  112.089
+
+[1] "Model attribute importance"
+[1] "=========================="
+                      svmRadial         rf       J48  bayesglm       knn
+ACCOUNT_AGE_IN_MONTHS 100.00000  67.838634 100.00000 100.00000 100.00000
+DUP_PROFILE            13.95308  10.174395  13.95308  13.95308  13.95308
+FF_RATIO               42.01889   3.042993  42.01889  42.01889  42.01889
+FOLLOWERS_COUNT        29.24171  69.451854  29.24171  29.24171  29.24171
+FRIENDS_COUNT           0.00000 100.000000   0.00000   0.00000   0.00000
+GEO_ENABLED            78.53412  77.468571  78.53412  78.53412  78.53412
+HAS_IMAGE              44.98343   1.000209  44.98343  44.98343  44.98343
+HAS_NAME               44.12576   0.000000  44.12576  44.12576  44.12576
+HAS_PROFILE            73.96941  16.030486  73.96941  73.96941  73.96941
+LANGUAGE               11.38191  26.235403  11.38191  11.38191  11.38191
+LISTED_COUNT           43.81472   3.731310  43.81472  43.81472  43.81472
+PROFILE_HAS_URL        42.10281   6.771029  42.10281  42.10281  42.10281
+STATUS_COUNT           32.18726  61.160682  32.18726  32.18726  32.18726
+USERNAME_LENGTH        30.84324  40.368858  30.84324  30.84324  30.84324
+                       Adaboost      rpart       nnet
+ACCOUNT_AGE_IN_MONTHS 100.00000  29.176351  12.854645
+DUP_PROFILE            13.95308  24.121289  40.373817
+FF_RATIO               42.01889   1.110566  66.420469
+FOLLOWERS_COUNT        29.24171  69.031795  66.543655
+FRIENDS_COUNT           0.00000  57.024362  73.553497
+GEO_ENABLED            78.53412 100.000000  45.155876
+HAS_IMAGE              44.98343   0.000000  20.079554
+HAS_NAME               44.12576   0.000000   0.000000
+HAS_PROFILE            73.96941  25.330442  58.477192
+LANGUAGE               11.38191  34.125973  27.662024
+LISTED_COUNT           43.81472   3.644823 100.000000
+PROFILE_HAS_URL        42.10281   3.063701   7.509208
+STATUS_COUNT           32.18726  43.981877  24.472395
+USERNAME_LENGTH        30.84324   8.797923   8.837758
+
+[1] "Model engine results"
+[1] "===================="
+
+[1] "+++++++++++++"
+[1] "rf"
+[1] "+++++++++++++"
+
+Call:
+ randomForest(x = x, y = y, mtry = param$mtry) 
+               Type of random forest: classification
+                     Number of trees: 500
+No. of variables tried at each split: 8
+
+        OOB estimate of  error rate: 12.33%
+Confusion matrix:
+            deceptive trustworthy class.error
+deceptive        1618         350  0.17784553
+trustworthy       216        2408  0.08231707
+
+  mtry       ROC      Sens      Spec      ROCSD     SensSD      SpecSD
+1    2 0.8135144 0.3982362 0.9410991 0.02805337 0.06749623 0.005582657
+2    8 0.8226506 0.4814996 0.9196729 0.03049468 0.07821938 0.004932281
+3   14 0.8157601 0.5136053 0.9096642 0.02736785 0.05796850 0.004602837
+
+[1] "+++++++++++++"
+[1] "J48"
+[1] "+++++++++++++"
+J48 pruned tree
+------------------
+
+GEO_ENABLED <= 1.343184
+|   GEO_ENABLED <= -0.788029
+|   |   FRIENDS_COUNT <= -0.174437
+|   |   |   LANGUAGE <= -0.292141
+|   |   |   |   STATUS_COUNT <= -0.406296
+|   |   |   |   |   FOLLOWERS_COUNT <= -0.148672
+|   |   |   |   |   |   ACCOUNT_AGE_IN_MONTHS <= -1.217773
+|   |   |   |   |   |   |   DUP_PROFILE <= 0.804908
+|   |   |   |   |   |   |   |   STATUS_COUNT <= -0.435947
+|   |   |   |   |   |   |   |   |   FRIENDS_COUNT <= -0.194871: trustworthy (96.0/11.0)
+|   |   |   |   |   |   |   |   |   FRIENDS_COUNT > -0.194871
+|   |   |   |   |   |   |   |   |   |   FOLLOWERS_COUNT <= -0.164113
+|   |   |   |   |   |   |   |   |   |   |   STATUS_COUNT <= -0.493684: deceptive (7.0/1.0)
+|   |   |   |   |   |   |   |   |   |   |   STATUS_COUNT > -0.493684
+|   |   |   |   |   |   |   |   |   |   |   |   USERNAME_LENGTH <= 0.022749: deceptive (3.0)
+|   |   |   |   |   |   |   |   |   |   |   |   USERNAME_LENGTH > 0.022749: trustworthy (4.0/1.0)
+|   |   |   |   |   |   |   |   |   |   FOLLOWERS_COUNT > -0.164113: trustworthy (3.0)
+|   |   |   |   |   |   |   |   STATUS_COUNT > -0.435947: deceptive (6.0/1.0)
+|   |   |   |   |   |   |   DUP_PROFILE > 0.804908
+|   |   |   |   |   |   |   |   STATUS_COUNT <= -0.493684: trustworthy (12.0/1.0)
+|   |   |   |   |   |   |   |   STATUS_COUNT > -0.493684
+|   |   |   |   |   |   |   |   |   ACCOUNT_AGE_IN_MONTHS <= -1.654833: deceptive (15.0/1.0)
+|   |   |   |   |   |   |   |   |   ACCOUNT_AGE_IN_MONTHS > -1.654833
+|   |   |   |   |   |   |   |   |   |   FRIENDS_COUNT <= -0.208306: trustworthy (8.0/2.0)
+|   |   |   |   |   |   |   |   |   |   FRIENDS_COUNT > -0.208306: deceptive (4.0)
+|   |   |   |   |   |   ACCOUNT_AGE_IN_MONTHS > -1.217773
+|   |   |   |   |   |   |   FRIENDS_COUNT <= -0.209342: trustworthy (337.0/11.0)
+|   |   |   |   |   |   |   FRIENDS_COUNT > -0.209342
+|   |   |   |   |   |   |   |   USERNAME_LENGTH <= 0.597831: trustworthy (165.0/17.0)
+|   |   |   |   |   |   |   |   USERNAME_LENGTH > 0.597831
+|   |   |   |   |   |   |   |   |   STATUS_COUNT <= -0.493684
+|   |   |   |   |   |   |   |   |   |   FOLLOWERS_COUNT <= -0.16862
+|   |   |   |   |   |   |   |   |   |   |   ACCOUNT_AGE_IN_MONTHS <= -0.409586: trustworthy (10.0/2.0)
+|   |   |   |   |   |   |   |   |   |   |   ACCOUNT_AGE_IN_MONTHS > -0.409586: deceptive (3.0)
+|   |   |   |   |   |   |   |   |   |   FOLLOWERS_COUNT > -0.16862: trustworthy (8.0/1.0)
+|   |   |   |   |   |   |   |   |   STATUS_COUNT > -0.493684: trustworthy (39.0/3.0)
+|   |   |   |   |   FOLLOWERS_COUNT > -0.148672
+|   |   |   |   |   |   LISTED_COUNT <= 0.410273
+|   |   |   |   |   |   |   USERNAME_LENGTH <= 1.024959
+|   |   |   |   |   |   |   |   FRIENDS_COUNT <= -0.176619
+|   |   |   |   |   |   |   |   |   FRIENDS_COUNT <= -0.212951
+|   |   |   |   |   |   |   |   |   |   FOLLOWERS_COUNT <= 0.747829
+|   |   |   |   |   |   |   |   |   |   |   ACCOUNT_AGE_IN_MONTHS <= -1.447291: deceptive (7.0/2.0)
+|   |   |   |   |   |   |   |   |   |   |   ACCOUNT_AGE_IN_MONTHS > -1.447291
+|   |   |   |   |   |   |   |   |   |   |   |   STATUS_COUNT <= -0.424561: trustworthy (25.0/3.0)
+|   |   |   |   |   |   |   |   |   |   |   |   STATUS_COUNT > -0.424561: deceptive (4.0/1.0)
+|   |   |   |   |   |   |   |   |   |   FOLLOWERS_COUNT > 0.747829: deceptive (7.0/1.0)
+|   |   |   |   |   |   |   |   |   FRIENDS_COUNT > -0.212951
+|   |   |   |   |   |   |   |   |   |   ACCOUNT_AGE_IN_MONTHS <= -0.187463: deceptive (16.0)
+|   |   |   |   |   |   |   |   |   |   ACCOUNT_AGE_IN_MONTHS > -0.187463
+|   |   |   |   |   |   |   |   |   |   |   STATUS_COUNT <= -0.458451: deceptive (5.0/2.0)
+|   |   |   |   |   |   |   |   |   |   |   STATUS_COUNT > -0.458451: trustworthy (4.0)
+|   |   |   |   |   |   |   |   FRIENDS_COUNT > -0.176619: trustworthy (6.0)
+|   |   |   |   |   |   |   USERNAME_LENGTH > 1.024959: trustworthy (19.0/1.0)
+|   |   |   |   |   |   LISTED_COUNT > 0.410273: trustworthy (6.0)
+|   |   |   |   STATUS_COUNT > -0.406296
+|   |   |   |   |   ACCOUNT_AGE_IN_MONTHS <= 0.64969
+|   |   |   |   |   |   DUP_PROFILE <= -0.475928
+|   |   |   |   |   |   |   FOLLOWERS_COUNT <= -0.164113
+|   |   |   |   |   |   |   |   ACCOUNT_AGE_IN_MONTHS <= 0.23337
+|   |   |   |   |   |   |   |   |   FRIENDS_COUNT <= -0.208306
+|   |   |   |   |   |   |   |   |   |   FOLLOWERS_COUNT <= -0.167062: trustworthy (43.0/11.0)
+|   |   |   |   |   |   |   |   |   |   FOLLOWERS_COUNT > -0.167062: deceptive (4.0/1.0)
+|   |   |   |   |   |   |   |   |   FRIENDS_COUNT > -0.208306: trustworthy (23.0/3.0)
+|   |   |   |   |   |   |   |   ACCOUNT_AGE_IN_MONTHS > 0.23337: trustworthy (21.0)
+|   |   |   |   |   |   |   FOLLOWERS_COUNT > -0.164113
+|   |   |   |   |   |   |   |   USERNAME_LENGTH <= 0.015061
+|   |   |   |   |   |   |   |   |   FF_RATIO <= 0.081981
+|   |   |   |   |   |   |   |   |   |   STATUS_COUNT <= 0.053477
+|   |   |   |   |   |   |   |   |   |   |   STATUS_COUNT <= -0.254814
+|   |   |   |   |   |   |   |   |   |   |   |   USERNAME_LENGTH <= -0.5812: trustworthy (9.0/2.0)
+|   |   |   |   |   |   |   |   |   |   |   |   USERNAME_LENGTH > -0.5812: deceptive (3.0)
+|   |   |   |   |   |   |   |   |   |   |   STATUS_COUNT > -0.254814: deceptive (38.0)
+|   |   |   |   |   |   |   |   |   |   STATUS_COUNT > 0.053477
+|   |   |   |   |   |   |   |   |   |   |   USERNAME_LENGTH <= -1.714332: deceptive (3.0)
+|   |   |   |   |   |   |   |   |   |   |   USERNAME_LENGTH > -1.714332
+|   |   |   |   |   |   |   |   |   |   |   |   ACCOUNT_AGE_IN_MONTHS <= -0.452085: trustworthy (5.0)
+|   |   |   |   |   |   |   |   |   |   |   |   ACCOUNT_AGE_IN_MONTHS > -0.452085
+|   |   |   |   |   |   |   |   |   |   |   |   |   FOLLOWERS_COUNT <= -0.159993: trustworthy (4.0/1.0)
+|   |   |   |   |   |   |   |   |   |   |   |   |   FOLLOWERS_COUNT > -0.159993: deceptive (6.0/1.0)
+|   |   |   |   |   |   |   |   |   FF_RATIO > 0.081981: deceptive (4.0)
+|   |   |   |   |   |   |   |   USERNAME_LENGTH > 0.015061
+|   |   |   |   |   |   |   |   |   LISTED_COUNT <= 0.410273
+|   |   |   |   |   |   |   |   |   |   FOLLOWERS_COUNT <= -0.144856
+|   |   |   |   |   |   |   |   |   |   |   FOLLOWERS_COUNT <= -0.159752
+|   |   |   |   |   |   |   |   |   |   |   |   FRIENDS_COUNT <= -0.204215: deceptive (4.0/1.0)
+|   |   |   |   |   |   |   |   |   |   |   |   FRIENDS_COUNT > -0.204215: trustworthy (4.0)
+|   |   |   |   |   |   |   |   |   |   |   FOLLOWERS_COUNT > -0.159752: trustworthy (10.0)
+|   |   |   |   |   |   |   |   |   |   FOLLOWERS_COUNT > -0.144856
+|   |   |   |   |   |   |   |   |   |   |   FF_RATIO <= 0.002236: deceptive (23.0/9.0)
+|   |   |   |   |   |   |   |   |   |   |   FF_RATIO > 0.002236: trustworthy (3.0/1.0)
+|   |   |   |   |   |   |   |   |   LISTED_COUNT > 0.410273: trustworthy (3.0)
+|   |   |   |   |   |   DUP_PROFILE > -0.475928
+|   |   |   |   |   |   |   USERNAME_LENGTH <= -1.333693
+|   |   |   |   |   |   |   |   FOLLOWERS_COUNT <= -0.16316: trustworthy (6.0)
+|   |   |   |   |   |   |   |   FOLLOWERS_COUNT > -0.16316: deceptive (3.0)
+|   |   |   |   |   |   |   USERNAME_LENGTH > -1.333693: deceptive (70.0/5.0)
+|   |   |   |   |   ACCOUNT_AGE_IN_MONTHS > 0.64969
+|   |   |   |   |   |   ACCOUNT_AGE_IN_MONTHS <= 1.508841
+|   |   |   |   |   |   |   DUP_PROFILE <= 1.969826
+|   |   |   |   |   |   |   |   USERNAME_LENGTH <= -0.269254
+|   |   |   |   |   |   |   |   |   FOLLOWERS_COUNT <= -0.160311
+|   |   |   |   |   |   |   |   |   |   FRIENDS_COUNT <= -0.194871
+|   |   |   |   |   |   |   |   |   |   |   FRIENDS_COUNT <= -0.208306: deceptive (7.0/3.0)
+|   |   |   |   |   |   |   |   |   |   |   FRIENDS_COUNT > -0.208306: trustworthy (4.0)
+|   |   |   |   |   |   |   |   |   |   FRIENDS_COUNT > -0.194871: deceptive (4.0)
+|   |   |   |   |   |   |   |   |   FOLLOWERS_COUNT > -0.160311: trustworthy (8.0)
+|   |   |   |   |   |   |   |   USERNAME_LENGTH > -0.269254
+|   |   |   |   |   |   |   |   |   STATUS_COUNT <= -0.391211: deceptive (3.0/1.0)
+|   |   |   |   |   |   |   |   |   STATUS_COUNT > -0.391211: trustworthy (36.0)
+|   |   |   |   |   |   |   DUP_PROFILE > 1.969826: trustworthy (10.0/1.0)
+|   |   |   |   |   |   ACCOUNT_AGE_IN_MONTHS > 1.508841: trustworthy (37.0)
+|   |   |   LANGUAGE > -0.292141
+|   |   |   |   HAS_PROFILE <= 0.412064
+|   |   |   |   |   FRIENDS_COUNT <= -0.214692
+|   |   |   |   |   |   DUP_PROFILE <= 2.014826: deceptive (3.0)
+|   |   |   |   |   |   DUP_PROFILE > 2.014826
+|   |   |   |   |   |   |   ACCOUNT_AGE_IN_MONTHS <= -0.762714
+|   |   |   |   |   |   |   |   STATUS_COUNT <= -0.493684: trustworthy (5.0/1.0)
+|   |   |   |   |   |   |   |   STATUS_COUNT > -0.493684: deceptive (11.0/1.0)
+|   |   |   |   |   |   |   ACCOUNT_AGE_IN_MONTHS > -0.762714: trustworthy (10.0)
+|   |   |   |   |   FRIENDS_COUNT > -0.214692: deceptive (157.0/3.0)
+|   |   |   |   HAS_PROFILE > 0.412064
+|   |   |   |   |   LANGUAGE <= 0.081908: deceptive (12.0)
+|   |   |   |   |   LANGUAGE > 0.081908
+|   |   |   |   |   |   PROFILE_HAS_URL <= 2.015856
+|   |   |   |   |   |   |   USERNAME_LENGTH <= 0.597831
+|   |   |   |   |   |   |   |   FF_RATIO <= 0.923503
+|   |   |   |   |   |   |   |   |   FRIENDS_COUNT <= -0.213107
+|   |   |   |   |   |   |   |   |   |   ACCOUNT_AGE_IN_MONTHS <= -1.447291: deceptive (5.0/1.0)
+|   |   |   |   |   |   |   |   |   |   ACCOUNT_AGE_IN_MONTHS > -1.447291
+|   |   |   |   |   |   |   |   |   |   |   FOLLOWERS_COUNT <= -0.162722: trustworthy (19.0/1.0)
+|   |   |   |   |   |   |   |   |   |   |   FOLLOWERS_COUNT > -0.162722
+|   |   |   |   |   |   |   |   |   |   |   |   FOLLOWERS_COUNT <= -0.075994: deceptive (4.0/1.0)
+|   |   |   |   |   |   |   |   |   |   |   |   FOLLOWERS_COUNT > -0.075994: trustworthy (5.0)
+|   |   |   |   |   |   |   |   |   FRIENDS_COUNT > -0.213107
+|   |   |   |   |   |   |   |   |   |   FRIENDS_COUNT <= -0.201588: deceptive (6.0)
+|   |   |   |   |   |   |   |   |   |   FRIENDS_COUNT > -0.201588
+|   |   |   |   |   |   |   |   |   |   |   ACCOUNT_AGE_IN_MONTHS <= -0.845885
+|   |   |   |   |   |   |   |   |   |   |   |   ACCOUNT_AGE_IN_MONTHS <= -1.571816: trustworthy (3.0)
+|   |   |   |   |   |   |   |   |   |   |   |   ACCOUNT_AGE_IN_MONTHS > -1.571816: deceptive (17.0/3.0)
+|   |   |   |   |   |   |   |   |   |   |   ACCOUNT_AGE_IN_MONTHS > -0.845885
+|   |   |   |   |   |   |   |   |   |   |   |   ACCOUNT_AGE_IN_MONTHS <= 0.794562: trustworthy (12.0/1.0)
+|   |   |   |   |   |   |   |   |   |   |   |   ACCOUNT_AGE_IN_MONTHS > 0.794562: deceptive (5.0/2.0)
+|   |   |   |   |   |   |   |   FF_RATIO > 0.923503: deceptive (5.0/1.0)
+|   |   |   |   |   |   |   USERNAME_LENGTH > 0.597831: trustworthy (24.0/3.0)
+|   |   |   |   |   |   PROFILE_HAS_URL > 2.015856
+|   |   |   |   |   |   |   FOLLOWERS_COUNT <= -0.159752
+|   |   |   |   |   |   |   |   FRIENDS_COUNT <= -0.181427: deceptive (4.0/1.0)
+|   |   |   |   |   |   |   |   FRIENDS_COUNT > -0.181427: trustworthy (3.0/1.0)
+|   |   |   |   |   |   |   FOLLOWERS_COUNT > -0.159752: trustworthy (7.0)
+|   |   FRIENDS_COUNT > -0.174437
+|   |   |   ACCOUNT_AGE_IN_MONTHS <= 1.850382
+|   |   |   |   STATUS_COUNT <= -0.486737
+|   |   |   |   |   ACCOUNT_AGE_IN_MONTHS <= -0.680009
+|   |   |   |   |   |   LANGUAGE <= 1.661129
+|   |   |   |   |   |   |   DUP_PROFILE <= 0.866984
+|   |   |   |   |   |   |   |   USERNAME_LENGTH <= 1.461914
+|   |   |   |   |   |   |   |   |   FRIENDS_COUNT <= -0.127816: deceptive (12.0/1.0)
+|   |   |   |   |   |   |   |   |   FRIENDS_COUNT > -0.127816
+|   |   |   |   |   |   |   |   |   |   LANGUAGE <= 0.088872
+|   |   |   |   |   |   |   |   |   |   |   STATUS_COUNT <= -0.493684: deceptive (21.0/9.0)
+|   |   |   |   |   |   |   |   |   |   |   STATUS_COUNT > -0.493684
+|   |   |   |   |   |   |   |   |   |   |   |   FRIENDS_COUNT <= -0.063357
+|   |   |   |   |   |   |   |   |   |   |   |   |   FOLLOWERS_COUNT <= -0.143183: trustworthy (7.0/2.0)
+|   |   |   |   |   |   |   |   |   |   |   |   |   FOLLOWERS_COUNT > -0.143183: deceptive (3.0)
+|   |   |   |   |   |   |   |   |   |   |   |   FRIENDS_COUNT > -0.063357: trustworthy (3.0)
+|   |   |   |   |   |   |   |   |   |   LANGUAGE > 0.088872: deceptive (5.0/2.0)
+|   |   |   |   |   |   |   |   USERNAME_LENGTH > 1.461914: trustworthy (7.0/1.0)
+|   |   |   |   |   |   |   DUP_PROFILE > 0.866984
+|   |   |   |   |   |   |   |   FOLLOWERS_COUNT <= -0.165623: trustworthy (3.0/1.0)
+|   |   |   |   |   |   |   |   FOLLOWERS_COUNT > -0.165623: deceptive (11.0/1.0)
+|   |   |   |   |   |   LANGUAGE > 1.661129: trustworthy (5.0)
+|   |   |   |   |   ACCOUNT_AGE_IN_MONTHS > -0.680009: trustworthy (45.0/7.0)
+|   |   |   |   STATUS_COUNT > -0.486737
+|   |   |   |   |   DUP_PROFILE <= -0.497414
+|   |   |   |   |   |   LISTED_COUNT <= 0.874929
+|   |   |   |   |   |   |   PROFILE_HAS_URL <= 4.10481
+|   |   |   |   |   |   |   |   PROFILE_HAS_URL <= -0.251412
+|   |   |   |   |   |   |   |   |   STATUS_COUNT <= 1.100711
+|   |   |   |   |   |   |   |   |   |   FRIENDS_COUNT <= -0.161272: deceptive (27.0)
+|   |   |   |   |   |   |   |   |   |   FRIENDS_COUNT > -0.161272
+|   |   |   |   |   |   |   |   |   |   |   FRIENDS_COUNT <= -0.16098
+|   |   |   |   |   |   |   |   |   |   |   |   LANGUAGE <= -0.105449
+|   |   |   |   |   |   |   |   |   |   |   |   |   ACCOUNT_AGE_IN_MONTHS <= -1.023127: deceptive (5.0/1.0)
+|   |   |   |   |   |   |   |   |   |   |   |   |   ACCOUNT_AGE_IN_MONTHS > -1.023127
+|   |   |   |   |   |   |   |   |   |   |   |   |   |   FOLLOWERS_COUNT <= -0.089363: trustworthy (19.0/1.0)
+|   |   |   |   |   |   |   |   |   |   |   |   |   |   FOLLOWERS_COUNT > -0.089363: deceptive (3.0/1.0)
+|   |   |   |   |   |   |   |   |   |   |   |   LANGUAGE > -0.105449: deceptive (6.0/1.0)
+|   |   |   |   |   |   |   |   |   |   |   FRIENDS_COUNT > -0.16098
+|   |   |   |   |   |   |   |   |   |   |   |   FRIENDS_COUNT <= -0.147736: deceptive (34.0)
+|   |   |   |   |   |   |   |   |   |   |   |   FRIENDS_COUNT > -0.147736
+|   |   |   |   |   |   |   |   |   |   |   |   |   ACCOUNT_AGE_IN_MONTHS <= 0.822359
+|   |   |   |   |   |   |   |   |   |   |   |   |   |   STATUS_COUNT <= -0.064133
+|   |   |   |   |   |   |   |   |   |   |   |   |   |   |   FOLLOWERS_COUNT <= -0.086316
+|   |   |   |   |   |   |   |   |   |   |   |   |   |   |   |   FOLLOWERS_COUNT <= -0.164391: deceptive (13.0)
+|   |   |   |   |   |   |   |   |   |   |   |   |   |   |   |   FOLLOWERS_COUNT > -0.164391
+|   |   |   |   |   |   |   |   |   |   |   |   |   |   |   |   |   ACCOUNT_AGE_IN_MONTHS <= -0.307856
+|   |   |   |   |   |   |   |   |   |   |   |   |   |   |   |   |   |   FRIENDS_COUNT <= 0.081995: deceptive (72.0/22.0)
+|   |   |   |   |   |   |   |   |   |   |   |   |   |   |   |   |   |   FRIENDS_COUNT > 0.081995: trustworthy (4.0)
+|   |   |   |   |   |   |   |   |   |   |   |   |   |   |   |   |   ACCOUNT_AGE_IN_MONTHS > -0.307856
+|   |   |   |   |   |   |   |   |   |   |   |   |   |   |   |   |   |   USERNAME_LENGTH <= 0.376884
+|   |   |   |   |   |   |   |   |   |   |   |   |   |   |   |   |   |   |   USERNAME_LENGTH <= -0.075228: trustworthy (13.0/2.0)
+|   |   |   |   |   |   |   |   |   |   |   |   |   |   |   |   |   |   |   USERNAME_LENGTH > -0.075228: deceptive (4.0)
+|   |   |   |   |   |   |   |   |   |   |   |   |   |   |   |   |   |   USERNAME_LENGTH > 0.376884: trustworthy (8.0)
+|   |   |   |   |   |   |   |   |   |   |   |   |   |   |   FOLLOWERS_COUNT > -0.086316: deceptive (105.0/17.0)
+|   |   |   |   |   |   |   |   |   |   |   |   |   |   STATUS_COUNT > -0.064133: deceptive (111.0/11.0)
+|   |   |   |   |   |   |   |   |   |   |   |   |   ACCOUNT_AGE_IN_MONTHS > 0.822359
+|   |   |   |   |   |   |   |   |   |   |   |   |   |   FOLLOWERS_COUNT <= -0.091815: trustworthy (19.0/2.0)
+|   |   |   |   |   |   |   |   |   |   |   |   |   |   FOLLOWERS_COUNT > -0.091815
+|   |   |   |   |   |   |   |   |   |   |   |   |   |   |   FRIENDS_COUNT <= 0.3883
+|   |   |   |   |   |   |   |   |   |   |   |   |   |   |   |   STATUS_COUNT <= 0.208309: deceptive (19.0)
+|   |   |   |   |   |   |   |   |   |   |   |   |   |   |   |   STATUS_COUNT > 0.208309
+|   |   |   |   |   |   |   |   |   |   |   |   |   |   |   |   |   ACCOUNT_AGE_IN_MONTHS <= 1.217101: trustworthy (3.0)
+|   |   |   |   |   |   |   |   |   |   |   |   |   |   |   |   |   ACCOUNT_AGE_IN_MONTHS > 1.217101: deceptive (4.0)
+|   |   |   |   |   |   |   |   |   |   |   |   |   |   |   FRIENDS_COUNT > 0.3883
+|   |   |   |   |   |   |   |   |   |   |   |   |   |   |   |   FOLLOWERS_COUNT <= 0.583381: trustworthy (9.0/1.0)
+|   |   |   |   |   |   |   |   |   |   |   |   |   |   |   |   FOLLOWERS_COUNT > 0.583381: deceptive (4.0/1.0)
+|   |   |   |   |   |   |   |   |   STATUS_COUNT > 1.100711
+|   |   |   |   |   |   |   |   |   |   ACCOUNT_AGE_IN_MONTHS <= 0.212508: deceptive (79.0)
+|   |   |   |   |   |   |   |   |   |   ACCOUNT_AGE_IN_MONTHS > 0.212508
+|   |   |   |   |   |   |   |   |   |   |   USERNAME_LENGTH <= 1.273194: deceptive (23.0/2.0)
+|   |   |   |   |   |   |   |   |   |   |   USERNAME_LENGTH > 1.273194
+|   |   |   |   |   |   |   |   |   |   |   |   FRIENDS_COUNT <= 0.250576: trustworthy (3.0)
+|   |   |   |   |   |   |   |   |   |   |   |   FRIENDS_COUNT > 0.250576: deceptive (3.0/1.0)
+|   |   |   |   |   |   |   |   PROFILE_HAS_URL > -0.251412: deceptive (63.0)
+|   |   |   |   |   |   |   PROFILE_HAS_URL > 4.10481
+|   |   |   |   |   |   |   |   STATUS_COUNT <= -0.458723: deceptive (6.0)
+|   |   |   |   |   |   |   |   STATUS_COUNT > -0.458723
+|   |   |   |   |   |   |   |   |   ACCOUNT_AGE_IN_MONTHS <= -1.345803: deceptive (4.0)
+|   |   |   |   |   |   |   |   |   ACCOUNT_AGE_IN_MONTHS > -1.345803: trustworthy (25.0/4.0)
+|   |   |   |   |   |   LISTED_COUNT > 0.874929
+|   |   |   |   |   |   |   ACCOUNT_AGE_IN_MONTHS <= -0.531625: deceptive (8.0/1.0)
+|   |   |   |   |   |   |   ACCOUNT_AGE_IN_MONTHS > -0.531625: trustworthy (23.0/4.0)
+|   |   |   |   |   DUP_PROFILE > -0.497414
+|   |   |   |   |   |   DUP_PROFILE <= 2.17763: deceptive (279.0)
+|   |   |   |   |   |   DUP_PROFILE > 2.17763
+|   |   |   |   |   |   |   ACCOUNT_AGE_IN_MONTHS <= 0.213038: deceptive (27.0/3.0)
+|   |   |   |   |   |   |   ACCOUNT_AGE_IN_MONTHS > 0.213038: trustworthy (4.0)
+|   |   |   ACCOUNT_AGE_IN_MONTHS > 1.850382
+|   |   |   |   USERNAME_LENGTH <= -0.483427
+|   |   |   |   |   FRIENDS_COUNT <= -0.052991: trustworthy (5.0)
+|   |   |   |   |   FRIENDS_COUNT > -0.052991: deceptive (3.0)
+|   |   |   |   USERNAME_LENGTH > -0.483427: trustworthy (20.0)
+|   GEO_ENABLED > -0.788029: deceptive (366.0)
+GEO_ENABLED > 1.343184
+|   FRIENDS_COUNT <= -0.194871
+|   |   FF_RATIO <= -0.034598
+|   |   |   FOLLOWERS_COUNT <= -0.06733
+|   |   |   |   FRIENDS_COUNT <= -0.208306
+|   |   |   |   |   LANGUAGE <= -0.105449: trustworthy (509.0/17.0)
+|   |   |   |   |   LANGUAGE > -0.105449
+|   |   |   |   |   |   FOLLOWERS_COUNT <= -0.16862
+|   |   |   |   |   |   |   ACCOUNT_AGE_IN_MONTHS <= -1.099083: deceptive (3.0)
+|   |   |   |   |   |   |   ACCOUNT_AGE_IN_MONTHS > -1.099083: trustworthy (12.0/1.0)
+|   |   |   |   |   |   FOLLOWERS_COUNT > -0.16862: trustworthy (17.0)
+|   |   |   |   FRIENDS_COUNT > -0.208306: trustworthy (312.0/26.0)
+|   |   |   FOLLOWERS_COUNT > -0.06733
+|   |   |   |   USERNAME_LENGTH <= -1.670624: deceptive (3.0)
+|   |   |   |   USERNAME_LENGTH > -1.670624: trustworthy (39.0/7.0)
+|   |   FF_RATIO > -0.034598
+|   |   |   FOLLOWERS_COUNT <= -0.162722: deceptive (3.0)
+|   |   |   FOLLOWERS_COUNT > -0.162722
+|   |   |   |   FF_RATIO <= 1.136103: trustworthy (28.0/4.0)
+|   |   |   |   FF_RATIO > 1.136103
+|   |   |   |   |   FOLLOWERS_COUNT <= 1.076727: deceptive (3.0)
+|   |   |   |   |   FOLLOWERS_COUNT > 1.076727: trustworthy (3.0/1.0)
+|   FRIENDS_COUNT > -0.194871
+|   |   ACCOUNT_AGE_IN_MONTHS <= 1.873367
+|   |   |   USERNAME_LENGTH <= 1.461914
+|   |   |   |   FOLLOWERS_COUNT <= 0.012374
+|   |   |   |   |   PROFILE_HAS_URL <= 2.015856
+|   |   |   |   |   |   HAS_PROFILE <= -0.956045
+|   |   |   |   |   |   |   LANGUAGE <= -0.105449
+|   |   |   |   |   |   |   |   ACCOUNT_AGE_IN_MONTHS <= -0.435226
+|   |   |   |   |   |   |   |   |   FRIENDS_COUNT <= -0.181427: trustworthy (3.0)
+|   |   |   |   |   |   |   |   |   FRIENDS_COUNT > -0.181427
+|   |   |   |   |   |   |   |   |   |   FRIENDS_COUNT <= -0.120484: deceptive (4.0)
+|   |   |   |   |   |   |   |   |   |   FRIENDS_COUNT > -0.120484: trustworthy (3.0/1.0)
+|   |   |   |   |   |   |   |   ACCOUNT_AGE_IN_MONTHS > -0.435226: trustworthy (23.0/2.0)
+|   |   |   |   |   |   |   LANGUAGE > -0.105449
+|   |   |   |   |   |   |   |   STATUS_COUNT <= -0.493684: trustworthy (4.0/1.0)
+|   |   |   |   |   |   |   |   STATUS_COUNT > -0.493684: deceptive (3.0)
+|   |   |   |   |   |   HAS_PROFILE > -0.956045
+|   |   |   |   |   |   |   FRIENDS_COUNT <= -0.113782: trustworthy (256.0/33.0)
+|   |   |   |   |   |   |   FRIENDS_COUNT > -0.113782
+|   |   |   |   |   |   |   |   FOLLOWERS_COUNT <= -0.150807
+|   |   |   |   |   |   |   |   |   LANGUAGE <= 0.088872
+|   |   |   |   |   |   |   |   |   |   ACCOUNT_AGE_IN_MONTHS <= -0.804695: trustworthy (5.0/2.0)
+|   |   |   |   |   |   |   |   |   |   ACCOUNT_AGE_IN_MONTHS > -0.804695: deceptive (7.0)
+|   |   |   |   |   |   |   |   |   LANGUAGE > 0.088872: trustworthy (4.0)
+|   |   |   |   |   |   |   |   FOLLOWERS_COUNT > -0.150807
+|   |   |   |   |   |   |   |   |   ACCOUNT_AGE_IN_MONTHS <= -1.223912: deceptive (6.0/2.0)
+|   |   |   |   |   |   |   |   |   ACCOUNT_AGE_IN_MONTHS > -1.223912
+|   |   |   |   |   |   |   |   |   |   STATUS_COUNT <= 2.907374: trustworthy (56.0/5.0)
+|   |   |   |   |   |   |   |   |   |   STATUS_COUNT > 2.907374: deceptive (5.0/2.0)
+|   |   |   |   |   PROFILE_HAS_URL > 2.015856: trustworthy (23.0/1.0)
+|   |   |   |   FOLLOWERS_COUNT > 0.012374
+|   |   |   |   |   ACCOUNT_AGE_IN_MONTHS <= -0.555254: deceptive (17.0/3.0)
+|   |   |   |   |   ACCOUNT_AGE_IN_MONTHS > -0.555254
+|   |   |   |   |   |   FOLLOWERS_COUNT <= 7.101524: trustworthy (68.0/12.0)
+|   |   |   |   |   |   FOLLOWERS_COUNT > 7.101524: deceptive (4.0)
+|   |   |   USERNAME_LENGTH > 1.461914
+|   |   |   |   HAS_PROFILE <= -0.956045: deceptive (3.0)
+|   |   |   |   HAS_PROFILE > -0.956045
+|   |   |   |   |   LISTED_COUNT <= 0.410273
+|   |   |   |   |   |   LANGUAGE <= -0.105449
+|   |   |   |   |   |   |   STATUS_COUNT <= 0.904849: trustworthy (23.0/4.0)
+|   |   |   |   |   |   |   STATUS_COUNT > 0.904849: deceptive (9.0/3.0)
+|   |   |   |   |   |   LANGUAGE > -0.105449: deceptive (3.0/1.0)
+|   |   |   |   |   LISTED_COUNT > 0.410273: deceptive (4.0/1.0)
+|   |   ACCOUNT_AGE_IN_MONTHS > 1.873367: trustworthy (48.0/1.0)
+
+Number of Leaves  : 	157
+
+Size of the tree : 	313
+
+
+      C M       ROC      Sens      Spec      ROCSD     SensSD      SpecSD
+1 0.010 1 0.7141365 0.4313753 0.9107924 0.04226389 0.06854748 0.011663430
+2 0.010 2 0.7177090 0.4363403 0.9085940 0.04002833 0.07644140 0.014344732
+3 0.010 3 0.7135699 0.4251671 0.9076771 0.04098110 0.06710949 0.014699963
+4 0.255 1 0.7047778 0.4785625 0.8988137 0.04574939 0.06499952 0.008644176
+5 0.255 2 0.7262348 0.4746465 0.8993086 0.03919810 0.06986152 0.013680537
+6 0.255 3 0.7518519 0.4663092 0.9007084 0.03304515 0.07227854 0.011900815
+7 0.500 1 0.7261521 0.4999456 0.8879980 0.04671892 0.08486588 0.013967218
+8 0.500 2 0.7448244 0.4912510 0.8937775 0.04875043 0.07745640 0.010858750
+9 0.500 3 0.7547947 0.4937840 0.8916081 0.04682798 0.07203502 0.009500829
+
+[1] "+++++++++++++"
+[1] "bayesglm"
+[1] "+++++++++++++"
+NULL
+                      coef.est coef.se
+(Intercept)            0.30     0.04  
+FOLLOWERS_COUNT       -0.14     0.06  
+FRIENDS_COUNT         -0.25     0.07  
+FF_RATIO               0.05     0.10  
+LISTED_COUNT           0.17     0.06  
+USERNAME_LENGTH       -0.13     0.03  
+GEO_ENABLED            0.74     0.04  
+PROFILE_HAS_URL        0.10     0.04  
+ACCOUNT_AGE_IN_MONTHS  0.32     0.04  
+LANGUAGE              -0.15     0.04  
+HAS_NAME              -0.05     0.03  
+HAS_IMAGE             -0.02     0.03  
+DUP_PROFILE            0.17     0.11  
+HAS_PROFILE            0.39     0.11  
+STATUS_COUNT          -0.87     0.06  
+---
+n = 4592, k = 15
+residual deviance = 5117.5, null deviance = 6271.8 (difference = 1154.3)
+
+  parameter       ROC      Sens      Spec      ROCSD     SensSD     SpecSD
+1      none 0.7517149 0.5684615 0.8164647 0.03630861 0.08910649 0.03481065
+
+[1] "+++++++++++++"
+[1] "kknn"
+[1] "+++++++++++++"
+
+Call:
+train.kknn(formula = .outcome ~ ., data = dat, kmax = param$kmax,     distance = param$distance, kernel = as.character(param$kernel))
+
+Type of response variable: nominal
+Minimal misclassification: 0.168554
+Best kernel: optimal
+Best k: 9
+
+  kmax distance  kernel       ROC      Sens      Spec      ROCSD     SensSD
+1    5        2 optimal 0.7259264 0.4531702 0.8731151 0.03842366 0.06383045
+2    7        2 optimal 0.7201473 0.4424553 0.8733869 0.05263550 0.07222847
+3    9        2 optimal 0.7315861 0.4522222 0.8788687 0.03934216 0.06911207
+       SpecSD
+1 0.007922565
+2 0.013612306
+3 0.015678063
+
+[1] "+++++++++++++"
+[1] "adaboost"
+[1] "+++++++++++++"
+adaboost(formula = .outcome ~ ., data = dat, nIter = param$nIter)
+.outcome ~ .
+<environment: 0xbe204e0>
+Dependent Variable: .outcome
+No of trees:100
+The weights of the trees are:1.0739390.92192390.88297010.82777210.81848850.79119550.76897320.75772120.72381660.7654550.73952830.72520120.71773930.72868090.71495030.7311860.70590850.71883980.65133450.67394420.65113280.64293520.64529230.63342180.59823810.62193820.57004040.57365430.54204680.54226250.51779710.51022840.48258380.42921640.4161260.41561440.40991750.39982870.38815950.35688730.33510740.28876340.30990130.28936870.29043980.26112010.25126180.25757990.23783340.19367690.22617120.19549350.18741190.19857840.19614130.18622830.17692590.16231050.15170630.15354580.15395210.14875380.13743880.14311790.13521450.13473650.13231690.12530930.11984340.1218550.11261520.1158660.11694250.11625240.11396940.10990710.10696460.098206230.10201170.091352140.087837830.086603290.092286830.096774590.086917440.077944360.074062530.083938910.081115970.073581510.070775010.081328240.080118560.069570150.06910020.067279490.067955460.065365420.064410940.06535759
+
+  nIter        method       ROC      Sens      Spec      ROCSD     SensSD
+1    50   Adaboost.M1 0.8039843 0.4714064 0.9155826 0.02640143 0.05732907
+2    50 Real adaboost 0.6229148 0.4735975 0.9145933 0.04333249 0.07387125
+3   100   Adaboost.M1 0.8097926 0.4901943 0.9107692 0.03025193 0.06706233
+4   100 Real adaboost 0.6249811 0.4800233 0.9179749 0.03954949 0.06857815
+5   150   Adaboost.M1 0.8083447 0.4917716 0.9104567 0.02843147 0.05450336
+6   150 Real adaboost 0.6139334 0.4664724 0.9175381 0.04024625 0.06446365
+       SpecSD
+1 0.004629091
+2 0.004364770
+3 0.004930759
+4 0.006567488
+5 0.004968116
+6 0.008881340
+
+[1] "+++++++++++++"
+[1] "rpart"
+[1] "+++++++++++++"
+n= 4592 
+
+node), split, n, loss, yval, (yprob)
+      * denotes terminal node
+
+   1) root 4592 1968 trustworthy (0.42857143 0.57142857)  
+     2) FRIENDS_COUNT>=-0.150922 1605  424 deceptive (0.73582555 0.26417445)  
+       4) GEO_ENABLED< 1.331678 1327  218 deceptive (0.83571967 0.16428033)  
+         8) STATUS_COUNT>=-0.5000626 1222  162 deceptive (0.86743044 0.13256956)  
+          16) ACCOUNT_AGE_IN_MONTHS< 1.79576 1192  140 deceptive (0.88255034 0.11744966)  
+            32) PROFILE_HAS_URL< 4.194665 1155  120 deceptive (0.89610390 0.10389610) *
+            33) PROFILE_HAS_URL>=4.194665 37   17 trustworthy (0.45945946 0.54054054)  
+              66) ACCOUNT_AGE_IN_MONTHS< -0.6503606 17    4 deceptive (0.76470588 0.23529412) *
+              67) ACCOUNT_AGE_IN_MONTHS>=-0.6503606 20    4 trustworthy (0.20000000 0.80000000) *
+          17) ACCOUNT_AGE_IN_MONTHS>=1.79576 30    8 trustworthy (0.26666667 0.73333333) *
+         9) STATUS_COUNT< -0.5000626 105   49 trustworthy (0.46666667 0.53333333)  
+          18) ACCOUNT_AGE_IN_MONTHS< -0.6503606 75   31 deceptive (0.58666667 0.41333333)  
+            36) ACCOUNT_AGE_IN_MONTHS>=-1.642614 61   22 deceptive (0.63934426 0.36065574) *
+            37) ACCOUNT_AGE_IN_MONTHS< -1.642614 14    5 trustworthy (0.35714286 0.64285714) *
+          19) ACCOUNT_AGE_IN_MONTHS>=-0.6503606 30    5 trustworthy (0.16666667 0.83333333) *
+       5) GEO_ENABLED>=1.331678 278   72 trustworthy (0.25899281 0.74100719)  
+        10) ACCOUNT_AGE_IN_MONTHS< -0.5056569 66   33 deceptive (0.50000000 0.50000000)  
+          20) FOLLOWERS_COUNT>=0.05357036 16    3 deceptive (0.81250000 0.18750000) *
+          21) FOLLOWERS_COUNT< 0.05357036 50   20 trustworthy (0.40000000 0.60000000)  
+            42) USERNAME_LENGTH>=1.264002 9    2 deceptive (0.77777778 0.22222222) *
+            43) USERNAME_LENGTH< 1.264002 41   13 trustworthy (0.31707317 0.68292683) *
+        11) ACCOUNT_AGE_IN_MONTHS>=-0.5056569 212   39 trustworthy (0.18396226 0.81603774)  
+          22) STATUS_COUNT>=4.986048 7    1 deceptive (0.85714286 0.14285714) *
+          23) STATUS_COUNT< 4.986048 205   33 trustworthy (0.16097561 0.83902439) *
+     3) FRIENDS_COUNT< -0.150922 2987  787 trustworthy (0.26347506 0.73652494)  
+       6) LANGUAGE>=-0.2717055 434  154 deceptive (0.64516129 0.35483871)  
+        12) HAS_PROFILE< 0.4396552 213   15 deceptive (0.92957746 0.07042254) *
+        13) HAS_PROFILE>=0.4396552 221   82 trustworthy (0.37104072 0.62895928)  
+          26) LANGUAGE< 0.1374759 17    0 deceptive (1.00000000 0.00000000) *
+          27) LANGUAGE>=0.1374759 204   65 trustworthy (0.31862745 0.68137255)  
+            54) GEO_ENABLED< 1.294616 130   54 trustworthy (0.41538462 0.58461538)  
+             108) STATUS_COUNT>=-0.3860897 26    8 deceptive (0.69230769 0.30769231) *
+             109) STATUS_COUNT< -0.3860897 104   36 trustworthy (0.34615385 0.65384615) *
+            55) GEO_ENABLED>=1.294616 74   11 trustworthy (0.14864865 0.85135135) *
+       7) LANGUAGE< -0.2717055 2553  507 trustworthy (0.19858989 0.80141011)  
+        14) FOLLOWERS_COUNT>=-0.1709547 820  300 trustworthy (0.36585366 0.63414634)  
+          28) GEO_ENABLED< 1.333081 497  236 deceptive (0.52515091 0.47484909)  
+            56) GEO_ENABLED>=-0.7907138 76    0 deceptive (1.00000000 0.00000000) *
+            57) GEO_ENABLED< -0.7907138 421  185 trustworthy (0.43942993 0.56057007)  
+             114) ACCOUNT_AGE_IN_MONTHS< 1.127723 338  159 deceptive (0.52958580 0.47041420)  
+               228) STATUS_COUNT>=-0.340377 147   43 deceptive (0.70748299 0.29251701)  
+                 456) STATUS_COUNT< 0.02252925 107   20 deceptive (0.81308411 0.18691589) *
+                 457) STATUS_COUNT>=0.02252925 40   17 trustworthy (0.42500000 0.57500000) *
+               229) STATUS_COUNT< -0.340377 191   75 trustworthy (0.39267016 0.60732984)  
+                 458) HAS_PROFILE< 0.09744045 22    3 deceptive (0.86363636 0.13636364) *
+                 459) HAS_PROFILE>=0.09744045 169   56 trustworthy (0.33136095 0.66863905)  
+                   918) FOLLOWERS_COUNT>=-0.1202655 78   39 deceptive (0.50000000 0.50000000)  
+                    1836) FRIENDS_COUNT>=-0.199752 31    6 deceptive (0.80645161 0.19354839) *
+                    1837) FRIENDS_COUNT< -0.199752 47   14 trustworthy (0.29787234 0.70212766) *
+                   919) FOLLOWERS_COUNT< -0.1202655 91   17 trustworthy (0.18681319 0.81318681) *
+             115) ACCOUNT_AGE_IN_MONTHS>=1.127723 83    6 trustworthy (0.07228916 0.92771084) *
+          29) GEO_ENABLED>=1.333081 323   39 trustworthy (0.12074303 0.87925697) *
+        15) FOLLOWERS_COUNT< -0.1709547 1733  207 trustworthy (0.11944605 0.88055395)  
+          30) HAS_PROFILE< -0.5667031 315   80 trustworthy (0.25396825 0.74603175)  
+            60) DUP_PROFILE< 2.305471 11    0 deceptive (1.00000000 0.00000000) *
+            61) DUP_PROFILE>=2.305471 304   69 trustworthy (0.22697368 0.77302632)  
+             122) USERNAME_LENGTH>=-0.6619751 214   65 trustworthy (0.30373832 0.69626168)  
+               244) STATUS_COUNT>=-0.3981079 48   19 deceptive (0.60416667 0.39583333)  
+                 488) GEO_ENABLED< 0.2715253 33    5 deceptive (0.84848485 0.15151515) *
+                 489) GEO_ENABLED>=0.2715253 15    1 trustworthy (0.06666667 0.93333333) *
+               245) STATUS_COUNT< -0.3981079 166   36 trustworthy (0.21686747 0.78313253)  
+                 490) ACCOUNT_AGE_IN_MONTHS< -1.642614 17    4 deceptive (0.76470588 0.23529412) *
+                 491) ACCOUNT_AGE_IN_MONTHS>=-1.642614 149   23 trustworthy (0.15436242 0.84563758) *
+             123) USERNAME_LENGTH< -0.6619751 90    4 trustworthy (0.04444444 0.95555556) *
+          31) HAS_PROFILE>=-0.5667031 1418  127 trustworthy (0.08956276 0.91043724) *
+
+           cp       ROC      Sens      Spec      ROCSD     SensSD     SpecSD
+1 0.001693767 0.7539838 0.4627817 0.8975293 0.04235774 0.07029312 0.01095928
+2 0.006097561 0.7136850 0.4170396 0.8916050 0.04710853 0.08159898 0.01688648
+3 0.008892276 0.7071771 0.4242036 0.8844198 0.04614745 0.08096509 0.02116502
+
+[1] "+++++++++++++"
+[1] "nnet"
+[1] "+++++++++++++"
+a 14-5-1 network with 81 weights
+inputs: FOLLOWERS_COUNT FRIENDS_COUNT FF_RATIO LISTED_COUNT USERNAME_LENGTH GEO_ENABLED PROFILE_HAS_URL ACCOUNT_AGE_IN_MONTHS LANGUAGE HAS_NAME HAS_IMAGE DUP_PROFILE HAS_PROFILE STATUS_COUNT 
+output(s): .outcome 
+options were - entropy fitting 
+
+  size decay       ROC      Sens      Spec      ROCSD     SensSD     SpecSD
+1    1 0e+00 0.7265912 0.6748563 0.7273653 0.05153598 0.06764663 0.11110034
+2    1 1e-04 0.7385162 0.6645765 0.7570147 0.04476648 0.07667304 0.06065679
+3    1 1e-01 0.7544364 0.6274903 0.7963981 0.02922790 0.06802052 0.03092316
+4    3 0e+00 0.7718339 0.5639316 0.8356315 0.03435244 0.07206379 0.03560613
+5    3 1e-04 0.7696663 0.5223776 0.8530718 0.02964605 0.06926230 0.03068030
+6    3 1e-01 0.7733619 0.4856333 0.8734735 0.02740913 0.06482165 0.02039041
+7    5 0e+00 0.7767714 0.5201943 0.8688801 0.03183874 0.07184550 0.01932375
+8    5 1e-04 0.7729748 0.4994328 0.8692651 0.02602255 0.07167161 0.02133145
+9    5 1e-01 0.7660884 0.4647863 0.8842663 0.03026031 0.07270898 0.01314862
+
+[1] "Query loading run time"
+[1] "=============="
+   user  system elapsed 
+  3.420   0.148   5.745 
+
+[1] "Models run time"
+[1] "=============="
+     user    system   elapsed 
+10932.336    78.896  3395.794 
