@@ -1,0 +1,73 @@
+
+[1] "Attribute importance - Corpus"
+[1] "================================="
+
+[1] "Information Gain:"
+                  attr_importance
+DISTANCE_LOCATION       0.0248971
+DISTANCE_TZ             0.0010689
+COMPARE_GENDER          0.0061164
+LEVENSHTEIN             0.0032603
+HAMMING                 0.0054642
+COMPARE_AGE             0.0084695
+FF_RATIO                0.0001467
+PROFILE_HAS_URL         0.0004390
+DUP_PROFILE             0.0124163
+HAS_PROFILE             0.0132126
+LISTED_COUNT            0.0000000
+
+[1] "Gain ratio:"
+                  attr_importance
+DISTANCE_LOCATION        0.642578
+DISTANCE_TZ              0.004961
+COMPARE_GENDER           0.016718
+LEVENSHTEIN              0.004782
+HAMMING                  0.008145
+COMPARE_AGE              0.013516
+FF_RATIO                 0.001364
+PROFILE_HAS_URL          0.001810
+DUP_PROFILE              0.029646
+HAS_PROFILE              0.034039
+LISTED_COUNT             0.000000
+
+[1] "Random forest Accuracy:"
+                  attr_importance
+DISTANCE_LOCATION         163.139
+DISTANCE_TZ                11.226
+COMPARE_GENDER              1.370
+LEVENSHTEIN                18.854
+HAMMING                    19.948
+COMPARE_AGE                10.848
+FF_RATIO                   12.259
+PROFILE_HAS_URL             9.332
+DUP_PROFILE                30.078
+HAS_PROFILE                42.463
+LISTED_COUNT               35.767
+
+[1] "Random forest Impurity:"
+                  attr_importance
+DISTANCE_LOCATION       1084.8041
+DISTANCE_TZ               38.1140
+COMPARE_GENDER            45.7503
+LEVENSHTEIN               20.4898
+HAMMING                   66.9335
+COMPARE_AGE               82.0454
+FF_RATIO                   1.0758
+PROFILE_HAS_URL            0.8787
+DUP_PROFILE               59.1741
+HAS_PROFILE               79.7818
+LISTED_COUNT               7.7246
+
+[1] "Chi squared:"
+                  attr_importance
+DISTANCE_LOCATION         0.81535
+DISTANCE_TZ               0.06846
+COMPARE_GENDER            0.14623
+LEVENSHTEIN               0.06770
+HAMMING                   0.09713
+COMPARE_AGE               0.15708
+FF_RATIO                  0.01220
+PROFILE_HAS_URL           0.02135
+DUP_PROFILE               0.19319
+HAS_PROFILE               0.20726
+LISTED_COUNT              0.00000
