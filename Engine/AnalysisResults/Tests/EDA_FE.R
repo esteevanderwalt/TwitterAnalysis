@@ -17,7 +17,7 @@ myconn<-odbcConnect("SAPHANA", uid="SYSTEM", pwd="oEqm66jccx", believeNRows=FALS
 
 #' ###Load data
 #+ get_data
-tl <- system.time(data.original <- sqlQuery(myconn, "SELECT ID, SCREENNAME, DISTANCE_LOCATION, DISTANCE_TZ, COMPARE_GENDER, LEVENSHTEIN, HAMMING, COMPARE_AGE, FF_RATIO, PROFILE_HAS_URL, DUP_PROFILE, HAS_PROFILE, LISTED_COUNT, CLASS from TWITTER.ZZ_FE_SET") )
+tl <- system.time(data.original <- sqlQuery(myconn, "SELECT ID, SCREENNAME, DISTANCE_LOCATION, DISTANCE_TZ, COMPARE_GENDER, LEVENSHTEIN, HAMMING, COMPARE_AGE, FF_RATIO, PROFILE_HAS_URL, DUP_PROFILE, HAS_PROFILE, LISTED_COUNT, CLASS from TWITTER.ZZ_RFE_SET") )
 
 close(myconn)
 
@@ -62,17 +62,17 @@ data.scaled <- cbind(data.scaled,CLASS=data.clean[,12])
 rapply(data.clean,function(x)length(unique(x)))
 rapply(data.clean,function(x)sum(is.na(x)))
 
-filename <- "~/Projects/RStudio/TwitterAnalysis/Engine/AnalysisResults/Results/FE_After_Chi.txt"
+filename <- "~/Projects/RStudio/TwitterAnalysis/Engine/AnalysisResults/Results/RFE_After_Chi.txt"
 sink(filename, append = TRUE)
 chi(data.scaled)
 sink()
 
-filename <- "~/Projects/RStudio/TwitterAnalysis/Engine/AnalysisResults/Results/FE_After_Fisher.txt"
+filename <- "~/Projects/RStudio/TwitterAnalysis/Engine/AnalysisResults/Results/RFE_After_Fisher.txt"
 sink(filename, append = TRUE)
 fisher(data.scaled)
 sink()
 
-filename <- "~/Projects/RStudio/TwitterAnalysis/Engine/AnalysisResults/Results/FE_After_Wilcoxon.txt"
+filename <- "~/Projects/RStudio/TwitterAnalysis/Engine/AnalysisResults/Results/RFE_After_Wilcoxon.txt"
 sink(filename, append = TRUE)
 wilcoxon(data.scaled)
 sink()
@@ -94,12 +94,12 @@ mytable[1:x,]
 
 #sink()
 
-filename <- "~/Projects/RStudio/TwitterAnalysis/Engine/AnalysisResults/Results/FE_After_VarTest.txt"
+filename <- "~/Projects/RStudio/TwitterAnalysis/Engine/AnalysisResults/Results/RFE_After_VarTest.txt"
 sink(filename, append = TRUE)
 vtest(data.scaled)
 sink()
 
-filename <- "~/Projects/RStudio/TwitterAnalysis/Engine/AnalysisResults/Results/FE_AfterAttrImportance.txt"
+filename <- "~/Projects/RStudio/TwitterAnalysis/Engine/AnalysisResults/Results/RFE_AfterAttrImportance.txt"
 sink(filename, append = TRUE)
 cat("\n")
 print("Attribute importance - Corpus")
@@ -129,7 +129,7 @@ print(p)
 
 setwd("~/Projects/RStudio/TwitterAnalysis/Engine/AnalysisResults/Results")
 
-png(filename = "fe_boxplot.png", width = 500, height = 250)
+png(filename = "rfe_boxplot.png", width = 500, height = 250)
 p
 dev.off()
 
@@ -141,7 +141,7 @@ graph1 <- function(data, a) {
     geom_density(size=1.0) 
   #print(p)
   
-  png(filename = paste("fe_",a,"_v1.png",sep=""), width = 500, height = 250)
+  png(filename = paste("rfe_",a,"_v1.png",sep=""), width = 500, height = 250)
   print(p)
   dev.off()
 }
