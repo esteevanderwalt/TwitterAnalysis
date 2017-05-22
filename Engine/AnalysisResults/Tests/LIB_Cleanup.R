@@ -272,6 +272,48 @@ cleanup.TwitterBot <- function(data) {
   return(data)
 }
 
+cleanup.TwitterFE <- function(data) {
+  
+  #numeric counts -> convert to hundreds
+  #DISTANCE_LOCATION
+  data$DISTANCE_LOCATION[is.na(data$DISTANCE_LOCATION)] <- 0
+  data$DISTANCE_LOCATION <- floor(data$DISTANCE_LOCATION/500)
+  #DISTANCE_TZ
+  data$DISTANCE_TZ[is.na(data$DISTANCE_TZ)] <- 0
+  data$DISTANCE_TZ <- floor(data$DISTANCE_TZ/500)
+  #LISTED_COUNT
+  data$LISTED_COUNT[is.na(data$LISTED_COUNT)] <- 0
+  data$LISTED_COUNT <- floor(data$LISTED_COUNT/500)
+  
+  #FF_RATIO
+  data$FF_RATIO[is.na(data$FF_RATIO)] <- 0
+  data$FF_RATIO <- floor(data$FF_RATIO/500)
+  #LEVENSHTEIN
+  data$LEVENSHTEIN[is.na(data$LEVENSHTEIN)] <- 0
+  data$LEVENSHTEIN <- floor(data$LEVENSHTEIN/10)
+  #HAMMING
+  data$HAMMING[is.na(data$HAMMING)] <- 0
+  data$HAMMING <- floor(data$HAMMING/10)
+  #COMPARE_AGE
+  data$COMPARE_AGE[is.na(data$COMPARE_AGE)] <- 0
+  data$COMPARE_AGE <- floor(data$COMPARE_AGE/10)
+  
+  #binary - dont need to do anything here
+  #COMPARE_GENDER
+  data$COMPARE_GENDER[is.na(data$COMPARE_GENDER)] <- 0
+  #PROFILE_HAS_URL
+  data$PROFILE_HAS_URL[is.na(data$PROFILE_HAS_URL)] <- 0
+  #DUP_PROFILE 
+  data$DUP_PROFILE[is.na(data$DUP_PROFILE)] <- 0  
+  #HAS_PROFILE 
+  data$HAS_PROFILE[is.na(data$HAS_PROFILE)] <- 0
+  
+  #convert class to factor
+  data$CLASS <- as.factor(data$CLASS)
+  
+  return(data)
+}
+
 #cleanup of original Twitter dataset and categorical vars
 cleanup.Twitter.NA <- function(data) {
   

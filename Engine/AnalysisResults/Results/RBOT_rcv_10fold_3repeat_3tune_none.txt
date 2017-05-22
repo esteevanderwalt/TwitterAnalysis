@@ -15,3 +15,368 @@
     user   system  elapsed 
 4032.832   94.572   44.489 
 [1] "M5 started"
+[1] "M5 complete"
+     user    system   elapsed 
+22534.072    18.900  5021.905 
+[1] "M6 started"
+[1] "M6 complete"
+     user    system   elapsed 
+106985.51     32.86  57724.81 
+[1] "M7 started"
+[1] "M7 complete"
+     user    system   elapsed 
+55732.332    56.436    47.201 
+[1] "M8 started"
+[1] "M8 complete"
+    user   system  elapsed 
+2643.916   25.108  899.104 
+
+[1] "Model engine summary"
+[1] "===================="
+  Model Type Model Name  Accuracy       Kappa Sensitivity Specificity Precision
+1        SVM  svmRadial 0.9943564 0.008989221 0.004587156   0.9999740 0.5000000
+2       tree         rf 0.9947706 0.203450126 0.119266055   0.9997397 0.7222222
+3       tree        J48 0.9946930 0.207077439 0.123853211   0.9996355 0.6585366
+4   bayesian   bayesglm 0.9943564 0.000000000 0.000000000   1.0000000        NA
+5    cluster        knn 0.9945118 0.164016964 0.096330275   0.9996095 0.5833333
+6       tree   Adaboost 0.9944859 0.206480352 0.128440367   0.9994012 0.5490196
+7       tree      rpart 0.9946930 0.141407899 0.077981651   0.9998959 0.8095238
+8  neuralnet       nnet 0.9943564 0.000000000 0.000000000   1.0000000        NA
+       Recall          F1  Prevalence       AUC      Cost
+1 0.004587156 0.009090909 0.005643575 0.5434141 54709.778
+2 0.119266055 0.204724409 0.005643575 0.7914701  4168.943
+3 0.123853211 0.208494208 0.005643575 0.7751744  1680.415
+4 0.000000000          NA 0.005643575 0.7789383    44.489
+5 0.096330275 0.165354331 0.005643575 0.6063332  5021.905
+6 0.128440367 0.208178439 0.005643575 0.8110918 57724.809
+7 0.077981651 0.142259414 0.005643575 0.6464348    47.201
+8 0.000000000          NA 0.005643575 0.8067569   899.104
+
+[1] "Model attribute importance"
+[1] "=========================="
+                      svmRadial         rf       J48  bayesglm       knn
+ACCOUNT_AGE_IN_MONTHS 100.00000 100.000000 100.00000 100.00000 100.00000
+DUP_PROFILE            13.95308   4.604589  13.95308  13.95308  13.95308
+FF_RATIO               42.01889   4.739635  42.01889  42.01889  42.01889
+FOLLOWERS_COUNT        29.24171  67.295424  29.24171  29.24171  29.24171
+FRIENDS_COUNT           0.00000  59.435596   0.00000   0.00000   0.00000
+GEO_ENABLED            78.53412  15.202549  78.53412  78.53412  78.53412
+HAS_IMAGE              44.98343   1.166435  44.98343  44.98343  44.98343
+HAS_NAME               44.12576   0.000000  44.12576  44.12576  44.12576
+HAS_PROFILE            73.96941   5.386113  73.96941  73.96941  73.96941
+LANGUAGE               11.38191  19.917636  11.38191  11.38191  11.38191
+LISTED_COUNT           43.81472   3.963216  43.81472  43.81472  43.81472
+PROFILE_HAS_URL        42.10281   7.738370  42.10281  42.10281  42.10281
+STATUS_COUNT           32.18726  98.569790  32.18726  32.18726  32.18726
+USERNAME_LENGTH        30.84324  73.696659  30.84324  30.84324  30.84324
+                       Adaboost      rpart       nnet
+ACCOUNT_AGE_IN_MONTHS 100.00000 100.000000  60.285385
+DUP_PROFILE            13.95308  20.104264  81.397364
+FF_RATIO               42.01889   0.000000  60.744400
+FOLLOWERS_COUNT        29.24171  57.338455  22.033512
+FRIENDS_COUNT           0.00000  60.821896 100.000000
+GEO_ENABLED            78.53412  54.381056   6.952907
+HAS_IMAGE              44.98343   0.000000  18.277945
+HAS_NAME               44.12576   0.000000   0.000000
+HAS_PROFILE            73.96941  21.528630  60.413147
+LANGUAGE               11.38191   9.664479  95.470956
+LISTED_COUNT           43.81472   0.000000  31.911212
+PROFILE_HAS_URL        42.10281   0.000000  59.430551
+STATUS_COUNT           32.18726  68.942639  28.404251
+USERNAME_LENGTH        30.84324  64.975237  17.328424
+
+[1] "Model engine results"
+[1] "===================="
+
+[1] "+++++++++++++"
+[1] "rf"
+[1] "+++++++++++++"
+
+Call:
+ randomForest(x = x, y = y, mtry = param$mtry) 
+               Type of random forest: classification
+                     Number of trees: 500
+No. of variables tried at each split: 8
+
+        OOB estimate of  error rate: 0.53%
+Confusion matrix:
+            deceptive trustworthy  class.error
+deceptive          83         573 0.8734756098
+trustworthy        41      115192 0.0003558009
+
+  mtry       ROC       Sens      Spec      ROCSD     SensSD       SpecSD
+1    2 0.7403740 0.01674437 0.9999826 0.03544255 0.01967865 4.202285e-05
+2    8 0.7780282 0.12906760 0.9996587 0.03305296 0.04617208 1.689098e-04
+3   14 0.7625419 0.12550117 0.9995372 0.03020514 0.04876923 1.856128e-04
+
+[1] "+++++++++++++"
+[1] "J48"
+[1] "+++++++++++++"
+J48 pruned tree
+------------------
+
+LANGUAGE <= -0.214193
+|   FRIENDS_COUNT <= -0.06238
+|   |   ACCOUNT_AGE_IN_MONTHS <= -0.841256
+|   |   |   HAS_PROFILE <= -2.636608
+|   |   |   |   GEO_ENABLED <= -1.006185
+|   |   |   |   |   STATUS_COUNT <= -0.359356: trustworthy (1681.0/9.0)
+|   |   |   |   |   STATUS_COUNT > -0.359356
+|   |   |   |   |   |   ACCOUNT_AGE_IN_MONTHS <= -0.958655
+|   |   |   |   |   |   |   ACCOUNT_AGE_IN_MONTHS <= -1.741313
+|   |   |   |   |   |   |   |   ACCOUNT_AGE_IN_MONTHS <= -1.819579: trustworthy (19.0)
+|   |   |   |   |   |   |   |   ACCOUNT_AGE_IN_MONTHS > -1.819579
+|   |   |   |   |   |   |   |   |   STATUS_COUNT <= -0.343897
+|   |   |   |   |   |   |   |   |   |   FRIENDS_COUNT <= -0.155755
+|   |   |   |   |   |   |   |   |   |   |   USERNAME_LENGTH <= -0.055489: deceptive (5.0)
+|   |   |   |   |   |   |   |   |   |   |   USERNAME_LENGTH > -0.055489: trustworthy (14.0/5.0)
+|   |   |   |   |   |   |   |   |   |   FRIENDS_COUNT > -0.155755: trustworthy (3.0)
+|   |   |   |   |   |   |   |   |   STATUS_COUNT > -0.343897: trustworthy (8.0)
+|   |   |   |   |   |   |   ACCOUNT_AGE_IN_MONTHS > -1.741313: trustworthy (483.0/7.0)
+|   |   |   |   |   |   ACCOUNT_AGE_IN_MONTHS > -0.958655
+|   |   |   |   |   |   |   FRIENDS_COUNT <= -0.155755: trustworthy (65.0/1.0)
+|   |   |   |   |   |   |   FRIENDS_COUNT > -0.155755
+|   |   |   |   |   |   |   |   FRIENDS_COUNT <= -0.13708
+|   |   |   |   |   |   |   |   |   USERNAME_LENGTH <= -0.47487: trustworthy (12.0)
+|   |   |   |   |   |   |   |   |   USERNAME_LENGTH > -0.47487
+|   |   |   |   |   |   |   |   |   |   STATUS_COUNT <= -0.282061: trustworthy (5.0)
+|   |   |   |   |   |   |   |   |   |   STATUS_COUNT > -0.282061
+|   |   |   |   |   |   |   |   |   |   |   STATUS_COUNT <= -0.204765: deceptive (5.0)
+|   |   |   |   |   |   |   |   |   |   |   STATUS_COUNT > -0.204765
+|   |   |   |   |   |   |   |   |   |   |   |   USERNAME_LENGTH <= 0.573582
+|   |   |   |   |   |   |   |   |   |   |   |   |   ACCOUNT_AGE_IN_MONTHS <= -0.919522
+|   |   |   |   |   |   |   |   |   |   |   |   |   |   USERNAME_LENGTH <= 0.154201: trustworthy (3.0/1.0)
+|   |   |   |   |   |   |   |   |   |   |   |   |   |   USERNAME_LENGTH > 0.154201: deceptive (4.0)
+|   |   |   |   |   |   |   |   |   |   |   |   |   ACCOUNT_AGE_IN_MONTHS > -0.919522
+|   |   |   |   |   |   |   |   |   |   |   |   |   |   STATUS_COUNT <= -0.189306: deceptive (4.0/1.0)
+|   |   |   |   |   |   |   |   |   |   |   |   |   |   STATUS_COUNT > -0.189306: trustworthy (9.0/1.0)
+|   |   |   |   |   |   |   |   |   |   |   |   USERNAME_LENGTH > 0.573582: deceptive (6.0/1.0)
+|   |   |   |   |   |   |   |   FRIENDS_COUNT > -0.13708: trustworthy (17.0)
+|   |   |   |   GEO_ENABLED > -1.006185: trustworthy (1298.0/3.0)
+|   |   |   HAS_PROFILE > -2.636608: trustworthy (18096.0/95.0)
+|   |   ACCOUNT_AGE_IN_MONTHS > -0.841256: trustworthy (69994.0/136.0)
+|   FRIENDS_COUNT > -0.06238
+|   |   ACCOUNT_AGE_IN_MONTHS <= -0.567325
+|   |   |   DUP_PROFILE <= -0.408569
+|   |   |   |   STATUS_COUNT <= 2.345984
+|   |   |   |   |   LISTED_COUNT <= -0.004763
+|   |   |   |   |   |   FOLLOWERS_COUNT <= -0.13061
+|   |   |   |   |   |   |   PROFILE_HAS_URL <= -0.26559: trustworthy (311.0/12.0)
+|   |   |   |   |   |   |   PROFILE_HAS_URL > -0.26559
+|   |   |   |   |   |   |   |   ACCOUNT_AGE_IN_MONTHS <= -0.958655
+|   |   |   |   |   |   |   |   |   STATUS_COUNT <= -0.235684: trustworthy (44.0)
+|   |   |   |   |   |   |   |   |   STATUS_COUNT > -0.235684: deceptive (3.0/1.0)
+|   |   |   |   |   |   |   |   ACCOUNT_AGE_IN_MONTHS > -0.958655
+|   |   |   |   |   |   |   |   |   GEO_ENABLED <= -1.006185
+|   |   |   |   |   |   |   |   |   |   STATUS_COUNT <= -0.29752: deceptive (8.0/1.0)
+|   |   |   |   |   |   |   |   |   |   STATUS_COUNT > -0.29752: trustworthy (3.0)
+|   |   |   |   |   |   |   |   |   GEO_ENABLED > -1.006185: trustworthy (3.0)
+|   |   |   |   |   |   FOLLOWERS_COUNT > -0.13061: trustworthy (3213.0/59.0)
+|   |   |   |   |   LISTED_COUNT > -0.004763
+|   |   |   |   |   |   ACCOUNT_AGE_IN_MONTHS <= -1.584782
+|   |   |   |   |   |   |   STATUS_COUNT <= -0.158388: trustworthy (3.0)
+|   |   |   |   |   |   |   STATUS_COUNT > -0.158388
+|   |   |   |   |   |   |   |   STATUS_COUNT <= 0.119875: deceptive (4.0)
+|   |   |   |   |   |   |   |   STATUS_COUNT > 0.119875: trustworthy (3.0/1.0)
+|   |   |   |   |   |   ACCOUNT_AGE_IN_MONTHS > -1.584782: trustworthy (134.0/2.0)
+|   |   |   |   STATUS_COUNT > 2.345984
+|   |   |   |   |   ACCOUNT_AGE_IN_MONTHS <= -1.42825
+|   |   |   |   |   |   FRIENDS_COUNT <= 0.04967: deceptive (4.0)
+|   |   |   |   |   |   FRIENDS_COUNT > 0.04967: trustworthy (6.0/1.0)
+|   |   |   |   |   ACCOUNT_AGE_IN_MONTHS > -1.42825: trustworthy (70.0/4.0)
+|   |   |   DUP_PROFILE > -0.408569
+|   |   |   |   USERNAME_LENGTH <= 0.154201: trustworthy (267.0/6.0)
+|   |   |   |   USERNAME_LENGTH > 0.154201
+|   |   |   |   |   STATUS_COUNT <= 0.568189
+|   |   |   |   |   |   FRIENDS_COUNT <= 0.16172: trustworthy (105.0/5.0)
+|   |   |   |   |   |   FRIENDS_COUNT > 0.16172
+|   |   |   |   |   |   |   FRIENDS_COUNT <= 0.236419: deceptive (5.0/1.0)
+|   |   |   |   |   |   |   FRIENDS_COUNT > 0.236419: trustworthy (23.0/3.0)
+|   |   |   |   |   STATUS_COUNT > 0.568189
+|   |   |   |   |   |   PROFILE_HAS_URL <= -0.26559
+|   |   |   |   |   |   |   ACCOUNT_AGE_IN_MONTHS <= -1.03692: deceptive (4.0/1.0)
+|   |   |   |   |   |   |   ACCOUNT_AGE_IN_MONTHS > -1.03692: trustworthy (3.0)
+|   |   |   |   |   |   PROFILE_HAS_URL > -0.26559: deceptive (3.0)
+|   |   ACCOUNT_AGE_IN_MONTHS > -0.567325: trustworthy (10934.0/64.0)
+LANGUAGE > -0.214193
+|   HAS_PROFILE <= -2.636608
+|   |   STATUS_COUNT <= -0.282061
+|   |   |   FRIENDS_COUNT <= -0.13708: trustworthy (571.0/10.0)
+|   |   |   FRIENDS_COUNT > -0.13708
+|   |   |   |   STATUS_COUNT <= -0.343897: trustworthy (271.0/13.0)
+|   |   |   |   STATUS_COUNT > -0.343897
+|   |   |   |   |   FRIENDS_COUNT <= -0.043705: trustworthy (52.0/2.0)
+|   |   |   |   |   FRIENDS_COUNT > -0.043705
+|   |   |   |   |   |   FRIENDS_COUNT <= -0.006355
+|   |   |   |   |   |   |   ACCOUNT_AGE_IN_MONTHS <= -1.545649: deceptive (3.0)
+|   |   |   |   |   |   |   ACCOUNT_AGE_IN_MONTHS > -1.545649: trustworthy (3.0/1.0)
+|   |   |   |   |   |   FRIENDS_COUNT > -0.006355: trustworthy (13.0/1.0)
+|   |   STATUS_COUNT > -0.282061
+|   |   |   STATUS_COUNT <= -0.173847
+|   |   |   |   ACCOUNT_AGE_IN_MONTHS <= -0.254262
+|   |   |   |   |   USERNAME_LENGTH <= -0.894251: trustworthy (17.0)
+|   |   |   |   |   USERNAME_LENGTH > -0.894251
+|   |   |   |   |   |   FRIENDS_COUNT <= -0.155755
+|   |   |   |   |   |   |   ACCOUNT_AGE_IN_MONTHS <= -1.780446
+|   |   |   |   |   |   |   |   FOLLOWERS_COUNT <= -0.134123: deceptive (5.0/1.0)
+|   |   |   |   |   |   |   |   FOLLOWERS_COUNT > -0.134123: trustworthy (4.0/1.0)
+|   |   |   |   |   |   |   ACCOUNT_AGE_IN_MONTHS > -1.780446: trustworthy (38.0/2.0)
+|   |   |   |   |   |   FRIENDS_COUNT > -0.155755
+|   |   |   |   |   |   |   FRIENDS_COUNT <= -0.13708: deceptive (101.0/28.0)
+|   |   |   |   |   |   |   FRIENDS_COUNT > -0.13708
+|   |   |   |   |   |   |   |   FOLLOWERS_COUNT <= -0.127097: trustworthy (10.0)
+|   |   |   |   |   |   |   |   FOLLOWERS_COUNT > -0.127097
+|   |   |   |   |   |   |   |   |   USERNAME_LENGTH <= 0.154201: trustworthy (4.0)
+|   |   |   |   |   |   |   |   |   USERNAME_LENGTH > 0.154201: deceptive (5.0/1.0)
+|   |   |   |   ACCOUNT_AGE_IN_MONTHS > -0.254262: trustworthy (39.0)
+|   |   |   STATUS_COUNT > -0.173847: trustworthy (193.0/1.0)
+|   HAS_PROFILE > -2.636608: trustworthy (7676.0/77.0)
+
+Number of Leaves  : 	59
+
+Size of the tree : 	117
+
+
+      C M       ROC      Sens      Spec      ROCSD     SensSD       SpecSD
+1 0.010 1 0.5000000 0.0000000 1.0000000 0.00000000 0.00000000 0.0000000000
+2 0.010 2 0.5000000 0.0000000 1.0000000 0.00000000 0.00000000 0.0000000000
+3 0.010 3 0.5000000 0.0000000 1.0000000 0.00000000 0.00000000 0.0000000000
+4 0.255 1 0.6016360 0.1087568 0.9997223 0.02833290 0.04232328 0.0001148556
+5 0.255 2 0.6052008 0.1092541 0.9997310 0.02386706 0.03982946 0.0001124582
+6 0.255 3 0.6061834 0.1092463 0.9997165 0.02426828 0.03994226 0.0001267521
+7 0.500 1 0.7387220 0.1452836 0.9992855 0.03975217 0.05462807 0.0002615093
+8 0.500 2 0.7474444 0.1427661 0.9993463 0.03326593 0.04799257 0.0002343417
+9 0.500 3 0.7527139 0.1402176 0.9994215 0.03480168 0.04630634 0.0001978038
+
+[1] "+++++++++++++"
+[1] "bayesglm"
+[1] "+++++++++++++"
+NULL
+                      coef.est coef.se
+(Intercept)            5.61     0.05  
+FOLLOWERS_COUNT       -0.06     0.02  
+FRIENDS_COUNT         -0.07     0.02  
+FF_RATIO               0.03     0.08  
+LISTED_COUNT           0.08     0.65  
+USERNAME_LENGTH       -0.19     0.04  
+GEO_ENABLED            0.32     0.04  
+PROFILE_HAS_URL       -0.10     0.04  
+ACCOUNT_AGE_IN_MONTHS  0.63     0.05  
+LANGUAGE              -0.19     0.02  
+HAS_NAME               0.00     0.03  
+HAS_IMAGE              0.00     0.02  
+DUP_PROFILE           -0.15     0.10  
+HAS_PROFILE            0.23     0.09  
+STATUS_COUNT          -0.13     0.02  
+---
+n = 115889, k = 15
+residual deviance = 7432.1, null deviance = 8096.9 (difference = 664.8)
+
+  parameter      ROC Sens      Spec      ROCSD SensSD       SpecSD
+1      none 0.749086    0 0.9999653 0.03509648      0 5.393149e-05
+
+[1] "+++++++++++++"
+[1] "kknn"
+[1] "+++++++++++++"
+
+Call:
+train.kknn(formula = .outcome ~ ., data = dat, kmax = param$kmax,     distance = param$distance, kernel = as.character(param$kernel))
+
+Type of response variable: nominal
+Minimal misclassification: 0.005608815
+Best kernel: optimal
+Best k: 9
+
+  kmax distance  kernel       ROC       Sens      Spec      ROCSD     SensSD
+1    5        2 optimal 0.6044365 0.09349650 0.9992508 0.03047362 0.03532300
+2    7        2 optimal 0.6136482 0.09805750 0.9994215 0.03339986 0.03787882
+3    9        2 optimal 0.6231151 0.09602953 0.9994851 0.03493086 0.03626765
+        SpecSD
+1 0.0002501501
+2 0.0002447528
+3 0.0002124910
+
+[1] "+++++++++++++"
+[1] "adaboost"
+[1] "+++++++++++++"
+adaboost(formula = .outcome ~ ., data = dat, nIter = param$nIter)
+.outcome ~ .
+<environment: 0x7f8b2adcecc0>
+Dependent Variable: .outcome
+No of trees:150
+The weights of the trees are:2.6384331.8299291.6839261.5937841.4925661.3869911.2502541.1141760.99053740.91361710.79332390.72254760.63604720.58931620.51860810.45710190.41265880.35648970.32633230.28492520.26996880.24763430.23137060.21177360.20463370.19142550.18030570.17441640.15127170.14821950.13865190.13861150.12693590.12801910.11968160.11483680.10775210.11249910.11377110.099726080.099585430.092521710.087324710.09283290.087711160.086637470.084164690.08048520.08007590.076199040.080431310.072031880.065800120.0647820.063736410.063714450.060662220.058333090.061363190.059444090.056203410.0542820.052428780.054284950.051512250.056940910.052146090.051565060.055906460.053957850.047830210.049193330.046186920.04881290.047105790.046568860.043937150.045452040.047982040.044926910.04717690.043396210.043800830.043404950.037940270.040628830.037926170.03864520.038802320.03828570.038323450.033437970.036673630.037402460.035026780.037037860.036251880.033940070.035854290.035782020.033556880.03422490.032227920.033519450.031340760.030432070.03189340.031501790.030129020.030378870.030773270.028596770.028860880.028926130.029611510.029359450.028449370.027733450.028885590.028182410.027639360.025210770.025842030.025522710.025709670.027395730.02503630.023849480.025305940.024754160.024169690.024906560.025273740.023625730.023880570.023381290.023794050.022411620.023517840.024333230.022573020.02435960.023620580.023545910.022794440.022151480.020768890.023419460.022883220.02105816
+
+  nIter        method       ROC       Sens      Spec      ROCSD     SensSD
+1    50   Adaboost.M1 0.7821532 0.11732712 0.9993058 0.02904961 0.04152503
+2    50 Real adaboost 0.5054715 0.09497280 0.9991958 0.04626437 0.03824141
+3   100   Adaboost.M1 0.7872669 0.11680653 0.9993578 0.02773662 0.04093696
+4   100 Real adaboost 0.4953971 0.09599068 0.9992045 0.04747331 0.03876833
+5   150   Adaboost.M1 0.7889079 0.11836053 0.9993520 0.02801947 0.03969208
+6   150 Real adaboost 0.5083757 0.09649573 0.9991958 0.05558264 0.03940587
+        SpecSD
+1 0.0002379300
+2 0.0003189917
+3 0.0002319679
+4 0.0003334398
+5 0.0002376435
+6 0.0003238392
+
+[1] "+++++++++++++"
+[1] "rpart"
+[1] "+++++++++++++"
+n= 115889 
+
+node), split, n, loss, yval, (yprob)
+      * denotes terminal node
+
+  1) root 115889 656 trustworthy (0.005660589 0.994339411)  
+    2) LANGUAGE>=0.0295435 9005 192 trustworthy (0.021321488 0.978678512)  
+      4) HAS_PROFILE< -1.128668 1329 115 trustworthy (0.086531226 0.913468774)  
+        8) STATUS_COUNT>=-0.2743313 416  85 trustworthy (0.204326923 0.795673077)  
+         16) STATUS_COUNT< -0.1661176 223  84 trustworthy (0.376681614 0.623318386)  
+           32) FRIENDS_COUNT>=-0.1464173 155  77 trustworthy (0.496774194 0.503225806)  
+             64) FRIENDS_COUNT< -0.1277423 111  38 deceptive (0.657657658 0.342342342)  
+              128) ACCOUNT_AGE_IN_MONTHS< -0.2346952 104  31 deceptive (0.701923077 0.298076923)  
+                256) ACCOUNT_AGE_IN_MONTHS>=-1.232585 92  23 deceptive (0.750000000 0.250000000) *
+                257) ACCOUNT_AGE_IN_MONTHS< -1.232585 12   4 trustworthy (0.333333333 0.666666667) *
+              129) ACCOUNT_AGE_IN_MONTHS>=-0.2346952 7   0 trustworthy (0.000000000 1.000000000) *
+             65) FRIENDS_COUNT>=-0.1277423 44   4 trustworthy (0.090909091 0.909090909) *
+           33) FRIENDS_COUNT< -0.1464173 68   7 trustworthy (0.102941176 0.897058824) *
+         17) STATUS_COUNT>=-0.1661176 193   1 trustworthy (0.005181347 0.994818653) *
+        9) STATUS_COUNT< -0.2743313 913  30 trustworthy (0.032858708 0.967141292) *
+      5) HAS_PROFILE>=-1.128668 7676  77 trustworthy (0.010031266 0.989968734) *
+    3) LANGUAGE< 0.0295435 106884 464 trustworthy (0.004341155 0.995658845) *
+
+           cp       ROC       Sens      Spec      ROCSD     SensSD       SpecSD
+1 0.001693767 0.6673776 0.09606061 0.9997454 0.07435286 0.03569232 0.0001689135
+2 0.006097561 0.6024098 0.08276612 0.9997773 0.03552607 0.03612107 0.0001361343
+3 0.008892276 0.5400520 0.03043512 0.9998756 0.05101292 0.04011448 0.0001669768
+
+[1] "+++++++++++++"
+[1] "nnet"
+[1] "+++++++++++++"
+a 14-5-1 network with 81 weights
+inputs: FOLLOWERS_COUNT FRIENDS_COUNT FF_RATIO LISTED_COUNT USERNAME_LENGTH GEO_ENABLED PROFILE_HAS_URL ACCOUNT_AGE_IN_MONTHS LANGUAGE HAS_NAME HAS_IMAGE DUP_PROFILE HAS_PROFILE STATUS_COUNT 
+output(s): .outcome 
+options were - entropy fitting  decay=0.1
+
+  size decay       ROC        Sens      Spec      ROCSD     SensSD       SpecSD
+1    1 0e+00 0.7170020 0.000000000 1.0000000 0.10910687 0.00000000 0.000000e+00
+2    1 1e-04 0.7293297 0.000000000 1.0000000 0.09091644 0.00000000 0.000000e+00
+3    1 1e-01 0.7745148 0.000000000 1.0000000 0.03577543 0.00000000 0.000000e+00
+4    3 0e+00 0.7703250 0.000000000 0.9999971 0.09755545 0.00000000 1.584295e-05
+5    3 1e-04 0.7246137 0.000000000 0.9999913 0.12946919 0.00000000 4.753298e-05
+6    3 1e-01 0.8046759 0.000000000 0.9999971 0.03262073 0.00000000 1.584295e-05
+7    5 0e+00 0.7419353 0.005641026 0.9999855 0.11906120 0.02230663 5.621099e-05
+8    5 1e-04 0.7751862 0.000000000 1.0000000 0.09684367 0.00000000 0.000000e+00
+9    5 1e-01 0.8060571 0.000000000 0.9999913 0.03177354 0.00000000 2.647919e-05
+
+[1] "Query loading run time"
+[1] "=============="
+   user  system elapsed 
+  3.420   0.148   5.745 
+
+[1] "Models run time"
+[1] "=============="
+      user     system    elapsed 
+363558.564   6175.684 124668.900 
