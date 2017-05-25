@@ -1,0 +1,53 @@
+
+[1] "Attribute importance - Corpus"
+[1] "================================="
+
+[1] "Information Gain:"
+                  attr_importance
+DISTANCE_LOCATION       0.0000000
+DISTANCE_TZ             0.0000000
+COMPARE_GENDER          0.0000000
+LEVENSHTEIN             0.0001502
+HAMMING                 0.0003748
+COMPARE_AGE             0.0001865
+FF_RATIO                0.0000000
+
+[1] "Gain ratio:"
+                  attr_importance
+DISTANCE_LOCATION       0.0000000
+DISTANCE_TZ             0.0000000
+COMPARE_GENDER          0.0000000
+LEVENSHTEIN             0.0002200
+HAMMING                 0.0005601
+COMPARE_AGE             0.0007602
+FF_RATIO                0.0000000
+
+[1] "Random forest Accuracy:"
+                  attr_importance
+DISTANCE_LOCATION         -1.4156
+DISTANCE_TZ                6.2765
+COMPARE_GENDER            -0.7412
+LEVENSHTEIN               12.4468
+HAMMING                   11.9456
+COMPARE_AGE                0.9916
+FF_RATIO                   7.0866
+
+[1] "Random forest Impurity:"
+                  attr_importance
+DISTANCE_LOCATION         0.01836
+DISTANCE_TZ               6.78178
+COMPARE_GENDER            1.04984
+LEVENSHTEIN               1.06686
+HAMMING                   1.96279
+COMPARE_AGE               2.81023
+FF_RATIO                  6.18418
+
+[1] "Chi squared:"
+                  attr_importance
+DISTANCE_LOCATION         0.00000
+DISTANCE_TZ               0.00000
+COMPARE_GENDER            0.00000
+LEVENSHTEIN               0.01706
+HAMMING                   0.02781
+COMPARE_AGE               0.01603
+FF_RATIO                  0.00000
