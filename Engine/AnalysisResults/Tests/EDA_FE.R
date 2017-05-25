@@ -43,15 +43,16 @@ data.clean <- cleanup.TwitterFE(data.full)
 
 #was done in cleanup
 #remove fields not in fake accounts
+data.clean <- data.clean[ , -which(names(data.clean) %in% c("PROFILE_HAS_URL", "DUP_PROFILE", "HAS_PROFILE", "LISTED_COUNT"))]
 #data.clean <- data.clean[ , -which(names(data.clean) %in% c("USERNAME_LENGTH", "GEO_ENABLED"))]
 #data.clean <- data.clean[ , -which(names(data.clean) %in% c("PROFILE_HAS_URL", "ACCOUNT_AGE_IN_MONTHS", "DUP_PROFILE", "HAS_PROFILE"))]
 
 #remove unique values
 #data.clean <- data.clean[ , -which(names(data.clean) %in% c("LOCATION", "LONGITUDE", "LATITUDE"))]
 
-data.scaled <- as.data.frame(scale(data.clean[1:11], center = TRUE, scale = TRUE))
+data.scaled <- as.data.frame(scale(data.clean[1:7], center = TRUE, scale = TRUE))
 #add class back
-data.scaled <- cbind(data.scaled,CLASS=data.clean[,12])
+data.scaled <- cbind(data.scaled,CLASS=data.clean[,8])
 
 #show mean per CLASS
 #require(dplyr)
@@ -62,17 +63,17 @@ data.scaled <- cbind(data.scaled,CLASS=data.clean[,12])
 rapply(data.clean,function(x)length(unique(x)))
 rapply(data.clean,function(x)sum(is.na(x)))
 
-filename <- "~/Projects/RStudio/TwitterAnalysis/Engine/AnalysisResults/Results/RFE_After_Chi.txt"
+filename <- "~/Projects/RStudio/TwitterAnalysis/Engine/AnalysisResults/Results/RFE3_After_Chi.txt"
 sink(filename, append = TRUE)
 chi(data.scaled)
 sink()
 
-filename <- "~/Projects/RStudio/TwitterAnalysis/Engine/AnalysisResults/Results/RFE_After_Fisher.txt"
+filename <- "~/Projects/RStudio/TwitterAnalysis/Engine/AnalysisResults/Results/RFE3_After_Fisher.txt"
 sink(filename, append = TRUE)
 fisher(data.scaled)
 sink()
 
-filename <- "~/Projects/RStudio/TwitterAnalysis/Engine/AnalysisResults/Results/RFE_After_Wilcoxon.txt"
+filename <- "~/Projects/RStudio/TwitterAnalysis/Engine/AnalysisResults/Results/RFE3_After_Wilcoxon.txt"
 sink(filename, append = TRUE)
 wilcoxon(data.scaled)
 sink()
@@ -94,12 +95,12 @@ mytable[1:x,]
 
 #sink()
 
-filename <- "~/Projects/RStudio/TwitterAnalysis/Engine/AnalysisResults/Results/RFE_After_VarTest.txt"
+filename <- "~/Projects/RStudio/TwitterAnalysis/Engine/AnalysisResults/Results/RFE3_After_VarTest.txt"
 sink(filename, append = TRUE)
 vtest(data.scaled)
 sink()
 
-filename <- "~/Projects/RStudio/TwitterAnalysis/Engine/AnalysisResults/Results/RFE_AfterAttrImportance.txt"
+filename <- "~/Projects/RStudio/TwitterAnalysis/Engine/AnalysisResults/Results/RFE3_AfterAttrImportance.txt"
 sink(filename, append = TRUE)
 cat("\n")
 print("Attribute importance - Corpus")
@@ -129,7 +130,7 @@ print(p)
 
 setwd("~/Projects/RStudio/TwitterAnalysis/Engine/AnalysisResults/Results")
 
-png(filename = "rfe_boxplot.png", width = 500, height = 250)
+png(filename = "rfe3_boxplot.png", width = 500, height = 250)
 p
 dev.off()
 
@@ -141,7 +142,7 @@ graph1 <- function(data, a) {
     geom_density(size=1.0) 
   #print(p)
   
-  png(filename = paste("rfe_",a,"_v1.png",sep=""), width = 500, height = 250)
+  png(filename = paste("rfe3_",a,"_v1.png",sep=""), width = 500, height = 250)
   print(p)
   dev.off()
 }
