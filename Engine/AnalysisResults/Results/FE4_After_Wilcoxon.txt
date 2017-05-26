@@ -1,0 +1,58 @@
+
+[1] "Results of Wilcoxon Signed Rank test"
+[1] "================================="
+[1] "DISTANCE_LOCATION"
+
+	Wilcoxon rank sum test with continuity correction
+
+data:  success and fake
+W = 20000000, p-value <0.0000000000000002
+alternative hypothesis: true location shift is not equal to 0
+
+
+[1] "DISTANCE_TZ"
+
+	Wilcoxon rank sum test with continuity correction
+
+data:  success and fake
+W = 65000000, p-value <0.0000000000000002
+alternative hypothesis: true location shift is not equal to 0
+
+
+[1] "COMPARE_GENDER"
+
+	Wilcoxon rank sum test with continuity correction
+
+data:  success and fake
+W = 31000000, p-value <0.0000000000000002
+alternative hypothesis: true location shift is not equal to 0
+
+
+[1] "LEVENSHTEIN"
+
+	Wilcoxon rank sum test with continuity correction
+
+data:  success and fake
+W = 45000000, p-value <0.0000000000000002
+alternative hypothesis: true location shift is not equal to 0
+
+
+[1] "HAMMING"
+
+	Wilcoxon rank sum test with continuity correction
+
+data:  success and fake
+W = 31000000, p-value <0.0000000000000002
+alternative hypothesis: true location shift is not equal to 0
+
+
+[1] "COMPARE_AGE"
+
+	Wilcoxon rank sum test with continuity correction
+
+data:  success and fake
+W = 19000000, p-value <0.0000000000000002
+alternative hypothesis: true location shift is not equal to 0
+
+
+[1] "CLASS"

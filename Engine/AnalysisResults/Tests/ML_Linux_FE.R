@@ -19,7 +19,7 @@ myconn<-odbcConnect("SAPHANA", uid="SYSTEM", pwd="oEqm66jccx", believeNRows=FALS
 
 #' ###Load data
 #+ get_data
-tl <- system.time(data.original <- sqlQuery(myconn, "SELECT ID, SCREENNAME, DISTANCE_LOCATION, DISTANCE_TZ, COMPARE_GENDER, LEVENSHTEIN, HAMMING, COMPARE_AGE, FF_RATIO, PROFILE_HAS_URL, DUP_PROFILE, HAS_PROFILE, LISTED_COUNT, CLASS from TWITTER.ZZ_FE_SET") )
+tl <- system.time(data.original <- sqlQuery(myconn, "SELECT ID, SCREENNAME, DISTANCE_LOCATION, DISTANCE_TZ, COMPARE_GENDER, LEVENSHTEIN, HAMMING, COMPARE_AGE, FF_RATIO, PROFILE_HAS_URL, DUP_PROFILE, HAS_PROFILE, LISTED_COUNT, CLASS from TWITTER.ZZ_RFE_SET") )
 
 close(myconn)
 
@@ -45,6 +45,7 @@ data.clean <- cleanup.TwitterFE(data.full)
 
 #was done in cleanup
 #remove fields not in fake accounts
+data.clean <- data.clean[ , -which(names(data.clean) %in% c("FF_RATIO","PROFILE_HAS_URL", "DUP_PROFILE", "HAS_PROFILE", "LISTED_COUNT"))]
 #data.clean <- data.clean[ , -which(names(data.clean) %in% c("USERNAME_LENGTH", "GEO_ENABLED"))]
 #data.clean <- data.clean[ , -which(names(data.clean) %in% c("PROFILE_HAS_URL", "ACCOUNT_AGE_IN_MONTHS", "DUP_PROFILE", "HAS_PROFILE"))]
 
@@ -76,7 +77,7 @@ repeats <- c(3)
 #tune
 tune <- c(3)
 #sampling
-sampling <- c("none")  
+sampling <- c("smote")  
 #,"none","smote"
 
 cl <- makeCluster(detectCores())
@@ -85,9 +86,9 @@ for (m in sampling) {
   for (x in folds) {
     for (y in repeats) {
       for (z in tune) {
-        filename <- paste("~/Projects/RStudio/TwitterAnalysis/Engine/AnalysisResults/Results/FE2_rcv_",x,"fold_",y,"repeat_",z,"tune_",m,".txt",sep="")
+        filename <- paste("~/Projects/RStudio/TwitterAnalysis/Engine/AnalysisResults/Results/RFE4_rcv_",x,"fold_",y,"repeat_",z,"tune_",m,".txt",sep="")
         #print(filename)
-        t <- system.time(ML_Models_ROC_P(training, resamp, x, z, y, m, filename))
+        t <- system.time(ML_Models_ROC_P(training, resamp, x, z, y, m, filename, 1))
         
         sink(filename, append = TRUE)
         

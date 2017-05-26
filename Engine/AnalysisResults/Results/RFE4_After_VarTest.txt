@@ -1,0 +1,88 @@
+
+[1] "Results of Variable test"
+[1] "================================="
+[1] "DISTANCE_LOCATION"
+
+	F test to compare two variances
+
+data:  success and fake
+F = Inf, num df = 150000, denom df = 870, p-value <0.0000000000000002
+alternative hypothesis: true ratio of variances is not equal to 1
+95 percent confidence interval:
+ Inf Inf
+sample estimates:
+ratio of variances 
+               Inf 
+
+
+[1] "DISTANCE_TZ"
+
+	F test to compare two variances
+
+data:  success and fake
+F = 0.79, num df = 150000, denom df = 870, p-value = 0.0000002
+alternative hypothesis: true ratio of variances is not equal to 1
+95 percent confidence interval:
+ 0.7153 0.8634
+sample estimates:
+ratio of variances 
+            0.7876 
+
+
+[1] "COMPARE_GENDER"
+
+	F test to compare two variances
+
+data:  success and fake
+F = 1.1, num df = 150000, denom df = 870, p-value = 0.1
+alternative hypothesis: true ratio of variances is not equal to 1
+95 percent confidence interval:
+ 0.9761 1.1783
+sample estimates:
+ratio of variances 
+             1.075 
+
+
+[1] "LEVENSHTEIN"
+
+	F test to compare two variances
+
+data:  success and fake
+F = 1.1, num df = 150000, denom df = 870, p-value = 0.04
+alternative hypothesis: true ratio of variances is not equal to 1
+95 percent confidence interval:
+ 1.003 1.211
+sample estimates:
+ratio of variances 
+             1.104 
+
+
+[1] "HAMMING"
+
+	F test to compare two variances
+
+data:  success and fake
+F = 0.94, num df = 150000, denom df = 870, p-value = 0.2
+alternative hypothesis: true ratio of variances is not equal to 1
+95 percent confidence interval:
+ 0.8562 1.0336
+sample estimates:
+ratio of variances 
+            0.9428 
+
+
+[1] "COMPARE_AGE"
+
+	F test to compare two variances
+
+data:  success and fake
+F = 1.9, num df = 150000, denom df = 870, p-value <0.0000000000000002
+alternative hypothesis: true ratio of variances is not equal to 1
+95 percent confidence interval:
+ 1.732 2.091
+sample estimates:
+ratio of variances 
+             1.907 
+
+
+[1] "CLASS"

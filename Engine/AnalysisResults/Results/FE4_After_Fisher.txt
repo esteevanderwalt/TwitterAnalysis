@@ -1,0 +1,10 @@
+
+[1] "Results of fisher exact test"
+[1] "================================="
+[1] "DISTANCE_LOCATION"
+[1] "DISTANCE_TZ"
+[1] "COMPARE_GENDER"
+[1] "LEVENSHTEIN"
+[1] "HAMMING"
+[1] "COMPARE_AGE"
+[1] "CLASS"
