@@ -6,6 +6,7 @@ suppressMessages(library(lubridate))
 suppressMessages(library(doParallel))
 suppressMessages(library(FSelector))
 suppressMessages(library(pROC))
+suppressMessages(library(RWeka))
 
 #LINUX
 setwd("~/Projects/RStudio/TwitterAnalysis/Engine/AnalysisResults/Tests")

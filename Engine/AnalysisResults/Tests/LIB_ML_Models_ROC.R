@@ -1663,7 +1663,7 @@ ML_Models_apply <- function(filename){
   
   
   s <- paste(d,"f1", sep="")
-  load(s)
+  m1.t <- system.time(load(s))
   
   # Plots
   #plot(fit.m1, main = "Accuracy: fit.m1")
@@ -1693,7 +1693,7 @@ ML_Models_apply <- function(filename){
   #   mtry == varied, 3 times (2,4,7)
   
   s <- paste(d,"f2", sep="")
-  load(s)
+  m2.t <- system.time(load(s))
   
   # Plots
   #plot(fit.m2, main = "Accuracy: fit.m2")
@@ -1722,7 +1722,7 @@ ML_Models_apply <- function(filename){
   #   C == varied (0.01, 0.255, 0.5), 3 times
   
   s <- paste(d,"f3", sep="")
-  load(s)
+  m3.t <- system.time(load(s))
   
   # Plots
   #plot(fit.m3, main = "Accuracy: fit.m3")
@@ -1751,7 +1751,7 @@ ML_Models_apply <- function(filename){
   #   no tuning
   
   s <- paste(d,"f4", sep="")
-  load(s)
+  m4.t <- system.time(load(s))
   
   # Plots
   #plot(fit.m4, main = "Accuracy: fit.m4")
@@ -1783,7 +1783,7 @@ ML_Models_apply <- function(filename){
   #   kernel (fixed = optimal)
   
   s <- paste(d,"f5", sep="")
-  load(s)
+  m5.t <- system.time(load(s))
   
   # In-sample fit
   fit.m5.trn.pred = predict(fit.m5, newdata = testing)
@@ -1810,7 +1810,7 @@ ML_Models_apply <- function(filename){
   #   method == varied, 2 times (Adaboost.M1, Real adaboost)
   
   s <- paste(d,"f6", sep="")
-  load(s)
+  m6.t <- system.time(load(s))
   
   # In-sample fit
   fit.m6.trn.pred = predict(fit.m6, newdata = testing)
@@ -1836,7 +1836,7 @@ ML_Models_apply <- function(filename){
   #   cp == varied, 3 times (0.05, 0.13, 0.31)
   
   s <- paste(d,"f7", sep="")
-  load(s)
+  m7.t <- system.time(load(s))
   
   # In-sample fit
   fit.m7.trn.pred = predict(fit.m7, newdata = testing)
@@ -1862,7 +1862,7 @@ ML_Models_apply <- function(filename){
   #   decay 3
   
   s <- paste(d,"f8", sep="")
-  load(s)
+  m8.t <- system.time(load(s))
   
   # In-sample fit
   fit.m8.trn.pred = predict(fit.m8, newdata = testing)

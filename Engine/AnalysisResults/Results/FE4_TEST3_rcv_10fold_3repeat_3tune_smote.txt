@@ -1,2 +1,18 @@
 [1] "M1 complete"
-Timing stopped at: 46.016 3.656 49.856 
+   user  system elapsed 
+ 19.876   1.372  21.289 
+[1] "M2 complete"
+   user  system elapsed 
+ 15.508   0.924  16.421 
+[1] "M1 complete"
+   user  system elapsed 
+ 19.948   1.364  21.357 
+[1] "M2 complete"
+   user  system elapsed 
+ 15.880   0.968  16.846 
+[1] "M1 complete"
+   user  system elapsed 
+ 19.884   2.980  22.911 
+[1] "M2 complete"
+   user  system elapsed 
+ 15.384   1.480  16.894 
