@@ -22,7 +22,7 @@ setSeeds <- function(method = "cv", numbers = 1, repeats = 1, tunes = NULL, seed
 }
 
 ML_Models_ROC_P <- function(training, resamp, folds, tune, r, samp, filename, ss = 0){
-  
+
   if(samp=="none"){
     samp <- NULL
   }
@@ -461,7 +461,7 @@ ML_Models_ROC_P <- function(training, resamp, folds, tune, r, samp, filename, ss
     save(fit.m7,file="f7")  
     save(fit.m8,file="f8")  
   }
-  
+
   #--------------------------------------
   # Model Comparison
   #--------------------------------------
