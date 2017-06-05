@@ -1,18 +1,9 @@
 suppressMessages(library(RODBC))
 
+options(scipen=999)
+
 #LINUX
 myconn<-odbcConnect("SAPHANA", uid="SYSTEM", pwd="oEqm66jccx", believeNRows=FALSE, rows_at_time=1, DBMSencoding="UTF-8") 
-table1 <- "TWITTER.ZZ_USERS"
-table2 <- "TWITTER.ZZ_USERS_ENRICH"
-
-#sql1 <- paste("SELECT U.ID, U.SCREENNAME, L.LONGITUDE AS LONG1, L.LATITUDE AS LAT1, TZ.LONGITUDE AS LONG2, TZ.LATITUDE AS LAT2 FROM ",table1," U	JOIN TWITTER.SMP_LOCATION L ON LOWER(TRIM(L.LOCATION)) = LOWER(TRIM(U.LOCATION)) AND L.LATITUDE IS NOT NULL JOIN TWITTER.SMP_LOCATION TZ ON LOWER(TRIM(TZ.LOCATION)) = LOWER(TRIM(U.TIMEZONE)) AND TZ.LATITUDE IS NOT NULL WHERE U.TIMEZONE IS NOT NULL AND U.LOCATION IS NOT NULL",sep="")
-sql1 <- paste("SELECT U.ID, U.SCREENNAME, L.\"lon\" AS LONG1, L.\"lat\" AS LAT1, TZ.\"lon\" AS LONG2, TZ.\"lat\" AS LAT2 FROM ",table1," U JOIN TWITTER.SMP_LOCATION_C L ON UPPER(TRIM(L.\"location\")) = UPPER(TRIM(U.LOCATION)) AND L.\"lat\" IS NOT NULL JOIN TWITTER.SMP_LOCATION_C TZ ON UPPER(TRIM(TZ.\"location\")) = UPPER(TRIM(U.TIMEZONE)) AND TZ.\"lat\" IS NOT NULL WHERE U.TIMEZONE IS NOT NULL AND U.LOCATION IS NOT NULL
-",sep="")
-
-#' ###Load data
-#+ get_data
-tl <- system.time(data.latlon <- sqlQuery(myconn, sql1) )
-
 
 # Convert degrees to radians
 deg2rad <- function(deg) return(deg*pi/180)
@@ -45,10 +36,29 @@ hf_latlon <- function(x, myconn, t) {
   sqlQuery(myconn, sql)
 }
 
+getl <- function(myconn, t1, t2) {
 
-#latlon vs timezone geo (deception)
-data.latlon_clean <- na.omit(data.frame(data.latlon$ID, data.latlon$SCREENNAME, data.latlon$LONG1, data.latlon$LAT1, data.latlon$LONG2, data.latlon$LAT2))
-colnames(data.latlon_clean) <- c("user_id", "screenname", "longitude", "latitude", "lon", "lat")
-apply(data.latlon_clean, 1, hf_latlon, myconn, table2)
+  table1 <- t1
+  table2 <- t2
+  
+  #run first sql one then the other
+  #sql1 <- paste("SELECT U.ID, U.SCREENNAME, L.LONGITUDE AS LONG1, L.LATITUDE AS LAT1, TZ.LONGITUDE AS LONG2, TZ.LATITUDE AS LAT2 FROM ",table1," U	JOIN TWITTER.SMP_LOCATION L ON LOWER(TRIM(L.LOCATION)) = LOWER(TRIM(U.LOCATION)) AND L.LATITUDE IS NOT NULL JOIN TWITTER.SMP_LOCATION TZ ON LOWER(TRIM(TZ.LOCATION)) = LOWER(TRIM(U.TIMEZONE)) AND TZ.LATITUDE IS NOT NULL WHERE U.TIMEZONE IS NOT NULL AND U.LOCATION IS NOT NULL",sep="")
+  sql1 <- paste("SELECT U.ID, U.SCREENNAME, L.\"lon\" AS LONG1, L.\"lat\" AS LAT1, TZ.\"lon\" AS LONG2, TZ.\"lat\" AS LAT2 FROM ",table1," U JOIN TWITTER.SMP_LOCATION_C L ON UPPER(TRIM(L.\"location\")) = UPPER(TRIM(U.LOCATION)) AND L.\"lat\" IS NOT NULL JOIN TWITTER.SMP_LOCATION_C TZ ON UPPER(TRIM(TZ.\"location\")) = UPPER(TRIM(U.TIMEZONE)) AND TZ.\"lat\" IS NOT NULL WHERE U.TIMEZONE IS NOT NULL AND U.LOCATION IS NOT NULL",sep="")
+  
+  #' ###Load data
+  #+ get_data
+  tl <- system.time(data.latlon <- sqlQuery(myconn, sql1) )
+  
+  #latlon vs timezone geo (deception)
+  data.latlon_clean <- na.omit(data.frame(data.latlon$ID, data.latlon$SCREENNAME, data.latlon$LONG1, data.latlon$LAT1, data.latlon$LONG2, data.latlon$LAT2))
+  colnames(data.latlon_clean) <- c("user_id", "screenname", "longitude", "latitude", "lon", "lat")
+  apply(data.latlon_clean, 1, hf_latlon, myconn, table2)
+}
+
+getl(myconn, "TWITTER.tweets2_users_20170106", "TWITTER.zz_users_enrich_20170106")
+getl(myconn, "TWITTER.tweets2_users_20170418", "TWITTER.zz_users_enrich_20170418")
+getl(myconn, "TWITTER.tweets2_users_20170429", "TWITTER.zz_users_enrich_20170429")
+getl(myconn, "TWITTER.tweets2_users_20170517", "TWITTER.zz_users_enrich_20170517")
+getl(myconn, "TWITTER.tweets2_users_20170527", "TWITTER.zz_users_enrich_20170527")
 
 close(myconn)

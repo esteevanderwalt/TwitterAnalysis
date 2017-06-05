@@ -6,7 +6,6 @@ suppressMessages(library(lubridate))
 suppressMessages(library(doParallel))
 suppressMessages(library(FSelector))
 suppressMessages(library(pROC))
-suppressMessages(library(RWeka))
 
 #LINUX
 setwd("~/Projects/RStudio/TwitterAnalysis/Engine/AnalysisResults/Tests")
@@ -20,7 +19,7 @@ myconn<-odbcConnect("SAPHANA", uid="SYSTEM", pwd="oEqm66jccx", believeNRows=FALS
 
 #' ###Load data
 #+ get_data
-tl <- system.time(data.original <- sqlQuery(myconn, "SELECT ID, SCREENNAME, DISTANCE_LOCATION, DISTANCE_TZ, COMPARE_GENDER, LEVENSHTEIN, HAMMING, COMPARE_AGE, FF_RATIO, PROFILE_HAS_URL, DUP_PROFILE, HAS_PROFILE, LISTED_COUNT, CLASS from TWITTER.ZZ_FE_SET") )
+tl <- system.time(data.original <- sqlQuery(myconn, "SELECT ID, SCREENNAME, DISTANCE_LOCATION, DISTANCE_TZ, COMPARE_GENDER, LEVENSHTEIN, HAMMING, COMPARE_AGE, FF_RATIO, PROFILE_HAS_URL, DUP_PROFILE, HAS_PROFILE, LISTED_COUNT, CLASS from TWITTER.ZZ_RFE_SET") )
 
 close(myconn)
 
@@ -82,17 +81,18 @@ tune <- c(3)
 #sampling
 sampling <- c("smote")  
 #,"none","smote"
+sqlSaveTable <- "NONE"
 
 cl <- makeCluster(detectCores())
-registerDoParallel(cores=6) #or cl
+registerDoParallel(cores=7) #or cl
 for (m in sampling) {
   for (x in folds) {
     for (y in repeats) {
       for (z in tune) {
-        filename <- paste("~/Projects/RStudio/TwitterAnalysis/Engine/AnalysisResults/Results/FE4_TEST3_rcv_",x,"fold_",y,"repeat_",z,"tune_",m,".txt",sep="")
+        filename <- paste("~/Projects/RStudio/TwitterAnalysis/Engine/AnalysisResults/Results/RFE4_SAVE_rcv_",x,"fold_",y,"repeat_",z,"tune_",m,".txt",sep="")
         #print(filename)
-        #t <- system.time(ML_Models_ROC_P(training, resamp, x, z, y, m, filename, 1))
-        t <- system.time(ML_Models_apply(filename))
+        t <- system.time(ML_Models_ROC_P(training, resamp, x, z, y, m, filename, 1))
+        #t <- system.time(ML_Models_apply(filename, sqlSaveTable))
 
         sink(filename, append = TRUE)
         

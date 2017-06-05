@@ -1,0 +1,328 @@
+[1] "M1 started"
+[1] "M1 complete"
+    user   system  elapsed 
+1396.252   19.604  255.957 
+[1] "M2 started"
+[1] "M2 complete"
+   user  system elapsed 
+608.732  14.824  73.581 
+[1] "M3 started"
+[1] "M3 complete"
+   user  system elapsed 
+400.104   1.076 397.604 
+[1] "M4 started"
+[1] "M4 complete"
+   user  system elapsed 
+ 93.364   8.556  12.046 
+[1] "M5 started"
+[1] "M5 complete"
+   user  system elapsed 
+472.680   5.752  84.524 
+[1] "M6 started"
+[1] "M6 complete"
+    user   system  elapsed 
+2459.356    7.512  424.836 
+[1] "M7 started"
+[1] "M7 complete"
+   user  system elapsed 
+442.620   5.044  11.738 
+[1] "M8 started"
+[1] "M8 complete"
+   user  system elapsed 
+391.420   5.724  71.613 
+
+[1] "Model engine summary"
+[1] "===================="
+  Model Type Model Name  Accuracy        Kappa Sensitivity Specificity
+1        SVM  svmRadial 0.9717045  0.028141816 0.096330275   0.9766727
+2       tree         rf 0.9757430  0.034429224 0.096330275   0.9807342
+3       tree        J48 0.9789013  0.029646829 0.073394495   0.9840406
+4   bayesian   bayesglm 0.6815264  0.006709703 0.509174312   0.6825046
+5    cluster        knn 0.9800922 -0.002953258 0.009174312   0.9856027
+6       tree   Adaboost 0.9678213  0.028062554 0.110091743   0.9726894
+7       tree      rpart 0.9540230  0.019762123 0.123853211   0.9587347
+8  neuralnet       nnet 0.7524076  0.008538526 0.435779817   0.7542046
+    Precision      Recall          F1  Prevalence       AUC    Cost
+1 0.022900763 0.096330275 0.037004405 0.005643575 0.6088320 255.957
+2 0.027595269 0.096330275 0.042900919 0.005643575 0.6103519  73.581
+3 0.025437202 0.073394495 0.037780401 0.005643575 0.6485549 397.604
+4 0.009019990 0.509174312 0.017725966 0.005643575 0.6156803  12.046
+5 0.003603604 0.009174312 0.005174644 0.005643575 0.4973885  84.524
+6 0.022367195 0.110091743 0.037180480 0.005643575 0.6739674 424.836
+7 0.016749380 0.123853211 0.029508197 0.005643575 0.6206881  11.738
+8 0.009962248 0.435779817 0.019479188 0.005643575 0.6396484  71.613
+
+[1] "Model attribute importance"
+[1] "=========================="
+                  svmRadial        rf       J48  bayesglm       knn  Adaboost
+COMPARE_AGE       100.00000  29.06159 100.00000 100.00000 100.00000 100.00000
+COMPARE_GENDER     74.82665  48.28052  74.82665  74.82665  74.82665  74.82665
+DISTANCE_LOCATION  71.26471   0.00000  71.26471  71.26471  71.26471  71.26471
+DISTANCE_TZ        89.27364  11.48201  89.27364  89.27364  89.27364  89.27364
+HAMMING             0.00000 100.00000   0.00000   0.00000   0.00000   0.00000
+LEVENSHTEIN        28.54121  54.56274  28.54121  28.54121  28.54121  28.54121
+                      rpart      nnet
+COMPARE_AGE        44.88837   0.00000
+COMPARE_GENDER     73.20905  73.88053
+DISTANCE_LOCATION   0.00000   6.12570
+DISTANCE_TZ        22.55094  17.62521
+HAMMING           100.00000 100.00000
+LEVENSHTEIN        62.24189  13.65715
+
+[1] "Model engine results"
+[1] "===================="
+
+[1] "+++++++++++++"
+[1] "rf"
+[1] "+++++++++++++"
+
+Call:
+ randomForest(x = x, y = y, mtry = param$mtry) 
+               Type of random forest: classification
+                     Number of trees: 500
+No. of variables tried at each split: 2
+
+        OOB estimate of  error rate: 21.34%
+Confusion matrix:
+            deceptive trustworthy class.error
+deceptive        1021         947  0.48119919
+trustworthy        33        2591  0.01257622
+
+  mtry       ROC       Sens      Spec      ROCSD     SensSD      SpecSD
+1    2 0.6024133 0.08391608 0.9813653 0.03283349 0.02791269 0.003192029
+2    4 0.5745863 0.09152292 0.9757188 0.04304710 0.03241082 0.004855874
+3    6 0.5766883 0.10013209 0.9699854 0.04212257 0.02710252 0.004132015
+
+[1] "+++++++++++++"
+[1] "J48"
+[1] "+++++++++++++"
+J48 pruned tree
+------------------
+
+HAMMING <= -1.097971
+|   COMPARE_GENDER <= 1.061429
+|   |   COMPARE_AGE <= 1.020733
+|   |   |   DISTANCE_TZ <= 3.323504: trustworthy (1509.0/250.0)
+|   |   |   DISTANCE_TZ > 3.323504
+|   |   |   |   LEVENSHTEIN <= -0.357808: trustworthy (22.0/7.0)
+|   |   |   |   LEVENSHTEIN > -0.357808: deceptive (9.0/3.0)
+|   |   COMPARE_AGE > 1.020733
+|   |   |   DISTANCE_TZ <= 2.173101: trustworthy (146.0/6.0)
+|   |   |   DISTANCE_TZ > 2.173101
+|   |   |   |   LEVENSHTEIN <= -0.357808
+|   |   |   |   |   DISTANCE_TZ <= 2.317259: deceptive (4.0/1.0)
+|   |   |   |   |   DISTANCE_TZ > 2.317259: trustworthy (3.0)
+|   |   |   |   LEVENSHTEIN > -0.357808: trustworthy (5.0)
+|   COMPARE_GENDER > 1.061429: trustworthy (191.0/11.0)
+HAMMING > -1.097971
+|   HAMMING <= 0.96969: deceptive (566.0)
+|   HAMMING > 0.96969
+|   |   COMPARE_GENDER <= -0.457817
+|   |   |   COMPARE_AGE <= 0.488994: trustworthy (1409.0/669.0)
+|   |   |   COMPARE_AGE > 0.488994
+|   |   |   |   COMPARE_AGE <= 0.549556: trustworthy (61.0/7.0)
+|   |   |   |   COMPARE_AGE > 0.549556
+|   |   |   |   |   COMPARE_AGE <= 1.461431: deceptive (14.0)
+|   |   |   |   |   COMPARE_AGE > 1.461431: trustworthy (128.0/25.0)
+|   |   COMPARE_GENDER > -0.457817
+|   |   |   COMPARE_GENDER <= 2.584243: deceptive (300.0)
+|   |   |   COMPARE_GENDER > 2.584243
+|   |   |   |   COMPARE_AGE <= 1.97932
+|   |   |   |   |   DISTANCE_TZ <= -0.3112
+|   |   |   |   |   |   COMPARE_AGE <= 0.50014: trustworthy (30.0/12.0)
+|   |   |   |   |   |   COMPARE_AGE > 0.50014: deceptive (134.0/42.0)
+|   |   |   |   |   DISTANCE_TZ > -0.3112: trustworthy (22.0)
+|   |   |   |   COMPARE_AGE > 1.97932: trustworthy (39.0)
+
+Number of Leaves  : 	18
+
+Size of the tree : 	35
+
+
+      C M       ROC       Sens      Spec      ROCSD     SensSD      SpecSD
+1 0.010 1 0.6133127 0.07574981 0.9834191 0.03346456 0.02678450 0.003714018
+2 0.010 2 0.6129412 0.07578866 0.9841857 0.03172575 0.02441714 0.003945659
+3 0.010 3 0.6129299 0.07320901 0.9847729 0.03298883 0.02519937 0.003849728
+4 0.255 1 0.6197507 0.07372183 0.9849783 0.03378491 0.02350182 0.004176494
+5 0.255 2 0.6166353 0.07271173 0.9847295 0.02970396 0.02299432 0.005141439
+6 0.255 3 0.6184622 0.07681430 0.9835696 0.03112363 0.02784957 0.005951669
+7 0.500 1 0.6269405 0.08940171 0.9752442 0.03059107 0.06386861 0.037737986
+8 0.500 2 0.6239919 0.08860917 0.9763180 0.03254175 0.07198486 0.037882601
+9 0.500 3 0.6266498 0.07577312 0.9826381 0.03458342 0.02336100 0.004817541
+
+[1] "+++++++++++++"
+[1] "bayesglm"
+[1] "+++++++++++++"
+NULL
+                  coef.est coef.se
+(Intercept)        0.36     0.04  
+DISTANCE_LOCATION  0.52     0.46  
+DISTANCE_TZ        0.18     0.03  
+COMPARE_GENDER    -0.52     0.05  
+LEVENSHTEIN        0.15     0.05  
+HAMMING           -0.81     0.05  
+COMPARE_AGE        0.43     0.05  
+---
+n = 4592, k = 7
+residual deviance = 5559.9, null deviance = 6271.8 (difference = 711.9)
+
+  parameter       ROC      Sens      Spec      ROCSD     SensSD      SpecSD
+1      none 0.6104136 0.4949262 0.6754893 0.03947011 0.06721771 0.009498891
+
+[1] "+++++++++++++"
+[1] "kknn"
+[1] "+++++++++++++"
+
+Call:
+train.kknn(formula = .outcome ~ ., data = dat, kmax = param$kmax,     distance = param$distance, kernel = as.character(param$kernel))
+
+Type of response variable: nominal
+Minimal misclassification: 0.2166812
+Best kernel: optimal
+Best k: 1
+
+  kmax distance  kernel       ROC       Sens      Spec       ROCSD     SensSD
+1    5        2 optimal 0.5044496 0.02538462 0.9835145 0.007835561 0.01611753
+2    7        2 optimal 0.5046691 0.02541570 0.9839224 0.010282210 0.02095637
+3    9        2 optimal 0.5042487 0.02436674 0.9841307 0.006925661 0.01414596
+       SpecSD
+1 0.003330896
+2 0.003825026
+3 0.003041671
+
+[1] "+++++++++++++"
+[1] "adaboost"
+[1] "+++++++++++++"
+adaboost(formula = .outcome ~ ., data = dat, nIter = param$nIter)
+.outcome ~ .
+<environment: 0x102c80c0>
+Dependent Variable: .outcome
+No of trees:50
+The weights of the trees are:0.69614690.54583730.31472860.31151160.22195570.23153340.18367890.18607240.1580750.15448330.13914170.13517230.12198680.12058010.11201960.10944420.10447640.10301220.092077110.094101130.088837670.0853560.085697110.077144830.07911790.077060230.07320220.069160810.069313290.067691260.06459350.063839310.061885640.060512520.059805580.057432440.056518230.054803110.053359120.053413390.050806570.052398050.052177950.049595730.049248530.046479070.045872470.04514970.044567230.04415926
+
+  nIter        method       ROC       Sens      Spec      ROCSD     SensSD
+1    50   Adaboost.M1 0.6515412 0.09712510 0.9735290 0.03506029 0.02721681
+2    50 Real adaboost 0.5066969 0.38589744 0.7952883 0.05112358 0.14533551
+3   100   Adaboost.M1 0.6478415 0.09048951 0.9754323 0.03547847 0.02890057
+4   100 Real adaboost 0.5296401 0.38483294 0.7891296 0.05060207 0.13589758
+5   150   Adaboost.M1 0.6483850 0.07874903 0.9809921 0.03461585 0.03674565
+6   150 Real adaboost 0.5341808 0.37157731 0.8037699 0.04941719 0.15057272
+       SpecSD
+1 0.004459462
+2 0.084275285
+3 0.003922010
+4 0.078382380
+5 0.005076999
+6 0.090108049
+
+[1] "+++++++++++++"
+[1] "rpart"
+[1] "+++++++++++++"
+n= 4592 
+
+node), split, n, loss, yval, (yprob)
+      * denotes terminal node
+
+   1) root 4592 1968 trustworthy (0.42857143 0.57142857)  
+     2) HAMMING>=-1.085711 2678  993 deceptive (0.62920090 0.37079910)  
+       4) HAMMING< 0.9805304 566    0 deceptive (1.00000000 0.00000000) *
+       5) HAMMING>=0.9805304 2112  993 deceptive (0.52982955 0.47017045)  
+        10) COMPARE_GENDER>=-0.458497 524   82 deceptive (0.84351145 0.15648855)  
+          20) COMPARE_GENDER< 2.587925 333    0 deceptive (1.00000000 0.00000000) *
+          21) COMPARE_GENDER>=2.587925 191   82 deceptive (0.57068063 0.42931937)  
+            42) COMPARE_AGE< 2.159013 161   52 deceptive (0.67701863 0.32298137)  
+              84) DISTANCE_TZ< -0.3078672 144   35 deceptive (0.75694444 0.24305556)  
+               168) COMPARE_AGE>=0.6385371 113   16 deceptive (0.85840708 0.14159292) *
+               169) COMPARE_AGE< 0.6385371 31   12 trustworthy (0.38709677 0.61290323) *
+              85) DISTANCE_TZ>=-0.3078672 17    0 trustworthy (0.00000000 1.00000000) *
+            43) COMPARE_AGE>=2.159013 30    0 trustworthy (0.00000000 1.00000000) *
+        11) COMPARE_GENDER< -0.458497 1588  677 trustworthy (0.42632242 0.57367758)  
+          22) COMPARE_AGE< 0.534559 1395  630 trustworthy (0.45161290 0.54838710)  
+            44) COMPARE_AGE>=-0.5093617 14    0 deceptive (1.00000000 0.00000000) *
+            45) COMPARE_AGE< -0.5093617 1381  616 trustworthy (0.44605358 0.55394642)  
+              90) DISTANCE_TZ< 1.607726 1238  567 trustworthy (0.45799677 0.54200323)  
+               180) DISTANCE_TZ>=-0.2113233 126   57 deceptive (0.54761905 0.45238095)  
+                 360) DISTANCE_TZ< -0.03641615 10    0 deceptive (1.00000000 0.00000000) *
+                 361) DISTANCE_TZ>=-0.03641615 116   57 deceptive (0.50862069 0.49137931)  
+                   722) DISTANCE_TZ< 0.5260103 61   26 deceptive (0.57377049 0.42622951)  
+                    1444) DISTANCE_TZ>=0.1790875 23    5 deceptive (0.78260870 0.21739130) *
+                    1445) DISTANCE_TZ< 0.1790875 38   17 trustworthy (0.44736842 0.55263158)  
+                      2890) DISTANCE_TZ< 0.1613492 18    8 deceptive (0.55555556 0.44444444) *
+                      2891) DISTANCE_TZ>=0.1613492 20    7 trustworthy (0.35000000 0.65000000) *
+                   723) DISTANCE_TZ>=0.5260103 55   24 trustworthy (0.43636364 0.56363636)  
+                    1446) DISTANCE_TZ>=0.5603232 46   23 deceptive (0.50000000 0.50000000)  
+                      2892) DISTANCE_TZ< 0.84404 13    4 deceptive (0.69230769 0.30769231) *
+                      2893) DISTANCE_TZ>=0.84404 33   14 trustworthy (0.42424242 0.57575758)  
+                        5786) DISTANCE_TZ>=1.190974 14    5 deceptive (0.64285714 0.35714286) *
+                        5787) DISTANCE_TZ< 1.190974 19    5 trustworthy (0.26315789 0.73684211) *
+                    1447) DISTANCE_TZ< 0.5603232 9    1 trustworthy (0.11111111 0.88888889) *
+               181) DISTANCE_TZ< -0.2113233 1112  498 trustworthy (0.44784173 0.55215827)  
+                 362) DISTANCE_TZ< -0.2143537 1082  497 trustworthy (0.45933457 0.54066543)  
+                   724) DISTANCE_TZ>=-0.3991985 16    0 deceptive (1.00000000 0.00000000) *
+                   725) DISTANCE_TZ< -0.3991985 1066  481 trustworthy (0.45121951 0.54878049)  
+                    1450) HAMMING>=1.154611 7    1 deceptive (0.85714286 0.14285714) *
+                    1451) HAMMING< 1.154611 1059  475 trustworthy (0.44853636 0.55146364)  
+                      2902) LEVENSHTEIN< 2.728358 1040  470 trustworthy (0.45192308 0.54807692)  
+                        5804) LEVENSHTEIN>=0.9810523 7    0 deceptive (1.00000000 0.00000000) *
+                        5805) LEVENSHTEIN< 0.9810523 1033  463 trustworthy (0.44820910 0.55179090) *
+                      2903) LEVENSHTEIN>=2.728358 19    5 trustworthy (0.26315789 0.73684211) *
+                 363) DISTANCE_TZ>=-0.2143537 30    1 trustworthy (0.03333333 0.96666667) *
+              91) DISTANCE_TZ>=1.607726 143   49 trustworthy (0.34265734 0.65734266)  
+               182) DISTANCE_TZ>=1.871747 108   47 trustworthy (0.43518519 0.56481481)  
+                 364) DISTANCE_TZ>=2.262054 81   39 trustworthy (0.48148148 0.51851852)  
+                   728) DISTANCE_TZ< 2.590884 7    2 deceptive (0.71428571 0.28571429) *
+                   729) DISTANCE_TZ>=2.590884 74   34 trustworthy (0.45945946 0.54054054)  
+                    1458) DISTANCE_TZ>=3.059612 45   22 deceptive (0.51111111 0.48888889)  
+                      2916) DISTANCE_TZ< 4.048365 22    9 deceptive (0.59090909 0.40909091) *
+                      2917) DISTANCE_TZ>=4.048365 23   10 trustworthy (0.43478261 0.56521739)  
+                        5834) DISTANCE_TZ>=4.421409 14    6 deceptive (0.57142857 0.42857143) *
+                        5835) DISTANCE_TZ< 4.421409 9    2 trustworthy (0.22222222 0.77777778) *
+                    1459) DISTANCE_TZ< 3.059612 29   11 trustworthy (0.37931034 0.62068966)  
+                      2918) DISTANCE_TZ< 2.908041 22   10 trustworthy (0.45454545 0.54545455)  
+                        5836) DISTANCE_TZ>=2.686819 11    5 deceptive (0.54545455 0.45454545) *
+                        5837) DISTANCE_TZ< 2.686819 11    4 trustworthy (0.36363636 0.63636364) *
+                      2919) DISTANCE_TZ>=2.908041 7    1 trustworthy (0.14285714 0.85714286) *
+                 365) DISTANCE_TZ< 2.262054 27    8 trustworthy (0.29629630 0.70370370) *
+               183) DISTANCE_TZ< 1.871747 35    2 trustworthy (0.05714286 0.94285714) *
+          23) COMPARE_AGE>=0.534559 193   47 trustworthy (0.24352332 0.75647668)  
+            46) DISTANCE_TZ>=0.005291405 39   19 trustworthy (0.48717949 0.51282051)  
+              92) DISTANCE_TZ< 0.305482 7    0 deceptive (1.00000000 0.00000000) *
+              93) DISTANCE_TZ>=0.305482 32   12 trustworthy (0.37500000 0.62500000) *
+            47) DISTANCE_TZ< 0.005291405 154   28 trustworthy (0.18181818 0.81818182)  
+              94) COMPARE_AGE>=0.5833267 105   25 trustworthy (0.23809524 0.76190476)  
+               188) COMPARE_AGE< 1.592582 7    0 deceptive (1.00000000 0.00000000) *
+               189) COMPARE_AGE>=1.592582 98   18 trustworthy (0.18367347 0.81632653) *
+              95) COMPARE_AGE< 0.5833267 49    3 trustworthy (0.06122449 0.93877551) *
+     3) HAMMING< -1.085711 1914  283 trustworthy (0.14785789 0.85214211) *
+
+  cp       ROC      Sens      Spec      ROCSD     SensSD      SpecSD
+1  0 0.6380159 0.1052214 0.9668063 0.03406837 0.03052562 0.005005033
+
+[1] "+++++++++++++"
+[1] "nnet"
+[1] "+++++++++++++"
+a 6-5-1 network with 41 weights
+inputs: DISTANCE_LOCATION DISTANCE_TZ COMPARE_GENDER LEVENSHTEIN HAMMING COMPARE_AGE 
+output(s): .outcome 
+options were - entropy fitting  decay=0.1
+
+  size decay       ROC      Sens      Spec      ROCSD     SensSD     SpecSD
+1    1 0e+00 0.6120348 0.5152681 0.6527767 0.03775852 0.12181410 0.06716040
+2    1 1e-04 0.6096133 0.5131391 0.6616156 0.04169450 0.15133957 0.09004768
+3    1 1e-01 0.6144980 0.5350583 0.6467188 0.03763590 0.07215410 0.04023520
+4    3 0e+00 0.6311686 0.1696970 0.9167367 0.03720659 0.14474830 0.09031883
+5    3 1e-04 0.6294856 0.1504895 0.9227567 0.03186664 0.13174014 0.08396341
+6    3 1e-01 0.6309561 0.2075291 0.8892712 0.03388248 0.15934060 0.10372531
+7    5 0e+00 0.6357308 0.1011888 0.9661469 0.03542896 0.03258792 0.01276132
+8    5 1e-04 0.6380985 0.1184382 0.9490225 0.03773511 0.07683540 0.05433862
+9    5 1e-01 0.6422759 0.1504740 0.9365441 0.03536083 0.12749313 0.07194102
+
+[1] "Query loading run time"
+[1] "=============="
+   user  system elapsed 
+  3.620   0.212   5.339 
+
+[1] "Models run time"
+[1] "=============="
+    user   system  elapsed 
+7091.808   73.320 2174.220 

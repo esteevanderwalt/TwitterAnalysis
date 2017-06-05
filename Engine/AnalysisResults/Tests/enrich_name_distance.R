@@ -7,8 +7,8 @@ options(scipen=999)
 
 #LINUX
 myconn<-odbcConnect("SAPHANA", uid="SYSTEM", pwd="oEqm66jccx", believeNRows=FALSE, rows_at_time=1, DBMSencoding="UTF-8") 
-table1 <- "TWITTER.ZZ_USERS"
-table2 <- "TWITTER.ZZ_USERS_ENRICH"
+table1 <- "TWITTER.tweets2_users_20170106"
+table2 <- "TWITTER.zz_users_enrich_20170106"
 
 sql1 <- paste("SELECT U.ID, U.NAME, U.SCREENNAME FROM ",table1, " U JOIN ",table2," E ON E.ID = U.ID and E.SCREENNAME = U.SCREENNAME WHERE E.HAMMING IS NULL",sep="")
 

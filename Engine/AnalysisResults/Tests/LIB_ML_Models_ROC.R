@@ -452,14 +452,18 @@ ML_Models_ROC_P <- function(training, resamp, folds, tune, r, samp, filename, ss
 
   #save models
   if(ss == 1){
-    save(fit.m1,file="f1")  
-    save(fit.m2,file="f2")  
-    save(fit.m3,file="f3")  
-    save(fit.m4,file="f4")  
-    save(fit.m5,file="f5")  
-    save(fit.m6,file="f6")  
-    save(fit.m7,file="f7")  
-    save(fit.m8,file="f8")  
+    save(fit.m1,file="rf1")  
+    save(fit.m2,file="rf2")  
+    
+    #library(rJava)
+    #.jcache(fit.m3$classifier)
+    save(fit.m3,file="rf3")  
+
+    save(fit.m4,file="rf4")  
+    save(fit.m5,file="rf5")  
+    save(fit.m6,file="rf6")  
+    save(fit.m7,file="rf7")  
+    save(fit.m8,file="rf8")  
   }
 
   #--------------------------------------
@@ -1646,10 +1650,9 @@ ML_Models_ROC_Test <- function(training, resamp, folds, tune, r, filename){
   
   sink()
   
-  
 }
 
-ML_Models_apply <- function(filename){
+ML_Models_apply <- function(filename, sqlSaveTable, data.original, testing){
   
   d <- "~/Projects/RStudio/TwitterAnalysis/Engine/AnalysisResults/Results/"
   
@@ -1662,7 +1665,7 @@ ML_Models_apply <- function(filename){
   #   C == varied, 3 times (0.25,0.5,1.0)
   
   
-  s <- paste(d,"f1", sep="")
+  s <- paste(d,"rf1", sep="")
   m1.t <- system.time(load(s))
   
   # Plots
@@ -1679,6 +1682,12 @@ ML_Models_apply <- function(filename){
   a[,2] <- NULL
   fit.m1.imp <- a
   fit.m1.mRoc <- roc(testing$CLASS,fit.m1.trn.prob[,"deceptive"], levels = c("trustworthy","deceptive"))
+  if(sqlSaveTable != "NULL"){
+    #add userid, screenname to probability results
+    b <- cbind(data.original[,1:2], fit.m1.trn.prob, fit="m1")
+    #write back results to table  
+    sqlSave(channel=myconn, b, tablename=sqlSaveTable, append=TRUE, rownames=FALSE)  
+  }
   
   sink(filename, append = TRUE)
   print("M1 complete")
@@ -1692,7 +1701,7 @@ ML_Models_apply <- function(filename){
   #   warnings() == T
   #   mtry == varied, 3 times (2,4,7)
   
-  s <- paste(d,"f2", sep="")
+  s <- paste(d,"rf2", sep="")
   m2.t <- system.time(load(s))
   
   # Plots
@@ -1708,6 +1717,12 @@ ML_Models_apply <- function(filename){
   a <- varImp(fit.m2)$importance
   fit.m2.imp <- a
   fit.m2.mRoc <- roc(testing$CLASS,fit.m2.trn.prob[,"deceptive"], levels = c("trustworthy","deceptive"))
+  if(sqlSaveTable != "NULL"){
+    #add userid, screenname to probability results
+    b <- cbind(data.original[,1:2], fit.m2.trn.prob, fit="m2")
+    #write back results to table  
+    sqlSave(channel=myconn, b, tablename=sqlSaveTable, append=TRUE, rownames=FALSE)  
+  }
   
   sink(filename, append = TRUE)
   print("M2 complete")
@@ -1721,7 +1736,7 @@ ML_Models_apply <- function(filename){
   #   M == varied (1,2,3)
   #   C == varied (0.01, 0.255, 0.5), 3 times
   
-  s <- paste(d,"f3", sep="")
+  s <- paste(d,"rf3", sep="")
   m3.t <- system.time(load(s))
   
   # Plots
@@ -1729,20 +1744,26 @@ ML_Models_apply <- function(filename){
   #plot(varImp(fit.m3), main = "Var Imp: fit.m3")
   
   # In-sample fit
-  fit.m3.trn.pred = predict(fit.m3, newdata = testing)
-  fit.m3.trn.prob = predict(fit.m3, newdata = testing, type = "prob")
-  fit.m3.trn.cm = confusionMatrix(fit.m3.trn.pred, testing$CLASS)
-  fit.m3.trn.cm$table
-  fit.m3.trn.cm$overall[1:2]
-  a <- varImp(fit.m3)$importance
-  a[,2] <- NULL
-  fit.m3.imp <- a
-  fit.m3.mRoc <- roc(testing$CLASS,fit.m3.trn.prob[,"deceptive"], levels = c("trustworthy","deceptive"))
+  #fit.m3.trn.pred = predict(fit.m3, newdata = testing)
+  #fit.m3.trn.prob = predict(fit.m3, newdata = testing, type = "prob")
+  #fit.m3.trn.cm = confusionMatrix(fit.m3.trn.pred, testing$CLASS)
+  #fit.m3.trn.cm$table
+  #fit.m3.trn.cm$overall[1:2]
+  #a <- varImp(fit.m3)$importance
+  #a[,2] <- NULL
+  #fit.m3.imp <- a
+  #fit.m3.mRoc <- roc(testing$CLASS,fit.m3.trn.prob[,"deceptive"], levels = c("trustworthy","deceptive"))
+  #if(sqlSaveTable != "NULL"){
+  #  #add userid, screenname to probability results
+  #  b <- cbind(data.original[,1:2], fit.m1.trn.prob, fit="m1")
+  #  #write back results to table  
+  #  sqlSave(channel=myconn, b, tablename=sqlSaveTable, append=TRUE, rownames=FALSE)  
+  #}
   
-  sink(filename, append = TRUE)
-  print("M3 complete")
-  print(m3.t)
-  sink()
+  #sink(filename, append = TRUE)
+  #print("M3 complete")
+  #print(m3.t)
+  #sink()
   
   #--------------------------------------
   # Model 4 - Bayesian Network
@@ -1750,7 +1771,7 @@ ML_Models_apply <- function(filename){
   # Model notes:
   #   no tuning
   
-  s <- paste(d,"f4", sep="")
+  s <- paste(d,"rf4", sep="")
   m4.t <- system.time(load(s))
   
   # Plots
@@ -1767,6 +1788,12 @@ ML_Models_apply <- function(filename){
   a[,2] <- NULL
   fit.m4.imp <- a
   fit.m4.mRoc <- roc(testing$CLASS,fit.m4.trn.prob[,"deceptive"], levels = c("trustworthy","deceptive"))
+  if(sqlSaveTable != "NULL"){
+    #add userid, screenname to probability results
+    b <- cbind(data.original[,1:2], fit.m4.trn.prob, fit="m4")
+    #write back results to table  
+    sqlSave(channel=myconn, b, tablename=sqlSaveTable, append=TRUE, rownames=FALSE)  
+  }
   
   sink(filename, append = TRUE)
   print("M4 complete")
@@ -1782,7 +1809,7 @@ ML_Models_apply <- function(filename){
   #   distance (fixed = 2)
   #   kernel (fixed = optimal)
   
-  s <- paste(d,"f5", sep="")
+  s <- paste(d,"rf5", sep="")
   m5.t <- system.time(load(s))
   
   # In-sample fit
@@ -1795,6 +1822,12 @@ ML_Models_apply <- function(filename){
   a[,2] <- NULL
   fit.m5.imp <- a
   fit.m5.mRoc <- roc(testing$CLASS,fit.m5.trn.prob[,"deceptive"], levels = c("trustworthy","deceptive"))
+  if(sqlSaveTable != "NULL"){
+    #add userid, screenname to probability results
+    b <- cbind(data.original[,1:2], fit.m5.trn.prob, fit="m5")
+    #write back results to table  
+    sqlSave(channel=myconn, b, tablename=sqlSaveTable, append=TRUE, rownames=FALSE)  
+  }
   
   sink(filename, append = TRUE)
   print("M5 complete")
@@ -1809,7 +1842,7 @@ ML_Models_apply <- function(filename){
   #   nlter == varied, 3 times (50, 100, 150)
   #   method == varied, 2 times (Adaboost.M1, Real adaboost)
   
-  s <- paste(d,"f6", sep="")
+  s <- paste(d,"rf6", sep="")
   m6.t <- system.time(load(s))
   
   # In-sample fit
@@ -1822,6 +1855,12 @@ ML_Models_apply <- function(filename){
   a[,2] <- NULL
   fit.m6.imp <- a
   fit.m6.mRoc <- roc(testing$CLASS,fit.m6.trn.prob[,"deceptive"], levels = c("trustworthy","deceptive"))
+  if(sqlSaveTable != "NULL"){
+    #add userid, screenname to probability results
+    b <- cbind(data.original[,1:2], fit.m6.trn.prob, fit="m6")
+    #write back results to table  
+    sqlSave(channel=myconn, b, tablename=sqlSaveTable, append=TRUE, rownames=FALSE)  
+  }
   
   sink(filename, append = TRUE)
   print("M6 complete")
@@ -1835,7 +1874,7 @@ ML_Models_apply <- function(filename){
   #   warnings() == F
   #   cp == varied, 3 times (0.05, 0.13, 0.31)
   
-  s <- paste(d,"f7", sep="")
+  s <- paste(d,"rf7", sep="")
   m7.t <- system.time(load(s))
   
   # In-sample fit
@@ -1847,6 +1886,12 @@ ML_Models_apply <- function(filename){
   a <- varImp(fit.m7)$importance
   fit.m7.imp <- a
   fit.m7.mRoc <- roc(testing$CLASS,fit.m7.trn.prob[,"deceptive"], levels = c("trustworthy","deceptive"))
+  if(sqlSaveTable != "NULL"){
+    #add userid, screenname to probability results
+    b <- cbind(data.original[,1:2], fit.m7.trn.prob, fit="m7")
+    #write back results to table  
+    sqlSave(channel=myconn, b, tablename=sqlSaveTable, append=TRUE, rownames=FALSE)  
+  }
   
   sink(filename, append = TRUE)
   print("M7 complete")
@@ -1861,7 +1906,7 @@ ML_Models_apply <- function(filename){
   #   size 3
   #   decay 3
   
-  s <- paste(d,"f8", sep="")
+  s <- paste(d,"rf8", sep="")
   m8.t <- system.time(load(s))
   
   # In-sample fit
@@ -1873,38 +1918,32 @@ ML_Models_apply <- function(filename){
   a <- varImp(fit.m8)$importance
   fit.m8.imp <- a
   fit.m8.mRoc <- roc(testing$CLASS,fit.m8.trn.prob[,"deceptive"], levels = c("trustworthy","deceptive"))
+  if(sqlSaveTable != "NULL"){
+    #add userid, screenname to probability results
+    b <- cbind(data.original[,1:2], fit.m8.trn.prob, fit="m8")
+    #write back results to table  
+    sqlSave(channel=myconn, b, tablename=sqlSaveTable, append=TRUE, rownames=FALSE)  
+  }
   
   sink(filename, append = TRUE)
   print("M8 complete")
   print(m8.t)
   sink()
   
-  #save models
-  if(ss == 1){
-    save(fit.m1,file="f1")  
-    save(fit.m2,file="f2")  
-    save(fit.m3,file="f3")  
-    save(fit.m4,file="f4")  
-    save(fit.m5,file="f5")  
-    save(fit.m6,file="f6")  
-    save(fit.m7,file="f7")  
-    save(fit.m8,file="f8")  
-  }
-  
   #--------------------------------------
   # Model Comparison
   #--------------------------------------
   
   # Model Types
-  model.types = c("SVM", "tree", "tree", "bayesian", "cluster", "tree", "tree","neuralnet")
+  model.types = c("SVM", "tree", "bayesian", "cluster", "tree", "tree","neuralnet")
   
   # Model Names
-  model.names = c("svmRadial", "rf", "J48", "bayesglm", "knn", "Adaboost", "rpart", "nnet")
+  model.names = c("svmRadial", "rf", "bayesglm", "knn", "Adaboost", "rpart", "nnet")
   
   # Accuracy, Train
   model.trn.acc = rbind(fit.m1.trn.cm$overall[1],
                         fit.m2.trn.cm$overall[1],
-                        fit.m3.trn.cm$overall[1],
+                        #fit.m3.trn.cm$overall[1],
                         fit.m4.trn.cm$overall[1],
                         fit.m5.trn.cm$overall[1],
                         fit.m6.trn.cm$overall[1],
@@ -1914,7 +1953,7 @@ ML_Models_apply <- function(filename){
   # Kappa, Train
   model.trn.kpp = rbind(fit.m1.trn.cm$overall[2],
                         fit.m2.trn.cm$overall[2],
-                        fit.m3.trn.cm$overall[2],
+                        #fit.m3.trn.cm$overall[2],
                         fit.m4.trn.cm$overall[2],
                         fit.m5.trn.cm$overall[2],
                         fit.m6.trn.cm$overall[2],
@@ -1924,7 +1963,7 @@ ML_Models_apply <- function(filename){
   # Sensitivity, Train
   model.trn.sens = rbind(fit.m1.trn.cm$byClass[1],
                          fit.m2.trn.cm$byClass[1],
-                         fit.m3.trn.cm$byClass[1],
+                         #fit.m3.trn.cm$byClass[1],
                          fit.m4.trn.cm$byClass[1],
                          fit.m5.trn.cm$byClass[1],
                          fit.m6.trn.cm$byClass[1],
@@ -1934,7 +1973,7 @@ ML_Models_apply <- function(filename){
   # Specificity, Train
   model.trn.spec = rbind(fit.m1.trn.cm$byClass[2],
                          fit.m2.trn.cm$byClass[2],
-                         fit.m3.trn.cm$byClass[2],
+                         #fit.m3.trn.cm$byClass[2],
                          fit.m4.trn.cm$byClass[2],
                          fit.m5.trn.cm$byClass[2],
                          fit.m6.trn.cm$byClass[2],
@@ -1944,7 +1983,7 @@ ML_Models_apply <- function(filename){
   # Precision, Train
   model.trn.prec = rbind(fit.m1.trn.cm$byClass[5],
                          fit.m2.trn.cm$byClass[5],
-                         fit.m3.trn.cm$byClass[5],
+                         #fit.m3.trn.cm$byClass[5],
                          fit.m4.trn.cm$byClass[5],
                          fit.m5.trn.cm$byClass[5],
                          fit.m6.trn.cm$byClass[5],
@@ -1954,7 +1993,7 @@ ML_Models_apply <- function(filename){
   # Recall, Train
   model.trn.rec = rbind(fit.m1.trn.cm$byClass[6],
                         fit.m2.trn.cm$byClass[6],
-                        fit.m3.trn.cm$byClass[6],
+                        #fit.m3.trn.cm$byClass[6],
                         fit.m4.trn.cm$byClass[6],
                         fit.m5.trn.cm$byClass[6],
                         fit.m6.trn.cm$byClass[6],
@@ -1964,7 +2003,7 @@ ML_Models_apply <- function(filename){
   # F1, Train
   model.trn.f1 = rbind(fit.m1.trn.cm$byClass[7],
                        fit.m2.trn.cm$byClass[7],
-                       fit.m3.trn.cm$byClass[7],
+                       #fit.m3.trn.cm$byClass[7],
                        fit.m4.trn.cm$byClass[7],
                        fit.m5.trn.cm$byClass[7],
                        fit.m6.trn.cm$byClass[7],
@@ -1974,7 +2013,7 @@ ML_Models_apply <- function(filename){
   # Prevalence, Train
   model.trn.prev = rbind(fit.m1.trn.cm$byClass[8],
                          fit.m2.trn.cm$byClass[8],
-                         fit.m3.trn.cm$byClass[8],
+                         #fit.m3.trn.cm$byClass[8],
                          fit.m4.trn.cm$byClass[8],
                          fit.m5.trn.cm$byClass[8],
                          fit.m6.trn.cm$byClass[8],
@@ -1984,7 +2023,7 @@ ML_Models_apply <- function(filename){
   #AUC
   model.trn.auc = rbind(fit.m1.mRoc$auc,
                         fit.m2.mRoc$auc,
-                        fit.m3.mRoc$auc,
+                        #fit.m3.mRoc$auc,
                         fit.m4.mRoc$auc,
                         fit.m5.mRoc$auc,
                         fit.m6.mRoc$auc,
@@ -1994,7 +2033,7 @@ ML_Models_apply <- function(filename){
   #Cost
   model.trn.cost = rbind(m1.t[3],
                          m2.t[3],
-                         m3.t[3],
+                         #m3.t[3],
                          m4.t[3],
                          m5.t[3],
                          m6.t[3],
@@ -2035,52 +2074,6 @@ ML_Models_apply <- function(filename){
   print("====================")
   
   print(model.comp)
-  
-  cat("\n")
-  print("Model attribute importance")
-  print("==========================")
-  #Show the importance of all variables per model
-  merge.all <- function(x, ..., by = "row.names") {
-    L <- list(...)
-    for (i in seq_along(L)) {
-      x <- merge(x, L[[i]], by = by)
-      rownames(x) <- x$Row.names
-      x$Row.names <- NULL
-    }
-    return(x)
-  }
-  
-  model.imp <- merge.all(fit.m1.imp,
-                         fit.m2.imp,
-                         fit.m3.imp,
-                         fit.m4.imp,
-                         fit.m5.imp,
-                         fit.m6.imp,
-                         fit.m7.imp,
-                         fit.m8.imp)
-  
-  colnames(model.imp) = c("svmRadial", "rf", "J48", "bayesglm", "knn", "Adaboost", "rpart", "nnet")
-  print(model.imp)
-  
-  cat("\n")
-  print("Model engine results")
-  print("====================")
-  
-  print_engine.all <- function(x, ...) {
-    L <- list(...)
-    for (i in seq_along(L)) {
-      cat("\n")
-      print("+++++++++++++")
-      print(L[[i]]$method)
-      print("+++++++++++++")
-      print(L[[i]]$finalModel)
-      cat("\n")
-      print(L[[i]]$results)
-    }
-  }
-  
-  print_engine.all(fit.m1,fit.m2,fit.m3,fit.m4,fit.m5,fit.m6,fit.m7,fit.m8)
-  
   
   sink()
   

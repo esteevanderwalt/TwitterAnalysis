@@ -1,18 +1,9 @@
 suppressMessages(library(RODBC))
 
+options(scipen=999)
+
 #LINUX
 myconn<-odbcConnect("SAPHANA", uid="SYSTEM", pwd="oEqm66jccx", believeNRows=FALSE, rows_at_time=1, DBMSencoding="UTF-8") 
-table1 <- "TWITTER.ZZ_USERS"
-table2 <- "TWITTER.ZZ_USERS_ENRICH"
-
-#sql1 <- paste("SELECT U.ID, U.SCREENNAME, U.LONGITUDE AS LONG1, U.LATITUDE AS LAT1, L.LONGITUDE AS LONG2, L.LATITUDE AS LAT2, LOWER(TRIM(U.LOCATION)) LOCATION FROM ",table1," U JOIN TWITTER.SMP_LOCATION L ON LOWER(TRIM(L.LOCATION)) = LOWER(TRIM(U.LOCATION)) WHERE U.LATITUDE IS NOT NULL AND L.LATITUDE IS NOT NULL",sep="")
-sql1 <- paste("SELECT U.ID, U.SCREENNAME, U.LONGITUDE AS LONG1, U.LATITUDE AS LAT1, L.\"lon\" AS LONG2, L.\"lat\" AS LAT2, UPPER(TRIM(U.LOCATION)) LOCATION FROM ",table1," U JOIN TWITTER.SMP_LOCATION_C L ON UPPER(TRIM(L.\"location\")) = UPPER(TRIM(U.LOCATION)) WHERE U.LATITUDE IS NOT NULL AND L.\"lat\" IS NOT NULL
-",sep="")
-
-#' ###Load data
-#+ get_data
-tl <- system.time(data.latlon <- sqlQuery(myconn, sql1) )
-
 
 # Convert degrees to radians
 deg2rad <- function(deg) return(deg*pi/180)
@@ -45,10 +36,29 @@ hf_latlon <- function(x, myconn, t) {
   sqlQuery(myconn, sql)
 }
 
+getl <- function(myconn, t1, t2) {
+  
+  table1 <- t1
+  table2 <- t2
+  
+  #run first sql one then the other
+  #sql1 <- paste("SELECT U.ID, U.SCREENNAME, U.LONGITUDE AS LONG1, U.LATITUDE AS LAT1, L.LONGITUDE AS LONG2, L.LATITUDE AS LAT2, LOWER(TRIM(U.LOCATION)) LOCATION FROM ",table1," U JOIN TWITTER.SMP_LOCATION L ON LOWER(TRIM(L.LOCATION)) = LOWER(TRIM(U.LOCATION)) WHERE U.LATITUDE IS NOT NULL AND L.LATITUDE IS NOT NULL",sep="")
+  sql1 <- paste("SELECT U.ID, U.SCREENNAME, U.LONGITUDE AS LONG1, U.LATITUDE AS LAT1, L.\"lon\" AS LONG2, L.\"lat\" AS LAT2, UPPER(TRIM(U.LOCATION)) LOCATION FROM ",table1," U JOIN TWITTER.SMP_LOCATION_C L ON UPPER(TRIM(L.\"location\")) = UPPER(TRIM(U.LOCATION)) WHERE U.LATITUDE IS NOT NULL AND L.\"lat\" IS NOT NULL  #",sep="")
+  
+  #' ###Load data
+  #+ get_data
+  tl <- system.time(data.latlon <- sqlQuery(myconn, sql1) )
+  
+  #latlon vs timezone geo (deception)
+  data.latlon_clean <- na.omit(data.frame(data.latlon$ID, data.latlon$SCREENNAME, data.latlon$LONG1, data.latlon$LAT1, data.latlon$LONG2, data.latlon$LAT2))
+  colnames(data.latlon_clean) <- c("user_id", "screenname", "longitude", "latitude", "lon", "lat")
+  apply(data.latlon_clean, 1, hf_latlon, myconn, table2)
+}
 
-#latlon vs timezone geo (deception)
-data.latlon_clean <- na.omit(data.frame(data.latlon$ID, data.latlon$SCREENNAME, data.latlon$LONG1, data.latlon$LAT1, data.latlon$LONG2, data.latlon$LAT2))
-colnames(data.latlon_clean) <- c("user_id", "screenname", "longitude", "latitude", "lon", "lat")
-apply(data.latlon_clean, 1, hf_latlon, myconn, table2)
+getl(myconn, "TWITTER.tweets2_users_20170106", "TWITTER.zz_users_enrich_20170106")
+#getl(myconn, "TWITTER.tweets2_users_20170418", "TWITTER.zz_users_enrich_20170418")
+#getl(myconn, "TWITTER.tweets2_users_20170429", "TWITTER.zz_users_enrich_20170429")
+#getl(myconn, "TWITTER.tweets2_users_20170517", "TWITTER.zz_users_enrich_20170517")
+#getl(myconn, "TWITTER.tweets2_users_20170527", "TWITTER.zz_users_enrich_20170527")
 
 close(myconn)
