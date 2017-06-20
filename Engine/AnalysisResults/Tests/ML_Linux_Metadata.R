@@ -19,7 +19,7 @@ myconn<-odbcConnect("SAPHANA", uid="SYSTEM", pwd="oEqm66jccx", believeNRows=FALS
 
 #' ###Load data
 #+ get_data
-tl <- system.time(data.original <- sqlQuery(myconn, "SELECT ID, NAME, SCREENNAME, CREATED, ORIGINAL_PROFILE_IMAGE, PROFILE_IMAGE, BACKGROUND_IMAGE, LAST_TWEET, DESCRIPTION, LOCATION, LANGUAGE, FRIENDS_COUNT, FOLLOWERS_COUNT, STATUS_COUNT, LISTED_COUNT, TIMEZONE, UTC_OFFSET, GEO_ENABLED, LATITUDE, LONGITUDE, IS_DEFAULT_PROFILE, IS_DEFAULT_PROFILE_IMAGE, IS_BACKGROUND_IMAGE_USED, PROFILE_TEXT_COLOR, PROFILE_BG_COLOR, CLASS from twitter.zz_full_set") )
+tl <- system.time(data.original <- sqlQuery(myconn, "SELECT ID, NAME, SCREENNAME, CREATED, ORIGINAL_PROFILE_IMAGE, PROFILE_IMAGE, BACKGROUND_IMAGE, LAST_TWEET, DESCRIPTION, LOCATION, LANGUAGE, FRIENDS_COUNT, FOLLOWERS_COUNT, STATUS_COUNT, LISTED_COUNT, TIMEZONE, UTC_OFFSET, GEO_ENABLED, LATITUDE, LONGITUDE, IS_DEFAULT_PROFILE, IS_DEFAULT_PROFILE_IMAGE, IS_BACKGROUND_IMAGE_USED, PROFILE_TEXT_COLOR, PROFILE_BG_COLOR, CLASS from twitter.zz_rfull_set") )
 
 close(myconn)
 
@@ -75,9 +75,9 @@ folds <- c(10)
 #repeats
 repeats <- c(3)
 #tune
-tune <- c(10)
+tune <- c(3)
 #sampling
-sampling <- c("smote")
+sampling <- c("none")
 
 cl <- makeCluster(detectCores())
 registerDoParallel(cores=6) #or cl
@@ -85,7 +85,7 @@ for (m in sampling) {
   for (x in folds) {
     for (y in repeats) {
       for (z in tune) {
-        filename <- paste("~/Projects/RStudio/TwitterAnalysis/Engine/AnalysisResults/Results/META_rcv_TREE_",x,"fold_",y,"repeat_",z,"tune_",m,".txt",sep="")
+        filename <- paste("~/Projects/RStudio/TwitterAnalysis/Engine/AnalysisResults/Results/METAR_rcv_",x,"fold_",y,"repeat_",z,"tune_",m,".txt",sep="")
         #print(filename)
         t <- system.time(ML_Models_ROC_P(training, resamp, x, z, y, m, filename))
         

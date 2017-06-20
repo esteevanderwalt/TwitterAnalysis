@@ -17,7 +17,7 @@ myconn<-odbcConnect("SAPHANA", uid="SYSTEM", pwd="oEqm66jccx", believeNRows=FALS
 
 #' ###Load data
 #+ get_data
-tl <- system.time(data.original <- sqlQuery(myconn, "SELECT ID, NAME, SCREENNAME, CREATED, ORIGINAL_PROFILE_IMAGE, PROFILE_IMAGE, BACKGROUND_IMAGE, LAST_TWEET, DESCRIPTION, LOCATION, LANGUAGE, FRIENDS_COUNT, FOLLOWERS_COUNT, STATUS_COUNT, LISTED_COUNT, TIMEZONE, UTC_OFFSET, GEO_ENABLED, LATITUDE, LONGITUDE, IS_DEFAULT_PROFILE, IS_DEFAULT_PROFILE_IMAGE, IS_BACKGROUND_IMAGE_USED, PROFILE_TEXT_COLOR, PROFILE_BG_COLOR, CLASS from twitter.zz_full_set") )
+tl <- system.time(data.original <- sqlQuery(myconn, "SELECT ID, NAME, SCREENNAME, CREATED, ORIGINAL_PROFILE_IMAGE, PROFILE_IMAGE, BACKGROUND_IMAGE, LAST_TWEET, DESCRIPTION, LOCATION, LANGUAGE, FRIENDS_COUNT, FOLLOWERS_COUNT, STATUS_COUNT, LISTED_COUNT, TIMEZONE, UTC_OFFSET, GEO_ENABLED, LATITUDE, LONGITUDE, IS_DEFAULT_PROFILE, IS_DEFAULT_PROFILE_IMAGE, IS_BACKGROUND_IMAGE_USED, PROFILE_TEXT_COLOR, PROFILE_BG_COLOR, CLASS from twitter.zz_rfull_set") )
 
 close(myconn)
 
@@ -125,13 +125,15 @@ print("=================================")
 imp(data.scaled)
 sink()
 
+
 science_themel = theme(panel.grid.major = element_line(size = 0.5, color = "grey"), axis.line = element_line(size = 0.7, color = "black"), legend.position = c(0.85,0.7), text = element_text(size = 10))
 science_theme = theme(panel.grid.major = element_line(size = 0.5, color = "grey"), axis.line = element_line(size = 0.7, color = "black"), text = element_text(size = 10))
 science_themell = theme(panel.grid.major = element_line(size = 0.5, color = "grey"), axis.line = element_line(size = 0.7, color = "black"), legend.position = c(0.85,0.1), text = element_text(size = 10))
 
-
 library(ggplot2)
 library(reshape2)
+
+#box
 d <- melt(data.scaled)
 # Basic box plot
 p <- ggplot(d, aes(x=CLASS, y=value, fill=CLASS)) + 
@@ -139,22 +141,36 @@ p <- ggplot(d, aes(x=CLASS, y=value, fill=CLASS)) +
   geom_boxplot() +
   coord_flip() +
   theme_bw() +
-  science_themell +
+  science_theme +
   labs(x = "CLASS", y = "Metadata") +
   geom_boxplot(notch=FALSE)
 print(p)
 
-png(filename = "metadata_distribution.png", width = 500, height = 250)
+setwd("~/Projects/RStudio/TwitterAnalysis/Engine/AnalysisResults/Results")
+
+png(filename = "rmetadata_distribution.png", width = 500, height = 250)
 p
 dev.off()
 
-p <- ggplot(data.scaled, aes(x=STATUS_COUNT, colour=CLASS, linetype=CLASS)) +
-  theme_bw() +
-  science_themel +
-  labs(y = "Scaled value", x = "STATUS_COUNT") +
-  geom_density(size=1.0) 
-print(p)
+graph1 <- function(data, a) {
+  p <- ggplot(data, aes(x=get(a), colour=CLASS, linetype=CLASS)) +
+    theme_bw() +
+    science_themel +
+    labs(y = "Scaled value", x = a) +
+    geom_density(size=1.0) 
+  #print(p)
+  
+  png(filename = paste("rmeta_",a,"_v1.png",sep=""), width = 500, height = 250)
+  print(p)
+  dev.off()
+}
 
-png(filename = "metadata_STATUS_COUNT_v3.png", width = 500, height = 250)
-p
-dev.off()
+graph1(data.scaled,"PROFILE_IMAGE")
+graph1(data.scaled,"STATUS_COUNT")
+graph1(data.scaled,"UTC_OFFSET")
+graph1(data.scaled,"TIMEZONE")
+graph1(data.scaled,"LISTED_COUNT")
+graph1(data.scaled,"LANGUAGE")
+graph1(data.scaled,"FRIENDS_COUNT")
+graph1(data.scaled,"FOLLOWERS_COUNT")
+
