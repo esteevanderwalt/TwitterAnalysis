@@ -1,0 +1,368 @@
+[1] "M1 started"
+[1] "M1 complete"
+    user   system  elapsed 
+1632.908   30.888  300.810 
+[1] "M2 started"
+[1] "M2 complete"
+   user  system elapsed 
+634.608  21.364  87.516 
+[1] "M3 started"
+[1] "M3 complete"
+   user  system elapsed 
+579.612   2.144 576.250 
+[1] "M4 started"
+[1] "M4 complete"
+   user  system elapsed 
+193.992  21.984  17.163 
+[1] "M5 started"
+[1] "M5 complete"
+   user  system elapsed 
+551.472   9.464 101.765 
+[1] "M6 started"
+[1] "M6 complete"
+    user   system  elapsed 
+2473.528   17.276  453.850 
+[1] "M7 started"
+[1] "M7 complete"
+   user  system elapsed 
+484.212  14.088  21.929 
+[1] "M8 started"
+[1] "M8 complete"
+   user  system elapsed 
+500.840  11.816  93.106 
+
+[1] "Model engine summary"
+[1] "===================="
+  Model Type Model Name  Accuracy       Kappa Sensitivity Specificity
+1        SVM  svmRadial 0.9664600  0.16565127       0.552   0.9691424
+2       tree         rf 0.9566604  0.17787051       0.776   0.9578296
+3       tree        J48 0.9862908  0.34809617       0.584   0.9888944
+4   bayesian   bayesglm 0.8208287 -0.00220071       0.144   0.8252090
+5    cluster        knn 0.9867281  0.35882497       0.592   0.9892827
+6       tree   Adaboost 0.9933383  0.53168948       0.596   0.9959098
+7       tree      rpart 0.9179763  0.06692479       0.540   0.9204225
+8  neuralnet       nnet 0.9063505  0.05961420       0.556   0.9086179
+    Precision Recall         F1  Prevalence       AUC    Cost
+1 0.103759398  0.552 0.17468354 0.006430207 0.8520473 300.810
+2 0.106417992  0.776 0.18716836 0.006430207 0.9289335  87.516
+3 0.253913043  0.584 0.35393939 0.006430207 0.9409626 576.250
+4 0.005303477  0.144 0.01023018 0.006430207 0.5474936  17.163
+5 0.263345196  0.592 0.36453202 0.006430207 0.7906413 101.765
+6 0.485342020  0.596 0.53500898 0.006430207 0.9783603 453.850
+7 0.042069180  0.540 0.07805724 0.006430207 0.8269344  21.929
+8 0.037884982  0.556 0.07093646 0.006430207 0.8966883  93.106
+
+[1] "Model attribute importance"
+[1] "=========================="
+                svmRadial          rf       J48  bayesglm       knn  Adaboost
+FOLLOWERS_COUNT   0.00000 100.0000000   0.00000   0.00000   0.00000   0.00000
+FRIENDS_COUNT    37.38253  47.9520046  37.38253  37.38253  37.38253  37.38253
+LANGUAGE        100.00000   8.5361351 100.00000 100.00000 100.00000 100.00000
+LISTED_COUNT     26.91836   0.9674272  26.91836  26.91836  26.91836  26.91836
+PROFILE_IMAGE    79.09383   0.0000000  79.09383  79.09383  79.09383  79.09383
+STATUS_COUNT     19.63946  76.3133098  19.63946  19.63946  19.63946  19.63946
+TIMEZONE         16.38436  58.9595216  16.38436  16.38436  16.38436  16.38436
+UTC_OFFSET       39.09929  90.5048383  39.09929  39.09929  39.09929  39.09929
+                     rpart      nnet
+FOLLOWERS_COUNT  91.679457  46.63579
+FRIENDS_COUNT    74.294871  51.37804
+LANGUAGE          8.203075  65.88745
+LISTED_COUNT      1.696417  37.84824
+PROFILE_IMAGE     0.000000   0.00000
+STATUS_COUNT     72.877748 100.00000
+TIMEZONE         73.429156  47.11182
+UTC_OFFSET      100.000000  85.63982
+
+[1] "Model engine results"
+[1] "===================="
+
+[1] "+++++++++++++"
+[1] "rf"
+[1] "+++++++++++++"
+
+Call:
+ randomForest(x = x, y = y, mtry = param$mtry) 
+               Type of random forest: classification
+                     Number of trees: 500
+No. of variables tried at each split: 5
+
+        OOB estimate of  error rate: 5.3%
+Confusion matrix:
+            deceptive trustworthy class.error
+deceptive        2095         155  0.06888889
+trustworthy       123        2877  0.04100000
+
+  mtry       ROC      Sens      Spec      ROCSD     SensSD      SpecSD
+1    2 0.8615320 0.6297778 0.9938389 0.06231588 0.05409608 0.001039127
+2    5 0.9445965 0.7048889 0.9767391 0.03788291 0.08821661 0.014279603
+3    8 0.9443712 0.7653333 0.9614773 0.03990428 0.07943093 0.011033547
+
+[1] "+++++++++++++"
+[1] "J48"
+[1] "+++++++++++++"
+J48 pruned tree
+------------------
+
+UTC_OFFSET <= 0.754771
+|   FOLLOWERS_COUNT <= -0.131028
+|   |   TIMEZONE <= -0.345391
+|   |   |   TIMEZONE <= -0.574623: deceptive (6.0)
+|   |   |   TIMEZONE > -0.574623: trustworthy (78.0)
+|   |   TIMEZONE > -0.345391: trustworthy (274.0)
+|   FOLLOWERS_COUNT > -0.131028
+|   |   FOLLOWERS_COUNT <= -0.126869: deceptive (546.0)
+|   |   FOLLOWERS_COUNT > -0.126869
+|   |   |   STATUS_COUNT <= -0.267401: trustworthy (171.0)
+|   |   |   STATUS_COUNT > -0.267401
+|   |   |   |   STATUS_COUNT <= -0.019113
+|   |   |   |   |   FRIENDS_COUNT <= -0.09517
+|   |   |   |   |   |   TIMEZONE <= 0.608276
+|   |   |   |   |   |   |   TIMEZONE <= -0.460664
+|   |   |   |   |   |   |   |   UTC_OFFSET <= -1.043093: deceptive (84.0)
+|   |   |   |   |   |   |   |   UTC_OFFSET > -1.043093
+|   |   |   |   |   |   |   |   |   TIMEZONE <= -0.46348: deceptive (20.0)
+|   |   |   |   |   |   |   |   |   TIMEZONE > -0.46348
+|   |   |   |   |   |   |   |   |   |   FRIENDS_COUNT <= -0.158688: trustworthy (30.0)
+|   |   |   |   |   |   |   |   |   |   FRIENDS_COUNT > -0.158688
+|   |   |   |   |   |   |   |   |   |   |   STATUS_COUNT <= -0.196573
+|   |   |   |   |   |   |   |   |   |   |   |   STATUS_COUNT <= -0.210513: trustworthy (16.0/3.0)
+|   |   |   |   |   |   |   |   |   |   |   |   STATUS_COUNT > -0.210513: deceptive (6.0/1.0)
+|   |   |   |   |   |   |   |   |   |   |   STATUS_COUNT > -0.196573: trustworthy (18.0)
+|   |   |   |   |   |   |   TIMEZONE > -0.460664
+|   |   |   |   |   |   |   |   UTC_OFFSET <= -0.904262
+|   |   |   |   |   |   |   |   |   FRIENDS_COUNT <= -0.16742: trustworthy (39.0)
+|   |   |   |   |   |   |   |   |   FRIENDS_COUNT > -0.16742
+|   |   |   |   |   |   |   |   |   |   UTC_OFFSET <= -1.45777
+|   |   |   |   |   |   |   |   |   |   |   TIMEZONE <= -0.113117: trustworthy (33.0)
+|   |   |   |   |   |   |   |   |   |   |   TIMEZONE > -0.113117: deceptive (7.0/1.0)
+|   |   |   |   |   |   |   |   |   |   UTC_OFFSET > -1.45777
+|   |   |   |   |   |   |   |   |   |   |   FRIENDS_COUNT <= -0.145482: deceptive (116.0)
+|   |   |   |   |   |   |   |   |   |   |   FRIENDS_COUNT > -0.145482
+|   |   |   |   |   |   |   |   |   |   |   |   STATUS_COUNT <= -0.13975: trustworthy (27.0)
+|   |   |   |   |   |   |   |   |   |   |   |   STATUS_COUNT > -0.13975: deceptive (63.0/2.0)
+|   |   |   |   |   |   |   |   UTC_OFFSET > -0.904262: deceptive (694.0/2.0)
+|   |   |   |   |   |   TIMEZONE > 0.608276: trustworthy (55.0)
+|   |   |   |   |   FRIENDS_COUNT > -0.09517
+|   |   |   |   |   |   LANGUAGE <= -0.110906: trustworthy (120.0)
+|   |   |   |   |   |   LANGUAGE > -0.110906
+|   |   |   |   |   |   |   LANGUAGE <= 0.322167: deceptive (5.0)
+|   |   |   |   |   |   |   LANGUAGE > 0.322167: trustworthy (8.0)
+|   |   |   |   STATUS_COUNT > -0.019113
+|   |   |   |   |   TIMEZONE <= 0.003242
+|   |   |   |   |   |   FRIENDS_COUNT <= 0.039161: trustworthy (215.0)
+|   |   |   |   |   |   FRIENDS_COUNT > 0.039161
+|   |   |   |   |   |   |   LANGUAGE <= -0.046464: trustworthy (60.0)
+|   |   |   |   |   |   |   LANGUAGE > -0.046464: deceptive (6.0)
+|   |   |   |   |   TIMEZONE > 0.003242
+|   |   |   |   |   |   FOLLOWERS_COUNT <= -0.112409: trustworthy (94.0)
+|   |   |   |   |   |   FOLLOWERS_COUNT > -0.112409
+|   |   |   |   |   |   |   FRIENDS_COUNT <= -0.132424: trustworthy (18.0)
+|   |   |   |   |   |   |   FRIENDS_COUNT > -0.132424
+|   |   |   |   |   |   |   |   UTC_OFFSET <= 0.204639
+|   |   |   |   |   |   |   |   |   FRIENDS_COUNT <= 0.052773
+|   |   |   |   |   |   |   |   |   |   STATUS_COUNT <= 0.621595
+|   |   |   |   |   |   |   |   |   |   |   TIMEZONE <= 0.926537: deceptive (97.0/1.0)
+|   |   |   |   |   |   |   |   |   |   |   TIMEZONE > 0.926537
+|   |   |   |   |   |   |   |   |   |   |   |   UTC_OFFSET <= -0.522791: trustworthy (5.0)
+|   |   |   |   |   |   |   |   |   |   |   |   UTC_OFFSET > -0.522791: deceptive (27.0)
+|   |   |   |   |   |   |   |   |   |   STATUS_COUNT > 0.621595: trustworthy (8.0)
+|   |   |   |   |   |   |   |   |   FRIENDS_COUNT > 0.052773
+|   |   |   |   |   |   |   |   |   |   LANGUAGE <= -0.01267: trustworthy (24.0)
+|   |   |   |   |   |   |   |   |   |   LANGUAGE > -0.01267
+|   |   |   |   |   |   |   |   |   |   |   UTC_OFFSET <= 0.119195: deceptive (40.0)
+|   |   |   |   |   |   |   |   |   |   |   UTC_OFFSET > 0.119195: trustworthy (3.0/1.0)
+|   |   |   |   |   |   |   |   UTC_OFFSET > 0.204639: deceptive (73.0)
+UTC_OFFSET > 0.754771
+|   FOLLOWERS_COUNT <= 0.042246
+|   |   FRIENDS_COUNT <= -0.158688: trustworthy (1024.0/275.0)
+|   |   FRIENDS_COUNT > -0.158688
+|   |   |   STATUS_COUNT <= -0.026801: trustworthy (636.0)
+|   |   |   STATUS_COUNT > -0.026801
+|   |   |   |   FOLLOWERS_COUNT <= -0.112409: trustworthy (109.0)
+|   |   |   |   FOLLOWERS_COUNT > -0.112409
+|   |   |   |   |   STATUS_COUNT <= 0.343634
+|   |   |   |   |   |   UTC_OFFSET <= 0.756187: trustworthy (16.0)
+|   |   |   |   |   |   UTC_OFFSET > 0.756187
+|   |   |   |   |   |   |   TIMEZONE <= 1.266094
+|   |   |   |   |   |   |   |   FRIENDS_COUNT <= -0.014194
+|   |   |   |   |   |   |   |   |   STATUS_COUNT <= 0.115893: deceptive (46.0)
+|   |   |   |   |   |   |   |   |   STATUS_COUNT > 0.115893
+|   |   |   |   |   |   |   |   |   |   FOLLOWERS_COUNT <= -0.066629: trustworthy (3.0)
+|   |   |   |   |   |   |   |   |   |   FOLLOWERS_COUNT > -0.066629: deceptive (25.0)
+|   |   |   |   |   |   |   |   FRIENDS_COUNT > -0.014194
+|   |   |   |   |   |   |   |   |   STATUS_COUNT <= 0.188791: trustworthy (3.0)
+|   |   |   |   |   |   |   |   |   STATUS_COUNT > 0.188791: deceptive (7.0)
+|   |   |   |   |   |   |   TIMEZONE > 1.266094: trustworthy (8.0)
+|   |   |   |   |   STATUS_COUNT > 0.343634: trustworthy (49.0/1.0)
+|   FOLLOWERS_COUNT > 0.042246
+|   |   STATUS_COUNT <= 0.479377: trustworthy (100.0)
+|   |   STATUS_COUNT > 0.479377
+|   |   |   FRIENDS_COUNT <= -0.014194: trustworthy (13.0)
+|   |   |   FRIENDS_COUNT > -0.014194
+|   |   |   |   FRIENDS_COUNT <= 0.592914: deceptive (58.0)
+|   |   |   |   FRIENDS_COUNT > 0.592914
+|   |   |   |   |   LANGUAGE <= 0.734501: trustworthy (14.0)
+|   |   |   |   |   LANGUAGE > 0.734501: deceptive (53.0/2.0)
+
+Number of Leaves  : 	51
+
+Size of the tree : 	101
+
+
+      C M       ROC      Sens      Spec       ROCSD     SensSD      SpecSD
+1 0.010 1 0.9330646 0.6155556 0.9813815 0.015108034 0.05253230 0.004285663
+2 0.010 2 0.9364123 0.6115556 0.9814477 0.009456641 0.05154868 0.006401584
+3 0.010 3 0.9359211 0.6257778 0.9770181 0.017030914 0.07072115 0.011918585
+4 0.255 1 0.9532159 0.6906667 0.9658663 0.019006569 0.09585430 0.018335803
+5 0.255 2 0.9515339 0.7044444 0.9623776 0.023348276 0.09486968 0.018505256
+6 0.255 3 0.9504685 0.6813333 0.9689960 0.021641964 0.08763211 0.018282644
+7 0.500 1 0.9608235 0.7137778 0.9618165 0.013457632 0.08624892 0.015826847
+8 0.500 2 0.9623913 0.7284444 0.9588568 0.016079746 0.07530135 0.016461454
+9 0.500 3 0.9637160 0.7111111 0.9637552 0.015190568 0.07569516 0.014658408
+
+[1] "+++++++++++++"
+[1] "bayesglm"
+[1] "+++++++++++++"
+NULL
+                coef.est coef.se
+(Intercept)      0.30     0.03  
+PROFILE_IMAGE    0.10     0.06  
+LANGUAGE         0.01     0.03  
+FRIENDS_COUNT    0.01     0.04  
+FOLLOWERS_COUNT  0.09     0.06  
+STATUS_COUNT     0.15     0.06  
+LISTED_COUNT    -0.04     0.04  
+TIMEZONE         0.01     0.03  
+UTC_OFFSET       0.28     0.03  
+---
+n = 5250, k = 9
+residual deviance = 7043.3, null deviance = 7170.5 (difference = 127.2)
+
+  parameter       ROC      Sens      Spec      ROCSD     SensSD    SpecSD
+1      none 0.5384373 0.1208889 0.8703836 0.02253106 0.03283458 0.0266743
+
+[1] "+++++++++++++"
+[1] "kknn"
+[1] "+++++++++++++"
+
+Call:
+train.kknn(formula = .outcome ~ ., data = dat, kmax = param$kmax,     distance = param$distance, kernel = as.character(param$kernel))
+
+Type of response variable: nominal
+Minimal misclassification: 0.06190476
+Best kernel: optimal
+Best k: 1
+
+  kmax distance  kernel       ROC      Sens      Spec      ROCSD     SensSD
+1    5        2 optimal 0.8065653 0.6266667 0.9864640 0.02756963 0.05525281
+2    7        2 optimal 0.8058627 0.6253333 0.9863920 0.02882907 0.05757288
+3    9        2 optimal 0.8045674 0.6222222 0.9869127 0.02876846 0.05767748
+       SpecSD
+1 0.002439455
+2 0.001949044
+3 0.001920680
+
+[1] "+++++++++++++"
+[1] "adaboost"
+[1] "+++++++++++++"
+adaboost(formula = .outcome ~ ., data = dat, nIter = param$nIter)
+.outcome ~ .
+<environment: 0x8a3e3a0>
+Dependent Variable: .outcome
+No of trees:100
+The weights of the trees are:1.3256841.2721060.87961370.83645480.57660310.58601950.4241920.41443120.32508920.32617920.28797760.25809490.23121360.21646610.19427410.18996830.17214860.1627230.15302190.14167630.13619240.12761540.12360250.10968370.11079750.10449690.099861290.094687960.093107680.087852330.085753180.083098970.082091780.077368770.075424550.070477970.070337160.06788480.066571760.063697380.061735620.057059810.059396340.05566850.055186970.054029390.053455430.049473470.051540310.04928460.048727180.049550090.047847580.047917020.046146930.045264660.043928910.043272180.040462870.040040960.040432870.040107060.038859660.037349320.038003020.036348310.036439320.036920380.035899020.035551390.035259560.033973390.034117230.031022650.032258410.031309480.031729650.031761410.031035670.030834030.030275280.029990410.029204580.029007450.028526730.02812640.027523780.027258490.026951740.024917190.026372240.026004460.025638390.025240460.02475110.02454410.0242570.023991570.024311310.02340825
+
+  nIter        method       ROC      Sens      Spec       ROCSD     SensSD
+1    50   Adaboost.M1 0.9795967 0.6320000 0.9941955 0.004269293 0.05844472
+2    50 Real adaboost 0.7828650 0.9142222 0.9180387 0.090767770 0.11516083
+3   100   Adaboost.M1 0.9800622 0.6297778 0.9952828 0.004085252 0.05543927
+4   100 Real adaboost 0.7665722 0.9195556 0.9170809 0.100151791 0.10823464
+5   150   Adaboost.M1 0.9800583 0.7288889 0.9734514 0.003862528 0.07902341
+6   150 Real adaboost 0.7609091 0.9088889 0.9198709 0.152486329 0.11243502
+       SpecSD
+1 0.002814835
+2 0.030056734
+3 0.001197028
+4 0.031003337
+5 0.012352671
+6 0.031461384
+
+[1] "+++++++++++++"
+[1] "rpart"
+[1] "+++++++++++++"
+n= 5250 
+
+node), split, n, loss, yval, (yprob)
+      * denotes terminal node
+
+  1) root 5250 2250 trustworthy (0.428571429 0.571428571)  
+    2) UTC_OFFSET< 0.7487601 3105 1312 deceptive (0.577455717 0.422544283)  
+      4) FOLLOWERS_COUNT>=-0.1403949 2737  946 deceptive (0.654366094 0.345633906)  
+        8) FOLLOWERS_COUNT< -0.131831 1400  200 deceptive (0.857142857 0.142857143)  
+         16) STATUS_COUNT< -0.1912472 1298  100 deceptive (0.922958398 0.077041602)  
+           32) FRIENDS_COUNT< -0.135697 1261   63 deceptive (0.950039651 0.049960349) *
+           33) FRIENDS_COUNT>=-0.135697 37    0 trustworthy (0.000000000 1.000000000) *
+         17) STATUS_COUNT>=-0.1912472 102    2 trustworthy (0.019607843 0.980392157) *
+        9) FOLLOWERS_COUNT>=-0.131831 1337  591 trustworthy (0.442034405 0.557965595)  
+         18) TIMEZONE>=-0.2208076 853  326 deceptive (0.617819461 0.382180539)  
+           36) STATUS_COUNT>=-0.3089545 773  248 deceptive (0.679172057 0.320827943)  
+             72) UTC_OFFSET>=-0.9092717 453   81 deceptive (0.821192053 0.178807947)  
+              144) TIMEZONE< 0.7031065 298   11 deceptive (0.963087248 0.036912752) *
+              145) TIMEZONE>=0.7031065 155   70 deceptive (0.548387097 0.451612903)  
+                290) FRIENDS_COUNT>=-0.09701639 105   21 deceptive (0.800000000 0.200000000) *
+                291) FRIENDS_COUNT< -0.09701639 50    1 trustworthy (0.020000000 0.980000000) *
+             73) UTC_OFFSET< -0.9092717 320  153 trustworthy (0.478125000 0.521875000)  
+              146) FRIENDS_COUNT>=-0.1391343 241  100 deceptive (0.585062241 0.414937759)  
+                292) FRIENDS_COUNT< -0.09896968 94   17 deceptive (0.819148936 0.180851064) *
+                293) FRIENDS_COUNT>=-0.09896968 147   64 trustworthy (0.435374150 0.564625850)  
+                  586) UTC_OFFSET< -0.9290931 94   30 deceptive (0.680851064 0.319148936) *
+                  587) UTC_OFFSET>=-0.9290931 53    0 trustworthy (0.000000000 1.000000000) *
+              147) FRIENDS_COUNT< -0.1391343 79   12 trustworthy (0.151898734 0.848101266) *
+           37) STATUS_COUNT< -0.3089545 80    2 trustworthy (0.025000000 0.975000000) *
+         19) TIMEZONE< -0.2208076 484   64 trustworthy (0.132231405 0.867768595)  
+           38) FOLLOWERS_COUNT< -0.1296836 117   53 deceptive (0.547008547 0.452991453)  
+             76) STATUS_COUNT< -0.1608563 85   21 deceptive (0.752941176 0.247058824) *
+             77) STATUS_COUNT>=-0.1608563 32    0 trustworthy (0.000000000 1.000000000) *
+           39) FOLLOWERS_COUNT>=-0.1296836 367    0 trustworthy (0.000000000 1.000000000) *
+      5) FOLLOWERS_COUNT< -0.1403949 368    2 trustworthy (0.005434783 0.994565217) *
+    3) UTC_OFFSET>=0.7487601 2145  457 trustworthy (0.213053613 0.786946387)  
+      6) STATUS_COUNT>=0.2877161 332  135 trustworthy (0.406626506 0.593373494)  
+       12) FOLLOWERS_COUNT>=-0.07398334 191   56 deceptive (0.706806283 0.293193717)  
+         24) FRIENDS_COUNT>=-0.09869847 169   34 deceptive (0.798816568 0.201183432) *
+         25) FRIENDS_COUNT< -0.09869847 22    0 trustworthy (0.000000000 1.000000000) *
+       13) FOLLOWERS_COUNT< -0.07398334 141    0 trustworthy (0.000000000 1.000000000) *
+      7) STATUS_COUNT< 0.2877161 1813  322 trustworthy (0.177606178 0.822393822) *
+
+           cp       ROC      Sens      Spec      ROCSD     SensSD     SpecSD
+1 0.008000000 0.8225502 0.5191111 0.9400629 0.02894922 0.07789832 0.01363343
+2 0.009333333 0.8175485 0.5155556 0.9357887 0.03043173 0.08010211 0.01446214
+3 0.013866667 0.7731276 0.4564444 0.9283676 0.03517780 0.07490957 0.02048622
+
+[1] "+++++++++++++"
+[1] "nnet"
+[1] "+++++++++++++"
+a 8-5-1 network with 51 weights
+inputs: PROFILE_IMAGE LANGUAGE FRIENDS_COUNT FOLLOWERS_COUNT STATUS_COUNT LISTED_COUNT TIMEZONE UTC_OFFSET 
+output(s): .outcome 
+options were - entropy fitting  decay=0.1
+
+  size decay       ROC      Sens      Spec      ROCSD     SensSD     SpecSD
+1    1 0e+00 0.6435539 0.5973333 0.6425625 0.03600678 0.14396253 0.11895655
+2    1 1e-04 0.6314985 0.5453333 0.6733403 0.04993588 0.17261922 0.11520175
+3    1 1e-01 0.6101945 0.4231111 0.6877973 0.02915217 0.09989624 0.09057718
+4    3 0e+00 0.7778255 0.5120000 0.8161791 0.07152368 0.20439913 0.07864449
+5    3 1e-04 0.7955801 0.5022222 0.8358467 0.08338245 0.20143039 0.07432068
+6    3 1e-01 0.7763447 0.4182222 0.8406652 0.06883174 0.16237635 0.05248634
+7    5 0e+00 0.8906294 0.6480000 0.8672111 0.03749844 0.13024469 0.04007142
+8    5 1e-04 0.8870149 0.5897778 0.8850989 0.04629970 0.17365782 0.03593650
+9    5 1e-01 0.9041352 0.5720000 0.9160428 0.02729712 0.09139867 0.02441458
+
+[1] "Query loading run time"
+[1] "=============="
+   user  system elapsed 
+ 24.664   0.524  26.727 
+
+[1] "Models run time"
+[1] "=============="
+    user   system  elapsed 
+8798.132  143.984 3414.752 

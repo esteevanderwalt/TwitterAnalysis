@@ -1,0 +1,40 @@
+[1] "M1 complete"
+   user  system elapsed 
+ 24.884   3.696  28.771 
+[1] "M2 complete"
+   user  system elapsed 
+ 16.588   1.212  17.964 
+[1] "M4 complete"
+   user  system elapsed 
+ 14.456   3.496  18.207 
+[1] "M5 complete"
+   user  system elapsed 
+ 14.900   1.184  16.167 
+[1] "M6 complete"
+   user  system elapsed 
+ 16.268   1.196  17.597 
+[1] "M7 complete"
+   user  system elapsed 
+ 15.020   0.336  15.685 
+[1] "M8 complete"
+   user  system elapsed 
+ 16.192   0.172  16.492 
+
+[1] "Model engine summary"
+[1] "===================="
+  Model Type Model Name  Accuracy     Kappa Sensitivity Specificity  Precision
+1        SVM  svmRadial 0.9456522 0.1675169       0.910   0.9458830 0.09814495
+2       tree         rf 0.9487966 0.1775369       0.916   0.9490088 0.10415009
+3   bayesian   bayesglm 0.9615669 0.2142687       0.858   0.9622372 0.12819364
+4    cluster        knn 0.9964184 0.7228640       0.733   0.9981232 0.71652004
+5       tree   Adaboost 0.9501919 0.1815071       0.914   0.9504262 0.10660135
+6       tree      rpart 0.9463403 0.1703931       0.916   0.9465366 0.09981475
+7  neuralnet       nnet 0.9493174 0.1787861       0.914   0.9495460 0.10493685
+  Recall        F1  Prevalence       AUC   Cost
+1  0.910 0.1771807 0.006430165 0.9835336 28.771
+2  0.916 0.1870342 0.006430165 0.9576906 17.964
+3  0.858 0.2230599 0.006430165 0.9852990 18.207
+4  0.733 0.7246663 0.006430165 0.8803313 16.167
+5  0.914 0.1909338 0.006430165 0.9594585 17.597
+6  0.916 0.1800138 0.006430165 0.9556109 15.685
+7  0.914 0.1882595 0.006430165 0.9877178 16.492

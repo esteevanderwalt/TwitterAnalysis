@@ -1,0 +1,403 @@
+[1] "M1 started"
+[1] "M1 started"
+[1] "M1 complete"
+    user   system  elapsed 
+1833.200   39.120  415.014 
+[1] "M2 started"
+[1] "M2 complete"
+    user   system  elapsed 
+1117.188   32.592  197.403 
+[1] "M3 started"
+[1] "M3 complete"
+   user  system elapsed 
+929.840   2.320 923.226 
+[1] "M4 started"
+[1] "M4 complete"
+   user  system elapsed 
+279.628  18.852  30.248 
+[1] "M5 started"
+[1] "M5 complete"
+   user  system elapsed 
+764.088  10.400 168.263 
+[1] "M6 started"
+[1] "M6 complete"
+    user   system  elapsed 
+5574.240   19.432 2249.417 
+[1] "M7 started"
+[1] "M7 complete"
+    user   system  elapsed 
+2293.720   13.276   36.043 
+[1] "M8 started"
+[1] "M8 complete"
+   user  system elapsed 
+856.932  13.540 194.435 
+
+[1] "Model engine summary"
+[1] "===================="
+  Model Type Model Name  Accuracy       Kappa Sensitivity Specificity
+1        SVM  svmRadial 0.8538028 0.032789795       0.532   0.8558855
+2       tree         rf 0.9602613 0.170246576       0.676   0.9621010
+3       tree        J48 0.9609043 0.169137090       0.660   0.9628517
+4   bayesian   bayesglm 0.6688444 0.005757017       0.480   0.6700665
+5    cluster        knn 0.9180277 0.081830449       0.652   0.9197494
+6       tree   Adaboost 0.9405849 0.118029429       0.680   0.9422714
+7       tree      rpart 0.9766712 0.189939876       0.448   0.9800927
+8  neuralnet       nnet 0.8782633 0.045697436       0.576   0.8802195
+    Precision Recall         F1  Prevalence       AUC     Cost
+1 0.023333333  0.532 0.04470588 0.006430207 0.8375587  415.014
+2 0.103490508  0.676 0.17950080 0.006430207 0.9297825  197.403
+3 0.103125000  0.660 0.17837838 0.006430207 0.9182512  923.226
+4 0.009327633  0.480 0.01829966 0.006430207 0.6651125   30.248
+5 0.049954030  0.652 0.09279818 0.006430207 0.7858747  168.263
+6 0.070833333  0.680 0.12830189 0.006430207 0.9274178 2249.417
+7 0.127128263  0.448 0.19805482 0.006430207 0.8432859   36.043
+8 0.030182352  0.576 0.05735909 0.006430207 0.8547670  194.435
+
+[1] "Model attribute importance"
+[1] "=========================="
+                      svmRadial           rf       J48  bayesglm       knn
+ACCOUNT_AGE_IN_MONTHS  34.18279  65.01236063  34.18279  34.18279  34.18279
+DUP_PROFILE           100.00000   6.63079193 100.00000 100.00000 100.00000
+FF_RATIO               65.96711   0.54120521  65.96711  65.96711  65.96711
+FOLLOWERS_COUNT        59.03507   1.15301411  59.03507  59.03507  59.03507
+FRIENDS_COUNT          59.27729   0.18106277  59.27729  59.27729  59.27729
+HAS_IMAGE              58.36028   0.01547117  58.36028  58.36028  58.36028
+HAS_NAME               59.46383   0.00000000  59.46383  59.46383  59.46383
+HAS_PROFILE            23.80635   3.22173117  23.80635  23.80635  23.80635
+LANGUAGE               61.08289   7.51765116  61.08289  61.08289  61.08289
+LISTED_COUNT           59.51298   0.00000000  59.51298  59.51298  59.51298
+PROFILE_HAS_URL        78.36416   5.65312835  78.36416  78.36416  78.36416
+PROFILE_IMAGE          60.65093   0.02017343  60.65093  60.65093  60.65093
+STATUS_COUNT           59.30669   0.02387505  59.30669  59.30669  59.30669
+TIMEZONE               59.36834  89.21978581  59.36834  59.36834  59.36834
+USERNAME_LENGTH         0.00000 100.00000000   0.00000   0.00000   0.00000
+UTC_OFFSET             59.65997  96.53139619  59.65997  59.65997  59.65997
+                       Adaboost     rpart       nnet
+ACCOUNT_AGE_IN_MONTHS  34.18279  37.41960   3.532090
+DUP_PROFILE           100.00000  36.15004  40.974271
+FF_RATIO               65.96711   0.00000  64.957936
+FOLLOWERS_COUNT        59.03507   0.00000  29.417871
+FRIENDS_COUNT          59.27729   0.00000  19.167692
+HAS_IMAGE              58.36028   0.00000   1.688167
+HAS_NAME               59.46383   0.00000   3.648174
+HAS_PROFILE            23.80635  28.31691  33.120274
+LANGUAGE               61.08289   2.49972  70.783573
+LISTED_COUNT           59.51298   0.00000   0.000000
+PROFILE_HAS_URL        78.36416  15.36146 100.000000
+PROFILE_IMAGE          60.65093   0.00000   1.625395
+STATUS_COUNT           59.30669   0.00000  18.148071
+TIMEZONE               59.36834  74.28743  20.249874
+USERNAME_LENGTH         0.00000  71.66955   2.177899
+UTC_OFFSET             59.65997 100.00000  58.641423
+
+[1] "Model engine results"
+[1] "===================="
+
+[1] "+++++++++++++"
+[1] "rf"
+[1] "+++++++++++++"
+
+Call:
+ randomForest(x = x, y = y, mtry = param$mtry) 
+               Type of random forest: classification
+                     Number of trees: 500
+No. of variables tried at each split: 9
+
+        OOB estimate of  error rate: 7.3%
+Confusion matrix:
+            deceptive trustworthy class.error
+deceptive        1977         273  0.12133333
+trustworthy       110        2890  0.03666667
+
+  mtry       ROC      Sens      Spec      ROCSD     SensSD      SpecSD
+1    2 0.7673242 0.5106667 0.8487736 0.02684728 0.05839750 0.027652477
+2    9 0.9242559 0.6466667 0.9626105 0.01291600 0.04746445 0.003447756
+3   16 0.9154743 0.6688889 0.9357167 0.01257810 0.04346429 0.005222785
+
+[1] "+++++++++++++"
+[1] "J48"
+[1] "+++++++++++++"
+J48 pruned tree
+------------------
+
+USERNAME_LENGTH <= -0.744586
+|   USERNAME_LENGTH <= -1.250628: trustworthy (769.0)
+|   USERNAME_LENGTH > -1.250628
+|   |   DUP_PROFILE <= -0.300165
+|   |   |   PROFILE_HAS_URL <= -0.192698
+|   |   |   |   ACCOUNT_AGE_IN_MONTHS <= 1.445941
+|   |   |   |   |   LANGUAGE <= 0.060041: trustworthy (246.0/25.0)
+|   |   |   |   |   LANGUAGE > 0.060041
+|   |   |   |   |   |   TIMEZONE <= 0.00983: trustworthy (12.0)
+|   |   |   |   |   |   TIMEZONE > 0.00983: deceptive (8.0/2.0)
+|   |   |   |   ACCOUNT_AGE_IN_MONTHS > 1.445941
+|   |   |   |   |   UTC_OFFSET <= 0.439092
+|   |   |   |   |   |   ACCOUNT_AGE_IN_MONTHS <= 1.602771: trustworthy (8.0)
+|   |   |   |   |   |   ACCOUNT_AGE_IN_MONTHS > 1.602771
+|   |   |   |   |   |   |   TIMEZONE <= 0.00983: deceptive (3.0)
+|   |   |   |   |   |   |   TIMEZONE > 0.00983: trustworthy (3.0/1.0)
+|   |   |   |   |   UTC_OFFSET > 0.439092: deceptive (5.0)
+|   |   |   PROFILE_HAS_URL > -0.192698: trustworthy (16.0)
+|   |   DUP_PROFILE > -0.300165: trustworthy (46.0)
+USERNAME_LENGTH > -0.744586
+|   DUP_PROFILE <= -0.300165
+|   |   PROFILE_HAS_URL <= -0.192698
+|   |   |   UTC_OFFSET <= 0.792577
+|   |   |   |   UTC_OFFSET <= -0.605597
+|   |   |   |   |   TIMEZONE <= 0.925516
+|   |   |   |   |   |   TIMEZONE <= -0.464981
+|   |   |   |   |   |   |   UTC_OFFSET <= -1.025961: deceptive (78.0)
+|   |   |   |   |   |   |   UTC_OFFSET > -1.025961
+|   |   |   |   |   |   |   |   TIMEZONE <= -0.465049: deceptive (24.0)
+|   |   |   |   |   |   |   |   TIMEZONE > -0.465049: trustworthy (215.0/7.0)
+|   |   |   |   |   |   TIMEZONE > -0.464981
+|   |   |   |   |   |   |   UTC_OFFSET <= -0.885533
+|   |   |   |   |   |   |   |   TIMEZONE <= -0.239184: deceptive (91.0)
+|   |   |   |   |   |   |   |   TIMEZONE > -0.239184
+|   |   |   |   |   |   |   |   |   TIMEZONE <= -0.22588: trustworthy (183.0)
+|   |   |   |   |   |   |   |   |   TIMEZONE > -0.22588
+|   |   |   |   |   |   |   |   |   |   UTC_OFFSET <= -0.889429
+|   |   |   |   |   |   |   |   |   |   |   UTC_OFFSET <= -1.366903
+|   |   |   |   |   |   |   |   |   |   |   |   LANGUAGE <= 0.060041
+|   |   |   |   |   |   |   |   |   |   |   |   |   TIMEZONE <= 0.127264: deceptive (3.0)
+|   |   |   |   |   |   |   |   |   |   |   |   |   TIMEZONE > 0.127264: trustworthy (10.0/3.0)
+|   |   |   |   |   |   |   |   |   |   |   |   LANGUAGE > 0.060041: deceptive (7.0)
+|   |   |   |   |   |   |   |   |   |   |   UTC_OFFSET > -1.366903: deceptive (77.0/1.0)
+|   |   |   |   |   |   |   |   |   |   UTC_OFFSET > -0.889429
+|   |   |   |   |   |   |   |   |   |   |   ACCOUNT_AGE_IN_MONTHS <= -0.970332: deceptive (17.0/2.0)
+|   |   |   |   |   |   |   |   |   |   |   ACCOUNT_AGE_IN_MONTHS > -0.970332
+|   |   |   |   |   |   |   |   |   |   |   |   TIMEZONE <= 0.127264
+|   |   |   |   |   |   |   |   |   |   |   |   |   ACCOUNT_AGE_IN_MONTHS <= 2.19352: trustworthy (169.0/36.0)
+|   |   |   |   |   |   |   |   |   |   |   |   |   ACCOUNT_AGE_IN_MONTHS > 2.19352: deceptive (8.0/1.0)
+|   |   |   |   |   |   |   |   |   |   |   |   TIMEZONE > 0.127264: deceptive (8.0/3.0)
+|   |   |   |   |   |   |   UTC_OFFSET > -0.885533: deceptive (560.0/8.0)
+|   |   |   |   |   TIMEZONE > 0.925516
+|   |   |   |   |   |   LANGUAGE <= -0.008225: trustworthy (130.0)
+|   |   |   |   |   |   LANGUAGE > -0.008225: deceptive (18.0/2.0)
+|   |   |   |   UTC_OFFSET > -0.605597
+|   |   |   |   |   TIMEZONE <= 0.718158: deceptive (777.0/6.0)
+|   |   |   |   |   TIMEZONE > 0.718158
+|   |   |   |   |   |   TIMEZONE <= 0.722048: trustworthy (33.0)
+|   |   |   |   |   |   TIMEZONE > 0.722048
+|   |   |   |   |   |   |   TIMEZONE <= 3.808323: deceptive (71.0)
+|   |   |   |   |   |   |   TIMEZONE > 3.808323
+|   |   |   |   |   |   |   |   LANGUAGE <= 3.280233: trustworthy (11.0)
+|   |   |   |   |   |   |   |   LANGUAGE > 3.280233: deceptive (4.0/1.0)
+|   |   |   UTC_OFFSET > 0.792577
+|   |   |   |   ACCOUNT_AGE_IN_MONTHS <= 1.514409
+|   |   |   |   |   ACCOUNT_AGE_IN_MONTHS <= -1.71006
+|   |   |   |   |   |   ACCOUNT_AGE_IN_MONTHS <= -1.845399: deceptive (21.0)
+|   |   |   |   |   |   ACCOUNT_AGE_IN_MONTHS > -1.845399
+|   |   |   |   |   |   |   TIMEZONE <= -0.109264
+|   |   |   |   |   |   |   |   USERNAME_LENGTH <= 0.520517: deceptive (9.0/1.0)
+|   |   |   |   |   |   |   |   USERNAME_LENGTH > 0.520517: trustworthy (6.0/1.0)
+|   |   |   |   |   |   |   TIMEZONE > -0.109264: deceptive (4.0)
+|   |   |   |   |   ACCOUNT_AGE_IN_MONTHS > -1.71006
+|   |   |   |   |   |   ACCOUNT_AGE_IN_MONTHS <= 0.812718
+|   |   |   |   |   |   |   TIMEZONE <= -0.189307: trustworthy (664.0/140.0)
+|   |   |   |   |   |   |   TIMEZONE > -0.189307
+|   |   |   |   |   |   |   |   ACCOUNT_AGE_IN_MONTHS <= -1.140462: deceptive (32.0/2.0)
+|   |   |   |   |   |   |   |   ACCOUNT_AGE_IN_MONTHS > -1.140462
+|   |   |   |   |   |   |   |   |   TIMEZONE <= 2.268788
+|   |   |   |   |   |   |   |   |   |   TIMEZONE <= 0.602701
+|   |   |   |   |   |   |   |   |   |   |   TIMEZONE <= 0.231522
+|   |   |   |   |   |   |   |   |   |   |   |   UTC_OFFSET <= 1.029688: trustworthy (3.0)
+|   |   |   |   |   |   |   |   |   |   |   |   UTC_OFFSET > 1.029688: deceptive (6.0)
+|   |   |   |   |   |   |   |   |   |   |   TIMEZONE > 0.231522: trustworthy (118.0/27.0)
+|   |   |   |   |   |   |   |   |   |   TIMEZONE > 0.602701
+|   |   |   |   |   |   |   |   |   |   |   TIMEZONE <= 1.653557: deceptive (23.0/2.0)
+|   |   |   |   |   |   |   |   |   |   |   TIMEZONE > 1.653557
+|   |   |   |   |   |   |   |   |   |   |   |   TIMEZONE <= 1.671671: trustworthy (18.0/3.0)
+|   |   |   |   |   |   |   |   |   |   |   |   TIMEZONE > 1.671671: deceptive (11.0)
+|   |   |   |   |   |   |   |   |   TIMEZONE > 2.268788
+|   |   |   |   |   |   |   |   |   |   LANGUAGE <= 2.227786: trustworthy (58.0/1.0)
+|   |   |   |   |   |   |   |   |   |   LANGUAGE > 2.227786
+|   |   |   |   |   |   |   |   |   |   |   FOLLOWERS_COUNT <= 0.174383: trustworthy (6.0/1.0)
+|   |   |   |   |   |   |   |   |   |   |   FOLLOWERS_COUNT > 0.174383: deceptive (5.0)
+|   |   |   |   |   |   ACCOUNT_AGE_IN_MONTHS > 0.812718
+|   |   |   |   |   |   |   TIMEZONE <= -0.437567: deceptive (62.0/17.0)
+|   |   |   |   |   |   |   TIMEZONE > -0.437567
+|   |   |   |   |   |   |   |   TIMEZONE <= 0.602701
+|   |   |   |   |   |   |   |   |   USERNAME_LENGTH <= 0.139354
+|   |   |   |   |   |   |   |   |   |   USERNAME_LENGTH <= -0.225109: trustworthy (14.0/2.0)
+|   |   |   |   |   |   |   |   |   |   USERNAME_LENGTH > -0.225109
+|   |   |   |   |   |   |   |   |   |   |   TIMEZONE <= 0.364076: trustworthy (4.0/1.0)
+|   |   |   |   |   |   |   |   |   |   |   TIMEZONE > 0.364076: deceptive (4.0/1.0)
+|   |   |   |   |   |   |   |   |   USERNAME_LENGTH > 0.139354: trustworthy (39.0)
+|   |   |   |   |   |   |   |   TIMEZONE > 0.602701
+|   |   |   |   |   |   |   |   |   TIMEZONE <= 4.283135
+|   |   |   |   |   |   |   |   |   |   LANGUAGE <= 0.254543
+|   |   |   |   |   |   |   |   |   |   |   TIMEZONE <= 2.018682: deceptive (9.0/4.0)
+|   |   |   |   |   |   |   |   |   |   |   TIMEZONE > 2.018682: trustworthy (6.0)
+|   |   |   |   |   |   |   |   |   |   LANGUAGE > 0.254543: deceptive (10.0/1.0)
+|   |   |   |   |   |   |   |   |   TIMEZONE > 4.283135: trustworthy (12.0)
+|   |   |   |   ACCOUNT_AGE_IN_MONTHS > 1.514409: deceptive (111.0/10.0)
+|   |   PROFILE_HAS_URL > -0.192698: trustworthy (152.0)
+|   DUP_PROFILE > -0.300165: trustworthy (233.0)
+
+Number of Leaves  : 	58
+
+Size of the tree : 	115
+
+
+      C M       ROC      Sens      Spec      ROCSD     SensSD      SpecSD
+1 0.010 1 0.8948369 0.5746667 0.9684898 0.01658894 0.05451001 0.006905771
+2 0.010 2 0.8942810 0.5760000 0.9674686 0.01650096 0.05842374 0.007694964
+3 0.010 3 0.8979863 0.5924444 0.9644888 0.01481364 0.05352647 0.009044493
+4 0.255 1 0.9040451 0.6164444 0.9628636 0.01807018 0.04197183 0.006132470
+5 0.255 2 0.9088042 0.6280000 0.9596737 0.01661323 0.05551293 0.009064456
+6 0.255 3 0.9080320 0.6240000 0.9605567 0.01589548 0.05138988 0.007395423
+7 0.500 1 0.9115508 0.6315556 0.9606920 0.01711674 0.04768779 0.006127414
+8 0.500 2 0.9127131 0.6266667 0.9603266 0.01601885 0.05049942 0.007041592
+9 0.500 3 0.9171428 0.6320000 0.9605251 0.01426161 0.05153283 0.007989871
+
+[1] "+++++++++++++"
+[1] "bayesglm"
+[1] "+++++++++++++"
+NULL
+                      coef.est coef.se
+(Intercept)            3.78     1.01  
+PROFILE_IMAGE          0.00     0.07  
+LANGUAGE              -0.01     0.04  
+FRIENDS_COUNT          0.00     0.04  
+FOLLOWERS_COUNT       -0.06     0.06  
+STATUS_COUNT           0.06     0.04  
+LISTED_COUNT           0.00     2.50  
+TIMEZONE               0.10     0.03  
+UTC_OFFSET             0.23     0.03  
+FF_RATIO              75.44    26.52  
+USERNAME_LENGTH       -0.43     0.03  
+PROFILE_HAS_URL        1.32     0.36  
+ACCOUNT_AGE_IN_MONTHS  0.07     0.03  
+HAS_NAME              -0.02     0.03  
+HAS_IMAGE              0.00     0.07  
+DUP_PROFILE            1.43     0.52  
+HAS_PROFILE           -0.94     1.00  
+---
+n = 5250, k = 17
+residual deviance = 6039.4, null deviance = 7170.5 (difference = 1131.1)
+
+  parameter       ROC      Sens     Spec      ROCSD     SensSD      SpecSD
+1      none 0.6826313 0.5355556 0.676734 0.02021718 0.06105919 0.009226339
+
+[1] "+++++++++++++"
+[1] "kknn"
+[1] "+++++++++++++"
+
+Call:
+train.kknn(formula = .outcome ~ ., data = dat, kmax = param$kmax,     distance = param$distance, kernel = as.character(param$kernel))
+
+Type of response variable: nominal
+Minimal misclassification: 0.09409524
+Best kernel: optimal
+Best k: 1
+
+  kmax distance  kernel       ROC      Sens      Spec      ROCSD     SensSD
+1    5        2 optimal 0.8017202 0.6586667 0.9175353 0.04153801 0.04437389
+2    7        2 optimal 0.8004171 0.6502222 0.9167932 0.04845762 0.04587951
+3    9        2 optimal 0.7912590 0.6471111 0.9164020 0.03971162 0.05010130
+       SpecSD
+1 0.005073536
+2 0.006420181
+3 0.005396461
+
+[1] "+++++++++++++"
+[1] "adaboost"
+[1] "+++++++++++++"
+adaboost(formula = .outcome ~ ., data = dat, nIter = param$nIter)
+.outcome ~ .
+<environment: 0x1bb09dc8>
+Dependent Variable: .outcome
+No of trees:50
+The weights of the trees are:1.3381951.0761220.95883860.83793540.74737980.66621520.58075460.57940750.53201680.47579750.45408390.47698570.33991850.36259310.38468040.35249810.35719870.32795740.28952280.2847070.28781460.23958170.26056450.28939110.26378270.18343740.27345160.28635780.24366450.24243030.21277680.21674350.19689440.21087790.17602040.20835020.23885290.20488110.22320190.20391160.16922810.18501850.13946870.16368780.16163610.16131220.13972330.16920990.13270690.1592902
+
+  nIter        method       ROC      Sens      Spec       ROCSD     SensSD
+1    50   Adaboost.M1 0.9366858 0.6737778 0.9448088 0.009577181 0.04601960
+2    50 Real adaboost 0.7282471 0.6968889 0.9328087 0.038437216 0.04901273
+3   100   Adaboost.M1 0.9353909 0.6715556 0.9436238 0.009466793 0.04164927
+4   100 Real adaboost 0.6922294 0.6893333 0.9315374 0.040112134 0.06235727
+5   150   Adaboost.M1 0.9325451 0.6804444 0.9419411 0.013200361 0.04908147
+6   150 Real adaboost 0.6919838 0.7008889 0.9326707 0.059796084 0.04822468
+       SpecSD
+1 0.005319507
+2 0.004172162
+3 0.005220921
+4 0.003789496
+5 0.004585502
+6 0.003091265
+
+[1] "+++++++++++++"
+[1] "rpart"
+[1] "+++++++++++++"
+n= 5250 
+
+node), split, n, loss, yval, (yprob)
+      * denotes terminal node
+
+  1) root 5250 2250 trustworthy (0.428571429 0.571428571)  
+    2) USERNAME_LENGTH>=-0.7575143 4174 1960 deceptive (0.530426449 0.469573551)  
+      4) UTC_OFFSET< 0.7802957 2637  861 deceptive (0.673492605 0.326507395)  
+        8) UTC_OFFSET>=-0.6338899 924   70 deceptive (0.924242424 0.075757576)  
+         16) TIMEZONE< 0.7285721 775    5 deceptive (0.993548387 0.006451613) *
+         17) TIMEZONE>=0.7285721 149   65 deceptive (0.563758389 0.436241611)  
+           34) TIMEZONE>=0.7470197 97   13 deceptive (0.865979381 0.134020619) *
+           35) TIMEZONE< 0.7470197 52    0 trustworthy (0.000000000 1.000000000) *
+        9) UTC_OFFSET< -0.6338899 1713  791 deceptive (0.538237011 0.461762989)  
+         18) USERNAME_LENGTH< 1.272927 1468  582 deceptive (0.603542234 0.396457766)  
+           36) TIMEZONE< 0.9508958 1337  469 deceptive (0.649214660 0.350785340)  
+             72) TIMEZONE>=-0.4582027 1061  291 deceptive (0.725730443 0.274269557)  
+              144) UTC_OFFSET>=-1.483529 894  135 deceptive (0.848993289 0.151006711)  
+                288) TIMEZONE< 0.01879225 545    0 deceptive (1.000000000 0.000000000) *
+                289) TIMEZONE>=0.01879225 349  135 deceptive (0.613180516 0.386819484)  
+                  578) TIMEZONE>=0.01953086 176   15 deceptive (0.914772727 0.085227273) *
+                  579) TIMEZONE< 0.01953086 173   53 trustworthy (0.306358382 0.693641618) *
+              145) UTC_OFFSET< -1.483529 167   11 trustworthy (0.065868263 0.934131737) *
+             73) TIMEZONE< -0.4582027 276   98 trustworthy (0.355072464 0.644927536)  
+              146) UTC_OFFSET< -1.059841 73    0 deceptive (1.000000000 0.000000000) *
+              147) UTC_OFFSET>=-1.059841 203   25 trustworthy (0.123152709 0.876847291)  
+                294) TIMEZONE< -0.4742341 19    0 deceptive (1.000000000 0.000000000) *
+                295) TIMEZONE>=-0.4742341 184    6 trustworthy (0.032608696 0.967391304) *
+           37) TIMEZONE>=0.9508958 131   18 trustworthy (0.137404580 0.862595420)  
+             74) LANGUAGE>=-0.05899824 21    3 deceptive (0.857142857 0.142857143) *
+             75) LANGUAGE< -0.05899824 110    0 trustworthy (0.000000000 1.000000000) *
+         19) USERNAME_LENGTH>=1.272927 245   36 trustworthy (0.146938776 0.853061224) *
+      5) UTC_OFFSET>=0.7802957 1537  438 trustworthy (0.284970722 0.715029278)  
+       10) ACCOUNT_AGE_IN_MONTHS>=1.658873 97    8 deceptive (0.917525773 0.082474227) *
+       11) ACCOUNT_AGE_IN_MONTHS< 1.658873 1440  349 trustworthy (0.242361111 0.757638889)  
+         22) ACCOUNT_AGE_IN_MONTHS< -1.655701 49   10 deceptive (0.795918367 0.204081633) *
+         23) ACCOUNT_AGE_IN_MONTHS>=-1.655701 1391  310 trustworthy (0.222861251 0.777138749) *
+    3) USERNAME_LENGTH< -0.7575143 1076   36 trustworthy (0.033457249 0.966542751) *
+
+           cp       ROC      Sens      Spec      ROCSD     SensSD      SpecSD
+1 0.005824561 0.8314697 0.4564444 0.9754102 0.03023869 0.07026460 0.007492322
+2 0.022666667 0.7780579 0.4111111 0.9334673 0.03370244 0.07632022 0.033805772
+3 0.034666667 0.7493100 0.3755556 0.8967739 0.04018025 0.09084252 0.059732263
+
+[1] "+++++++++++++"
+[1] "nnet"
+[1] "+++++++++++++"
+a 16-5-1 network with 91 weights
+inputs: PROFILE_IMAGE LANGUAGE FRIENDS_COUNT FOLLOWERS_COUNT STATUS_COUNT LISTED_COUNT TIMEZONE UTC_OFFSET FF_RATIO USERNAME_LENGTH PROFILE_HAS_URL ACCOUNT_AGE_IN_MONTHS HAS_NAME HAS_IMAGE DUP_PROFILE HAS_PROFILE 
+output(s): .outcome 
+options were - entropy fitting 
+
+  size decay       ROC      Sens      Spec      ROCSD     SensSD      SpecSD
+1    1 0e+00 0.6925763 0.9266667 0.5040327 0.01680996 0.03165910 0.016726906
+2    1 1e-04 0.6930092 0.9257778 0.5063453 0.01535568 0.02120748 0.008971448
+3    1 1e-01 0.6862890 0.9133333 0.5104987 0.01321003 0.02518894 0.008484528
+4    3 0e+00 0.8083757 0.6320000 0.7706900 0.02812716 0.16052023 0.093205311
+5    3 1e-04 0.8065498 0.6488889 0.7636225 0.02825306 0.13121692 0.072557922
+6    3 1e-01 0.8075291 0.6106667 0.7823787 0.02266040 0.10930081 0.054727872
+7    5 0e+00 0.8521651 0.5920000 0.8575408 0.02049686 0.08581188 0.040669938
+8    5 1e-04 0.8463602 0.6111111 0.8442061 0.01867188 0.06235072 0.021709630
+9    5 1e-01 0.8371530 0.5782222 0.8423937 0.01680612 0.06684879 0.016884759
+
+[1] "Query loading run time"
+[1] "=============="
+   user  system elapsed 
+ 26.732   0.692  29.618 
+
+[1] "Models run time"
+[1] "=============="
+     user    system   elapsed 
+13772.888   151.032  4339.595 

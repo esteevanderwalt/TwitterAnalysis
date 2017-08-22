@@ -1,0 +1,222 @@
+[1] "5  complete"
+   user  system elapsed 
+ 95.508   6.648  24.750 
+[1] "6  complete"
+   user  system elapsed 
+135.912   6.368  24.685 
+[1] "7  complete"
+   user  system elapsed 
+128.220   5.660  22.544 
+[1] "8  complete"
+   user  system elapsed 
+154.768   5.972  24.805 
+[1] "9  complete"
+   user  system elapsed 
+106.144   5.048  22.333 
+[1] "10  complete"
+   user  system elapsed 
+133.588   6.832  24.980 
+[1] "11  complete"
+   user  system elapsed 
+139.280   8.336  22.215 
+[1] "12  complete"
+   user  system elapsed 
+102.896   5.844  21.707 
+
+[1] "Model engine summary"
+[1] "===================="
+  Model Type Model Name  Accuracy     Kappa Sensitivity Specificity  Precision
+1       tree        rf5 0.9286504 0.1409603       0.988   0.9282663 0.08184228
+2       tree        rf6 0.9289591 0.1415273       0.988   0.9285770 0.08216900
+3       tree        rf7 0.9286247 0.1409133       0.988   0.9282404 0.08181517
+4       tree        rf8 0.9280846 0.1399316       0.988   0.9276968 0.08125000
+5       tree        rf9 0.9286247 0.1409133       0.988   0.9282404 0.08181517
+6       tree       rf10 0.9278016 0.1394224       0.988   0.9274120 0.08095706
+7       tree       rf11 0.9286247 0.1409133       0.988   0.9282404 0.08181517
+8       tree       rf12 0.9281617 0.1405935       0.992   0.9277486 0.08160579
+  Recall        F1  Prevalence       AUC Cost
+1  0.988 0.1511628 0.006430207 0.9884257    0
+2  0.988 0.1517199 0.006430207 0.9884250    0
+3  0.988 0.1511165 0.006430207 0.9884320    0
+4  0.988 0.1501520 0.006430207 0.9882052    0
+5  0.988 0.1511165 0.006430207 0.9894438    0
+6  0.988 0.1496516 0.006430207 0.9894594    0
+7  0.988 0.1511165 0.006430207 0.9894658    0
+8  0.992 0.1508057 0.006430207 0.9893231    0
+
+[1] "Model attribute importance"
+[1] "=========================="
+                          rf5        rf6         rf7        rf8        rf9
+COMPARE_AGE        39.2861177  34.724274  48.8683483  49.361405  40.085260
+COMPARE_GENDER      0.0000000   0.000000   0.0000000  11.417341  11.045022
+DISTANCE_LOCATION 100.0000000 100.000000 100.0000000 100.000000 100.000000
+DISTANCE_TZ         0.7565938   1.302580   0.9588596   0.000000   0.000000
+HAMMING            39.7282220  32.723154  37.4699573  39.048606  32.614511
+LEVENSHTEIN         9.9712922   7.323606   5.7872558   3.328419   3.981919
+                        rf10       rf11       rf12
+COMPARE_AGE        42.245290  51.221232  49.699062
+COMPARE_GENDER     20.136390  18.153696  26.500071
+DISTANCE_LOCATION 100.000000 100.000000 100.000000
+DISTANCE_TZ         0.000000   0.000000   0.000000
+HAMMING            33.418904  31.821468  31.509023
+LEVENSHTEIN         6.551072   7.428133   7.998987
+
+[1] "Model engine results"
+[1] "===================="
+
+[1] "+++++++++++++"
+[1] "rf"
+[1] "+++++++++++++"
+
+Call:
+ randomForest(x = x, y = y, ntree = ..1, mtry = param$mtry) 
+               Type of random forest: classification
+                     Number of trees: 6
+No. of variables tried at each split: 2
+
+        OOB estimate of  error rate: 5.91%
+Confusion matrix:
+            deceptive trustworthy class.error
+deceptive        2017          93  0.04407583
+trustworthy       197        2603  0.07035714
+
+  mtry       ROC      Sens      Spec       ROCSD     SensSD      SpecSD
+1    2 0.9666041 0.9688889 0.9253158 0.012228205 0.01691388 0.006772625
+2    4 0.9550160 0.9728889 0.9281490 0.005761133 0.01332567 0.002774158
+3    6 0.9537669 0.9742222 0.9287732 0.006248473 0.01259244 0.002702523
+
+[1] "+++++++++++++"
+[1] "rf"
+[1] "+++++++++++++"
+
+Call:
+ randomForest(x = x, y = y, ntree = ..1, mtry = param$mtry) 
+               Type of random forest: classification
+                     Number of trees: 7
+No. of variables tried at each split: 2
+
+        OOB estimate of  error rate: 5.82%
+Confusion matrix:
+            deceptive trustworthy class.error
+deceptive        2076          81  0.03755216
+trustworthy       211        2650  0.07375044
+
+  mtry       ROC      Sens      Spec       ROCSD     SensSD      SpecSD
+1    2 0.9681471 0.9751111 0.9255919 0.011802603 0.01432339 0.004911940
+2    4 0.9550288 0.9742222 0.9280080 0.005793133 0.01353110 0.003062461
+3    6 0.9538740 0.9742222 0.9287789 0.006262928 0.01259244 0.002947725
+
+[1] "+++++++++++++"
+[1] "rf"
+[1] "+++++++++++++"
+
+Call:
+ randomForest(x = x, y = y, ntree = ..1, mtry = param$mtry) 
+               Type of random forest: classification
+                     Number of trees: 8
+No. of variables tried at each split: 2
+
+        OOB estimate of  error rate: 5.36%
+Confusion matrix:
+            deceptive trustworthy class.error
+deceptive        2135          62   0.0282203
+trustworthy       212        2706   0.0726525
+
+  mtry       ROC      Sens      Spec       ROCSD     SensSD      SpecSD
+1    2 0.9695150 0.9746667 0.9252583 0.011991924 0.01415838 0.004448267
+2    4 0.9550984 0.9746667 0.9281289 0.005821919 0.01371857 0.002964463
+3    6 0.9540877 0.9742222 0.9287962 0.006309898 0.01259244 0.002827609
+
+[1] "+++++++++++++"
+[1] "rf"
+[1] "+++++++++++++"
+
+Call:
+ randomForest(x = x, y = y, ntree = ..1, mtry = param$mtry) 
+               Type of random forest: classification
+                     Number of trees: 9
+No. of variables tried at each split: 2
+
+        OOB estimate of  error rate: 5.51%
+Confusion matrix:
+            deceptive trustworthy class.error
+deceptive        2130          86  0.03880866
+trustworthy       199        2755  0.06736628
+
+  mtry       ROC      Sens      Spec       ROCSD     SensSD      SpecSD
+1    2 0.9702449 0.9746667 0.9252554 0.012351488 0.01458493 0.005302928
+2    4 0.9551898 0.9751111 0.9282353 0.005809288 0.01297606 0.003061288
+3    6 0.9543088 0.9746667 0.9288882 0.006295320 0.01279368 0.002902206
+
+[1] "+++++++++++++"
+[1] "rf"
+[1] "+++++++++++++"
+
+Call:
+ randomForest(x = x, y = y, ntree = ..1, mtry = param$mtry) 
+               Type of random forest: classification
+                     Number of trees: 10
+No. of variables tried at each split: 2
+
+        OOB estimate of  error rate: 5.4%
+Confusion matrix:
+            deceptive trustworthy class.error
+deceptive        2155          73  0.03276481
+trustworthy       208        2763  0.07001010
+
+  mtry       ROC      Sens      Spec       ROCSD     SensSD      SpecSD
+1    2 0.9705460 0.9751111 0.9254136 0.012112288 0.01515522 0.004889479
+2    4 0.9552019 0.9751111 0.9283302 0.005828837 0.01297606 0.002911025
+3    6 0.9543357 0.9746667 0.9288278 0.006265435 0.01279368 0.002860826
+
+[1] "+++++++++++++"
+[1] "rf"
+[1] "+++++++++++++"
+
+Call:
+ randomForest(x = x, y = y, ntree = ..1, mtry = param$mtry) 
+               Type of random forest: classification
+                     Number of trees: 11
+No. of variables tried at each split: 2
+
+        OOB estimate of  error rate: 5.25%
+Confusion matrix:
+            deceptive trustworthy class.error
+deceptive        2169          66  0.02953020
+trustworthy       208        2774  0.06975184
+
+  mtry       ROC      Sens      Spec       ROCSD     SensSD      SpecSD
+1    2 0.9709053 0.9755556 0.9262506 0.012020911 0.01488998 0.004315361
+2    4 0.9552420 0.9755556 0.9283733 0.005807835 0.01314037 0.002931788
+3    6 0.9546143 0.9742222 0.9288077 0.006254164 0.01259244 0.002912187
+
+[1] "+++++++++++++"
+[1] "rf"
+[1] "+++++++++++++"
+
+Call:
+ randomForest(x = x, y = y, ntree = ..1, mtry = param$mtry) 
+               Type of random forest: classification
+                     Number of trees: 12
+No. of variables tried at each split: 2
+
+        OOB estimate of  error rate: 5.16%
+Confusion matrix:
+            deceptive trustworthy class.error
+deceptive        2184          57  0.02543507
+trustworthy       213        2777  0.07123746
+
+  mtry       ROC      Sens      Spec       ROCSD     SensSD      SpecSD
+1    2 0.9707415 0.9746667 0.9260809 0.012038473 0.01458493 0.004266080
+2    4 0.9552449 0.9755556 0.9283964 0.005852232 0.01314037 0.002719813
+3    6 0.9549424 0.9742222 0.9288537 0.006614769 0.01259244 0.002882093
+
+[1] "Query loading run time"
+[1] "=============="
+   user  system elapsed 
+  3.816   0.204   5.129 
+
+[1] "Models run time"
+[1] "=============="
+    user   system  elapsed 
+1016.388   51.264  208.822 
