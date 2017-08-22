@@ -23,6 +23,7 @@ work <- function(tableName, sqlSaveTable){
   #' ###Load data
   #+ get_data
   tl <- system.time(data.original <- sqlQuery(myconn, paste("SELECT ID, SCREENNAME, DISTANCE_LOCATION, DISTANCE_TZ, COMPARE_GENDER, LEVENSHTEIN, HAMMING, COMPARE_AGE, CLASS FROM ", tableName, sep="") ) )
+  #tl <- system.time(data.original <- sqlQuery(myconn, paste("SELECT ID, SCREENNAME, DISTANCE_LOCATION, DISTANCE_TZ, COMPARE_GENDER, LEVENSHTEIN, HAMMING, COMPARE_AGE, CLASS FROM TWITTER.ZZ_FE_SET", sep="") ) )
   
   #dim(data.original)
   #save(data.original,file="data.original.RData")
@@ -40,9 +41,16 @@ work <- function(tableName, sqlSaveTable){
   #clean
   #data.clean <- cleanup.TwitterFE(data.full)
   
-  #perform machine learning
-  data.scaled <- abs(scale(data.full))
-  data.scaled[is.na(data.scaled)] <- 0
+  #swap signs
+  data.full[data.full$COMPARE_GENDER == 1, "COMPARE_GENDER"] <- 2
+  data.full[data.full$COMPARE_GENDER == 0, "COMPARE_GENDER"] <- 1
+  data.full[data.full$COMPARE_GENDER == 2, "COMPARE_GENDER"] <- 0
+
+  #rapply(data.full,function(x)sum(is.na(x)))
+  
+  data.full[is.na(data.full)] <- 0
+  data.scaled <- (scale(data.full)) #abs
+
   
   #DISTANCE_LOCATION  0.96
   #DISTANCE_TZ 100
@@ -58,11 +66,14 @@ work <- function(tableName, sqlSaveTable){
   
 }
 
-work("TWITTER.ZZ_RFE_SET_20170106_B", "TWITTER.ZZ_SCORE_20170106")
-work("TWITTER.ZZ_RFE_SET_20170418_B", "TWITTER.ZZ_SCORE_20170418")
-work("TWITTER.ZZ_RFE_SET_20170429_B", "TWITTER.ZZ_SCORE_20170429")
-work("TWITTER.ZZ_RFE_SET_20170517_B", "TWITTER.ZZ_SCORE_20170517")
-work("TWITTER.ZZ_RFE_SET_20170527_B", "TWITTER.ZZ_SCORE_20170527")
+work("TWITTER.ZZ_FE_SET", "TWITTER.ZZ_FE_SCORE_20170709_V2")
+#work("TWITTER.ZZ_RFE_SET", "TWITTER.ZZ_RFE_SCORE")
+
+#work("TWITTER.ZZ_RFE_SET_20170106_B", "TWITTER.ZZ_SCORE_20170106")
+#work("TWITTER.ZZ_RFE_SET_20170418_B", "TWITTER.ZZ_SCORE_20170418")
+#work("TWITTER.ZZ_RFE_SET_20170429_B", "TWITTER.ZZ_SCORE_20170429")
+#work("TWITTER.ZZ_RFE_SET_20170517_B", "TWITTER.ZZ_SCORE_20170517")
+#work("TWITTER.ZZ_RFE_SET_20170527_B", "TWITTER.ZZ_SCORE_20170527")
 
 
 close(myconn)

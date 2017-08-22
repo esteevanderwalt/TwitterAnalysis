@@ -86,6 +86,6 @@ work <- function(tableName, sqlSaveTable, fn){
 #work("TWITTER.ZZ_RFE_SET_20170517_B", "TWITTER.PREDR_20170517_B", "PREDR_20170517_B.txt")
 #work("TWITTER.ZZ_RFE_SET_20170527_B", "TWITTER.PREDR_20170527_B", "PREDR_20170527_B.txt")
 
-work("TWITTER.ZZ_FE_FAKE_SET", "TWITTER.PREDF", "PREDF.txt")
+work("TWITTER.ZZ_FE_SET", "TWITTER.PREDF", "PREDF.txt")
 
 close(myconn)

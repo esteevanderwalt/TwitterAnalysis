@@ -21,6 +21,59 @@ setSeeds <- function(method = "cv", numbers = 1, repeats = 1, tunes = NULL, seed
   seeds
 }
 
+tree_func <- function(final_model, 
+                      tree_num, nm) {
+  
+  # get tree by index
+  tree <- randomForest::getTree(final_model, 
+                                k = tree_num, 
+                                labelVar = TRUE) %>%
+    tibble::rownames_to_column() %>%
+    # make leaf split points to NA, so the 0s won't get plotted
+    mutate(`split point` = ifelse(is.na(prediction), `split point`, NA))
+  
+  # prepare data frame for graph
+  graph_frame <- data.frame(from = rep(tree$rowname, 2),
+                            to = c(tree$`left daughter`, tree$`right daughter`))
+  
+  # convert to graph and delete the last node that we don't want to plot
+  graph <- graph_from_data_frame(graph_frame) %>%
+    delete_vertices("0")
+  
+  # set node labels
+  V(graph)$node_label <- gsub("_", " ", as.character(tree$`split var`))
+  V(graph)$leaf_label <- as.character(tree$prediction)
+  V(graph)$split <- as.character(round(tree$`split point`, digits = 2))
+  
+  # plot
+  plot <- ggraph(graph, 'dendrogram') + 
+    theme_bw() +
+    geom_edge_link() +
+    geom_node_point() +
+    geom_node_text(aes(label = node_label), na.rm = TRUE, repel = TRUE) +
+    geom_node_label(aes(label = split), vjust = 2.5, na.rm = TRUE, fill = "white") +
+    geom_node_label(aes(label = leaf_label, fill = leaf_label), na.rm = TRUE, 
+                    repel = TRUE, colour = "white", fontface = "bold", show.legend = FALSE) +
+    theme(panel.grid.minor = element_blank(),
+          panel.grid.major = element_blank(),
+          panel.background = element_blank(),
+          plot.background = element_rect(fill = "white"),
+          panel.border = element_blank(),
+          axis.line = element_blank(),
+          axis.text.x = element_blank(),
+          axis.text.y = element_blank(),
+          axis.ticks = element_blank(),
+          axis.title.x = element_blank(),
+          axis.title.y = element_blank(),
+          plot.title = element_text(size = 18))
+  
+  png(filename = paste("randomforest_",nm,".png",sep=""), width = 2048, height = 1024) #, width = 500, height = 250
+  print(plot)
+  dev.off()
+  
+  #print(plot)
+}
+
 ML_Models_ROC_P <- function(training, resamp, folds, tune, r, samp, filename, ss = 0){
 
   if(samp=="none"){
@@ -42,7 +95,8 @@ ML_Models_ROC_P <- function(training, resamp, folds, tune, r, samp, filename, ss
                             number = folds,
                             repeats = r,
                             seeds = fit.m1.seeds,
-                            classProbs = T,
+                            classProbs = TRUE,
+                            savePredictions = TRUE,
                             summaryFunction = twoClassSummary,
                             sampling = samp)
 
@@ -97,6 +151,7 @@ ML_Models_ROC_P <- function(training, resamp, folds, tune, r, samp, filename, ss
                             repeats = r,
                             seeds = fit.m2.seeds,
                             classProbs = TRUE,
+                            savePredictions = TRUE,
                             summaryFunction = twoClassSummary,
                             sampling = samp)
 
@@ -151,6 +206,7 @@ ML_Models_ROC_P <- function(training, resamp, folds, tune, r, samp, filename, ss
                             seeds = fit.m3.seeds,
                             classProbs = TRUE,
                             allowParallel = FALSE,
+                            savePredictions = TRUE,
                             summaryFunction = twoClassSummary,
                             sampling = samp)
 
@@ -204,6 +260,7 @@ ML_Models_ROC_P <- function(training, resamp, folds, tune, r, samp, filename, ss
                             repeats = r,
                             seeds = fit.m4.seeds,
                             classProbs = TRUE,
+                            savePredictions = TRUE,
                             summaryFunction = twoClassSummary,
                             sampling = samp)
 
@@ -261,6 +318,7 @@ ML_Models_ROC_P <- function(training, resamp, folds, tune, r, samp, filename, ss
                             repeats = r,
                             seeds = fit.m5.seeds,
                             classProbs = TRUE,
+                            savePredictions = TRUE,
                             summaryFunction = twoClassSummary,
                             sampling = samp)
 
@@ -313,6 +371,7 @@ ML_Models_ROC_P <- function(training, resamp, folds, tune, r, samp, filename, ss
                             repeats = r,
                             seeds = fit.m6.seeds,
                             classProbs = TRUE,
+                            savePredictions = TRUE,
                             summaryFunction = twoClassSummary,
                             sampling = samp)
 
@@ -364,6 +423,7 @@ ML_Models_ROC_P <- function(training, resamp, folds, tune, r, samp, filename, ss
                             repeats = r,
                             seeds = fit.m7.seeds,
                             classProbs = TRUE,
+                            savePredictions = TRUE,
                             summaryFunction = twoClassSummary,
                             sampling = samp)
 
@@ -415,6 +475,7 @@ ML_Models_ROC_P <- function(training, resamp, folds, tune, r, samp, filename, ss
                             repeats = r,
                             seeds = fit.m8.seeds,
                             classProbs = TRUE,
+                            savePredictions = TRUE,
                             summaryFunction = twoClassSummary,
                             sampling = samp)
 
@@ -452,18 +513,18 @@ ML_Models_ROC_P <- function(training, resamp, folds, tune, r, samp, filename, ss
 
   #save models
   if(ss == 1){
-    save(fit.m1,file="rf1")  
-    save(fit.m2,file="rf2")  
+    save(fit.m1,file="pm1")  
+    save(fit.m2,file="pm2")  
     
     #library(rJava)
     #.jcache(fit.m3$classifier)
-    save(fit.m3,file="rf3")  
+    save(fit.m3,file="pm3")  
 
-    save(fit.m4,file="rf4")  
-    save(fit.m5,file="rf5")  
-    save(fit.m6,file="rf6")  
-    save(fit.m7,file="rf7")  
-    save(fit.m8,file="rf8")  
+    save(fit.m4,file="pm4")  
+    save(fit.m5,file="pm5")  
+    save(fit.m6,file="pm6")  
+    save(fit.m7,file="pm7")  
+    save(fit.m8,file="pm8")  
   }
 
   #--------------------------------------
@@ -668,57 +729,57 @@ ML_Models_ROC_P_knn <- function(training, resamp, folds, tune, r, samp, filename
     samp <- NULL
   }
   
-  
   #--------------------------------------
-  # Model 4 - Bayesian Network
+  # Model 2 - Random forest
   #--------------------------------------
   # Model notes:
-  #   no tuning
+  #   warnings() == T
+  #   mtry == varied, 3 times (2,4,7)
   
-  fit.m4.seeds <- setSeeds(resamp, folds, r, 1)
+  fit.m2.seeds <- setSeeds(resamp, folds, r, tune)
   
-  fit.m4.fc <- trainControl(method = resamp, 
+  fit.m2.fc <- trainControl(method = resamp, 
                             number = folds,
                             repeats = r,
-                            seeds = fit.m4.seeds,
+                            seeds = fit.m2.seeds,
                             classProbs = TRUE,
                             summaryFunction = twoClassSummary,
                             sampling = samp)
   
   sink(filename, append = TRUE)
-  print("M4 started")
+  print("M2 started")
   sink()
   
   # Build model
   set.seed(123)
-  m4.t <- system.time(fit.m4 <- train(CLASS~., data=training,
-                                      method = "bayesglm",
+  m2.t <- system.time(fit.m2 <- train(CLASS~., data=training,
+                                      method = "rf",
                                       metric = "ROC",
                                       preProcess = c("center", "scale"),
-                                      trControl = fit.m4.fc))
+                                      trControl = fit.m2.fc,
+                                      tuneLength = tune))
   
   # In-sample summary
-  fit.m4$finalModel
-  fit.m4$results
+  fit.m2$finalModel
+  fit.m2$results
   
   # Plots
-  #plot(fit.m4, main = "Accuracy: fit.m4")
-  #plot(varImp(fit.m4), main = "Var Imp: fit.m4")
+  #plot(fit.m2, main = "Accuracy: fit.m2")
+  #plot(varImp(fit.m2), main = "Var Imp: fit.m2")
   
   # In-sample fit
-  fit.m4.trn.pred = predict(fit.m4, newdata = testing)
-  fit.m4.trn.prob = predict(fit.m4, newdata = testing, type = "prob")
-  fit.m4.trn.cm = confusionMatrix(fit.m4.trn.pred, testing$CLASS)
-  fit.m4.trn.cm$table
-  fit.m4.trn.cm$overall[1:2]
-  a <- varImp(fit.m4)$importance
-  a[,2] <- NULL
-  fit.m4.imp <- a
-  fit.m4.mRoc <- roc(testing$CLASS,fit.m4.trn.prob[,"deceptive"], levels = c("trustworthy","deceptive"))
+  fit.m2.trn.pred = predict(fit.m2, newdata = testing)
+  fit.m2.trn.prob = predict(fit.m2, newdata = testing, type = "prob")
+  fit.m2.trn.cm = confusionMatrix(fit.m2.trn.pred, testing$CLASS)
+  fit.m2.trn.cm$table
+  fit.m2.trn.cm$overall[1:2]
+  a <- varImp(fit.m2)$importance
+  fit.m2.imp <- a
+  fit.m2.mRoc <- roc(testing$CLASS,fit.m2.trn.prob[,"deceptive"], levels = c("trustworthy","deceptive"))
   
   sink(filename, append = TRUE)
-  print("M4 complete")
-  print(m4.t)
+  print("M2 complete")
+  print(m2.t)
   sink()
   
   #--------------------------------------
@@ -833,58 +894,58 @@ ML_Models_ROC_P_knn <- function(training, resamp, folds, tune, r, samp, filename
   #--------------------------------------
   
   # Model Types
-  model.types = c("bayesian", "cluster", "tree")
+  model.types = c("tree", "cluster", "ensamble")
   
   # Model Names
-  model.names = c("bayesglm", "knn", "Adaboost")
+  model.names = c("rf", "knn", "Adaboost")
   
   # Accuracy, Train
-  model.trn.acc = rbind(fit.m4.trn.cm$overall[1],
+  model.trn.acc = rbind(fit.m2.trn.cm$overall[1],
                         fit.m5.trn.cm$overall[1],
                         fit.m6.trn.cm$overall[1])
   
   # Kappa, Train
-  model.trn.kpp = rbind(fit.m4.trn.cm$overall[2],
+  model.trn.kpp = rbind(fit.m2.trn.cm$overall[2],
                         fit.m5.trn.cm$overall[2],
                         fit.m6.trn.cm$overall[2])
   
   # Sensitivity, Train
-  model.trn.sens = rbind(fit.m4.trn.cm$byClass[1],
+  model.trn.sens = rbind(fit.m2.trn.cm$byClass[1],
                          fit.m5.trn.cm$byClass[1],
                          fit.m6.trn.cm$byClass[1])
   
   # Specificity, Train
-  model.trn.spec = rbind(fit.m4.trn.cm$byClass[2],
+  model.trn.spec = rbind(fit.m2.trn.cm$byClass[2],
                          fit.m5.trn.cm$byClass[2],
                          fit.m6.trn.cm$byClass[2])
   
   # Precision, Train
-  model.trn.prec = rbind(fit.m4.trn.cm$byClass[5],
+  model.trn.prec = rbind(fit.m2.trn.cm$byClass[5],
                          fit.m5.trn.cm$byClass[5],
                          fit.m6.trn.cm$byClass[5])
   
   # Recall, Train
-  model.trn.rec = rbind(fit.m4.trn.cm$byClass[6],
+  model.trn.rec = rbind(fit.m2.trn.cm$byClass[6],
                         fit.m5.trn.cm$byClass[6],
                         fit.m6.trn.cm$byClass[6])
   
   # F1, Train
-  model.trn.f1 = rbind(fit.m4.trn.cm$byClass[7],
+  model.trn.f1 = rbind(fit.m2.trn.cm$byClass[7],
                        fit.m5.trn.cm$byClass[7],
                        fit.m6.trn.cm$byClass[7])
   
   # Prevalence, Train
-  model.trn.prev = rbind(fit.m4.trn.cm$byClass[8],
+  model.trn.prev = rbind(fit.m2.trn.cm$byClass[8],
                          fit.m5.trn.cm$byClass[8],
                          fit.m6.trn.cm$byClass[8])
   
   #AUC
-  model.trn.auc = rbind(fit.m4.mRoc$auc,
+  model.trn.auc = rbind(fit.m2.mRoc$auc,
                         fit.m5.mRoc$auc,
                         fit.m6.mRoc$auc)
   
   #Cost
-  model.trn.cost = rbind(m4.t[3],
+  model.trn.cost = rbind(m2.t[3],
                          m5.t[3],
                          m6.t[3])
   
@@ -937,11 +998,11 @@ ML_Models_ROC_P_knn <- function(training, resamp, folds, tune, r, samp, filename
     return(x)
   }
   
-  model.imp <- merge.all(fit.m4.imp,
+  model.imp <- merge.all(fit.m2.imp,
                          fit.m5.imp,
                          fit.m6.imp)
   
-  colnames(model.imp) = c("bayesglm", "knn", "Adaboost")
+  colnames(model.imp) = c("rf", "knn", "Adaboost")
   print(model.imp)
   
   cat("\n")
@@ -961,7 +1022,316 @@ ML_Models_ROC_P_knn <- function(training, resamp, folds, tune, r, samp, filename
     }
   }
   
-  print_engine.all(fit.m4,fit.m5,fit.m6)
+  print_engine.all(fit.m2,fit.m5,fit.m6)
+  
+  
+  sink()
+  
+  
+}
+
+rf <- function(training, resamp, folds, tune, r, samp, filename, tr){
+  #--------------------------------------
+  # Model 2 - Random forest
+  #--------------------------------------
+  # Model notes:
+  #   warnings() == T
+  #   mtry == varied, 3 times (2,4,7)
+  
+  fit.m2.seeds <- setSeeds(resamp, folds, r, tune)
+  
+  fit.m2.fc <- trainControl(method = resamp, 
+                            number = folds,
+                            repeats = r,
+                            seeds = fit.m2.seeds,
+                            classProbs = TRUE,
+                            summaryFunction = twoClassSummary,
+                            sampling = samp)
+  
+  # Build model
+  set.seed(123)
+  m2.t <- system.time(fit.m2 <- train(CLASS~., data=training,
+                                      method = "rf",
+                                      ntree = tr,
+                                      metric = "ROC",
+                                      preProcess = c("center", "scale"),
+                                      trControl = fit.m2.fc,
+                                      tuneLength = tune))
+  
+  # In-sample summary
+  fit.m2$finalModel
+  fit.m2$results
+  
+  # Plots
+  #plot(fit.m2, main = "Accuracy: fit.m2")
+  #plot(varImp(fit.m2), main = "Var Imp: fit.m2")
+  
+  # In-sample fit
+  fit.m2.trn.pred = predict(fit.m2, newdata = testing)
+  fit.m2.trn.prob = predict(fit.m2, newdata = testing, type = "prob")
+  fit.m2.trn.cm = confusionMatrix(fit.m2.trn.pred, testing$CLASS)
+  fit.m2.trn.cm$table
+  fit.m2.trn.cm$overall[1:2]
+  a <- varImp(fit.m2)$importance
+  fit.m2.imp <- a
+  fit.m2.mRoc <- roc(testing$CLASS,fit.m2.trn.prob[,"deceptive"], levels = c("trustworthy","deceptive"))
+  
+  tree_num <- which(fit.m2$finalModel$forest$ndbigtree == min(fit.m2$finalModel$forest$ndbigtree))
+  tree_func(final_model = fit.m2$finalModel, tree_num, tr)
+  
+  sink(filename, append = TRUE)
+  print(paste(tr, " complete"),sep="")
+  print(m2.t)
+  sink()
+  
+  output<-list(fit.m2,fit.m2.mRoc,fit.m2.trn.cm, fit.m2.imp)
+  return(output)
+}
+
+ML_Models_ROC_P_rf <- function(training, resamp, folds, tune, r, samp, filename, ss = 0){
+  
+  if(samp=="none"){
+    samp <- NULL
+  }
+  
+  returnlist <- rf(training, resamp, folds, tune, r, samp, filename, 5)
+  fit.m1 = returnlist[[1]]
+  fit.m1.mRoc = returnlist[[2]]
+  fit.m1.trn.cm = returnlist[[3]]
+  fit.m1.imp = returnlist[[4]]
+  
+  returnlist <- rf(training, resamp, folds, tune, r, samp, filename, 6)
+  fit.m2 = returnlist[[1]]
+  fit.m2.mRoc = returnlist[[2]]
+  fit.m2.trn.cm = returnlist[[3]]
+  fit.m2.imp = returnlist[[4]]
+  
+  returnlist <- rf(training, resamp, folds, tune, r, samp, filename, 7)
+  fit.m3 = returnlist[[1]]
+  fit.m3.mRoc = returnlist[[2]]
+  fit.m3.trn.cm = returnlist[[3]]
+  fit.m3.imp = returnlist[[4]]
+  
+  returnlist <- rf(training, resamp, folds, tune, r, samp, filename, 8)
+  fit.m4 = returnlist[[1]]
+  fit.m4.mRoc = returnlist[[2]]
+  fit.m4.trn.cm = returnlist[[3]]
+  fit.m4.imp = returnlist[[4]]
+  
+  returnlist <- rf(training, resamp, folds, tune, r, samp, filename, 9)
+  fit.m5 = returnlist[[1]]
+  fit.m5.mRoc = returnlist[[2]]
+  fit.m5.trn.cm = returnlist[[3]]
+  fit.m5.imp = returnlist[[4]]
+  
+  returnlist <- rf(training, resamp, folds, tune, r, samp, filename, 10)
+  fit.m6 = returnlist[[1]]
+  fit.m6.mRoc = returnlist[[2]]
+  fit.m6.trn.cm = returnlist[[3]]
+  fit.m6.imp = returnlist[[4]]
+  
+  returnlist <- rf(training, resamp, folds, tune, r, samp, filename, 11)
+  fit.m7 = returnlist[[1]]
+  fit.m7.mRoc = returnlist[[2]]
+  fit.m7.trn.cm = returnlist[[3]]
+  fit.m7.imp = returnlist[[4]]
+  
+  returnlist <- rf(training, resamp, folds, tune, r, samp, filename, 12)
+  fit.m8 = returnlist[[1]]
+  fit.m8.mRoc = returnlist[[2]]
+  fit.m8.trn.cm = returnlist[[3]]
+  fit.m8.imp = returnlist[[4]]
+  
+  
+  #--------------------------------------
+  # Model Comparison
+  #--------------------------------------
+  
+  # Model Types
+  model.types = c("tree", "tree", "tree", "tree", "tree", "tree", "tree", "tree")
+  
+  # Model Names
+  model.names = c("rf5", "rf6", "rf7", "rf8", "rf9", "rf10", "rf11", "rf12")
+  
+  # Accuracy, Train
+  model.trn.acc = rbind(fit.m1.trn.cm$overall[1],
+                        fit.m2.trn.cm$overall[1],
+                        fit.m3.trn.cm$overall[1],
+                        fit.m4.trn.cm$overall[1],
+                        fit.m5.trn.cm$overall[1],
+                        fit.m6.trn.cm$overall[1],
+                        fit.m7.trn.cm$overall[1],
+                        fit.m8.trn.cm$overall[1])
+  
+  # Kappa, Train
+  model.trn.kpp = rbind(fit.m1.trn.cm$overall[2],
+                        fit.m2.trn.cm$overall[2],
+                        fit.m3.trn.cm$overall[2],
+                        fit.m4.trn.cm$overall[2],
+                        fit.m5.trn.cm$overall[2],
+                        fit.m6.trn.cm$overall[2],
+                        fit.m7.trn.cm$overall[2],
+                        fit.m8.trn.cm$overall[2])
+  
+  # Sensitivity, Train
+  model.trn.sens = rbind(fit.m1.trn.cm$byClass[1],
+                         fit.m2.trn.cm$byClass[1],
+                         fit.m3.trn.cm$byClass[1],
+                         fit.m4.trn.cm$byClass[1],
+                         fit.m5.trn.cm$byClass[1],
+                         fit.m6.trn.cm$byClass[1],
+                         fit.m7.trn.cm$byClass[1],
+                         fit.m8.trn.cm$byClass[1])
+  
+  # Specificity, Train
+  model.trn.spec = rbind(fit.m1.trn.cm$byClass[2],
+                         fit.m2.trn.cm$byClass[2],
+                         fit.m3.trn.cm$byClass[2],
+                         fit.m4.trn.cm$byClass[2],
+                         fit.m5.trn.cm$byClass[2],
+                         fit.m6.trn.cm$byClass[2],
+                         fit.m7.trn.cm$byClass[2],
+                         fit.m8.trn.cm$byClass[2])
+  
+  # Precision, Train
+  model.trn.prec = rbind(fit.m1.trn.cm$byClass[5],
+                         fit.m2.trn.cm$byClass[5],
+                         fit.m3.trn.cm$byClass[5],
+                         fit.m4.trn.cm$byClass[5],
+                         fit.m5.trn.cm$byClass[5],
+                         fit.m6.trn.cm$byClass[5],
+                         fit.m7.trn.cm$byClass[5],
+                         fit.m8.trn.cm$byClass[5])
+  
+  # Recall, Train
+  model.trn.rec = rbind(fit.m1.trn.cm$byClass[6],
+                        fit.m2.trn.cm$byClass[6],
+                        fit.m3.trn.cm$byClass[6],
+                        fit.m4.trn.cm$byClass[6],
+                        fit.m5.trn.cm$byClass[6],
+                        fit.m6.trn.cm$byClass[6],
+                        fit.m7.trn.cm$byClass[6],
+                        fit.m8.trn.cm$byClass[6])
+  
+  # F1, Train
+  model.trn.f1 = rbind(fit.m1.trn.cm$byClass[7],
+                       fit.m2.trn.cm$byClass[7],
+                       fit.m3.trn.cm$byClass[7],
+                       fit.m4.trn.cm$byClass[7],
+                       fit.m5.trn.cm$byClass[7],
+                       fit.m6.trn.cm$byClass[7],
+                       fit.m7.trn.cm$byClass[7],
+                       fit.m8.trn.cm$byClass[7])
+  
+  # Prevalence, Train
+  model.trn.prev = rbind(fit.m1.trn.cm$byClass[8],
+                         fit.m2.trn.cm$byClass[8],
+                         fit.m3.trn.cm$byClass[8],
+                         fit.m4.trn.cm$byClass[8],
+                         fit.m5.trn.cm$byClass[8],
+                         fit.m6.trn.cm$byClass[8],
+                         fit.m7.trn.cm$byClass[8],
+                         fit.m8.trn.cm$byClass[8])
+  
+  #AUC
+  model.trn.auc = rbind(fit.m1.mRoc$auc,
+                        fit.m2.mRoc$auc,
+                        fit.m3.mRoc$auc,
+                        fit.m4.mRoc$auc,
+                        fit.m5.mRoc$auc,
+                        fit.m6.mRoc$auc,
+                        fit.m7.mRoc$auc,
+                        fit.m8.mRoc$auc)
+  
+  #Cost
+  model.trn.cost = rbind(0,
+                         0,
+                         0,
+                         0,
+                         0,
+                         0,
+                         0,
+                         0)
+  
+  # Data Frame
+  model.comp = data.frame(model.types,
+                          model.names,
+                          model.trn.acc,
+                          model.trn.kpp,
+                          model.trn.sens,
+                          model.trn.spec,
+                          model.trn.prec,
+                          model.trn.rec,
+                          model.trn.f1,
+                          model.trn.prev,
+                          model.trn.auc,
+                          model.trn.cost)
+  rownames(model.comp) = 1:nrow(model.comp)
+  colnames(model.comp) = c("Model Type",
+                           "Model Name",
+                           "Accuracy",
+                           "Kappa",
+                           "Sensitivity",
+                           "Specificity",
+                           "Precision",
+                           "Recall",
+                           "F1",
+                           "Prevalence",
+                           "AUC",
+                           "Cost")
+  
+  sink(filename, append = TRUE)
+  
+  cat("\n")
+  print("Model engine summary")
+  print("====================")
+  
+  print(model.comp)
+  
+  cat("\n")
+  print("Model attribute importance")
+  print("==========================")
+  #Show the importance of all variables per model
+  merge.all <- function(x, ..., by = "row.names") {
+    L <- list(...)
+    for (i in seq_along(L)) {
+      x <- merge(x, L[[i]], by = by)
+      rownames(x) <- x$Row.names
+      x$Row.names <- NULL
+    }
+    return(x)
+  }
+  
+  model.imp <- merge.all(fit.m1.imp,
+                         fit.m2.imp,
+                         fit.m3.imp,
+                         fit.m4.imp,
+                         fit.m5.imp,
+                         fit.m6.imp,
+                         fit.m7.imp,
+                         fit.m8.imp)
+  
+  colnames(model.imp) = c("rf5", "rf6", "rf7", "rf8", "rf9", "rf10", "rf11", "rf12")
+  print(model.imp)
+  
+  cat("\n")
+  print("Model engine results")
+  print("====================")
+  
+  print_engine.all <- function(x, ...) {
+    L <- list(...)
+    for (i in seq_along(L)) {
+      cat("\n")
+      print("+++++++++++++")
+      print(L[[i]]$method)
+      print("+++++++++++++")
+      print(L[[i]]$finalModel)
+      cat("\n")
+      print(L[[i]]$results)
+    }
+  }
+  
+  print_engine.all(fit.m1,fit.m2,fit.m3,fit.m4,fit.m5,fit.m6,fit.m7,fit.m8)
   
   
   sink()
@@ -1972,7 +2342,7 @@ ML_Models_apply <- function(filename, sqlSaveTable, data.original, testing){
   #   C == varied, 3 times (0.25,0.5,1.0)
   
   
-  s <- paste(d,"rf1", sep="")
+  s <- paste(d,"f1", sep="")
   m1.t <- system.time(load(s))
   
   # Plots
@@ -2008,7 +2378,7 @@ ML_Models_apply <- function(filename, sqlSaveTable, data.original, testing){
   #   warnings() == T
   #   mtry == varied, 3 times (2,4,7)
   
-  s <- paste(d,"rf2", sep="")
+  s <- paste(d,"f2", sep="")
   m2.t <- system.time(load(s))
   
   # Plots
@@ -2043,7 +2413,7 @@ ML_Models_apply <- function(filename, sqlSaveTable, data.original, testing){
   #   M == varied (1,2,3)
   #   C == varied (0.01, 0.255, 0.5), 3 times
   
-  s <- paste(d,"rf3", sep="")
+  s <- paste(d,"f3", sep="")
   m3.t <- system.time(load(s))
   
   # Plots
@@ -2078,7 +2448,7 @@ ML_Models_apply <- function(filename, sqlSaveTable, data.original, testing){
   # Model notes:
   #   no tuning
   
-  s <- paste(d,"rf4", sep="")
+  s <- paste(d,"f4", sep="")
   m4.t <- system.time(load(s))
   
   # Plots
@@ -2116,7 +2486,7 @@ ML_Models_apply <- function(filename, sqlSaveTable, data.original, testing){
   #   distance (fixed = 2)
   #   kernel (fixed = optimal)
   
-  s <- paste(d,"rf5", sep="")
+  s <- paste(d,"f5", sep="")
   m5.t <- system.time(load(s))
   
   # In-sample fit
@@ -2149,7 +2519,7 @@ ML_Models_apply <- function(filename, sqlSaveTable, data.original, testing){
   #   nlter == varied, 3 times (50, 100, 150)
   #   method == varied, 2 times (Adaboost.M1, Real adaboost)
   
-  s <- paste(d,"rf6", sep="")
+  s <- paste(d,"f6", sep="")
   m6.t <- system.time(load(s))
   
   # In-sample fit
@@ -2181,7 +2551,7 @@ ML_Models_apply <- function(filename, sqlSaveTable, data.original, testing){
   #   warnings() == F
   #   cp == varied, 3 times (0.05, 0.13, 0.31)
   
-  s <- paste(d,"rf7", sep="")
+  s <- paste(d,"f7", sep="")
   m7.t <- system.time(load(s))
   
   # In-sample fit
@@ -2213,7 +2583,7 @@ ML_Models_apply <- function(filename, sqlSaveTable, data.original, testing){
   #   size 3
   #   decay 3
   
-  s <- paste(d,"rf8", sep="")
+  s <- paste(d,"f8", sep="")
   m8.t <- system.time(load(s))
   
   # In-sample fit

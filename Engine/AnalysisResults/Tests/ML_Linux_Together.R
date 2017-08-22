@@ -19,7 +19,7 @@ myconn<-odbcConnect("SAPHANA", uid="SYSTEM", pwd="oEqm66jccx", believeNRows=FALS
 
 #' ###Load data
 #+ get_data
-tl <- system.time(data.original <- sqlQuery(myconn, "SELECT ID, NAME, SCREENNAME, CREATED, ORIGINAL_PROFILE_IMAGE, PROFILE_IMAGE, BACKGROUND_IMAGE, LAST_TWEET, DESCRIPTION, LOCATION, LANGUAGE, FRIENDS_COUNT, FOLLOWERS_COUNT, STATUS_COUNT, LISTED_COUNT, TIMEZONE, UTC_OFFSET, GEO_ENABLED, LATITUDE, LONGITUDE, IS_DEFAULT_PROFILE, IS_DEFAULT_PROFILE_IMAGE, IS_BACKGROUND_IMAGE_USED, PROFILE_TEXT_COLOR, PROFILE_BG_COLOR, CLASS from twitter.zz_full_set") )
+tl <- system.time(data.original <- sqlQuery(myconn, "SELECT ID, NAME, SCREENNAME, CREATED, ORIGINAL_PROFILE_IMAGE, PROFILE_IMAGE, BACKGROUND_IMAGE, LAST_TWEET, DESCRIPTION, LOCATION, LANGUAGE, FRIENDS_COUNT, FOLLOWERS_COUNT, STATUS_COUNT, LISTED_COUNT, TIMEZONE, UTC_OFFSET, GEO_ENABLED, LATITUDE, LONGITUDE, IS_DEFAULT_PROFILE, IS_DEFAULT_PROFILE_IMAGE, IS_BACKGROUND_IMAGE_USED, PROFILE_TEXT_COLOR, PROFILE_BG_COLOR, FF_RATIO, USERNAME_LENGTH, PROFILE_HAS_URL, ACCOUNT_AGE_IN_MONTHS, HAS_NAME, HAS_IMAGE, DUP_PROFILE, HAS_PROFILE, CLASS from twitter.zz_together_set") )
 
 close(myconn)
 
@@ -34,20 +34,25 @@ data.full <- data.full[ , -which(names(data.full) %in% c("ID","NAME","SCREENNAME
 data.full <- cleanup.factors(data.full)
 #clean
 data.clean <- cleanup.Twitter(data.full)
+data.clean <- cleanup.TwitterBot(data.clean)
 
 #remove NZV values
 #was done in cleanup
 #data.clean <- data.clean[ , -which(names(data.clean) %in% c("ID","NAME","SCREENNAME","DESCRIPTION","IS_CELEBRITY","LAST_TWEET"))]
+
 #remove fields not in fake accounts
-data.clean <- data.clean[ , -which(names(data.clean) %in% c("BACKGROUND_IMAGE", "IS_BACKGROUND_IMAGE_USED", "PROFILE_TEXT_COLOR", "PROFILE_BG_COLOR"))]
-data.clean <- data.clean[ , -which(names(data.clean) %in% c("CREATED", "ORIGINAL_PROFILE_IMAGE"))]
-data.clean <- data.clean[ , -which(names(data.clean) %in% c("GEO_ENABLED", "IS_DEFAULT_PROFILE", "IS_DEFAULT_PROFILE_IMAGE"))]
+#data.clean <- data.clean[ , -which(names(data.clean) %in% c("BACKGROUND_IMAGE", "IS_BACKGROUND_IMAGE_USED", "PROFILE_TEXT_COLOR", "PROFILE_BG_COLOR"))]
+#data.clean <- data.clean[ , -which(names(data.clean) %in% c("CREATED", "ORIGINAL_PROFILE_IMAGE"))]
+#data.clean <- data.clean[ , -which(names(data.clean) %in% c("GEO_ENABLED", "IS_DEFAULT_PROFILE", "IS_DEFAULT_PROFILE_IMAGE"))]
 
 #remove unique values
-data.clean <- data.clean[ , -which(names(data.clean) %in% c("LOCATION", "LONGITUDE", "LATITUDE"))]
+#data.clean <- data.clean[ , -which(names(data.clean) %in% c("LOCATION", "LONGITUDE", "LATITUDE"))]
 
 #remove language and timezone
 #data.clean <- data.clean[ , -which(names(data.clean) %in% c("LANGUAGE", "TIMEZONE", "PROFILE_IMAGE"))]
+
+#scaled down version
+data.clean <- data.clean[ , -which(names(data.clean) %in% c("ID", "NAME", "SCREENNAME", "CREATED", "ORIGINAL_PROFILE_IMAGE", "BACKGROUND_IMAGE", "LAST_TWEET", "DESCRIPTION", "LOCATION", "FOLLOWERS_COUNT", "STATUS_COUNT", "LISTED_COUNT", "TIMEZONE", "LATITUDE", "LONGITUDE", "IS_DEFAULT_PROFILE", "IS_DEFAULT_PROFILE_IMAGE", "IS_BACKGROUND_IMAGE_USED", "PROFILE_TEXT_COLOR", "PROFILE_BG_COLOR", "FF_RATIO", "USERNAME_LENGTH", "PROFILE_HAS_URL", "ACCOUNT_AGE_IN_MONTHS", "HAS_NAME", "HAS_IMAGE", "HAS_PROFILE"))]
 
 #perform machine learning
 data.o <- data.clean
@@ -80,14 +85,15 @@ tune <- c(3)
 sampling <- c("smote")
 
 cl <- makeCluster(detectCores())
-registerDoParallel(cores=7) #or cl
+registerDoParallel(cores=6) #or cl
 for (m in sampling) {
   for (x in folds) {
     for (y in repeats) {
       for (z in tune) {
-        filename <- paste("~/Projects/RStudio/TwitterAnalysis/Engine/AnalysisResults/Results/PMETA_rcv_",x,"fold_",y,"repeat_",z,"tune_",m,".txt",sep="")
+        filename <- paste("~/Projects/RStudio/TwitterAnalysis/Engine/AnalysisResults/Results/TOGETHER_LESS_rcv_",x,"fold_",y,"repeat_",z,"tune_",m,".txt",sep="")
         #print(filename)
-        t <- system.time(ML_Models_ROC_P(training, resamp, x, z, y, m, filename, 1))        
+        t <- system.time(ML_Models_ROC_P(training, resamp, x, z, y, m, filename))
+        
         sink(filename, append = TRUE)
         
         cat("\n")
