@@ -1,0 +1,92 @@
+[1] "M2 started"
+[1] "M2 complete"
+   user  system elapsed 
+426.188  14.992  44.962 
+[1] "M5 started"
+[1] "M5 complete"
+   user  system elapsed 
+243.304   7.048  40.141 
+[1] "M6 started"
+[1] "M6 complete"
+    user   system  elapsed 
+1135.284    6.264  198.411 
+
+[1] "Model engine summary"
+[1] "===================="
+  Model Type Model Name  Accuracy     Kappa Sensitivity Specificity Precision
+1       tree         rf 0.9297143 0.5393258       0.980      0.9272 0.4022989
+2    cluster        knn 0.9853333 0.8178849       0.728      0.9982 0.9528796
+3   ensamble   Adaboost 0.9358095 0.5624730       0.976      0.9338 0.4243478
+  Recall        F1 Prevalence       AUC    Cost
+1  0.980 0.5704307 0.04761905 0.9806544  44.962
+2  0.728 0.8253968 0.04761905 0.8631000  40.141
+3  0.976 0.5915152 0.04761905 0.9852356 198.411
+
+[1] "Model attribute importance"
+[1] "=========================="
+                          rf       knn  Adaboost
+COMPARE_AGE        70.684905  13.41301  13.41301
+COMPARE_GENDER     16.681773  26.66410  26.66410
+DISTANCE_LOCATION 100.000000   0.00000   0.00000
+DISTANCE_TZ         0.000000 100.00000 100.00000
+HAMMING            44.078691  26.15543  26.15543
+LEVENSHTEIN         6.677914  58.00113  58.00113
+
+[1] "Model engine results"
+[1] "===================="
+
+[1] "+++++++++++++"
+[1] "kknn"
+[1] "+++++++++++++"
+
+Call:
+train.kknn(formula = .outcome ~ ., data = dat, kmax = param$kmax,     distance = param$distance, kernel = as.character(param$kernel))
+
+Type of response variable: nominal
+Minimal misclassification: 0.1097143
+Best kernel: optimal
+Best k: 1
+
+  kmax distance  kernel       ROC      Sens      Spec      ROCSD     SensSD
+1    5        2 optimal 0.8675855 0.7373333 0.9968667 0.02954201 0.05818717
+2    7        2 optimal 0.8661763 0.7346667 0.9973556 0.02969246 0.05966445
+3    9        2 optimal 0.8661444 0.7351111 0.9971778 0.02850014 0.05718648
+       SpecSD
+1 0.002696102
+2 0.001646855
+3 0.001816766
+
+[1] "+++++++++++++"
+[1] "adaboost"
+[1] "+++++++++++++"
+adaboost(formula = .outcome ~ ., data = dat, nIter = param$nIter)
+.outcome ~ .
+<environment: 0x1510a350>
+Dependent Variable: .outcome
+No of trees:50
+The weights of the trees are:1.4672291.0486230.71565820.57177250.49684470.40318170.36642080.30359060.28131460.23485250.22854960.19852080.19931170.17077450.16802380.14835890.14728660.12995120.13022510.11686520.11696130.10727760.10392770.10036970.092460130.089509120.085393750.088592490.083160420.074318250.076909430.070339920.074030450.073133450.071632410.068091590.06903670.065088310.062515980.059207560.060628790.056311070.057333020.082264040.065434230.049013890.05087320.070693990.057986390.04305846
+
+  nIter        method       ROC      Sens      Spec       ROCSD     SensSD
+1    50   Adaboost.M1 0.9890357 0.9711111 0.9312222 0.002809828 0.03191624
+2    50 Real adaboost 0.8147673 0.9795556 0.9270444 0.123779174 0.02093107
+3   100   Adaboost.M1 0.9890262 0.9337778 0.9443778 0.002966269 0.04366130
+4   100 Real adaboost 0.7675760 0.9764444 0.9269556 0.140188369 0.01875295
+5   150   Adaboost.M1 0.9889247 0.9342222 0.9439333 0.003319711 0.05535627
+6   150 Real adaboost 0.7623262 0.9800000 0.9270444 0.158254908 0.01877473
+       SpecSD
+1 0.011321946
+2 0.006575662
+3 0.015615773
+4 0.006415220
+5 0.016392083
+6 0.006911999
+
+[1] "Query loading run time"
+[1] "=============="
+   user  system elapsed 
+  4.004   0.164   5.339 
+
+[1] "Models run time"
+[1] "=============="
+    user   system  elapsed 
+1809.472   28.412  288.364 
