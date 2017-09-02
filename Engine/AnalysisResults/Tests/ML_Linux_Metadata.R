@@ -5,7 +5,9 @@ suppressMessages(library(caret))
 suppressMessages(library(lubridate))
 suppressMessages(library(doParallel))
 suppressMessages(library(FSelector))
-suppressMessages(library(pROC))
+suppressMessages(library(pROC)) # for AUC calculations
+suppressMessages(library(PRROC)) # for Precision-Recall curve calculations
+suppressMessages(library(MLmetrics)) # for prSummary in Caret
 
 #LINUX
 setwd("~/Projects/RStudio/TwitterAnalysis/Engine/AnalysisResults/Tests")
@@ -78,29 +80,35 @@ repeats <- c(3)
 tune <- c(3)
 #sampling
 sampling <- c("smote")
+#summary function
+summF <- c("twoClassSummary", "prSummary")
 
 cl <- makeCluster(detectCores())
 registerDoParallel(cores=7) #or cl
-for (m in sampling) {
-  for (x in folds) {
-    for (y in repeats) {
-      for (z in tune) {
-        filename <- paste("~/Projects/RStudio/TwitterAnalysis/Engine/AnalysisResults/Results/PMETA_rcv_",x,"fold_",y,"repeat_",z,"tune_",m,".txt",sep="")
-        #print(filename)
-        t <- system.time(ML_Models_ROC_P(training, resamp, x, z, y, m, filename, 1))        
-        sink(filename, append = TRUE)
-        
-        cat("\n")
-        print("Query loading run time")
-        print("==============")
-        print(tl)
-        
-        cat("\n")
-        print("Models run time")
-        print("==============")
-        print(t)
-        
-        sink()
+for (n in summF) {
+  for (m in sampling) {
+    for (x in folds) {
+      for (y in repeats) {
+        for (z in tune) {
+          filename <- paste("~/Projects/RStudio/TwitterAnalysis/Engine/AnalysisResults/Results/META2_rcv_",x,"fold_",y,"repeat_",z,"tune_",m,"_sumf_",n,".txt",sep="")
+          imagefilename <- paste("~/Projects/RStudio/TwitterAnalysis/Engine/AnalysisResults/Results/META2_rcv_",x,"fold_",y,"repeat_",z,"tune_",m,"_sumf_",n,"_",sep="")
+          
+          #print(filename)
+          t <- system.time(ML_Models_ROC_P(training, resamp, x, z, y, m, filename, imagefilename, 0, n))        
+          sink(filename, append = TRUE)
+          
+          cat("\n")
+          print("Query loading run time")
+          print("==============")
+          print(tl)
+          
+          cat("\n")
+          print("Models run time")
+          print("==============")
+          print(t)
+          
+          sink()
+        }
       }
     }
   }

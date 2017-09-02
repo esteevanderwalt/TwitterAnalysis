@@ -74,12 +74,51 @@ tree_func <- function(final_model,
   #print(plot)
 }
 
-ML_Models_ROC_P <- function(training, resamp, folds, tune, r, samp, filename, ss = 0){
+runDetails <- function(fit, f){
+  
+  index_class2 <- testing$CLASS == "deceptive"
+  index_class1 <- testing$CLASS == "trustworthy"
+  
+  # Plots
+  #plot(fit, main = "Accuracy: fit.m1")
+  #plot(varImp(fit), main = "Var Imp: fit.m1")
+  
+  # In-sample fit
+  fit.trn.pred <- predict(fit, newdata = testing)
+  assign(paste(f,".trn.pred",sep=""), fit.trn.pred, envir = .GlobalEnv)
+  fit.trn.prob <- predict(fit, newdata = testing, type = "prob")
+  assign(paste(f,".trn.prob",sep=""), fit.trn.prob, envir = .GlobalEnv)
+  fit.trn.cm <- confusionMatrix(fit.trn.pred, testing$CLASS)
+  assign(paste(f,".trn.cm",sep=""), fit.trn.cm, envir = .GlobalEnv)
+  #fit.trn.cm$table
+  #fit.trn.cm$overall[1:2]
+  a <- varImp(fit)$importance
+  a[,2] <- NULL
+  assign(paste(f,".imp",sep=""), a, envir = .GlobalEnv)
+  fit.mRoc <- roc(testing$CLASS,fit.trn.prob[,"deceptive"])
+  assign(paste(f,".mRoc",sep=""), fit.mRoc, envir = .GlobalEnv)
+  fit.mPR <- pr.curve(fit.trn.prob$deceptive[index_class2], fit.trn.prob$deceptive[index_class1], curve = TRUE)
+  assign(paste(f,".mPR",sep=""), fit.mPR, envir = .GlobalEnv)
+  
+  imagefile <- paste(imagefilename, "ROC_",f,".png", sep="")
+  png(filename = imagefile, width = 600)
+  p <- plot(fit.mRoc)
+  print(p)
+  dev.off()
+  imagefile <- paste(imagefilename, "PR_",f,".png", sep="")
+  png(filename = imagefile, width = 600)
+  p <- plot(fit.mPR)
+  print(p)
+  dev.off()
+
+}
+
+ML_Models_ROC_P <- function(training, resamp, folds, tune, r, samp, filename, imagefilename, ss = 0, summF){
 
   if(samp=="none"){
     samp <- NULL
   }
-
+  
   #--------------------------------------
   # Model 1 - SVM Radial
   #--------------------------------------
@@ -97,7 +136,7 @@ ML_Models_ROC_P <- function(training, resamp, folds, tune, r, samp, filename, ss
                             seeds = fit.m1.seeds,
                             classProbs = TRUE,
                             savePredictions = TRUE,
-                            summaryFunction = twoClassSummary,
+                            summaryFunction = get(summF), #twoClassSummary,
                             sampling = samp)
 
   sink(filename, append = TRUE)
@@ -112,25 +151,8 @@ ML_Models_ROC_P <- function(training, resamp, folds, tune, r, samp, filename, ss
                                       preProcess = c("center", "scale"),
                                       trControl = fit.m1.fc,
                                       tuneLength = tune))
-  
-  # In-sample summary
-  fit.m1$finalModel
-  fit.m1$results
-  
-  # Plots
-  #plot(fit.m1, main = "Accuracy: fit.m1")
-  #plot(varImp(fit.m1), main = "Var Imp: fit.m1")
-  
-  # In-sample fit
-  fit.m1.trn.pred = predict(fit.m1, newdata = testing)
-  fit.m1.trn.prob = predict(fit.m1, newdata = testing, type = "prob")
-  fit.m1.trn.cm = confusionMatrix(fit.m1.trn.pred, testing$CLASS)
-  fit.m1.trn.cm$table
-  fit.m1.trn.cm$overall[1:2]
-  a <- varImp(fit.m1)$importance
-  a[,2] <- NULL
-  fit.m1.imp <- a
-  fit.m1.mRoc <- roc(testing$CLASS,fit.m1.trn.prob[,"deceptive"], levels = c("trustworthy","deceptive"))
+  runDetails(fit.m1, "fit.m1")
+  fit.m1.trn.cm$overall[1]
   
   sink(filename, append = TRUE)
   print("M1 complete")
@@ -152,7 +174,7 @@ ML_Models_ROC_P <- function(training, resamp, folds, tune, r, samp, filename, ss
                             seeds = fit.m2.seeds,
                             classProbs = TRUE,
                             savePredictions = TRUE,
-                            summaryFunction = twoClassSummary,
+                            summaryFunction = get(summF), #twoClassSummary,
                             sampling = samp)
 
   sink(filename, append = TRUE)
@@ -167,24 +189,7 @@ ML_Models_ROC_P <- function(training, resamp, folds, tune, r, samp, filename, ss
                                       preProcess = c("center", "scale"),
                                       trControl = fit.m2.fc,
                                       tuneLength = tune))
-  
-  # In-sample summary
-  fit.m2$finalModel
-  fit.m2$results
-  
-  # Plots
-  #plot(fit.m2, main = "Accuracy: fit.m2")
-  #plot(varImp(fit.m2), main = "Var Imp: fit.m2")
-  
-  # In-sample fit
-  fit.m2.trn.pred = predict(fit.m2, newdata = testing)
-  fit.m2.trn.prob = predict(fit.m2, newdata = testing, type = "prob")
-  fit.m2.trn.cm = confusionMatrix(fit.m2.trn.pred, testing$CLASS)
-  fit.m2.trn.cm$table
-  fit.m2.trn.cm$overall[1:2]
-  a <- varImp(fit.m2)$importance
-  fit.m2.imp <- a
-  fit.m2.mRoc <- roc(testing$CLASS,fit.m2.trn.prob[,"deceptive"], levels = c("trustworthy","deceptive"))
+  runDetails(fit.m2, "fit.m2")
 
   sink(filename, append = TRUE)
   print("M2 complete")
@@ -207,7 +212,7 @@ ML_Models_ROC_P <- function(training, resamp, folds, tune, r, samp, filename, ss
                             classProbs = TRUE,
                             allowParallel = FALSE,
                             savePredictions = TRUE,
-                            summaryFunction = twoClassSummary,
+                            summaryFunction = get(summF), #twoClassSummary,
                             sampling = samp)
 
   sink(filename, append = TRUE)
@@ -222,25 +227,7 @@ ML_Models_ROC_P <- function(training, resamp, folds, tune, r, samp, filename, ss
                                       preProcess = c("center", "scale"),
                                       trControl = fit.m3.fc,
                                       tuneLength = tune))
-  
-  # In-sample summary
-  fit.m3$finalModel
-  fit.m3$results
-  
-  # Plots
-  #plot(fit.m3, main = "Accuracy: fit.m3")
-  #plot(varImp(fit.m3), main = "Var Imp: fit.m3")
-  
-  # In-sample fit
-  fit.m3.trn.pred = predict(fit.m3, newdata = testing)
-  fit.m3.trn.prob = predict(fit.m3, newdata = testing, type = "prob")
-  fit.m3.trn.cm = confusionMatrix(fit.m3.trn.pred, testing$CLASS)
-  fit.m3.trn.cm$table
-  fit.m3.trn.cm$overall[1:2]
-  a <- varImp(fit.m3)$importance
-  a[,2] <- NULL
-  fit.m3.imp <- a
-  fit.m3.mRoc <- roc(testing$CLASS,fit.m3.trn.prob[,"deceptive"], levels = c("trustworthy","deceptive"))
+  runDetails(fit.m3, "fit.m3")
   
   sink(filename, append = TRUE)
   print("M3 complete")
@@ -261,7 +248,7 @@ ML_Models_ROC_P <- function(training, resamp, folds, tune, r, samp, filename, ss
                             seeds = fit.m4.seeds,
                             classProbs = TRUE,
                             savePredictions = TRUE,
-                            summaryFunction = twoClassSummary,
+                            summaryFunction = get(summF), #twoClassSummary,
                             sampling = samp)
 
   sink(filename, append = TRUE)
@@ -275,25 +262,7 @@ ML_Models_ROC_P <- function(training, resamp, folds, tune, r, samp, filename, ss
                                       metric = "ROC",
                                       preProcess = c("center", "scale"),
                                       trControl = fit.m4.fc))
-  
-  # In-sample summary
-  fit.m4$finalModel
-  fit.m4$results
-  
-  # Plots
-  #plot(fit.m4, main = "Accuracy: fit.m4")
-  #plot(varImp(fit.m4), main = "Var Imp: fit.m4")
-  
-  # In-sample fit
-  fit.m4.trn.pred = predict(fit.m4, newdata = testing)
-  fit.m4.trn.prob = predict(fit.m4, newdata = testing, type = "prob")
-  fit.m4.trn.cm = confusionMatrix(fit.m4.trn.pred, testing$CLASS)
-  fit.m4.trn.cm$table
-  fit.m4.trn.cm$overall[1:2]
-  a <- varImp(fit.m4)$importance
-  a[,2] <- NULL
-  fit.m4.imp <- a
-  fit.m4.mRoc <- roc(testing$CLASS,fit.m4.trn.prob[,"deceptive"], levels = c("trustworthy","deceptive"))
+  runDetails(fit.m4, "fit.m4")
   
   sink(filename, append = TRUE)
   print("M4 complete")
@@ -319,7 +288,7 @@ ML_Models_ROC_P <- function(training, resamp, folds, tune, r, samp, filename, ss
                             seeds = fit.m5.seeds,
                             classProbs = TRUE,
                             savePredictions = TRUE,
-                            summaryFunction = twoClassSummary,
+                            summaryFunction = get(summF), #twoClassSummary,
                             sampling = samp)
 
   sink(filename, append = TRUE)
@@ -334,21 +303,7 @@ ML_Models_ROC_P <- function(training, resamp, folds, tune, r, samp, filename, ss
                                       preProcess = c("center", "scale"),
                                       trControl = fit.m5.fc,
                                       tuneLength = tune))
-  
-  # In-sample summary
-  fit.m5$finalModel
-  fit.m5$results
-  
-  # In-sample fit
-  fit.m5.trn.pred = predict(fit.m5, newdata = testing)
-  fit.m5.trn.prob = predict(fit.m5, newdata = testing, type = "prob")
-  fit.m5.trn.cm = confusionMatrix(fit.m5.trn.pred, testing$CLASS)
-  fit.m5.trn.cm$table
-  fit.m5.trn.cm$overall[1:2]
-  a <- varImp(fit.m5)$importance
-  a[,2] <- NULL
-  fit.m5.imp <- a
-  fit.m5.mRoc <- roc(testing$CLASS,fit.m5.trn.prob[,"deceptive"], levels = c("trustworthy","deceptive"))
+  runDetails(fit.m5, "fit.m5")
   
   sink(filename, append = TRUE)
   print("M5 complete")
@@ -372,7 +327,7 @@ ML_Models_ROC_P <- function(training, resamp, folds, tune, r, samp, filename, ss
                             seeds = fit.m6.seeds,
                             classProbs = TRUE,
                             savePredictions = TRUE,
-                            summaryFunction = twoClassSummary,
+                            summaryFunction = get(summF), #twoClassSummary,
                             sampling = samp)
 
   sink(filename, append = TRUE)
@@ -387,21 +342,7 @@ ML_Models_ROC_P <- function(training, resamp, folds, tune, r, samp, filename, ss
                                       preProcess = c("center", "scale"),
                                       trControl = fit.m6.fc,
                                       tuneLength = tune))
-  
-  # In-sample summary
-  fit.m6$finalModel
-  fit.m6$results
-  
-  # In-sample fit
-  fit.m6.trn.pred = predict(fit.m6, newdata = testing)
-  fit.m6.trn.prob = predict(fit.m6, newdata = testing, type = "prob")
-  fit.m6.trn.cm = confusionMatrix(fit.m6.trn.pred, testing$CLASS)
-  fit.m6.trn.cm$table
-  fit.m6.trn.cm$overall[1:2]
-  a <- varImp(fit.m6)$importance
-  a[,2] <- NULL
-  fit.m6.imp <- a
-  fit.m6.mRoc <- roc(testing$CLASS,fit.m6.trn.prob[,"deceptive"], levels = c("trustworthy","deceptive"))
+  runDetails(fit.m6, "fit.m6")
   
   sink(filename, append = TRUE)
   print("M6 complete")
@@ -424,7 +365,7 @@ ML_Models_ROC_P <- function(training, resamp, folds, tune, r, samp, filename, ss
                             seeds = fit.m7.seeds,
                             classProbs = TRUE,
                             savePredictions = TRUE,
-                            summaryFunction = twoClassSummary,
+                            summaryFunction = get(summF), #twoClassSummary,
                             sampling = samp)
 
   sink(filename, append = TRUE)
@@ -439,20 +380,7 @@ ML_Models_ROC_P <- function(training, resamp, folds, tune, r, samp, filename, ss
                                       preProcess = c("center", "scale"),
                                       trControl = fit.m7.fc,
                                       tuneLength = tune))
-  
-  # In-sample summary
-  fit.m7$finalModel
-  fit.m7$results
-  
-  # In-sample fit
-  fit.m7.trn.pred = predict(fit.m7, newdata = testing)
-  fit.m7.trn.prob = predict(fit.m7, newdata = testing, type = "prob")
-  fit.m7.trn.cm = confusionMatrix(fit.m7.trn.pred, testing$CLASS)
-  fit.m7.trn.cm$table
-  fit.m7.trn.cm$overall[1:2]
-  a <- varImp(fit.m7)$importance
-  fit.m7.imp <- a
-  fit.m7.mRoc <- roc(testing$CLASS,fit.m7.trn.prob[,"deceptive"], levels = c("trustworthy","deceptive"))
+  runDetails(fit.m7, "fit.m7")
   
   sink(filename, append = TRUE)
   print("M7 complete")
@@ -476,7 +404,7 @@ ML_Models_ROC_P <- function(training, resamp, folds, tune, r, samp, filename, ss
                             seeds = fit.m8.seeds,
                             classProbs = TRUE,
                             savePredictions = TRUE,
-                            summaryFunction = twoClassSummary,
+                            summaryFunction = get(summF), #twoClassSummary,
                             sampling = samp)
 
   sink(filename, append = TRUE)
@@ -491,20 +419,7 @@ ML_Models_ROC_P <- function(training, resamp, folds, tune, r, samp, filename, ss
                                       preProcess = c("center", "scale"),
                                       trControl = fit.m8.fc,
                                       tuneLength = tune))
-  
-  # In-sample summary
-  fit.m8$finalModel
-  fit.m8$results
-  
-  # In-sample fit
-  fit.m8.trn.pred = predict(fit.m8, newdata = testing)
-  fit.m8.trn.prob = predict(fit.m8, newdata = testing, type = "prob")
-  fit.m8.trn.cm = confusionMatrix(fit.m8.trn.pred, testing$CLASS)
-  fit.m8.trn.cm$table
-  fit.m8.trn.cm$overall[1:2]
-  a <- varImp(fit.m8)$importance
-  fit.m8.imp <- a
-  fit.m8.mRoc <- roc(testing$CLASS,fit.m8.trn.prob[,"deceptive"], levels = c("trustworthy","deceptive"))
+  runDetails(fit.m8, "fit.m8")
   
   sink(filename, append = TRUE)
   print("M8 complete")
@@ -536,6 +451,16 @@ ML_Models_ROC_P <- function(training, resamp, folds, tune, r, samp, filename, ss
   
   # Model Names
   model.names = c("svmRadial", "rf", "J48", "bayesglm", "knn", "Adaboost", "rpart", "nnet")
+  
+  model_list <- list(svmRadial = fit.m1,
+                     rf = fit.m2,
+                     J48 = fit.m3,
+                     bayesglm = fit.m4,
+                     knn = fit.m5,
+                     Adaboost = fit.m6,
+                     rpart = fit.m7,
+                     nnet = fit.m8
+                     )
   
   # Accuracy, Train
   model.trn.acc = rbind(fit.m1.trn.cm$overall[1],
@@ -626,6 +551,16 @@ ML_Models_ROC_P <- function(training, resamp, folds, tune, r, samp, filename, ss
                         fit.m6.mRoc$auc,
                         fit.m7.mRoc$auc,
                         fit.m8.mRoc$auc)
+
+  #PR-AUC
+  model.trn.prauc = rbind(fit.m1.mPR$auc.integral,
+                        fit.m2.mPR$auc.integral,
+                        fit.m3.mPR$auc.integral,
+                        fit.m4.mPR$auc.integral,
+                        fit.m5.mPR$auc.integral,
+                        fit.m6.mPR$auc.integral,
+                        fit.m7.mPR$auc.integral,
+                        fit.m8.mPR$auc.integral)
   
   #Cost
   model.trn.cost = rbind(m1.t[3],
@@ -649,6 +584,7 @@ ML_Models_ROC_P <- function(training, resamp, folds, tune, r, samp, filename, ss
                           model.trn.f1,
                           model.trn.prev,
                           model.trn.auc,
+                          model.trn.prauc,
                           model.trn.cost)
   rownames(model.comp) = 1:nrow(model.comp)
   colnames(model.comp) = c("Model Type",
@@ -662,7 +598,61 @@ ML_Models_ROC_P <- function(training, resamp, folds, tune, r, samp, filename, ss
                            "F1",
                            "Prevalence",
                            "AUC",
+                           "PR-AUC",
                            "Cost")
+  
+  model_list <- list(svmRadial = fit.m1.mRoc,
+                     rf = fit.m2.mRoc,
+                     J48 = fit.m3.mRoc,
+                     bayesglm = fit.m4.mRoc,
+                     knn = fit.m5.mRoc,
+                     Adaboost = fit.m6.mRoc,
+                     rpart = fit.m7.mRoc,
+                     nnet = fit.m8.mRoc)
+  results_list_roc <- list(NA)
+  num_mod <- 1
+  for(the_roc in model_list){
+    results_list_roc[[num_mod]] <- data_frame(tpr = the_roc$sensitivities,
+                                              fpr = 1 - the_roc$specificities,
+                                              model = names(model_list)[num_mod]) 
+    num_mod <- num_mod + 1
+  }
+  results_df_roc <- bind_rows(results_list_roc)
+  imagefile <- paste(imagefilename, "fullROC.png", sep="")
+  png(filename = imagefile, width=1200)
+  p <- ggplot(aes(x = fpr,  y = tpr, group = model), data = results_df_roc) + 
+    geom_line(aes(color = model, linetype = model),size = 1) +  
+    #scale_color_manual(values = custom_col) +
+    geom_abline(intercept = 0, slope = 1, color = "gray", size = 1) +
+    theme_bw(base_size = 18) +
+    labs(x="False Positive Rate",y="True Positive Rate", title="ROC Curve")
+  print(p)
+  dev.off()
+  
+  model_list_pr <- list(svmRadial = fit.m1.mPR,
+                     rf = fit.m2.mPR,
+                     J48 = fit.m3.mPR,
+                     bayesglm = fit.m4.mPR,
+                     knn = fit.m5.mPR,
+                     Adaboost = fit.m6.mPR,
+                     rpart = fit.m7.mPR,
+                     nnet = fit.m8.mPR)
+  results_list_pr <- list(NA)
+  num_mod <- 1
+  for(the_pr in model_list_pr){
+    results_list_pr[[num_mod]] <- data.frame(the_pr$curve, model = names(model_list)[num_mod])  
+    num_mod <- num_mod + 1
+  }
+  results_df_pr <- bind_rows(results_list_pr)
+  imagefile <- paste(imagefilename, "fullPR.png", sep="")
+  png(filename = imagefile, width=1200)
+  p <- ggplot(aes(x=X1,y=X2, group = model), data = results_df_pr) + 
+    geom_line(aes(color = model, linetype = model),size = 1) +
+    geom_abline(intercept = 1, slope = -1, color = "gray", size = 1) +
+    theme_bw(base_size = 18) +
+    labs(x="Recall",y="Precision", title="PR Curve")
+  print(p)
+  dev.off()
   
   sink(filename, append = TRUE)
   
@@ -709,14 +699,25 @@ ML_Models_ROC_P <- function(training, resamp, folds, tune, r, samp, filename, ss
       print("+++++++++++++")
       print(L[[i]]$method)
       print("+++++++++++++")
+      print("**** finalModel ****")
       print(L[[i]]$finalModel)
       cat("\n")
+      print("**** results ****")
       print(L[[i]]$results)
+      cat("\n")
+      #confusionmatrix over all runs
+      print("**** resampledCM ****")
+      print(L[[i]]$resampledCM)
+      cat("\n")
+      #ROC, Sens, Spec over best tune (always 10x3 results - crossvalidation)
+      print("**** resample ****")
+      print(L[[i]]$resample)
+      cat("\n")
+      
     }
   }
   
   print_engine.all(fit.m1,fit.m2,fit.m3,fit.m4,fit.m5,fit.m6,fit.m7,fit.m8)
-  
   
   sink()
   
