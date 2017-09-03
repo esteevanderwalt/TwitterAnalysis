@@ -298,7 +298,7 @@ ML_Models_ROC_P <- function(training, resamp, folds, tune, r, samp, filename, im
   # Build model
   set.seed(123)
   m5.t <- system.time(fit.m5 <- train(CLASS~., data=training,
-                                      method = "kknn",
+                                      method = "knn",
                                       metric = "ROC",
                                       preProcess = c("center", "scale"),
                                       trControl = fit.m5.fc,

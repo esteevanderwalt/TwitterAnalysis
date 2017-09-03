@@ -94,8 +94,8 @@ for (n in summF) {
     for (x in folds) {
       for (y in repeats) {
         for (z in tune) {
-          filename <- paste("~/Projects/RStudio/TwitterAnalysis/Engine/AnalysisResults/Results/FE2_NOHAM_rcv_",x,"fold_",y,"repeat_",z,"tune_",m,"_sumf_",n,".txt",sep="")
-          imagefilename <- paste("~/Projects/RStudio/TwitterAnalysis/Engine/AnalysisResults/Results/FE2_NOHAM_rcv_",x,"fold_",y,"repeat_",z,"tune_",m,"_sumf_",n,"_",sep="")
+          filename <- paste("~/Projects/RStudio/TwitterAnalysis/Engine/AnalysisResults/Results/FE3_NOHAM_rcv_",x,"fold_",y,"repeat_",z,"tune_",m,"_sumf_",n,".txt",sep="")
+          imagefilename <- paste("~/Projects/RStudio/TwitterAnalysis/Engine/AnalysisResults/Results/FE3_NOHAM_rcv_",x,"fold_",y,"repeat_",z,"tune_",m,"_sumf_",n,"_",sep="")
           
           #print(filename)
           t <- system.time(ML_Models_ROC_P(training, resamp, x, z, y, m, filename, imagefilename, 0, n))        
