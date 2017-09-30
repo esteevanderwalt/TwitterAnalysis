@@ -67,7 +67,7 @@ tree_func <- function(final_model,
           axis.title.y = element_blank(),
           plot.title = element_text(size = 18))
   
-  png(filename = paste("randomforest_",nm,".png",sep=""), width = 2048, height = 1024) #, width = 500, height = 250
+  pdf(paste("randomforest_",nm,".pdf",sep=""), width = 7, height = 5) #, width = 500, height = 250
   print(plot)
   dev.off()
   
@@ -100,13 +100,13 @@ runDetails <- function(fit, f){
   fit.mPR <- pr.curve(fit.trn.prob$deceptive[index_class2], fit.trn.prob$deceptive[index_class1], curve = TRUE)
   assign(paste(f,".mPR",sep=""), fit.mPR, envir = .GlobalEnv)
   
-  imagefile <- paste(imagefilename, "ROC_",f,".png", sep="")
-  png(filename = imagefile, width = 600)
+  imagefile <- paste(imagefilename, "ROC_",f,".pdf", sep="")
+  pdf(imagefile, width = 7, height = 6)
   p <- plot(fit.mRoc)
   print(p)
   dev.off()
-  imagefile <- paste(imagefilename, "PR_",f,".png", sep="")
-  png(filename = imagefile, width = 600)
+  imagefile <- paste(imagefilename, "PR_",f,".pdf", sep="")
+  pdf(imagefile, width = 7, height = 6)
   p <- plot(fit.mPR)
   print(p)
   dev.off()
@@ -618,8 +618,8 @@ ML_Models_ROC_P <- function(training, resamp, folds, tune, r, samp, filename, im
     num_mod <- num_mod + 1
   }
   results_df_roc <- bind_rows(results_list_roc)
-  imagefile <- paste(imagefilename, "fullROC.png", sep="")
-  png(filename = imagefile, width=1200)
+  imagefile <- paste(imagefilename, "fullROC.pdf", sep="")
+  pdf(imagefile, width = 7, height = 6)
   p <- ggplot(aes(x = fpr,  y = tpr, group = model), data = results_df_roc) + 
     geom_line(aes(color = model, linetype = model),size = 1) +  
     #scale_color_manual(values = custom_col) +
@@ -644,11 +644,11 @@ ML_Models_ROC_P <- function(training, resamp, folds, tune, r, samp, filename, im
     num_mod <- num_mod + 1
   }
   results_df_pr <- bind_rows(results_list_pr)
-  imagefile <- paste(imagefilename, "fullPR.png", sep="")
-  png(filename = imagefile, width=1200)
+  imagefile <- paste(imagefilename, "fullPR.pdf", sep="")
+  pdf(imagefile, width = 7, height = 6)
   p <- ggplot(aes(x=X1,y=X2, group = model), data = results_df_pr) + 
     geom_line(aes(color = model, linetype = model),size = 1) +
-    geom_abline(intercept = 1, slope = -1, color = "gray", size = 1) +
+    geom_abline(intercept = 0.5, slope = 0, color = "gray", size = 1) +
     theme_bw(base_size = 18) +
     labs(x="Recall",y="Precision", title="PR Curve")
   print(p)

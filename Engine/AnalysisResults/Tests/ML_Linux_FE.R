@@ -71,6 +71,17 @@ testing <- data.o[-inTrain,]
 
 rm(inTrain)  
 
+getRandomData <- function(d, si){
+  #split d in deceptive and not
+  deceptive <- d[d$CLASS=="deceptive",]
+  trustworthy <- d[d$CLASS=="trustworthy",]
+  #randomly pick si (size) trustworthy
+  trust <- trustworthy[sample(nrow(trustworthy), si), ]
+  #add to deceptive
+  total <- rbind(deceptive, trust)
+  #return
+  return(total)
+}
 
 ################################
 ## Run various params on dataset
@@ -85,7 +96,9 @@ tune <- c(3)
 #sampling
 sampling <- c("smote")  
 #summary function
-summF <- c("twoClassSummary", "prSummary")
+summF <- c("prSummary") #"twoClassSummary"
+rr <- c(1)  
+sz <- c(0, 1000, 10000, 100000) #use 0 for full set
 
 cl <- makeCluster(detectCores())
 registerDoParallel(cores=7) #or cl
@@ -94,24 +107,38 @@ for (n in summF) {
     for (x in folds) {
       for (y in repeats) {
         for (z in tune) {
-          filename <- paste("~/Projects/RStudio/TwitterAnalysis/Engine/AnalysisResults/Results/FE3_NOHAM_rcv_",x,"fold_",y,"repeat_",z,"tune_",m,"_sumf_",n,".txt",sep="")
-          imagefilename <- paste("~/Projects/RStudio/TwitterAnalysis/Engine/AnalysisResults/Results/FE3_NOHAM_rcv_",x,"fold_",y,"repeat_",z,"tune_",m,"_sumf_",n,"_",sep="")
-          
-          #print(filename)
-          t <- system.time(ML_Models_ROC_P(training, resamp, x, z, y, m, filename, imagefilename, 0, n))        
-          sink(filename, append = TRUE)
-          
-          cat("\n")
-          print("Query loading run time")
-          print("==============")
-          print(tl)
-          
-          cat("\n")
-          print("Models run time")
-          print("==============")
-          print(t)
-          
-          sink()
+          for (s in sz) {
+            for (r in rr) {
+              filename <- paste("~/Projects/RStudio/TwitterAnalysis/Engine/AnalysisResults/Results/FE4_NOHAM_rcv_",x,"fold_",y,"repeat_",z,"tune_",m,"_sumf_",n,"_size_",s,"_round_",r,".txt",sep="")
+              imagefilename <- paste("~/Projects/RStudio/TwitterAnalysis/Engine/AnalysisResults/Results/FE4_NOHAM_rcv_",x,"fold_",y,"repeat_",z,"tune_",m,"_sumf_",n,"_size_",s,"_round_",r,"_",sep="")
+              
+              #determine data for this test
+              if(s > 0){
+                #get new data from random sample generator
+                data.r <- getRandomData(data.o, s)
+                inTrain <- createDataPartition(y = data.r$CLASS, p = .75, list = FALSE)
+                training <- data.r[inTrain,]
+                testing <- data.r[-inTrain,]
+                rm(inTrain) 
+              }
+              
+              #print(filename)
+              t <- system.time(ML_Models_ROC_P(training, resamp, x, z, y, m, filename, imagefilename, 0, n))        
+              sink(filename, append = TRUE)
+              
+              cat("\n")
+              print("Query loading run time")
+              print("==============")
+              print(tl)
+              
+              cat("\n")
+              print("Models run time")
+              print("==============")
+              print(t)
+              
+              sink()
+            }
+          }
         }
       }
     }
