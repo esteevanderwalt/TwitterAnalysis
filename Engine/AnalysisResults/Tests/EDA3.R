@@ -73,6 +73,15 @@ data.clean <- data.clean[ , -which(names(data.clean) %in% c("BACKGROUND_IMAGE", 
 data.clean <- data.clean[ , -which(names(data.clean) %in% c("CREATED", "ORIGINAL_PROFILE_IMAGE"))]
 data.clean <- data.clean[ , -which(names(data.clean) %in% c("GEO_ENABLED", "IS_DEFAULT_PROFILE", "IS_DEFAULT_PROFILE_IMAGE"))]
 
+rapply(data.clean,function(x)length(unique(x)))
+#all orig
+i1 <- data.clean[data.clean$CLASS=='deceptive',]
+rapply(i1,function(x)length(unique(x)))
+#all injected
+i2 <- data.clean[data.clean$CLASS=='trustworthy',]
+rapply(i2,function(x)length(unique(x)))
+
+
 #get bin plots
 
 t <- data.clean[data.clean$FOLLOWERS_COUNT < 100,]
@@ -152,7 +161,7 @@ data.scaled <- cbind(data.scaled,CLASS=data.clean[,12])
 require(dplyr)
 data.scaled %>%
   group_by(CLASS) %>%
-  summarise_each(funs(max, min, mean, median, sd), FRIENDS_COUNT)
+  summarise_each(funs(max, min, mean, median, sd), FOLLOWERS_COUNT)
 
 filename <- "~/Projects/RStudio/TwitterAnalysis/Engine/AnalysisResults/Results/After_Chi.txt"
 sink(filename, append = TRUE)
@@ -208,6 +217,7 @@ science_themell = theme(panel.grid.major = element_line(size = 0.5, color = "gre
 library(ggplot2)
 library(reshape2)
 
+data.scaled <- data.scaled[ , -which(names(data.scaled) %in% c("LISTED_COUNT", "PROFILE_IMAGE","LATITUDE","LONGITUDE"))]
 #box
 d <- melt(data.scaled)
 # Basic box plot
@@ -217,13 +227,13 @@ p <- ggplot(d, aes(x=CLASS, y=value, fill=CLASS)) +
   coord_flip() +
   theme_bw() +
   science_theme +
-  labs(x = "Class", y = "Metadata") +
+  labs(x = "Class", y = "SMP Attributes") +
   geom_boxplot(notch=FALSE)
 print(p)
 
 setwd("~/Projects/RStudio/TwitterAnalysis/Engine/AnalysisResults/Results")
 
-pdf("metadata_distribution.pdf", width = 7, height = 6)
+pdf("metadata_postprep_distribution.pdf", width = 7, height = 5)
 p
 dev.off()
 
@@ -249,3 +259,20 @@ graph1(data.scaled,"LANGUAGE")
 graph1(data.scaled,"FRIENDS_COUNT")
 graph1(data.scaled,"FOLLOWERS_COUNT")
 
+#center / scale
+data.scaled <- as.data.frame(scale(data.clean[,1:11], center = TRUE, scale = TRUE))
+p <- ggplot(data.scaled, aes(x=FOLLOWERS_COUNT)) +
+  geom_bar(stat="count") + 
+  theme_bw() +
+  science_themel +
+  labs(y = "Scaled value", x = "FOLLOWERS_COUNT") +
+  geom_density(size=1.0) 
+print(p)
+
+summary(data.scaled)
+
+data.scaled %>% summarise_all(funs(min, max, median, sd, n = n(), q25 = quantile(., .25), q75 = quantile(., .75)))
+
+pdf(paste("scaled_followers.pdf",sep=""), width = 7, height = 5)
+print(p)
+dev.off()
