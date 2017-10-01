@@ -100,16 +100,16 @@ runDetails <- function(fit, f){
   fit.mPR <- pr.curve(fit.trn.prob$deceptive[index_class2], fit.trn.prob$deceptive[index_class1], curve = TRUE)
   assign(paste(f,".mPR",sep=""), fit.mPR, envir = .GlobalEnv)
   
-  imagefile <- paste(imagefilename, "ROC_",f,".pdf", sep="")
-  pdf(imagefile, width = 7, height = 6)
-  p <- plot(fit.mRoc)
-  print(p)
-  dev.off()
-  imagefile <- paste(imagefilename, "PR_",f,".pdf", sep="")
-  pdf(imagefile, width = 7, height = 6)
-  p <- plot(fit.mPR)
-  print(p)
-  dev.off()
+  #imagefile <- paste(imagefilename, "ROC_",f,".pdf", sep="")
+  #pdf(imagefile, width = 7, height = 6)
+  #p <- plot(fit.mRoc)
+  #print(p)
+  #dev.off()
+  #imagefile <- paste(imagefilename, "PR_",f,".pdf", sep="")
+  #pdf(imagefile, width = 7, height = 6)
+  #p <- plot(fit.mPR)
+  #print(p)
+  #dev.off()
 
 }
 
@@ -152,7 +152,7 @@ ML_Models_ROC_P <- function(training, resamp, folds, tune, r, samp, filename, im
                                       trControl = fit.m1.fc,
                                       tuneLength = tune))
   runDetails(fit.m1, "fit.m1")
-  fit.m1.trn.cm$overall[1]
+  #fit.m1.trn.cm$overall[1]
   
   sink(filename, append = TRUE)
   print("M1 complete")
@@ -692,7 +692,7 @@ ML_Models_ROC_P <- function(training, resamp, folds, tune, r, samp, filename, im
   print("Model engine results")
   print("====================")
   
-  print_engine.all <- function(x, ...) {
+  print_engine.all <- function(...) {
     L <- list(...)
     for (i in seq_along(L)) {
       cat("\n")

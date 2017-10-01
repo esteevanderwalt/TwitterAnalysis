@@ -92,9 +92,9 @@ tune <- c(3)
 #sampling
 sampling <- c("smote")
 #summary function
-summF <- c("twoClassSummary", "prSummary")
+summF <- c("prSummary") #"twoClassSummary", 
 rr <- c(1)  
-sz <- c(0, 1000, 10000, 100000) #use 0 for full set
+sz <- c(0) #use 0 for full set - , 1000, 10000, 100000
 
 cl <- makeCluster(detectCores())
 registerDoParallel(cores=7) #or cl
@@ -104,9 +104,9 @@ for (n in summF) {
       for (y in repeats) {
         for (z in tune) {
           for (s in sz) {
-            for (r in rr) {
-              filename <- paste("~/Projects/RStudio/TwitterAnalysis/Engine/AnalysisResults/Results/META4_rcv_",x,"fold_",y,"repeat_",z,"tune_",m,"_sumf_",n,"_size_",s,"_round_",r,".txt",sep="")
-              imagefilename <- paste("~/Projects/RStudio/TwitterAnalysis/Engine/AnalysisResults/Results/META4_rcv_",x,"fold_",y,"repeat_",z,"tune_",m,"_sumf_",n,"_size_",s,"_round_",r,"_",sep="")
+            for (r in 1:30) {  #rr
+              filename <- paste("~/Projects/RStudio/TwitterAnalysis/Engine/AnalysisResults/Results/META6_rcv_",x,"fold_",y,"repeat_",z,"tune_",m,"_sumf_",n,"_size_",s,"_round_",r,".txt",sep="")
+              imagefilename <- paste("~/Projects/RStudio/TwitterAnalysis/Engine/AnalysisResults/Results/META6_rcv_",x,"fold_",y,"repeat_",z,"tune_",m,"_sumf_",n,"_size_",s,"_round_",r,"_",sep="")
               
               #determine data for this test
               if(s > 0){
