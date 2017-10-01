@@ -108,6 +108,13 @@ for (n in summF) {
               filename <- paste("~/Projects/RStudio/TwitterAnalysis/Engine/AnalysisResults/Results/META6_rcv_",x,"fold_",y,"repeat_",z,"tune_",m,"_sumf_",n,"_size_",s,"_round_",r,".txt",sep="")
               imagefilename <- paste("~/Projects/RStudio/TwitterAnalysis/Engine/AnalysisResults/Results/META6_rcv_",x,"fold_",y,"repeat_",z,"tune_",m,"_sumf_",n,"_size_",s,"_round_",r,"_",sep="")
               
+              set.seed(ceiling(runif(1) * 5000))
+              inTrain <- createDataPartition(y = data.o$CLASS, p = .75, list = FALSE)
+              #str(inTrain)
+              
+              training <- data.o[inTrain,]
+              testing <- data.o[-inTrain,]
+              
               #determine data for this test
               if(s > 0){
                 #get new data from random sample generator
