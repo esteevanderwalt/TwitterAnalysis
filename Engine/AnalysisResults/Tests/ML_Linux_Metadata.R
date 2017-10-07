@@ -58,14 +58,13 @@ data.o <- data.clean
 #' ### Run model and print results
 #' ######################################
 #+ run_models
-set.seed(123)
+#set.seed(123)
 
-inTrain <- createDataPartition(y = data.o$CLASS, p = .75, list = FALSE)
-#str(inTrain)
+#inTrain <- createDataPartition(y = data.o$CLASS, p = .75, list = FALSE)
 
-training <- data.o[inTrain,]
-testing <- data.o[-inTrain,]
-rm(inTrain)  
+#training <- data.o[inTrain,]
+#testing <- data.o[-inTrain,]
+#rm(inTrain)  
 
 getRandomData <- function(d, si){
   #split d in deceptive and not
@@ -108,22 +107,31 @@ for (n in summF) {
               filename <- paste("~/Projects/RStudio/TwitterAnalysis/Engine/AnalysisResults/Results/META6_rcv_",x,"fold_",y,"repeat_",z,"tune_",m,"_sumf_",n,"_size_",s,"_round_",r,".txt",sep="")
               imagefilename <- paste("~/Projects/RStudio/TwitterAnalysis/Engine/AnalysisResults/Results/META6_rcv_",x,"fold_",y,"repeat_",z,"tune_",m,"_sumf_",n,"_size_",s,"_round_",r,"_",sep="")
               
-              set.seed(ceiling(runif(1) * 5000))
+              set.seed(Sys.time())
               inTrain <- createDataPartition(y = data.o$CLASS, p = .75, list = FALSE)
-              #str(inTrain)
+              #inTrain <- sample(seq_along(data.o$CLASS), as.integer(0.75 * nrow(data.o)))
+              
+              sink(filename)
+              
+              cat("\n")
+              print("START INTRAIN")
+              print("==============")
+              print(head(inTrain))
+              
+              sink()
               
               training <- data.o[inTrain,]
               testing <- data.o[-inTrain,]
               
               #determine data for this test
-              if(s > 0){
-                #get new data from random sample generator
-                data.r <- getRandomData(data.o, s)
-                inTrain <- createDataPartition(y = data.r$CLASS, p = .75, list = FALSE)
-                training <- data.r[inTrain,]
-                testing <- data.r[-inTrain,]
-                rm(inTrain) 
-              }
+              #if(s > 0){
+              #  #get new data from random sample generator
+              #  data.r <- getRandomData(data.o, s)
+              #  inTrain <- createDataPartition(y = data.r$CLASS, p = .75, list = FALSE)
+              #  training <- data.r[inTrain,]
+              #  testing <- data.r[-inTrain,]
+              #  rm(inTrain) 
+              #}
               
               #print(filename)
               t <- system.time(ML_Models_ROC_P(training, resamp, x, z, y, m, filename, imagefilename, 0, n))        
