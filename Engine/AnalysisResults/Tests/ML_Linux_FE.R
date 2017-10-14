@@ -95,7 +95,7 @@ sampling <- c("smote")
 #summary function
 summF <- c("prSummary") #"twoClassSummary", 
 rr <- c(1)  
-sz <- c(0) #use 0 for full set - , 1000, 10000, 100000
+sz <- c(100000,110000,140000) #use 0 for full set - , 1000, 10000, 100000
 
 cl <- makeCluster(detectCores())
 registerDoParallel(cores=7) #or cl
@@ -105,9 +105,9 @@ for (n in summF) {
       for (y in repeats) {
         for (z in tune) {
           for (s in sz) {
-            for (r in 1:30) {
-              filename <- paste("~/Projects/RStudio/TwitterAnalysis/Engine/AnalysisResults/Results/FE5_NOHAM_rcv_",x,"fold_",y,"repeat_",z,"tune_",m,"_sumf_",n,"_size_",s,"_round_",r,".txt",sep="")
-              imagefilename <- paste("~/Projects/RStudio/TwitterAnalysis/Engine/AnalysisResults/Results/FE5_NOHAM_rcv_",x,"fold_",y,"repeat_",z,"tune_",m,"_sumf_",n,"_size_",s,"_round_",r,"_",sep="")
+            for (r in 1:1) {
+              filename <- paste("~/Projects/RStudio/TwitterAnalysis/Engine/AnalysisResults/Results/FE6_NOHAM_rcv_",x,"fold_",y,"repeat_",z,"tune_",m,"_sumf_",n,"_size_",s,"_round_",r,".txt",sep="")
+              imagefilename <- paste("~/Projects/RStudio/TwitterAnalysis/Engine/AnalysisResults/Results/FE6_NOHAM_rcv_",x,"fold_",y,"repeat_",z,"tune_",m,"_sumf_",n,"_size_",s,"_round_",r,"_",sep="")
               
               set.seed(Sys.time())
               inTrain <- createDataPartition(y = data.o$CLASS, p = .75, list = FALSE)
@@ -126,14 +126,14 @@ for (n in summF) {
               testing <- data.o[-inTrain,]
               
               #determine data for this test
-              #if(s > 0){
-              #  #get new data from random sample generator
-              #  data.r <- getRandomData(data.o, s)
-              #  inTrain <- createDataPartition(y = data.r$CLASS, p = .75, list = FALSE)
-              #  training <- data.r[inTrain,]
-              #  testing <- data.r[-inTrain,]
-              #  rm(inTrain) 
-              #}
+              if(s > 0){
+                #get new data from random sample generator
+                data.r <- getRandomData(data.o, s)
+                inTrain <- createDataPartition(y = data.r$CLASS, p = .75, list = FALSE)
+                training <- data.r[inTrain,]
+                testing <- data.r[-inTrain,]
+                rm(inTrain) 
+              }
               
               #print(filename)
               t <- system.time(ML_Models_ROC_P(training, resamp, x, z, y, m, filename, imagefilename, 0, n))        
