@@ -111,6 +111,13 @@ text(fit.m7$finalModel)
 prp(fit.m7$finalModel)					# Will plot the tree
 prp(fit.m7$finalModel,varlen=3)				# Shorten variable names
 
+rpart.plot(fit.m7$finalModel)
+
+rpart.plot(fit.m7$finalModel, # middle graph
+           extra=104, box.palette="GnBu",
+           branch.lty=3, shadow.col="gray", nn=TRUE)
+
+
 library(rattle)
 fancyRpartPlot(t$finalModel)
 
