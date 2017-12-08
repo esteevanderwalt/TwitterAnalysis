@@ -8,6 +8,7 @@ suppressMessages(library(FSelector))
 suppressMessages(library(pROC)) # for AUC calculations
 suppressMessages(library(PRROC)) # for Precision-Recall curve calculations
 suppressMessages(library(MLmetrics)) # for prSummary in Caret
+suppressMessages(library(DMwR))
 
 #LINUX
 setwd("~/Projects/RStudio/TwitterAnalysis/Engine/AnalysisResults/Tests")
@@ -49,7 +50,12 @@ data.clean <- data.clean[ , -which(names(data.clean) %in% c("GEO_ENABLED", "IS_D
 data.clean <- data.clean[ , -which(names(data.clean) %in% c("LOCATION", "LONGITUDE", "LATITUDE"))]
 
 #remove language and timezone
-#data.clean <- data.clean[ , -which(names(data.clean) %in% c("LANGUAGE", "TIMEZONE", "PROFILE_IMAGE"))]
+data.clean <- data.clean[ , -which(names(data.clean) %in% c("LANGUAGE", "UTC_OFFSET", "PROFILE_IMAGE"))]
+
+data.clean[data.clean$FRIENDS_COUNT > 1000,]$FRIENDS_COUNT <- 1000
+data.clean[data.clean$FOLLOWERS_COUNT > 1000,]$FOLLOWERS_COUNT <- 1000
+data.clean[data.clean$STATUS_COUNT > 1000,]$STATUS_COUNT <- 1000
+data.clean[data.clean$LISTED_COUNT > 100,]$LISTED_COUNT <- 100
 
 #perform machine learning
 data.o <- data.clean
@@ -89,11 +95,11 @@ repeats <- c(3)
 #tune
 tune <- c(3)
 #sampling
-sampling <- c("smote")
+sampling <- c("none")  #"smote", "rose", "up", 
 #summary function
 summF <- c("prSummary") #"twoClassSummary", 
 rr <- c(1)  
-sz <- c(0) #use 0 for full set - , 1000, 10000, 100000
+sz <- c(1000, 10000, 100000) #use 0 for full set - , 1000, 10000, 100000
 
 cl <- makeCluster(detectCores())
 registerDoParallel(cores=7) #or cl
@@ -103,9 +109,9 @@ for (n in summF) {
       for (y in repeats) {
         for (z in tune) {
           for (s in sz) {
-            for (r in 1:30) {  #rr
-              filename <- paste("~/Projects/RStudio/TwitterAnalysis/Engine/AnalysisResults/Results/META6_rcv_",x,"fold_",y,"repeat_",z,"tune_",m,"_sumf_",n,"_size_",s,"_round_",r,".txt",sep="")
-              imagefilename <- paste("~/Projects/RStudio/TwitterAnalysis/Engine/AnalysisResults/Results/META6_rcv_",x,"fold_",y,"repeat_",z,"tune_",m,"_sumf_",n,"_size_",s,"_round_",r,"_",sep="")
+            for (r in 1:1) {  #rr
+              filename <- paste("~/Projects/RStudio/TwitterAnalysis/Engine/AnalysisResults/Results/META2_15K_smote20_rcv_",x,"fold_",y,"repeat_",z,"tune_",m,"_sumf_",n,"_size_",s,"_round_",r,".txt",sep="")
+              imagefilename <- paste("~/Projects/RStudio/TwitterAnalysis/Engine/AnalysisResults/Results/META2_15K_smote20_rcv_",x,"fold_",y,"repeat_",z,"tune_",m,"_sumf_",n,"_size_",s,"_round_",r,"_",sep="")
               
               set.seed(Sys.time())
               inTrain <- createDataPartition(y = data.o$CLASS, p = .75, list = FALSE)
@@ -122,18 +128,27 @@ for (n in summF) {
               
               training <- data.o[inTrain,]
               testing <- data.o[-inTrain,]
+              rm(inTrain)
               
               #determine data for this test
-              #if(s > 0){
-              #  #get new data from random sample generator
-              #  data.r <- getRandomData(data.o, s)
-              #  inTrain <- createDataPartition(y = data.r$CLASS, p = .75, list = FALSE)
-              #  training <- data.r[inTrain,]
-              #  testing <- data.r[-inTrain,]
-              #  rm(inTrain) 
-              #}
+              if(s > 0){
+                #get new data from random sample generator
+                data.r <- getRandomData(data.o, s)
+                inTrain <- createDataPartition(y = data.r$CLASS, p = .75, list = FALSE)
+                training <- data.r[inTrain,]
+                testing <- data.r[-inTrain,]
+                rm(inTrain) 
+              }
               
-              #print(filename)
+              training <- SMOTE(CLASS ~., training, perc.over=100, perc.under=200)
+              #test split
+              #prop.table(table(training$CLASS)) #50/50
+              #gives 45K records - reduce that to 4.5K with .10
+              inTrain <- createDataPartition(y = training$CLASS, p = .20, list = FALSE)
+              training <- training[inTrain,]
+              rm(inTrain)
+              print(paste("Smote completed-train:",nrow(training),sep=""))
+              print(paste("Smote completed-test:",nrow(testing),sep=""))
               t <- system.time(ML_Models_ROC_P(training, resamp, x, z, y, m, filename, imagefilename, 0, n))        
               sink(filename, append = TRUE)
               

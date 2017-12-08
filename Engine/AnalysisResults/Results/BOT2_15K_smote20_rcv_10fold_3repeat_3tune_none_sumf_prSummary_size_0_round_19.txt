@@ -1,0 +1,1989 @@
+
+[1] "START INTRAIN"
+[1] "=============="
+     Resample1
+[1,]         2
+[2,]         3
+[3,]         4
+[4,]         5
+[5,]         6
+[6,]         7
+[1] "M1 started"
+[1] "M1 complete"
+    user   system  elapsed 
+1289.376    9.344  303.170 
+[1] "M2 started"
+[1] "M2 complete"
+   user  system elapsed 
+921.456  28.384 130.892 
+[1] "M3 started"
+[1] "M3 complete"
+   user  system elapsed 
+166.820   0.228 163.302 
+[1] "M4 started"
+[1] "M4 complete"
+   user  system elapsed 
+133.628  17.944   6.763 
+[1] "M5 started"
+[1] "M5 complete"
+   user  system elapsed 
+444.824   7.524  84.173 
+[1] "M6 started"
+[1] "M6 complete"
+    user   system  elapsed 
+7059.104   13.344 1324.945 
+[1] "M7 started"
+[1] "M7 complete"
+    user   system  elapsed 
+1231.092   12.684    5.329 
+[1] "M8 started"
+[1] "M8 complete"
+   user  system elapsed 
+309.468   6.876  57.027 
+
+[1] "Model engine summary"
+[1] "===================="
+  Model Type Model Name  Accuracy     Kappa Sensitivity Specificity Precision
+1        SVM  svmLinear 0.6787560 0.2070412   0.8586667   0.6612907 0.1974975
+2       tree         rf 0.8663253 0.4162556   0.7093333   0.8815657 0.3676572
+3       tree        J48 0.8518134 0.3688870   0.6672000   0.8697352 0.3320945
+4   bayesian   bayesglm 0.7410982 0.2252109   0.7237333   0.7427839 0.2145455
+5    cluster       kknn 0.8309776 0.3179995   0.6389333   0.8496208 0.2920171
+6       tree   Adaboost 0.8608981 0.4001858   0.6986667   0.8766471 0.3547732
+7       tree      rpart 0.6402463 0.1828110   0.8821333   0.6167646 0.1826413
+8  neuralnet       nnet 0.8350362 0.3450510   0.6896000   0.8491548 0.3073814
+     Recall        F1 Prevalence       AUC    PR-AUC     Cost
+1 0.8586667 0.3211329 0.08848722 0.8075912 0.2810105  303.170
+2 0.7093333 0.4842968 0.08848722 0.8952156 0.4816361  130.892
+3 0.6672000 0.4434598 0.08848722 0.8526872 0.3297293  163.302
+4 0.7237333 0.3309756 0.08848722 0.8112275 0.2737606    6.763
+5 0.6389333 0.4008365 0.08848722 0.8533819 0.3709835   84.173
+6 0.6986667 0.4705882 0.08848722 0.8956356 0.4967330 1324.945
+7 0.8821333 0.3026256 0.08848722 0.7717390 0.1830453    5.329
+8 0.6896000 0.4252240 0.08848722 0.8759108 0.4261710   57.027
+
+[1] "Model attribute importance"
+[1] "=========================="
+                         svmRadial         rf          J48     bayesglm
+ACCOUNT_AGE_IN_MONTHS  59.53503690  36.857196  59.53503690  59.53503690
+DUP_PROFILE            94.53448891  82.092588  94.53448891  94.53448891
+FF_RATIO                0.08654918   1.089922   0.08654918   0.08654918
+FOLLOWERS_COUNT         1.14553956  26.921666   1.14553956   1.14553956
+FRIENDS_COUNT          54.86976931  27.686041  54.86976931  54.86976931
+GEO_ENABLED            31.10018154  22.992782  31.10018154  31.10018154
+HAS_IMAGE               0.00000000   0.000000   0.00000000   0.00000000
+HAS_NAME              100.00000000 100.000000 100.00000000 100.00000000
+HAS_PROFILE            10.54974353  10.205703  10.54974353  10.54974353
+LISTED_COUNT            0.49019214   2.588097   0.49019214   0.49019214
+PROFILE_HAS_URL        13.76861117   9.738979  13.76861117  13.76861117
+STATUS_COUNT           18.33983139  21.157932  18.33983139  18.33983139
+USERNAME_LENGTH        38.69247372  64.824249  38.69247372  38.69247372
+                               knn     Adaboost      rpart      nnet
+ACCOUNT_AGE_IN_MONTHS  59.53503690  59.53503690  26.660510  20.71629
+DUP_PROFILE            94.53448891  94.53448891 100.000000  98.34515
+FF_RATIO                0.08654918   0.08654918   0.000000  33.52286
+FOLLOWERS_COUNT         1.14553956   1.14553956   0.000000 100.00000
+FRIENDS_COUNT          54.86976931  54.86976931   1.285534  83.89628
+GEO_ENABLED            31.10018154  31.10018154  26.050594  15.12006
+HAS_IMAGE               0.00000000   0.00000000   0.000000   0.00000
+HAS_NAME              100.00000000 100.00000000  98.289485  45.95604
+HAS_PROFILE            10.54974353  10.54974353   0.000000  50.42069
+LISTED_COUNT            0.49019214   0.49019214   0.000000  53.99150
+PROFILE_HAS_URL        13.76861117  13.76861117   1.316604  45.84886
+STATUS_COUNT           18.33983139  18.33983139   0.000000  41.54472
+USERNAME_LENGTH        38.69247372  38.69247372  70.737807  49.84488
+
+[1] "Model engine results"
+[1] "===================="
+
+[1] "+++++++++++++"
+[1] "svmLinear"
+[1] "+++++++++++++"
+[1] "**** finalModel ****"
+Support Vector Machine object of class "ksvm" 
+
+SV type: C-svc  (classification) 
+ parameter : cost C = 1 
+
+Linear (vanilla) kernel function. 
+
+Number of Support Vectors : 4203 
+
+Objective Function Value : -3999.412 
+Training error : 0.218444 
+Probability model included. 
+
+[1] "**** results ****"
+  C       AUC Precision    Recall         F      AUCSD PrecisionSD   RecallSD
+1 1 0.8763071 0.7244708 0.8920741 0.7994893 0.01313263  0.01232414 0.01196964
+          FSD
+1 0.008636262
+
+[1] "**** resampledCM ****"
+   cell1 cell2 cell3 cell4 C    Resample
+1    399    51   146   304 1 Fold01.Rep1
+2    400    50   164   286 1 Fold02.Rep1
+3    412    38   160   290 1 Fold03.Rep1
+4    410    40   150   300 1 Fold04.Rep1
+5    401    49   154   296 1 Fold05.Rep1
+6    400    50   146   304 1 Fold06.Rep1
+7    399    51   131   319 1 Fold07.Rep1
+8    400    50   167   283 1 Fold08.Rep1
+9    392    58   151   299 1 Fold09.Rep1
+10   401    49   159   291 1 Fold10.Rep1
+11   412    38   166   284 1 Fold01.Rep2
+12   398    52   166   284 1 Fold02.Rep2
+13   395    55   146   304 1 Fold03.Rep2
+14   402    48   162   288 1 Fold04.Rep2
+15   398    52   133   317 1 Fold05.Rep2
+16   392    58   147   303 1 Fold06.Rep2
+17   403    47   146   304 1 Fold07.Rep2
+18   404    46   147   303 1 Fold08.Rep2
+19   404    46   148   302 1 Fold09.Rep2
+20   406    44   167   283 1 Fold10.Rep2
+21   401    49   162   288 1 Fold01.Rep3
+22   396    54   151   299 1 Fold02.Rep3
+23   401    49   142   308 1 Fold03.Rep3
+24   391    59   161   289 1 Fold04.Rep3
+25   406    44   157   293 1 Fold05.Rep3
+26   404    46   153   297 1 Fold06.Rep3
+27   399    51   147   303 1 Fold07.Rep3
+28   407    43   160   290 1 Fold08.Rep3
+29   408    42   155   295 1 Fold09.Rep3
+30   402    48   141   309 1 Fold10.Rep3
+
+[1] "**** resample ****"
+         AUC Precision    Recall         F    Resample
+1  0.8925567 0.7321101 0.8866667 0.8020101 Fold01.Rep1
+2  0.8797608 0.7092199 0.8888889 0.7889546 Fold02.Rep1
+3  0.8706854 0.7202797 0.9155556 0.8062622 Fold03.Rep1
+4  0.8726591 0.7321429 0.9111111 0.8118812 Fold04.Rep1
+5  0.8653107 0.7225225 0.8911111 0.7980100 Fold05.Rep1
+6  0.8771193 0.7326007 0.8888889 0.8032129 Fold06.Rep1
+7  0.8832887 0.7528302 0.8866667 0.8142857 Fold07.Rep1
+8  0.8745351 0.7054674 0.8888889 0.7866273 Fold08.Rep1
+9  0.8672559 0.7219153 0.8711111 0.7895267 Fold09.Rep1
+10 0.8690552 0.7160714 0.8911111 0.7940594 Fold10.Rep1
+11 0.8715634 0.7128028 0.9155556 0.8015564 Fold01.Rep2
+12 0.8564652 0.7056738 0.8844444 0.7850099 Fold02.Rep2
+13 0.8691912 0.7301294 0.8777778 0.7971746 Fold03.Rep2
+14 0.8869294 0.7127660 0.8933333 0.7928994 Fold04.Rep2
+15 0.8794894 0.7495292 0.8844444 0.8114169 Fold05.Rep2
+16 0.8713142 0.7272727 0.8711111 0.7927199 Fold06.Rep2
+17 0.8929047 0.7340619 0.8955556 0.8068068 Fold07.Rep2
+18 0.8740566 0.7332123 0.8977778 0.8071928 Fold08.Rep2
+19 0.9001668 0.7318841 0.8977778 0.8063872 Fold09.Rep2
+20 0.8646447 0.7085515 0.9022222 0.7937439 Fold10.Rep2
+21 0.8370580 0.7122558 0.8911111 0.7917078 Fold01.Rep3
+22 0.8962757 0.7239488 0.8800000 0.7943831 Fold02.Rep3
+23 0.8826042 0.7384899 0.8911111 0.8076536 Fold03.Rep3
+24 0.8625848 0.7083333 0.8688889 0.7804391 Fold04.Rep3
+25 0.8826660 0.7211368 0.9022222 0.8015795 Fold05.Rep3
+26 0.8781481 0.7253142 0.8977778 0.8023833 Fold06.Rep3
+27 0.8882757 0.7307692 0.8866667 0.8012048 Fold07.Rep3
+28 0.8657378 0.7178131 0.9044444 0.8003933 Fold08.Rep3
+29 0.8861185 0.7246892 0.9066667 0.8055281 Fold09.Rep3
+30 0.8907927 0.7403315 0.8933333 0.8096677 Fold10.Rep3
+
+
+[1] "+++++++++++++"
+[1] "rf"
+[1] "+++++++++++++"
+[1] "**** finalModel ****"
+
+Call:
+ randomForest(x = x, y = y, mtry = param$mtry) 
+               Type of random forest: classification
+                     Number of trees: 500
+No. of variables tried at each split: 2
+
+        OOB estimate of  error rate: 13.07%
+Confusion matrix:
+            deceptive trustworthy class.error
+deceptive        3850         650   0.1444444
+trustworthy       526        3974   0.1168889
+
+[1] "**** results ****"
+  mtry       AUC Precision    Recall         F      AUCSD PrecisionSD
+1    2 0.8328509 0.8833228 0.8516296 0.8669777 0.03929158  0.01733412
+2    7 0.5860786 0.8846596 0.8670370 0.8756097 0.02594513  0.01350413
+3   13 0.4860340 0.8763738 0.8615556 0.8687369 0.02623098  0.01603462
+    RecallSD        FSD
+1 0.01956255 0.01246356
+2 0.01909028 0.01188262
+3 0.01830771 0.01224804
+
+[1] "**** resampledCM ****"
+   cell1 cell2 cell3 cell4 mtry    Resample
+1    373    77    35   415    2 Fold01.Rep1
+2    385    65    40   410    7 Fold01.Rep1
+3    380    70    48   402   13 Fold01.Rep1
+4    385    65    58   392    2 Fold02.Rep1
+5    391    59    56   394    7 Fold02.Rep1
+6    393    57    60   390   13 Fold02.Rep1
+7    385    65    51   399    2 Fold03.Rep1
+8    391    59    48   402    7 Fold03.Rep1
+9    388    62    53   397   13 Fold03.Rep1
+10   402    48    60   390    2 Fold04.Rep1
+11   399    51    56   394    7 Fold04.Rep1
+12   397    53    61   389   13 Fold04.Rep1
+13   380    70    41   409    2 Fold05.Rep1
+14   381    69    40   410    7 Fold05.Rep1
+15   382    68    46   404   13 Fold05.Rep1
+16   372    78    38   412    2 Fold06.Rep1
+17   385    65    50   400    7 Fold06.Rep1
+18   390    60    58   392   13 Fold06.Rep1
+19   377    73    41   409    2 Fold07.Rep1
+20   383    67    39   411    7 Fold07.Rep1
+21   374    76    39   411   13 Fold07.Rep1
+22   389    61    52   398    2 Fold08.Rep1
+23   393    57    60   390    7 Fold08.Rep1
+24   387    63    60   390   13 Fold08.Rep1
+25   380    70    55   395    2 Fold09.Rep1
+26   392    58    46   404    7 Fold09.Rep1
+27   392    58    48   402   13 Fold09.Rep1
+28   388    62    64   386    2 Fold10.Rep1
+29   402    48    62   388    7 Fold10.Rep1
+30   400    50    68   382   13 Fold10.Rep1
+31   387    63    57   393    2 Fold01.Rep2
+32   400    50    53   397    7 Fold01.Rep2
+33   395    55    56   394   13 Fold01.Rep2
+34   383    67    61   389    2 Fold02.Rep2
+35   387    63    48   402    7 Fold02.Rep2
+36   381    69    48   402   13 Fold02.Rep2
+37   368    82    49   401    2 Fold03.Rep2
+38   373    77    53   397    7 Fold03.Rep2
+39   372    78    64   386   13 Fold03.Rep2
+40   389    61    66   384    2 Fold04.Rep2
+41   401    49    65   385    7 Fold04.Rep2
+42   395    55    68   382   13 Fold04.Rep2
+43   383    67    48   402    2 Fold05.Rep2
+44   382    68    47   403    7 Fold05.Rep2
+45   383    67    46   404   13 Fold05.Rep2
+46   371    79    41   409    2 Fold06.Rep2
+47   374    76    50   400    7 Fold06.Rep2
+48   375    75    58   392   13 Fold06.Rep2
+49   400    50    44   406    2 Fold07.Rep2
+50   402    48    45   405    7 Fold07.Rep2
+51   395    55    44   406   13 Fold07.Rep2
+52   385    65    52   398    2 Fold08.Rep2
+53   394    56    57   393    7 Fold08.Rep2
+54   390    60    62   388   13 Fold08.Rep2
+55   388    62    43   407    2 Fold09.Rep2
+56   392    58    45   405    7 Fold09.Rep2
+57   388    62    54   396   13 Fold09.Rep2
+58   375    75    52   398    2 Fold10.Rep2
+59   399    51    47   403    7 Fold10.Rep2
+60   396    54    51   399   13 Fold10.Rep2
+61   373    77    59   391    2 Fold01.Rep3
+62   390    60    58   392    7 Fold01.Rep3
+63   390    60    60   390   13 Fold01.Rep3
+64   375    75    57   393    2 Fold02.Rep3
+65   377    73    52   398    7 Fold02.Rep3
+66   374    76    53   397   13 Fold02.Rep3
+67   387    63    50   400    2 Fold03.Rep3
+68   394    56    52   398    7 Fold03.Rep3
+69   394    56    56   394   13 Fold03.Rep3
+70   373    77    65   385    2 Fold04.Rep3
+71   381    69    63   387    7 Fold04.Rep3
+72   377    73    74   376   13 Fold04.Rep3
+73   396    54    57   393    2 Fold05.Rep3
+74   387    63    55   395    7 Fold05.Rep3
+75   386    64    62   388   13 Fold05.Rep3
+76   378    72    39   411    2 Fold06.Rep3
+77   384    66    48   402    7 Fold06.Rep3
+78   378    72    44   406   13 Fold06.Rep3
+79   387    63    41   409    2 Fold07.Rep3
+80   405    45    41   409    7 Fold07.Rep3
+81   396    54    48   402   13 Fold07.Rep3
+82   382    68    55   395    2 Fold08.Rep3
+83   388    62    53   397    7 Fold08.Rep3
+84   389    61    53   397   13 Fold08.Rep3
+85   398    52    49   401    2 Fold09.Rep3
+86   399    51    49   401    7 Fold09.Rep3
+87   398    52    49   401   13 Fold09.Rep3
+88   388    62    44   406    2 Fold10.Rep3
+89   394    56    51   399    7 Fold10.Rep3
+90   396    54    54   396   13 Fold10.Rep3
+
+[1] "**** resample ****"
+         AUC Precision    Recall         F    Resample
+1  0.8144596 0.9142157 0.8288889 0.8694639 Fold01.Rep1
+2  0.8422832 0.8701299 0.8933333 0.8815789 Fold04.Rep1
+3  0.8562656 0.8830275 0.8555556 0.8690745 Fold03.Rep1
+4  0.8368569 0.8690745 0.8555556 0.8622620 Fold02.Rep1
+5  0.8335121 0.9026128 0.8444444 0.8725603 Fold05.Rep1
+6  0.8307639 0.8549451 0.8644444 0.8596685 Fold04.Rep2
+7  0.8178763 0.8584071 0.8622222 0.8603104 Fold10.Rep1
+8  0.8446693 0.9073171 0.8266667 0.8651163 Fold06.Rep1
+9  0.8180744 0.8886311 0.8511111 0.8694665 Fold05.Rep2
+10 0.8858421 0.8716216 0.8600000 0.8657718 Fold01.Rep2
+11 0.9230774 0.9019139 0.8377778 0.8686636 Fold07.Rep1
+12 0.7598208 0.9004854 0.8244444 0.8607889 Fold06.Rep2
+13 0.8356229 0.8626126 0.8511111 0.8568233 Fold02.Rep2
+14 0.8562198 0.8820862 0.8644444 0.8731762 Fold08.Rep1
+15 0.8696650 0.9009009 0.8888889 0.8948546 Fold07.Rep2
+16 0.8855840 0.8824940 0.8177778 0.8489043 Fold03.Rep2
+17 0.8406887 0.8735632 0.8444444 0.8587571 Fold09.Rep1
+18 0.8182206 0.8810069 0.8555556 0.8680947 Fold08.Rep2
+19 0.8385296 0.9042056 0.8600000 0.8815490 Fold07.Rep3
+20 0.7464278 0.8855835 0.8600000 0.8726043 Fold03.Rep3
+21 0.8476189 0.9002320 0.8622222 0.8808173 Fold09.Rep2
+22 0.7833010 0.8741419 0.8488889 0.8613303 Fold08.Rep3
+23 0.8922172 0.8515982 0.8288889 0.8400901 Fold04.Rep3
+24 0.8145744 0.8782201 0.8333333 0.8551881 Fold10.Rep2
+25 0.8425593 0.8903803 0.8844444 0.8874025 Fold09.Rep3
+26 0.8412057 0.8741722 0.8800000 0.8770764 Fold05.Rep3
+27 0.7521452 0.8634259 0.8288889 0.8458050 Fold01.Rep3
+28 0.8010528 0.8981481 0.8622222 0.8798186 Fold10.Rep3
+29 0.8376855 0.9064748 0.8400000 0.8719723 Fold06.Rep3
+30 0.8187076 0.8680556 0.8333333 0.8503401 Fold02.Rep3
+
+
+[1] "+++++++++++++"
+[1] "J48"
+[1] "+++++++++++++"
+[1] "**** finalModel ****"
+J48 pruned tree
+------------------
+
+HAS_NAME <= -1.176864
+|   USERNAME_LENGTH <= -0.67249
+|   |   USERNAME_LENGTH <= -1.314917: trustworthy (1082.0/1.0)
+|   |   USERNAME_LENGTH > -1.314917
+|   |   |   DUP_PROFILE <= -0.57097: trustworthy (306.0/5.0)
+|   |   |   DUP_PROFILE > -0.57097
+|   |   |   |   HAS_PROFILE <= -1.119551: trustworthy (40.0/4.0)
+|   |   |   |   HAS_PROFILE > -1.119551
+|   |   |   |   |   STATUS_COUNT <= -0.291965: trustworthy (7.0/1.0)
+|   |   |   |   |   STATUS_COUNT > -0.291965: deceptive (6.0)
+|   USERNAME_LENGTH > -0.67249
+|   |   DUP_PROFILE <= -0.67191
+|   |   |   PROFILE_HAS_URL <= -0.180171
+|   |   |   |   ACCOUNT_AGE_IN_MONTHS <= 0.017835: trustworthy (818.0/85.0)
+|   |   |   |   ACCOUNT_AGE_IN_MONTHS > 0.017835
+|   |   |   |   |   FOLLOWERS_COUNT <= -0.149837
+|   |   |   |   |   |   FRIENDS_COUNT <= 0.016372
+|   |   |   |   |   |   |   ACCOUNT_AGE_IN_MONTHS <= 1.33423: trustworthy (386.0/102.0)
+|   |   |   |   |   |   |   ACCOUNT_AGE_IN_MONTHS > 1.33423: deceptive (30.0/7.0)
+|   |   |   |   |   |   FRIENDS_COUNT > 0.016372: deceptive (19.0/1.0)
+|   |   |   |   |   FOLLOWERS_COUNT > -0.149837
+|   |   |   |   |   |   STATUS_COUNT <= -0.442967: deceptive (25.0/8.0)
+|   |   |   |   |   |   STATUS_COUNT > -0.442967: trustworthy (232.0/17.0)
+|   |   |   PROFILE_HAS_URL > -0.180171: trustworthy (128.0)
+|   |   DUP_PROFILE > -0.67191
+|   |   |   HAS_PROFILE <= -2.62246
+|   |   |   |   ACCOUNT_AGE_IN_MONTHS <= 0.410179
+|   |   |   |   |   USERNAME_LENGTH <= 0.677655
+|   |   |   |   |   |   STATUS_COUNT <= -0.181299
+|   |   |   |   |   |   |   FRIENDS_COUNT <= -0.12622: trustworthy (49.0/7.0)
+|   |   |   |   |   |   |   FRIENDS_COUNT > -0.12622
+|   |   |   |   |   |   |   |   ACCOUNT_AGE_IN_MONTHS <= -1.368027: trustworthy (3.0)
+|   |   |   |   |   |   |   |   ACCOUNT_AGE_IN_MONTHS > -1.368027: deceptive (5.0)
+|   |   |   |   |   |   STATUS_COUNT > -0.181299
+|   |   |   |   |   |   |   FOLLOWERS_COUNT <= -0.221721: deceptive (8.0)
+|   |   |   |   |   |   |   FOLLOWERS_COUNT > -0.221721
+|   |   |   |   |   |   |   |   FOLLOWERS_COUNT <= -0.154479: trustworthy (3.0)
+|   |   |   |   |   |   |   |   FOLLOWERS_COUNT > -0.154479: deceptive (5.0/2.0)
+|   |   |   |   |   USERNAME_LENGTH > 0.677655: trustworthy (43.0/2.0)
+|   |   |   |   ACCOUNT_AGE_IN_MONTHS > 0.410179
+|   |   |   |   |   GEO_ENABLED <= 0.104873
+|   |   |   |   |   |   STATUS_COUNT <= -0.422797: trustworthy (6.0/1.0)
+|   |   |   |   |   |   STATUS_COUNT > -0.422797: deceptive (12.0/2.0)
+|   |   |   |   |   GEO_ENABLED > 0.104873: deceptive (20.0/5.0)
+|   |   |   HAS_PROFILE > -2.62246
+|   |   |   |   GEO_ENABLED <= 1.135522: deceptive (191.0/7.0)
+|   |   |   |   GEO_ENABLED > 1.135522
+|   |   |   |   |   ACCOUNT_AGE_IN_MONTHS <= 0.055513
+|   |   |   |   |   |   FOLLOWERS_COUNT <= -0.190804: trustworthy (7.0/1.0)
+|   |   |   |   |   |   FOLLOWERS_COUNT > -0.190804
+|   |   |   |   |   |   |   FRIENDS_COUNT <= -0.11392: deceptive (5.0)
+|   |   |   |   |   |   |   FRIENDS_COUNT > -0.11392: trustworthy (3.0/1.0)
+|   |   |   |   |   ACCOUNT_AGE_IN_MONTHS > 0.055513: deceptive (6.0)
+HAS_NAME > -1.176864
+|   DUP_PROFILE <= -0.694095
+|   |   PROFILE_HAS_URL <= -0.180171
+|   |   |   ACCOUNT_AGE_IN_MONTHS <= 1.441674
+|   |   |   |   USERNAME_LENGTH <= -0.944939: trustworthy (95.0/14.0)
+|   |   |   |   USERNAME_LENGTH > -0.944939
+|   |   |   |   |   USERNAME_LENGTH <= 0.942001
+|   |   |   |   |   |   ACCOUNT_AGE_IN_MONTHS <= 1.120933
+|   |   |   |   |   |   |   ACCOUNT_AGE_IN_MONTHS <= -0.054368
+|   |   |   |   |   |   |   |   ACCOUNT_AGE_IN_MONTHS <= -1.699462
+|   |   |   |   |   |   |   |   |   USERNAME_LENGTH <= -0.385072
+|   |   |   |   |   |   |   |   |   |   FRIENDS_COUNT <= -0.217813: trustworthy (10.0/2.0)
+|   |   |   |   |   |   |   |   |   |   FRIENDS_COUNT > -0.217813: deceptive (5.0)
+|   |   |   |   |   |   |   |   |   USERNAME_LENGTH > -0.385072: deceptive (72.0/10.0)
+|   |   |   |   |   |   |   |   ACCOUNT_AGE_IN_MONTHS > -1.699462
+|   |   |   |   |   |   |   |   |   FOLLOWERS_COUNT <= -0.232081
+|   |   |   |   |   |   |   |   |   |   FRIENDS_COUNT <= -0.165545
+|   |   |   |   |   |   |   |   |   |   |   STATUS_COUNT <= -0.262106: trustworthy (266.0/51.0)
+|   |   |   |   |   |   |   |   |   |   |   STATUS_COUNT > -0.262106
+|   |   |   |   |   |   |   |   |   |   |   |   ACCOUNT_AGE_IN_MONTHS <= -0.336548: deceptive (36.0/7.0)
+|   |   |   |   |   |   |   |   |   |   |   |   ACCOUNT_AGE_IN_MONTHS > -0.336548: trustworthy (10.0/2.0)
+|   |   |   |   |   |   |   |   |   |   FRIENDS_COUNT > -0.165545: deceptive (32.0/5.0)
+|   |   |   |   |   |   |   |   |   FOLLOWERS_COUNT > -0.232081
+|   |   |   |   |   |   |   |   |   |   FRIENDS_COUNT <= -0.217813: deceptive (136.0/38.0)
+|   |   |   |   |   |   |   |   |   |   FRIENDS_COUNT > -0.217813
+|   |   |   |   |   |   |   |   |   |   |   FOLLOWERS_COUNT <= -0.190804
+|   |   |   |   |   |   |   |   |   |   |   |   FRIENDS_COUNT <= -0.087583
+|   |   |   |   |   |   |   |   |   |   |   |   |   STATUS_COUNT <= -0.000382
+|   |   |   |   |   |   |   |   |   |   |   |   |   |   USERNAME_LENGTH <= 0.677655: trustworthy (90.0/20.0)
+|   |   |   |   |   |   |   |   |   |   |   |   |   |   USERNAME_LENGTH > 0.677655
+|   |   |   |   |   |   |   |   |   |   |   |   |   |   |   STATUS_COUNT <= -0.34335: trustworthy (7.0/1.0)
+|   |   |   |   |   |   |   |   |   |   |   |   |   |   |   STATUS_COUNT > -0.34335: deceptive (5.0/1.0)
+|   |   |   |   |   |   |   |   |   |   |   |   |   STATUS_COUNT > -0.000382
+|   |   |   |   |   |   |   |   |   |   |   |   |   |   GEO_ENABLED <= 0.104873
+|   |   |   |   |   |   |   |   |   |   |   |   |   |   |   FRIENDS_COUNT <= -0.165545: deceptive (8.0)
+|   |   |   |   |   |   |   |   |   |   |   |   |   |   |   FRIENDS_COUNT > -0.165545: trustworthy (3.0/1.0)
+|   |   |   |   |   |   |   |   |   |   |   |   |   |   GEO_ENABLED > 0.104873
+|   |   |   |   |   |   |   |   |   |   |   |   |   |   |   FRIENDS_COUNT <= -0.165545: trustworthy (18.0/5.0)
+|   |   |   |   |   |   |   |   |   |   |   |   |   |   |   FRIENDS_COUNT > -0.165545: deceptive (4.0/1.0)
+|   |   |   |   |   |   |   |   |   |   |   |   FRIENDS_COUNT > -0.087583
+|   |   |   |   |   |   |   |   |   |   |   |   |   ACCOUNT_AGE_IN_MONTHS <= -1.546655: trustworthy (3.0/1.0)
+|   |   |   |   |   |   |   |   |   |   |   |   |   ACCOUNT_AGE_IN_MONTHS > -1.546655: deceptive (19.0/1.0)
+|   |   |   |   |   |   |   |   |   |   |   FOLLOWERS_COUNT > -0.190804
+|   |   |   |   |   |   |   |   |   |   |   |   STATUS_COUNT <= -0.20171
+|   |   |   |   |   |   |   |   |   |   |   |   |   GEO_ENABLED <= 0.104873
+|   |   |   |   |   |   |   |   |   |   |   |   |   |   FOLLOWERS_COUNT <= -0.10826: trustworthy (12.0/4.0)
+|   |   |   |   |   |   |   |   |   |   |   |   |   |   FOLLOWERS_COUNT > -0.10826: deceptive (24.0/7.0)
+|   |   |   |   |   |   |   |   |   |   |   |   |   GEO_ENABLED > 0.104873: deceptive (32.0/3.0)
+|   |   |   |   |   |   |   |   |   |   |   |   STATUS_COUNT > -0.20171
+|   |   |   |   |   |   |   |   |   |   |   |   |   FRIENDS_COUNT <= -0.191658: deceptive (6.0/1.0)
+|   |   |   |   |   |   |   |   |   |   |   |   |   FRIENDS_COUNT > -0.191658: trustworthy (39.0/8.0)
+|   |   |   |   |   |   |   ACCOUNT_AGE_IN_MONTHS > -0.054368
+|   |   |   |   |   |   |   |   USERNAME_LENGTH <= -0.653294
+|   |   |   |   |   |   |   |   |   ACCOUNT_AGE_IN_MONTHS <= 0.927119
+|   |   |   |   |   |   |   |   |   |   ACCOUNT_AGE_IN_MONTHS <= 0.660195
+|   |   |   |   |   |   |   |   |   |   |   GEO_ENABLED <= 0.104873
+|   |   |   |   |   |   |   |   |   |   |   |   STATUS_COUNT <= -0.312092: trustworthy (7.0/1.0)
+|   |   |   |   |   |   |   |   |   |   |   |   STATUS_COUNT > -0.312092: deceptive (7.0/1.0)
+|   |   |   |   |   |   |   |   |   |   |   GEO_ENABLED > 0.104873
+|   |   |   |   |   |   |   |   |   |   |   |   FOLLOWERS_COUNT <= -0.232081: deceptive (4.0/1.0)
+|   |   |   |   |   |   |   |   |   |   |   |   FOLLOWERS_COUNT > -0.232081: trustworthy (14.0/3.0)
+|   |   |   |   |   |   |   |   |   |   ACCOUNT_AGE_IN_MONTHS > 0.660195: deceptive (8.0)
+|   |   |   |   |   |   |   |   |   ACCOUNT_AGE_IN_MONTHS > 0.927119: trustworthy (5.0)
+|   |   |   |   |   |   |   |   USERNAME_LENGTH > -0.653294
+|   |   |   |   |   |   |   |   |   GEO_ENABLED <= 0.104873
+|   |   |   |   |   |   |   |   |   |   STATUS_COUNT <= 0.256366
+|   |   |   |   |   |   |   |   |   |   |   ACCOUNT_AGE_IN_MONTHS <= 0.944389
+|   |   |   |   |   |   |   |   |   |   |   |   FRIENDS_COUNT <= -0.191658
+|   |   |   |   |   |   |   |   |   |   |   |   |   FOLLOWERS_COUNT <= -0.232081
+|   |   |   |   |   |   |   |   |   |   |   |   |   |   FRIENDS_COUNT <= -0.217813: trustworthy (74.0/33.0)
+|   |   |   |   |   |   |   |   |   |   |   |   |   |   FRIENDS_COUNT > -0.217813
+|   |   |   |   |   |   |   |   |   |   |   |   |   |   |   STATUS_COUNT <= -0.402728: trustworthy (11.0/3.0)
+|   |   |   |   |   |   |   |   |   |   |   |   |   |   |   STATUS_COUNT > -0.402728: deceptive (12.0/1.0)
+|   |   |   |   |   |   |   |   |   |   |   |   |   FOLLOWERS_COUNT > -0.232081
+|   |   |   |   |   |   |   |   |   |   |   |   |   |   USERNAME_LENGTH <= -0.385072: deceptive (11.0)
+|   |   |   |   |   |   |   |   |   |   |   |   |   |   USERNAME_LENGTH > -0.385072
+|   |   |   |   |   |   |   |   |   |   |   |   |   |   |   FRIENDS_COUNT <= -0.217813: deceptive (59.0/13.0)
+|   |   |   |   |   |   |   |   |   |   |   |   |   |   |   FRIENDS_COUNT > -0.217813
+|   |   |   |   |   |   |   |   |   |   |   |   |   |   |   |   FOLLOWERS_COUNT <= -0.06668
+|   |   |   |   |   |   |   |   |   |   |   |   |   |   |   |   |   ACCOUNT_AGE_IN_MONTHS <= 0.730507
+|   |   |   |   |   |   |   |   |   |   |   |   |   |   |   |   |   |   USERNAME_LENGTH <= 0.146221: deceptive (9.0/1.0)
+|   |   |   |   |   |   |   |   |   |   |   |   |   |   |   |   |   |   USERNAME_LENGTH > 0.146221: trustworthy (12.0/3.0)
+|   |   |   |   |   |   |   |   |   |   |   |   |   |   |   |   |   ACCOUNT_AGE_IN_MONTHS > 0.730507: trustworthy (4.0)
+|   |   |   |   |   |   |   |   |   |   |   |   |   |   |   |   FOLLOWERS_COUNT > -0.06668: deceptive (13.0/2.0)
+|   |   |   |   |   |   |   |   |   |   |   |   FRIENDS_COUNT > -0.191658: deceptive (123.0/28.0)
+|   |   |   |   |   |   |   |   |   |   |   ACCOUNT_AGE_IN_MONTHS > 0.944389
+|   |   |   |   |   |   |   |   |   |   |   |   FRIENDS_COUNT <= -0.217813: trustworthy (9.0/1.0)
+|   |   |   |   |   |   |   |   |   |   |   |   FRIENDS_COUNT > -0.217813
+|   |   |   |   |   |   |   |   |   |   |   |   |   STATUS_COUNT <= -0.251711: deceptive (11.0/3.0)
+|   |   |   |   |   |   |   |   |   |   |   |   |   STATUS_COUNT > -0.251711: trustworthy (5.0)
+|   |   |   |   |   |   |   |   |   |   STATUS_COUNT > 0.256366
+|   |   |   |   |   |   |   |   |   |   |   LISTED_COUNT <= 1.548744: deceptive (66.0/7.0)
+|   |   |   |   |   |   |   |   |   |   |   LISTED_COUNT > 1.548744: trustworthy (4.0/1.0)
+|   |   |   |   |   |   |   |   |   GEO_ENABLED > 0.104873
+|   |   |   |   |   |   |   |   |   |   STATUS_COUNT <= -0.422797: deceptive (143.0/32.0)
+|   |   |   |   |   |   |   |   |   |   STATUS_COUNT > -0.422797
+|   |   |   |   |   |   |   |   |   |   |   ACCOUNT_AGE_IN_MONTHS <= 0.547547
+|   |   |   |   |   |   |   |   |   |   |   |   USERNAME_LENGTH <= 0.411966
+|   |   |   |   |   |   |   |   |   |   |   |   |   FRIENDS_COUNT <= -0.191658
+|   |   |   |   |   |   |   |   |   |   |   |   |   |   FOLLOWERS_COUNT <= -0.190804: trustworthy (60.0/15.0)
+|   |   |   |   |   |   |   |   |   |   |   |   |   |   FOLLOWERS_COUNT > -0.190804
+|   |   |   |   |   |   |   |   |   |   |   |   |   |   |   STATUS_COUNT <= -0.211457
+|   |   |   |   |   |   |   |   |   |   |   |   |   |   |   |   FOLLOWERS_COUNT <= 0.124795: deceptive (3.0/1.0)
+|   |   |   |   |   |   |   |   |   |   |   |   |   |   |   |   FOLLOWERS_COUNT > 0.124795: trustworthy (3.0)
+|   |   |   |   |   |   |   |   |   |   |   |   |   |   |   STATUS_COUNT > -0.211457: deceptive (7.0/1.0)
+|   |   |   |   |   |   |   |   |   |   |   |   |   FRIENDS_COUNT > -0.191658
+|   |   |   |   |   |   |   |   |   |   |   |   |   |   FOLLOWERS_COUNT <= -0.201214: deceptive (23.0/6.0)
+|   |   |   |   |   |   |   |   |   |   |   |   |   |   FOLLOWERS_COUNT > -0.201214
+|   |   |   |   |   |   |   |   |   |   |   |   |   |   |   ACCOUNT_AGE_IN_MONTHS <= 0.442263
+|   |   |   |   |   |   |   |   |   |   |   |   |   |   |   |   FOLLOWERS_COUNT <= 0.52819: trustworthy (12.0/3.0)
+|   |   |   |   |   |   |   |   |   |   |   |   |   |   |   |   FOLLOWERS_COUNT > 0.52819: deceptive (7.0/1.0)
+|   |   |   |   |   |   |   |   |   |   |   |   |   |   |   ACCOUNT_AGE_IN_MONTHS > 0.442263: trustworthy (5.0)
+|   |   |   |   |   |   |   |   |   |   |   |   USERNAME_LENGTH > 0.411966
+|   |   |   |   |   |   |   |   |   |   |   |   |   ACCOUNT_AGE_IN_MONTHS <= 0.090489: deceptive (15.0/1.0)
+|   |   |   |   |   |   |   |   |   |   |   |   |   ACCOUNT_AGE_IN_MONTHS > 0.090489
+|   |   |   |   |   |   |   |   |   |   |   |   |   |   FRIENDS_COUNT <= -0.217813
+|   |   |   |   |   |   |   |   |   |   |   |   |   |   |   USERNAME_LENGTH <= 0.677655
+|   |   |   |   |   |   |   |   |   |   |   |   |   |   |   |   ACCOUNT_AGE_IN_MONTHS <= 0.195892: trustworthy (5.0/2.0)
+|   |   |   |   |   |   |   |   |   |   |   |   |   |   |   |   ACCOUNT_AGE_IN_MONTHS > 0.195892: deceptive (7.0)
+|   |   |   |   |   |   |   |   |   |   |   |   |   |   |   USERNAME_LENGTH > 0.677655
+|   |   |   |   |   |   |   |   |   |   |   |   |   |   |   |   STATUS_COUNT <= -0.262106: trustworthy (5.0/1.0)
+|   |   |   |   |   |   |   |   |   |   |   |   |   |   |   |   STATUS_COUNT > -0.262106: deceptive (9.0)
+|   |   |   |   |   |   |   |   |   |   |   |   |   |   FRIENDS_COUNT > -0.217813
+|   |   |   |   |   |   |   |   |   |   |   |   |   |   |   FOLLOWERS_COUNT <= -0.232081: deceptive (3.0)
+|   |   |   |   |   |   |   |   |   |   |   |   |   |   |   FOLLOWERS_COUNT > -0.232081: trustworthy (22.0/4.0)
+|   |   |   |   |   |   |   |   |   |   |   ACCOUNT_AGE_IN_MONTHS > 0.547547
+|   |   |   |   |   |   |   |   |   |   |   |   LISTED_COUNT <= 0.322242: deceptive (134.0/46.0)
+|   |   |   |   |   |   |   |   |   |   |   |   LISTED_COUNT > 0.322242
+|   |   |   |   |   |   |   |   |   |   |   |   |   FOLLOWERS_COUNT <= 0.016127: deceptive (5.0)
+|   |   |   |   |   |   |   |   |   |   |   |   |   FOLLOWERS_COUNT > 0.016127: trustworthy (6.0)
+|   |   |   |   |   |   ACCOUNT_AGE_IN_MONTHS > 1.120933
+|   |   |   |   |   |   |   GEO_ENABLED <= 0.104873
+|   |   |   |   |   |   |   |   FOLLOWERS_COUNT <= -0.221721
+|   |   |   |   |   |   |   |   |   STATUS_COUNT <= -0.211457
+|   |   |   |   |   |   |   |   |   |   FOLLOWERS_COUNT <= -0.232081
+|   |   |   |   |   |   |   |   |   |   |   USERNAME_LENGTH <= 0.411966: trustworthy (7.0/1.0)
+|   |   |   |   |   |   |   |   |   |   |   USERNAME_LENGTH > 0.411966: deceptive (5.0/2.0)
+|   |   |   |   |   |   |   |   |   |   FOLLOWERS_COUNT > -0.232081: deceptive (7.0/2.0)
+|   |   |   |   |   |   |   |   |   STATUS_COUNT > -0.211457: deceptive (7.0)
+|   |   |   |   |   |   |   |   FOLLOWERS_COUNT > -0.221721: trustworthy (33.0/8.0)
+|   |   |   |   |   |   |   GEO_ENABLED > 0.104873: trustworthy (91.0/23.0)
+|   |   |   |   |   USERNAME_LENGTH > 0.942001
+|   |   |   |   |   |   ACCOUNT_AGE_IN_MONTHS <= -0.054368
+|   |   |   |   |   |   |   FOLLOWERS_COUNT <= 0.126119
+|   |   |   |   |   |   |   |   STATUS_COUNT <= -0.422797: trustworthy (67.0/6.0)
+|   |   |   |   |   |   |   |   STATUS_COUNT > -0.422797
+|   |   |   |   |   |   |   |   |   FOLLOWERS_COUNT <= -0.190804
+|   |   |   |   |   |   |   |   |   |   ACCOUNT_AGE_IN_MONTHS <= -0.264719
+|   |   |   |   |   |   |   |   |   |   |   STATUS_COUNT <= 0.541896
+|   |   |   |   |   |   |   |   |   |   |   |   FRIENDS_COUNT <= -0.191658
+|   |   |   |   |   |   |   |   |   |   |   |   |   FOLLOWERS_COUNT <= -0.221721: trustworthy (22.0/5.0)
+|   |   |   |   |   |   |   |   |   |   |   |   |   FOLLOWERS_COUNT > -0.221721: deceptive (4.0/1.0)
+|   |   |   |   |   |   |   |   |   |   |   |   FRIENDS_COUNT > -0.191658: deceptive (15.0/5.0)
+|   |   |   |   |   |   |   |   |   |   |   STATUS_COUNT > 0.541896: deceptive (7.0)
+|   |   |   |   |   |   |   |   |   |   ACCOUNT_AGE_IN_MONTHS > -0.264719: trustworthy (17.0/2.0)
+|   |   |   |   |   |   |   |   |   FOLLOWERS_COUNT > -0.190804: trustworthy (18.0/2.0)
+|   |   |   |   |   |   |   FOLLOWERS_COUNT > 0.126119
+|   |   |   |   |   |   |   |   USERNAME_LENGTH <= 1.471336
+|   |   |   |   |   |   |   |   |   FOLLOWERS_COUNT <= 1.117768: deceptive (9.0/1.0)
+|   |   |   |   |   |   |   |   |   FOLLOWERS_COUNT > 1.117768
+|   |   |   |   |   |   |   |   |   |   ACCOUNT_AGE_IN_MONTHS <= -0.993711: deceptive (3.0/1.0)
+|   |   |   |   |   |   |   |   |   |   ACCOUNT_AGE_IN_MONTHS > -0.993711: trustworthy (6.0)
+|   |   |   |   |   |   |   |   USERNAME_LENGTH > 1.471336: deceptive (5.0/1.0)
+|   |   |   |   |   |   ACCOUNT_AGE_IN_MONTHS > -0.054368
+|   |   |   |   |   |   |   USERNAME_LENGTH <= 1.710588
+|   |   |   |   |   |   |   |   GEO_ENABLED <= 0.104873
+|   |   |   |   |   |   |   |   |   ACCOUNT_AGE_IN_MONTHS <= 0.232881: trustworthy (13.0/2.0)
+|   |   |   |   |   |   |   |   |   ACCOUNT_AGE_IN_MONTHS > 0.232881
+|   |   |   |   |   |   |   |   |   |   USERNAME_LENGTH <= 1.205733
+|   |   |   |   |   |   |   |   |   |   |   STATUS_COUNT <= -0.382694
+|   |   |   |   |   |   |   |   |   |   |   |   ACCOUNT_AGE_IN_MONTHS <= 1.033832
+|   |   |   |   |   |   |   |   |   |   |   |   |   FRIENDS_COUNT <= -0.191658: deceptive (6.0)
+|   |   |   |   |   |   |   |   |   |   |   |   |   FRIENDS_COUNT > -0.191658: trustworthy (6.0/2.0)
+|   |   |   |   |   |   |   |   |   |   |   |   ACCOUNT_AGE_IN_MONTHS > 1.033832: trustworthy (4.0)
+|   |   |   |   |   |   |   |   |   |   |   STATUS_COUNT > -0.382694: deceptive (18.0/1.0)
+|   |   |   |   |   |   |   |   |   |   USERNAME_LENGTH > 1.205733
+|   |   |   |   |   |   |   |   |   |   |   USERNAME_LENGTH <= 1.471336: trustworthy (23.0/11.0)
+|   |   |   |   |   |   |   |   |   |   |   USERNAME_LENGTH > 1.471336
+|   |   |   |   |   |   |   |   |   |   |   |   FOLLOWERS_COUNT <= -0.232081: deceptive (5.0)
+|   |   |   |   |   |   |   |   |   |   |   |   FOLLOWERS_COUNT > -0.232081
+|   |   |   |   |   |   |   |   |   |   |   |   |   FRIENDS_COUNT <= -0.217813: deceptive (3.0/1.0)
+|   |   |   |   |   |   |   |   |   |   |   |   |   FRIENDS_COUNT > -0.217813: trustworthy (5.0/1.0)
+|   |   |   |   |   |   |   |   GEO_ENABLED > 0.104873
+|   |   |   |   |   |   |   |   |   USERNAME_LENGTH <= 1.471336
+|   |   |   |   |   |   |   |   |   |   USERNAME_LENGTH <= 1.205733: trustworthy (47.0/23.0)
+|   |   |   |   |   |   |   |   |   |   USERNAME_LENGTH > 1.205733
+|   |   |   |   |   |   |   |   |   |   |   FOLLOWERS_COUNT <= 0.004653
+|   |   |   |   |   |   |   |   |   |   |   |   FOLLOWERS_COUNT <= -0.211376
+|   |   |   |   |   |   |   |   |   |   |   |   |   STATUS_COUNT <= 0.563421: trustworthy (18.0/6.0)
+|   |   |   |   |   |   |   |   |   |   |   |   |   STATUS_COUNT > 0.563421: deceptive (3.0)
+|   |   |   |   |   |   |   |   |   |   |   |   FOLLOWERS_COUNT > -0.211376: trustworthy (5.0)
+|   |   |   |   |   |   |   |   |   |   |   FOLLOWERS_COUNT > 0.004653: deceptive (11.0/1.0)
+|   |   |   |   |   |   |   |   |   USERNAME_LENGTH > 1.471336: deceptive (14.0/4.0)
+|   |   |   |   |   |   |   USERNAME_LENGTH > 1.710588
+|   |   |   |   |   |   |   |   USERNAME_LENGTH <= 2.404815: trustworthy (42.0/8.0)
+|   |   |   |   |   |   |   |   USERNAME_LENGTH > 2.404815: deceptive (7.0)
+|   |   |   ACCOUNT_AGE_IN_MONTHS > 1.441674
+|   |   |   |   STATUS_COUNT <= -0.282405: deceptive (133.0/13.0)
+|   |   |   |   STATUS_COUNT > -0.282405
+|   |   |   |   |   FOLLOWERS_COUNT <= -0.211376: deceptive (43.0/1.0)
+|   |   |   |   |   FOLLOWERS_COUNT > -0.211376
+|   |   |   |   |   |   FOLLOWERS_COUNT <= 0.191854
+|   |   |   |   |   |   |   FRIENDS_COUNT <= -0.191658: deceptive (17.0/3.0)
+|   |   |   |   |   |   |   FRIENDS_COUNT > -0.191658: trustworthy (18.0/3.0)
+|   |   |   |   |   |   FOLLOWERS_COUNT > 0.191854: deceptive (14.0/2.0)
+|   |   PROFILE_HAS_URL > -0.180171: trustworthy (102.0)
+|   DUP_PROFILE > -0.694095
+|   |   HAS_PROFILE <= -2.643723
+|   |   |   FOLLOWERS_COUNT <= -0.221721
+|   |   |   |   FRIENDS_COUNT <= -0.191658
+|   |   |   |   |   ACCOUNT_AGE_IN_MONTHS <= -0.018825
+|   |   |   |   |   |   STATUS_COUNT <= 0.030068
+|   |   |   |   |   |   |   ACCOUNT_AGE_IN_MONTHS <= -1.799781
+|   |   |   |   |   |   |   |   ACCOUNT_AGE_IN_MONTHS <= -1.882985
+|   |   |   |   |   |   |   |   |   USERNAME_LENGTH <= 0.013559: deceptive (3.0/1.0)
+|   |   |   |   |   |   |   |   |   USERNAME_LENGTH > 0.013559: trustworthy (4.0)
+|   |   |   |   |   |   |   |   ACCOUNT_AGE_IN_MONTHS > -1.882985: deceptive (5.0)
+|   |   |   |   |   |   |   ACCOUNT_AGE_IN_MONTHS > -1.799781: trustworthy (141.0/21.0)
+|   |   |   |   |   |   STATUS_COUNT > 0.030068: deceptive (9.0/1.0)
+|   |   |   |   |   ACCOUNT_AGE_IN_MONTHS > -0.018825
+|   |   |   |   |   |   ACCOUNT_AGE_IN_MONTHS <= 1.33423
+|   |   |   |   |   |   |   ACCOUNT_AGE_IN_MONTHS <= 1.193418
+|   |   |   |   |   |   |   |   FOLLOWERS_COUNT <= -0.232081
+|   |   |   |   |   |   |   |   |   ACCOUNT_AGE_IN_MONTHS <= 0.26864
+|   |   |   |   |   |   |   |   |   |   STATUS_COUNT <= -0.171202
+|   |   |   |   |   |   |   |   |   |   |   ACCOUNT_AGE_IN_MONTHS <= 0.1229
+|   |   |   |   |   |   |   |   |   |   |   |   ACCOUNT_AGE_IN_MONTHS <= 0.090489: trustworthy (5.0/1.0)
+|   |   |   |   |   |   |   |   |   |   |   |   ACCOUNT_AGE_IN_MONTHS > 0.090489: deceptive (4.0/1.0)
+|   |   |   |   |   |   |   |   |   |   |   ACCOUNT_AGE_IN_MONTHS > 0.1229: trustworthy (14.0)
+|   |   |   |   |   |   |   |   |   |   STATUS_COUNT > -0.171202: deceptive (7.0)
+|   |   |   |   |   |   |   |   |   ACCOUNT_AGE_IN_MONTHS > 0.26864
+|   |   |   |   |   |   |   |   |   |   FRIENDS_COUNT <= -0.217813
+|   |   |   |   |   |   |   |   |   |   |   STATUS_COUNT <= -0.402728
+|   |   |   |   |   |   |   |   |   |   |   |   USERNAME_LENGTH <= 0.677655
+|   |   |   |   |   |   |   |   |   |   |   |   |   USERNAME_LENGTH <= 0.146221: deceptive (9.0/3.0)
+|   |   |   |   |   |   |   |   |   |   |   |   |   USERNAME_LENGTH > 0.146221: trustworthy (9.0/1.0)
+|   |   |   |   |   |   |   |   |   |   |   |   USERNAME_LENGTH > 0.677655: deceptive (11.0/4.0)
+|   |   |   |   |   |   |   |   |   |   |   STATUS_COUNT > -0.402728: deceptive (19.0/1.0)
+|   |   |   |   |   |   |   |   |   |   FRIENDS_COUNT > -0.217813: deceptive (17.0/5.0)
+|   |   |   |   |   |   |   |   FOLLOWERS_COUNT > -0.232081
+|   |   |   |   |   |   |   |   |   STATUS_COUNT <= 0.311847: deceptive (31.0/4.0)
+|   |   |   |   |   |   |   |   |   STATUS_COUNT > 0.311847: trustworthy (4.0/1.0)
+|   |   |   |   |   |   |   ACCOUNT_AGE_IN_MONTHS > 1.193418: trustworthy (10.0)
+|   |   |   |   |   |   ACCOUNT_AGE_IN_MONTHS > 1.33423: deceptive (13.0)
+|   |   |   |   FRIENDS_COUNT > -0.191658: deceptive (87.0/10.0)
+|   |   |   FOLLOWERS_COUNT > -0.221721
+|   |   |   |   USERNAME_LENGTH <= -0.653294
+|   |   |   |   |   USERNAME_LENGTH <= -0.944939: trustworthy (4.0/1.0)
+|   |   |   |   |   USERNAME_LENGTH > -0.944939
+|   |   |   |   |   |   STATUS_COUNT <= -0.161479
+|   |   |   |   |   |   |   FOLLOWERS_COUNT <= -0.029838: trustworthy (3.0)
+|   |   |   |   |   |   |   FOLLOWERS_COUNT > -0.029838: deceptive (3.0/1.0)
+|   |   |   |   |   |   STATUS_COUNT > -0.161479: deceptive (3.0)
+|   |   |   |   USERNAME_LENGTH > -0.653294: deceptive (184.0/23.0)
+|   |   HAS_PROFILE > -2.643723
+|   |   |   FRIENDS_COUNT <= -0.230815
+|   |   |   |   FOLLOWERS_COUNT <= -0.237011
+|   |   |   |   |   ACCOUNT_AGE_IN_MONTHS <= 0.090489: trustworthy (16.0/4.0)
+|   |   |   |   |   ACCOUNT_AGE_IN_MONTHS > 0.090489: deceptive (9.0)
+|   |   |   |   FOLLOWERS_COUNT > -0.237011: deceptive (226.0/5.0)
+|   |   |   FRIENDS_COUNT > -0.230815: deceptive (1951.0/6.0)
+
+Number of Leaves  : 	158
+
+Size of the tree : 	315
+
+
+[1] "**** results ****"
+      C M       AUC Precision    Recall         F      AUCSD PrecisionSD
+1 0.010 1 0.7736697 0.8451443 0.8536296 0.8491597 0.14472426  0.01434928
+2 0.010 2 0.7730079 0.8444962 0.8546667 0.8493487 0.17576259  0.01453851
+3 0.010 3 0.7290443 0.8434556 0.8553333 0.8491310 0.19517625  0.01479213
+4 0.255 1 0.7586248 0.8615762 0.8344444 0.8474892 0.08931204  0.01728501
+5 0.255 2 0.7818633 0.8605247 0.8373333 0.8484346 0.08975991  0.01906012
+6 0.255 3 0.8147881 0.8616334 0.8391852 0.8499275 0.06662546  0.02054627
+7 0.500 1 0.7040176 0.8556604 0.8311852 0.8428968 0.08985425  0.02001967
+8 0.500 2 0.7444474 0.8565858 0.8325185 0.8440053 0.09359245  0.01821782
+9 0.500 3 0.7735060 0.8577081 0.8331111 0.8447791 0.08798164  0.02070310
+    RecallSD        FSD
+1 0.02101497 0.01189470
+2 0.02100579 0.01213738
+3 0.02160326 0.01206649
+4 0.02313637 0.01236645
+5 0.02287471 0.01214966
+6 0.02165155 0.01226717
+7 0.02159642 0.01143192
+8 0.02412175 0.01142612
+9 0.02485788 0.01127458
+
+[1] "**** resampledCM ****"
+    cell1 cell2 cell3 cell4     C M    Resample
+1     383    67    76   374 0.010 1 Fold01.Rep1
+2     371    79    52   398 0.255 1 Fold01.Rep1
+3     370    80    53   397 0.500 1 Fold01.Rep1
+4     383    67    76   374 0.010 2 Fold01.Rep1
+5     370    80    50   400 0.255 2 Fold01.Rep1
+6     369    81    51   399 0.500 2 Fold01.Rep1
+7     382    68    75   375 0.010 3 Fold01.Rep1
+8     367    83    48   402 0.255 3 Fold01.Rep1
+9     363    87    47   403 0.500 3 Fold01.Rep1
+10    380    70    73   377 0.010 1 Fold02.Rep1
+11    372    78    64   386 0.255 1 Fold02.Rep1
+12    372    78    64   386 0.500 1 Fold02.Rep1
+13    380    70    73   377 0.010 2 Fold02.Rep1
+14    369    81    66   384 0.255 2 Fold02.Rep1
+15    369    81    68   382 0.500 2 Fold02.Rep1
+16    380    70    73   377 0.010 3 Fold02.Rep1
+17    371    79    69   381 0.255 3 Fold02.Rep1
+18    371    79    68   382 0.500 3 Fold02.Rep1
+19    391    59    77   373 0.010 1 Fold03.Rep1
+20    395    55    80   370 0.255 1 Fold03.Rep1
+21    387    63    90   360 0.500 1 Fold03.Rep1
+22    391    59    77   373 0.010 2 Fold03.Rep1
+23    398    52    80   370 0.255 2 Fold03.Rep1
+24    399    51    86   364 0.500 2 Fold03.Rep1
+25    391    59    77   373 0.010 3 Fold03.Rep1
+26    394    56    82   368 0.255 3 Fold03.Rep1
+27    398    52    86   364 0.500 3 Fold03.Rep1
+28    397    53    66   384 0.010 1 Fold04.Rep1
+29    393    57    67   383 0.255 1 Fold04.Rep1
+30    390    60    66   384 0.500 1 Fold04.Rep1
+31    396    54    66   384 0.010 2 Fold04.Rep1
+32    394    56    67   383 0.255 2 Fold04.Rep1
+33    391    59    70   380 0.500 2 Fold04.Rep1
+34    398    52    69   381 0.010 3 Fold04.Rep1
+35    396    54    68   382 0.255 3 Fold04.Rep1
+36    394    56    71   379 0.500 3 Fold04.Rep1
+37    382    68    63   387 0.010 1 Fold05.Rep1
+38    376    74    45   405 0.255 1 Fold05.Rep1
+39    370    80    43   407 0.500 1 Fold05.Rep1
+40    382    68    63   387 0.010 2 Fold05.Rep1
+41    374    76    44   406 0.255 2 Fold05.Rep1
+42    367    83    45   405 0.500 2 Fold05.Rep1
+43    382    68    63   387 0.010 3 Fold05.Rep1
+44    381    69    48   402 0.255 3 Fold05.Rep1
+45    372    78    44   406 0.500 3 Fold05.Rep1
+46    376    74    67   383 0.010 1 Fold06.Rep1
+47    371    79    57   393 0.255 1 Fold06.Rep1
+48    371    79    60   390 0.500 1 Fold06.Rep1
+49    377    73    67   383 0.010 2 Fold06.Rep1
+50    374    76    65   385 0.255 2 Fold06.Rep1
+51    373    77    65   385 0.500 2 Fold06.Rep1
+52    377    73    67   383 0.010 3 Fold06.Rep1
+53    374    76    67   383 0.255 3 Fold06.Rep1
+54    370    80    65   385 0.500 3 Fold06.Rep1
+55    376    74    59   391 0.010 1 Fold07.Rep1
+56    369    81    51   399 0.255 1 Fold07.Rep1
+57    364    86    54   396 0.500 1 Fold07.Rep1
+58    376    74    59   391 0.010 2 Fold07.Rep1
+59    368    82    49   401 0.255 2 Fold07.Rep1
+60    365    85    54   396 0.500 2 Fold07.Rep1
+61    376    74    59   391 0.010 3 Fold07.Rep1
+62    367    83    48   402 0.255 3 Fold07.Rep1
+63    364    86    52   398 0.500 3 Fold07.Rep1
+64    393    57    78   372 0.010 1 Fold08.Rep1
+65    394    56    74   376 0.255 1 Fold08.Rep1
+66    392    58    80   370 0.500 1 Fold08.Rep1
+67    393    57    77   373 0.010 2 Fold08.Rep1
+68    391    59    76   374 0.255 2 Fold08.Rep1
+69    392    58    80   370 0.500 2 Fold08.Rep1
+70    394    56    77   373 0.010 3 Fold08.Rep1
+71    395    55    74   376 0.255 3 Fold08.Rep1
+72    395    55    75   375 0.500 3 Fold08.Rep1
+73    380    70    65   385 0.010 1 Fold09.Rep1
+74    374    76    55   395 0.255 1 Fold09.Rep1
+75    371    79    59   391 0.500 1 Fold09.Rep1
+76    380    70    65   385 0.010 2 Fold09.Rep1
+77    373    77    55   395 0.255 2 Fold09.Rep1
+78    377    73    60   390 0.500 2 Fold09.Rep1
+79    380    70    65   385 0.010 3 Fold09.Rep1
+80    376    74    55   395 0.255 3 Fold09.Rep1
+81    376    74    67   383 0.500 3 Fold09.Rep1
+82    388    62    83   367 0.010 1 Fold10.Rep1
+83    392    58    79   371 0.255 1 Fold10.Rep1
+84    388    62    84   366 0.500 1 Fold10.Rep1
+85    393    57    85   365 0.010 2 Fold10.Rep1
+86    394    56    81   369 0.255 2 Fold10.Rep1
+87    389    61    83   367 0.500 2 Fold10.Rep1
+88    392    58    84   366 0.010 3 Fold10.Rep1
+89    393    57    78   372 0.255 3 Fold10.Rep1
+90    394    56    87   363 0.500 3 Fold10.Rep1
+91    398    52    75   375 0.010 1 Fold01.Rep2
+92    371    79    63   387 0.255 1 Fold01.Rep2
+93    370    80    63   387 0.500 1 Fold01.Rep2
+94    398    52    75   375 0.010 2 Fold01.Rep2
+95    367    83    58   392 0.255 2 Fold01.Rep2
+96    368    82    59   391 0.500 2 Fold01.Rep2
+97    399    51    75   375 0.010 3 Fold01.Rep2
+98    375    75    53   397 0.255 3 Fold01.Rep2
+99    372    78    57   393 0.500 3 Fold01.Rep2
+100   379    71    73   377 0.010 1 Fold02.Rep2
+101   358    92    58   392 0.255 1 Fold02.Rep2
+102   360    90    59   391 0.500 1 Fold02.Rep2
+103   379    71    73   377 0.010 2 Fold02.Rep2
+104   357    93    58   392 0.255 2 Fold02.Rep2
+105   355    95    57   393 0.500 2 Fold02.Rep2
+106   379    71    73   377 0.010 3 Fold02.Rep2
+107   357    93    55   395 0.255 3 Fold02.Rep2
+108   358    92    50   400 0.500 3 Fold02.Rep2
+109   377    73    74   376 0.010 1 Fold03.Rep2
+110   366    84    62   388 0.255 1 Fold03.Rep2
+111   364    86    66   384 0.500 1 Fold03.Rep2
+112   377    73    73   377 0.010 2 Fold03.Rep2
+113   369    81    66   384 0.255 2 Fold03.Rep2
+114   367    83    69   381 0.500 2 Fold03.Rep2
+115   377    73    73   377 0.010 3 Fold03.Rep2
+116   371    79    62   388 0.255 3 Fold03.Rep2
+117   368    82    64   386 0.500 3 Fold03.Rep2
+118   389    61    77   373 0.010 1 Fold04.Rep2
+119   379    71    57   393 0.255 1 Fold04.Rep2
+120   378    72    52   398 0.500 1 Fold04.Rep2
+121   391    59    77   373 0.010 2 Fold04.Rep2
+122   373    77    55   395 0.255 2 Fold04.Rep2
+123   376    74    55   395 0.500 2 Fold04.Rep2
+124   391    59    77   373 0.010 3 Fold04.Rep2
+125   375    75    56   394 0.255 3 Fold04.Rep2
+126   374    76    52   398 0.500 3 Fold04.Rep2
+127   372    78    56   394 0.010 1 Fold05.Rep2
+128   375    75    61   389 0.255 1 Fold05.Rep2
+129   370    80    63   387 0.500 1 Fold05.Rep2
+130   373    77    56   394 0.010 2 Fold05.Rep2
+131   371    79    58   392 0.255 2 Fold05.Rep2
+132   366    84    57   393 0.500 2 Fold05.Rep2
+133   373    77    56   394 0.010 3 Fold05.Rep2
+134   374    76    61   389 0.255 3 Fold05.Rep2
+135   371    79    63   387 0.500 3 Fold05.Rep2
+136   360    90    67   383 0.010 1 Fold06.Rep2
+137   366    84    58   392 0.255 1 Fold06.Rep2
+138   362    88    58   392 0.500 1 Fold06.Rep2
+139   360    90    66   384 0.010 2 Fold06.Rep2
+140   366    84    56   394 0.255 2 Fold06.Rep2
+141   362    88    57   393 0.500 2 Fold06.Rep2
+142   360    90    66   384 0.010 3 Fold06.Rep2
+143   363    87    55   395 0.255 3 Fold06.Rep2
+144   359    91    54   396 0.500 3 Fold06.Rep2
+145   394    56    72   378 0.010 1 Fold07.Rep2
+146   384    66    57   393 0.255 1 Fold07.Rep2
+147   385    65    63   387 0.500 1 Fold07.Rep2
+148   394    56    72   378 0.010 2 Fold07.Rep2
+149   388    62    61   389 0.255 2 Fold07.Rep2
+150   386    64    63   387 0.500 2 Fold07.Rep2
+151   395    55    75   375 0.010 3 Fold07.Rep2
+152   384    66    61   389 0.255 3 Fold07.Rep2
+153   381    69    63   387 0.500 3 Fold07.Rep2
+154   391    59    78   372 0.010 1 Fold08.Rep2
+155   387    63    69   381 0.255 1 Fold08.Rep2
+156   386    64    80   370 0.500 1 Fold08.Rep2
+157   391    59    78   372 0.010 2 Fold08.Rep2
+158   391    59    68   382 0.255 2 Fold08.Rep2
+159   387    63    77   373 0.500 2 Fold08.Rep2
+160   392    58    83   367 0.010 3 Fold08.Rep2
+161   388    62    73   377 0.255 3 Fold08.Rep2
+162   387    63    78   372 0.500 3 Fold08.Rep2
+163   388    62    64   386 0.010 1 Fold09.Rep2
+164   380    70    62   388 0.255 1 Fold09.Rep2
+165   377    73    64   386 0.500 1 Fold09.Rep2
+166   390    60    67   383 0.010 2 Fold09.Rep2
+167   385    65    59   391 0.255 2 Fold09.Rep2
+168   382    68    64   386 0.500 2 Fold09.Rep2
+169   392    58    73   377 0.010 3 Fold09.Rep2
+170   382    68    60   390 0.255 3 Fold09.Rep2
+171   379    71    62   388 0.500 3 Fold09.Rep2
+172   390    60    73   377 0.010 1 Fold10.Rep2
+173   384    66    56   394 0.255 1 Fold10.Rep2
+174   381    69    57   393 0.500 1 Fold10.Rep2
+175   390    60    73   377 0.010 2 Fold10.Rep2
+176   384    66    58   392 0.255 2 Fold10.Rep2
+177   381    69    59   391 0.500 2 Fold10.Rep2
+178   392    58    73   377 0.010 3 Fold10.Rep2
+179   384    66    52   398 0.255 3 Fold10.Rep2
+180   383    67    54   396 0.500 3 Fold10.Rep2
+181   389    61    84   366 0.010 1 Fold01.Rep3
+182   379    71    75   375 0.255 1 Fold01.Rep3
+183   383    67    81   369 0.500 1 Fold01.Rep3
+184   389    61    83   367 0.010 2 Fold01.Rep3
+185   376    74    72   378 0.255 2 Fold01.Rep3
+186   378    72    73   377 0.500 2 Fold01.Rep3
+187   389    61    85   365 0.010 3 Fold01.Rep3
+188   380    70    76   374 0.255 3 Fold01.Rep3
+189   378    72    76   374 0.500 3 Fold01.Rep3
+190   370    80    70   380 0.010 1 Fold02.Rep3
+191   357    93    59   391 0.255 1 Fold02.Rep3
+192   360    90    62   388 0.500 1 Fold02.Rep3
+193   370    80    77   373 0.010 2 Fold02.Rep3
+194   377    73    79   371 0.255 2 Fold02.Rep3
+195   362    88    60   390 0.500 2 Fold02.Rep3
+196   370    80    76   374 0.010 3 Fold02.Rep3
+197   378    72    77   373 0.255 3 Fold02.Rep3
+198   362    88    58   392 0.500 3 Fold02.Rep3
+199   378    72    73   377 0.010 1 Fold03.Rep3
+200   374    76    64   386 0.255 1 Fold03.Rep3
+201   374    76    69   381 0.500 1 Fold03.Rep3
+202   378    72    72   378 0.010 2 Fold03.Rep3
+203   374    76    65   385 0.255 2 Fold03.Rep3
+204   370    80    64   386 0.500 2 Fold03.Rep3
+205   378    72    73   377 0.010 3 Fold03.Rep3
+206   375    75    64   386 0.255 3 Fold03.Rep3
+207   375    75    67   383 0.500 3 Fold03.Rep3
+208   373    77    81   369 0.010 1 Fold04.Rep3
+209   359    91    74   376 0.255 1 Fold04.Rep3
+210   357    93    73   377 0.500 1 Fold04.Rep3
+211   374    76    85   365 0.010 2 Fold04.Rep3
+212   364    86    73   377 0.255 2 Fold04.Rep3
+213   356    94    72   378 0.500 2 Fold04.Rep3
+214   374    76    84   366 0.010 3 Fold04.Rep3
+215   365    85    72   378 0.255 3 Fold04.Rep3
+216   359    91    73   377 0.500 3 Fold04.Rep3
+217   398    52    75   375 0.010 1 Fold05.Rep3
+218   382    68    56   394 0.255 1 Fold05.Rep3
+219   382    68    61   389 0.500 1 Fold05.Rep3
+220   398    52    75   375 0.010 2 Fold05.Rep3
+221   385    65    60   390 0.255 2 Fold05.Rep3
+222   380    70    63   387 0.500 2 Fold05.Rep3
+223   398    52    75   375 0.010 3 Fold05.Rep3
+224   387    63    60   390 0.255 3 Fold05.Rep3
+225   386    64    60   390 0.500 3 Fold05.Rep3
+226   395    55    74   376 0.010 1 Fold06.Rep3
+227   367    83    55   395 0.255 1 Fold06.Rep3
+228   365    85    53   397 0.500 1 Fold06.Rep3
+229   395    55    74   376 0.010 2 Fold06.Rep3
+230   370    80    56   394 0.255 2 Fold06.Rep3
+231   370    80    58   392 0.500 2 Fold06.Rep3
+232   395    55    75   375 0.010 3 Fold06.Rep3
+233   370    80    59   391 0.255 3 Fold06.Rep3
+234   370    80    66   384 0.500 3 Fold06.Rep3
+235   383    67    66   384 0.010 1 Fold07.Rep3
+236   368    82    48   402 0.255 1 Fold07.Rep3
+237   371    79    49   401 0.500 1 Fold07.Rep3
+238   384    66    66   384 0.010 2 Fold07.Rep3
+239   367    83    43   407 0.255 2 Fold07.Rep3
+240   371    79    49   401 0.500 2 Fold07.Rep3
+241   384    66    69   381 0.010 3 Fold07.Rep3
+242   371    79    47   403 0.255 3 Fold07.Rep3
+243   367    83    51   399 0.500 3 Fold07.Rep3
+244   395    55    68   382 0.010 1 Fold08.Rep3
+245   370    80    59   391 0.255 1 Fold08.Rep3
+246   371    79    64   386 0.500 1 Fold08.Rep3
+247   395    55    68   382 0.010 2 Fold08.Rep3
+248   375    75    62   388 0.255 2 Fold08.Rep3
+249   375    75    63   387 0.500 2 Fold08.Rep3
+250   395    55    69   381 0.010 3 Fold08.Rep3
+251   376    74    57   393 0.255 3 Fold08.Rep3
+252   370    80    60   390 0.500 3 Fold08.Rep3
+253   384    66    50   400 0.010 1 Fold09.Rep3
+254   369    81    40   410 0.255 1 Fold09.Rep3
+255   368    82    46   404 0.500 1 Fold09.Rep3
+256   385    65    52   398 0.010 2 Fold09.Rep3
+257   375    75    42   408 0.255 2 Fold09.Rep3
+258   371    79    43   407 0.500 2 Fold09.Rep3
+259   385    65    50   400 0.010 3 Fold09.Rep3
+260   377    73    34   416 0.255 3 Fold09.Rep3
+261   368    82    38   412 0.500 3 Fold09.Rep3
+262   375    75    59   391 0.010 1 Fold10.Rep3
+263   383    67    60   390 0.255 1 Fold10.Rep3
+264   382    68    67   383 0.500 1 Fold10.Rep3
+265   376    74    59   391 0.010 2 Fold10.Rep3
+266   385    65    59   391 0.255 2 Fold10.Rep3
+267   385    65    67   383 0.500 2 Fold10.Rep3
+268   377    73    59   391 0.010 3 Fold10.Rep3
+269   383    67    58   392 0.255 3 Fold10.Rep3
+270   383    67    70   380 0.500 3 Fold10.Rep3
+
+[1] "**** resample ****"
+         AUC Precision    Recall         F    Resample
+1  0.8404257 0.8624709 0.8222222 0.8418658 Fold06.Rep3
+2  0.8137067 0.8629213 0.8533333 0.8581006 Fold07.Rep2
+3  0.8176934 0.8307692 0.8400000 0.8353591 Fold02.Rep3
+4  0.8371113 0.8875598 0.8244444 0.8548387 Fold07.Rep3
+5  0.8749218 0.8568129 0.8244444 0.8403171 Fold03.Rep2
+6  0.8287089 0.8416486 0.8622222 0.8518112 Fold08.Rep2
+7  0.8416934 0.8542141 0.8333333 0.8436445 Fold03.Rep3
+8  0.8337304 0.8723898 0.8355556 0.8535755 Fold09.Rep1
+9  0.8249357 0.8700696 0.8333333 0.8513053 Fold04.Rep2
+10 0.8108030 0.8642534 0.8488889 0.8565022 Fold09.Rep2
+11 0.8015643 0.8683603 0.8355556 0.8516421 Fold08.Rep3
+12 0.8189812 0.8422175 0.8777778 0.8596300 Fold08.Rep1
+13 0.8665286 0.8343949 0.8733333 0.8534202 Fold10.Rep1
+14 0.8188879 0.8597701 0.8311111 0.8451977 Fold05.Rep2
+15 0.8003887 0.8352403 0.8111111 0.8229989 Fold04.Rep3
+16 0.8038401 0.8534483 0.8800000 0.8665208 Fold04.Rep1
+17 0.8052996 0.8480726 0.8311111 0.8395062 Fold06.Rep1
+18 0.8405399 0.8761682 0.8333333 0.8542141 Fold01.Rep2
+19 0.8329836 0.8807339 0.8533333 0.8668172 Fold10.Rep2
+20 0.8547176 0.9172749 0.8377778 0.8757259 Fold09.Rep3
+21 0.8480014 0.8881119 0.8466667 0.8668942 Fold05.Rep1
+22 0.4827448 0.8843373 0.8155556 0.8485549 Fold07.Rep1
+23 0.8274241 0.8684211 0.8066667 0.8364055 Fold06.Rep2
+24 0.8603026 0.8657718 0.8600000 0.8628763 Fold05.Rep3
+25 0.8242670 0.8843373 0.8155556 0.8485549 Fold01.Rep1
+26 0.7800977 0.8277311 0.8755556 0.8509719 Fold03.Rep1
+27 0.8301742 0.8665049 0.7933333 0.8283063 Fold02.Rep2
+28 0.7891151 0.8333333 0.8444444 0.8388521 Fold01.Rep3
+29 0.8379374 0.8684807 0.8511111 0.8597082 Fold10.Rep3
+30 0.7961154 0.8431818 0.8244444 0.8337079 Fold02.Rep1
+
+
+[1] "+++++++++++++"
+[1] "bayesglm"
+[1] "+++++++++++++"
+[1] "**** finalModel ****"
+
+Call:  NULL
+
+Coefficients:
+          (Intercept)        FOLLOWERS_COUNT          FRIENDS_COUNT  
+             -0.03949               -0.06348               -0.04283  
+             FF_RATIO           LISTED_COUNT        USERNAME_LENGTH  
+              1.05835                0.02726               -0.31387  
+          GEO_ENABLED        PROFILE_HAS_URL  ACCOUNT_AGE_IN_MONTHS  
+              0.11168                1.24469               -0.40953  
+             HAS_NAME              HAS_IMAGE            DUP_PROFILE  
+             -1.00198               -0.03156               -2.38301  
+          HAS_PROFILE           STATUS_COUNT  
+             -1.70773               -0.05733  
+
+Degrees of Freedom: 8999 Total (i.e. Null);  8986 Residual
+Null Deviance:	    12480 
+Residual Deviance: 7646 	AIC: 7674
+
+[1] "**** results ****"
+  parameter      AUC Precision    Recall         F      AUCSD PrecisionSD
+1      none 0.878955 0.7652884 0.8348148 0.7984413 0.01199642  0.01513593
+    RecallSD        FSD
+1 0.01696749 0.01319497
+
+[1] "**** resampledCM ****"
+   cell1 cell2 cell3 cell4 parameter    Resample
+1    383    67   106   344      none Fold01.Rep1
+2    381    69   124   326      none Fold02.Rep1
+3    369    81   126   324      none Fold03.Rep1
+4    386    64   116   334      none Fold04.Rep1
+5    363    87   108   342      none Fold05.Rep1
+6    367    83   109   341      none Fold06.Rep1
+7    388    62    98   352      none Fold07.Rep1
+8    366    84   132   318      none Fold08.Rep1
+9    382    68   116   334      none Fold09.Rep1
+10   371    79   120   330      none Fold10.Rep1
+11   378    72   123   327      none Fold01.Rep2
+12   370    80   133   317      none Fold02.Rep2
+13   368    82   102   348      none Fold03.Rep2
+14   374    76   123   327      none Fold04.Rep2
+15   375    75   107   343      none Fold05.Rep2
+16   369    81   110   340      none Fold06.Rep2
+17   382    68   109   341      none Fold07.Rep2
+18   381    69   114   336      none Fold08.Rep2
+19   379    71   109   341      none Fold09.Rep2
+20   378    72   126   324      none Fold10.Rep2
+21   376    74   121   329      none Fold01.Rep3
+22   373    77   117   333      none Fold02.Rep3
+23   374    76   103   347      none Fold03.Rep3
+24   357    93   121   329      none Fold04.Rep3
+25   382    68   125   325      none Fold05.Rep3
+26   384    66   110   340      none Fold06.Rep3
+27   373    77   109   341      none Fold07.Rep3
+28   380    70   118   332      none Fold08.Rep3
+29   389    61   121   329      none Fold09.Rep3
+30   372    78   104   346      none Fold10.Rep3
+
+[1] "**** resample ****"
+         AUC Precision    Recall         F    Resample
+1  0.8910919 0.7832311 0.8511111 0.8157614 Fold01.Rep1
+2  0.8798643 0.7544554 0.8466667 0.7979058 Fold02.Rep1
+3  0.8750984 0.7454545 0.8200000 0.7809524 Fold03.Rep1
+4  0.8814052 0.7689243 0.8577778 0.8109244 Fold04.Rep1
+5  0.8659139 0.7707006 0.8066667 0.7882736 Fold05.Rep1
+6  0.8791277 0.7710084 0.8155556 0.7926566 Fold06.Rep1
+7  0.8903456 0.7983539 0.8622222 0.8290598 Fold07.Rep1
+8  0.8759246 0.7349398 0.8133333 0.7721519 Fold08.Rep1
+9  0.8735401 0.7670683 0.8488889 0.8059072 Fold09.Rep1
+10 0.8748098 0.7556008 0.8244444 0.7885228 Fold10.Rep1
+11 0.8680865 0.7544910 0.8400000 0.7949527 Fold01.Rep2
+12 0.8532001 0.7355865 0.8222222 0.7764953 Fold02.Rep2
+13 0.8710091 0.7829787 0.8177778 0.8000000 Fold03.Rep2
+14 0.8911854 0.7525151 0.8311111 0.7898627 Fold04.Rep2
+15 0.8806791 0.7780083 0.8333333 0.8047210 Fold05.Rep2
+16 0.8730855 0.7703549 0.8200000 0.7944026 Fold06.Rep2
+17 0.8994371 0.7780041 0.8488889 0.8119022 Fold07.Rep2
+18 0.8801714 0.7696970 0.8466667 0.8063492 Fold08.Rep2
+19 0.9002928 0.7766393 0.8422222 0.8081023 Fold09.Rep2
+20 0.8701691 0.7500000 0.8400000 0.7924528 Fold10.Rep2
+21 0.8529839 0.7565392 0.8355556 0.7940866 Fold01.Rep3
+22 0.8884267 0.7612245 0.8288889 0.7936170 Fold02.Rep3
+23 0.8919292 0.7840671 0.8311111 0.8069040 Fold03.Rep3
+24 0.8636865 0.7468619 0.7933333 0.7693966 Fold04.Rep3
+25 0.8838081 0.7534517 0.8488889 0.7983281 Fold05.Rep3
+26 0.8779850 0.7773279 0.8533333 0.8135593 Fold06.Rep3
+27 0.8885189 0.7738589 0.8288889 0.8004292 Fold07.Rep3
+28 0.8670469 0.7630522 0.8444444 0.8016878 Fold08.Rep3
+29 0.8902707 0.7627451 0.8644444 0.8104167 Fold09.Rep3
+30 0.8895576 0.7815126 0.8266667 0.8034557 Fold10.Rep3
+
+
+[1] "+++++++++++++"
+[1] "kknn"
+[1] "+++++++++++++"
+[1] "**** finalModel ****"
+
+Call:
+kknn::train.kknn(formula = .outcome ~ ., data = dat, kmax = param$kmax,     distance = param$distance, kernel = as.character(param$kernel))
+
+Type of response variable: nominal
+Minimal misclassification: 0.1706667
+Best kernel: optimal
+Best k: 9
+
+[1] "**** results ****"
+  kmax distance  kernel       AUC Precision    Recall         F      AUCSD
+1    5        2 optimal 0.3869996 0.8361432 0.7983704 0.8166162 0.02427058
+2    7        2 optimal 0.4411535 0.8433439 0.8018519 0.8219152 0.02334217
+3    9        2 optimal 0.4692391 0.8447043 0.8017778 0.8225154 0.02534622
+  PrecisionSD   RecallSD        FSD
+1  0.01617191 0.02013943 0.01294384
+2  0.01676721 0.01842762 0.01338722
+3  0.01704942 0.01956879 0.01416681
+
+[1] "**** resampledCM ****"
+   cell1 cell2 cell3 cell4 kmax distance  kernel    Resample
+1    361    89    62   388    5        2 optimal Fold01.Rep1
+2    363    87    54   396    7        2 optimal Fold01.Rep1
+3    362    88    53   397    9        2 optimal Fold01.Rep1
+4    375    75    80   370    5        2 optimal Fold02.Rep1
+5    372    78    79   371    7        2 optimal Fold02.Rep1
+6    372    78    79   371    9        2 optimal Fold02.Rep1
+7    347   103    64   386    5        2 optimal Fold03.Rep1
+8    347   103    60   390    7        2 optimal Fold03.Rep1
+9    347   103    60   390    9        2 optimal Fold03.Rep1
+10   371    79    67   383    5        2 optimal Fold04.Rep1
+11   369    81    60   390    7        2 optimal Fold04.Rep1
+12   371    79    60   390    9        2 optimal Fold04.Rep1
+13   353    97    65   385    5        2 optimal Fold05.Rep1
+14   358    92    65   385    7        2 optimal Fold05.Rep1
+15   359    91    62   388    9        2 optimal Fold05.Rep1
+16   360    90    65   385    5        2 optimal Fold06.Rep1
+17   357    93    62   388    7        2 optimal Fold06.Rep1
+18   356    94    62   388    9        2 optimal Fold06.Rep1
+19   347   103    58   392    5        2 optimal Fold07.Rep1
+20   353    97    60   390    7        2 optimal Fold07.Rep1
+21   357    93    60   390    9        2 optimal Fold07.Rep1
+22   363    87    84   366    5        2 optimal Fold08.Rep1
+23   364    86    78   372    7        2 optimal Fold08.Rep1
+24   364    86    81   369    9        2 optimal Fold08.Rep1
+25   361    89    72   378    5        2 optimal Fold09.Rep1
+26   366    84    64   386    7        2 optimal Fold09.Rep1
+27   366    84    60   390    9        2 optimal Fold09.Rep1
+28   369    81    82   368    5        2 optimal Fold10.Rep1
+29   368    82    79   371    7        2 optimal Fold10.Rep1
+30   369    81    73   377    9        2 optimal Fold10.Rep1
+31   372    78    71   379    5        2 optimal Fold01.Rep2
+32   368    82    69   381    7        2 optimal Fold01.Rep2
+33   373    77    72   378    9        2 optimal Fold01.Rep2
+34   349   101    71   379    5        2 optimal Fold02.Rep2
+35   351    99    71   379    7        2 optimal Fold02.Rep2
+36   351    99    71   379    9        2 optimal Fold02.Rep2
+37   346   104    75   375    5        2 optimal Fold03.Rep2
+38   347   103    71   379    7        2 optimal Fold03.Rep2
+39   347   103    72   378    9        2 optimal Fold03.Rep2
+40   370    80    81   369    5        2 optimal Fold04.Rep2
+41   370    80    73   377    7        2 optimal Fold04.Rep2
+42   366    84    75   375    9        2 optimal Fold04.Rep2
+43   365    85    58   392    5        2 optimal Fold05.Rep2
+44   370    80    57   393    7        2 optimal Fold05.Rep2
+45   369    81    53   397    9        2 optimal Fold05.Rep2
+46   350   100    68   382    5        2 optimal Fold06.Rep2
+47   349   101    69   381    7        2 optimal Fold06.Rep2
+48   349   101    69   381    9        2 optimal Fold06.Rep2
+49   362    88    65   385    5        2 optimal Fold07.Rep2
+50   365    85    59   391    7        2 optimal Fold07.Rep2
+51   365    85    59   391    9        2 optimal Fold07.Rep2
+52   367    83    68   382    5        2 optimal Fold08.Rep2
+53   367    83    67   383    7        2 optimal Fold08.Rep2
+54   368    82    64   386    9        2 optimal Fold08.Rep2
+55   356    94    74   376    5        2 optimal Fold09.Rep2
+56   358    92    72   378    7        2 optimal Fold09.Rep2
+57   355    95    68   382    9        2 optimal Fold09.Rep2
+58   354    96    73   377    5        2 optimal Fold10.Rep2
+59   351    99    70   380    7        2 optimal Fold10.Rep2
+60   351    99    70   380    9        2 optimal Fold10.Rep2
+61   365    85    93   357    5        2 optimal Fold01.Rep3
+62   363    87    90   360    7        2 optimal Fold01.Rep3
+63   361    89    87   363    9        2 optimal Fold01.Rep3
+64   346   104    64   386    5        2 optimal Fold02.Rep3
+65   349   101    57   393    7        2 optimal Fold02.Rep3
+66   349   101    56   394    9        2 optimal Fold02.Rep3
+67   367    83    58   392    5        2 optimal Fold03.Rep3
+68   367    83    56   394    7        2 optimal Fold03.Rep3
+69   367    83    58   392    9        2 optimal Fold03.Rep3
+70   347   103    77   373    5        2 optimal Fold04.Rep3
+71   351    99    76   374    7        2 optimal Fold04.Rep3
+72   352    98    75   375    9        2 optimal Fold04.Rep3
+73   371    79    80   370    5        2 optimal Fold05.Rep3
+74   373    77    74   376    7        2 optimal Fold05.Rep3
+75   373    77    75   375    9        2 optimal Fold05.Rep3
+76   351    99    67   383    5        2 optimal Fold06.Rep3
+77   357    93    68   382    7        2 optimal Fold06.Rep3
+78   353    97    64   386    9        2 optimal Fold06.Rep3
+79   364    86    68   382    5        2 optimal Fold07.Rep3
+80   364    86    63   387    7        2 optimal Fold07.Rep3
+81   365    85    63   387    9        2 optimal Fold07.Rep3
+82   356    94    63   387    5        2 optimal Fold08.Rep3
+83   359    91    57   393    7        2 optimal Fold08.Rep3
+84   354    96    59   391    9        2 optimal Fold08.Rep3
+85   363    87    63   387    5        2 optimal Fold09.Rep3
+86   373    77    61   389    7        2 optimal Fold09.Rep3
+87   377    73    60   390    9        2 optimal Fold09.Rep3
+88   350   100    81   369    5        2 optimal Fold10.Rep3
+89   356    94    74   376    7        2 optimal Fold10.Rep3
+90   356    94    74   376    9        2 optimal Fold10.Rep3
+
+[1] "**** resample ****"
+         AUC Precision    Recall         F    Resample
+1  0.4473015 0.8525799 0.7711111 0.8098016 Fold03.Rep1
+2  0.4504485 0.8248337 0.8266667 0.8257492 Fold02.Rep1
+3  0.5025927 0.8722892 0.8044444 0.8369942 Fold01.Rep1
+4  0.4454454 0.8607889 0.8244444 0.8422247 Fold04.Rep1
+5  0.4948805 0.8281623 0.7711111 0.7986191 Fold03.Rep2
+6  0.4782310 0.8591549 0.8133333 0.8356164 Fold09.Rep1
+7  0.5131742 0.8527316 0.7977778 0.8243398 Fold05.Rep1
+8  0.4609532 0.8299320 0.8133333 0.8215488 Fold04.Rep2
+9  0.4415503 0.8348416 0.8200000 0.8273543 Fold10.Rep1
+10 0.5207122 0.8516746 0.7911111 0.8202765 Fold06.Rep1
+11 0.4477579 0.8744076 0.8200000 0.8463303 Fold05.Rep2
+12 0.4689737 0.8382022 0.8288889 0.8335196 Fold01.Rep2
+13 0.4823865 0.8561151 0.7933333 0.8235294 Fold07.Rep1
+14 0.4528688 0.8349282 0.7755556 0.8041475 Fold06.Rep2
+15 0.4572412 0.8317536 0.7800000 0.8050459 Fold02.Rep2
+16 0.4371209 0.8179775 0.8088889 0.8134078 Fold08.Rep1
+17 0.4656078 0.8608491 0.8111111 0.8352403 Fold07.Rep2
+18 0.4898745 0.8465228 0.7844444 0.8143022 Fold06.Rep3
+19 0.4941650 0.8617284 0.7755556 0.8163743 Fold02.Rep3
+20 0.4778992 0.8518519 0.8177778 0.8344671 Fold08.Rep2
+21 0.4571196 0.8528037 0.8111111 0.8314351 Fold07.Rep3
+22 0.4813649 0.8635294 0.8155556 0.8388571 Fold03.Rep3
+23 0.4584663 0.8392435 0.7888889 0.8132875 Fold09.Rep2
+24 0.5076822 0.8571429 0.7866667 0.8203940 Fold08.Rep3
+25 0.4833950 0.8243560 0.7822222 0.8027366 Fold04.Rep3
+26 0.4515259 0.8337292 0.7800000 0.8059701 Fold10.Rep2
+27 0.5005544 0.8627002 0.8377778 0.8500564 Fold09.Rep3
+28 0.4305032 0.8325893 0.8288889 0.8307350 Fold05.Rep3
+29 0.4379557 0.8058036 0.8022222 0.8040089 Fold01.Rep3
+30 0.4394201 0.8279070 0.7911111 0.8090909 Fold10.Rep3
+
+
+[1] "+++++++++++++"
+[1] "adaboost"
+[1] "+++++++++++++"
+[1] "**** finalModel ****"
+fastAdaboost::adaboost(formula = .outcome ~ ., data = dat, nIter = param$nIter)
+.outcome ~ .
+<environment: 0x2ad5d150>
+Dependent Variable: .outcome
+No of trees:150
+The weights of the trees are:1.1023270.94349440.86222210.8265560.73188250.74024320.71679330.6172870.67979750.69491660.66577530.60124740.64865980.62438270.59943970.5860070.6437280.58514850.61168560.62279950.57770830.61537010.60535920.63988560.59218490.61402060.59391540.56086950.58251640.53251550.54385960.5746340.48079290.54383830.48777760.49297060.49880680.46741130.4409940.44327890.4506730.40325490.38796920.39062840.35434110.35146850.34185760.35138390.31420750.31166650.32975470.2862590.30867640.27309990.25198570.27471030.23772570.25870810.23890880.22675020.23918240.20977160.18244060.17964930.15783160.17136610.18708970.16049540.16672770.15253990.15613250.1640220.1547620.14735380.139150.13790390.12577690.12459170.12563530.11407440.10529580.096552460.10775590.11316980.10443680.096761970.10111790.097177050.093715710.098154030.08945130.085729910.089692820.086064490.08389490.085149850.077837060.089983950.08831810.074989230.072444520.072091730.083281070.074086980.076296730.079577620.068384970.067586180.064280590.065421050.061486130.063271760.064116680.066034620.058580770.05516270.061918830.057223570.056371960.067366440.065455630.060692580.054937990.050850780.053614550.053339560.050868390.046257580.046439560.044948910.047583580.052639570.050039910.047563440.049959840.046358810.044208040.051292720.04920990.045245490.048392080.04527030.047769810.047446920.042255740.042156140.039756860.039726430.040456850.03964819
+
+[1] "**** results ****"
+  nIter        method       AUC Precision    Recall         F       AUCSD
+1    50   Adaboost.M1 0.9063412 0.8807262 0.8513333 0.8655790 0.014196697
+2    50 Real adaboost 0.6945131 0.8743816 0.8568889 0.8653458 0.033900730
+3   100   Adaboost.M1 0.9395833 0.8787151 0.8565185 0.8672887 0.009215518
+4   100 Real adaboost 0.6811852 0.8752660 0.8562963 0.8654878 0.054135186
+5   150   Adaboost.M1 0.9457329 0.8779884 0.8577037 0.8675677 0.006950659
+6   150 Real adaboost 0.6810297 0.8755654 0.8565926 0.8657863 0.053500096
+  PrecisionSD   RecallSD         FSD
+1  0.01598300 0.01732518 0.009917801
+2  0.01151050 0.01907704 0.008546375
+3  0.01485200 0.01676912 0.009299202
+4  0.01125848 0.01932301 0.009213058
+5  0.01492137 0.01440736 0.008516859
+6  0.01109086 0.01932654 0.009150260
+
+[1] "**** resampledCM ****"
+    cell1 cell2 cell3 cell4 nIter        method    Resample
+1     369    81    44   406    50   Adaboost.M1 Fold01.Rep1
+2     367    83    43   407   100   Adaboost.M1 Fold01.Rep1
+3     372    78    46   404   150   Adaboost.M1 Fold01.Rep1
+4     384    66    50   400    50 Real adaboost Fold01.Rep1
+5     381    69    48   402   100 Real adaboost Fold01.Rep1
+6     381    69    48   402   150 Real adaboost Fold01.Rep1
+7     382    68    58   392    50   Adaboost.M1 Fold02.Rep1
+8     389    61    59   391   100   Adaboost.M1 Fold02.Rep1
+9     387    63    56   394   150   Adaboost.M1 Fold02.Rep1
+10    386    64    52   398    50 Real adaboost Fold02.Rep1
+11    386    64    53   397   100 Real adaboost Fold02.Rep1
+12    386    64    53   397   150 Real adaboost Fold02.Rep1
+13    389    61    51   399    50   Adaboost.M1 Fold03.Rep1
+14    394    56    55   395   100   Adaboost.M1 Fold03.Rep1
+15    393    57    52   398   150   Adaboost.M1 Fold03.Rep1
+16    383    67    56   394    50 Real adaboost Fold03.Rep1
+17    380    70    58   392   100 Real adaboost Fold03.Rep1
+18    380    70    58   392   150 Real adaboost Fold03.Rep1
+19    386    64    56   394    50   Adaboost.M1 Fold04.Rep1
+20    389    61    58   392   100   Adaboost.M1 Fold04.Rep1
+21    390    60    58   392   150   Adaboost.M1 Fold04.Rep1
+22    392    58    65   385    50 Real adaboost Fold04.Rep1
+23    388    62    61   389   100 Real adaboost Fold04.Rep1
+24    388    62    61   389   150 Real adaboost Fold04.Rep1
+25    379    71    39   411    50   Adaboost.M1 Fold05.Rep1
+26    388    62    46   404   100   Adaboost.M1 Fold05.Rep1
+27    382    68    46   404   150   Adaboost.M1 Fold05.Rep1
+28    383    67    50   400    50 Real adaboost Fold05.Rep1
+29    381    69    50   400   100 Real adaboost Fold05.Rep1
+30    381    69    50   400   150 Real adaboost Fold05.Rep1
+31    382    68    58   392    50   Adaboost.M1 Fold06.Rep1
+32    384    66    57   393   100   Adaboost.M1 Fold06.Rep1
+33    390    60    58   392   150   Adaboost.M1 Fold06.Rep1
+34    391    59    61   389    50 Real adaboost Fold06.Rep1
+35    390    60    58   392   100 Real adaboost Fold06.Rep1
+36    390    60    58   392   150 Real adaboost Fold06.Rep1
+37    371    79    39   411    50   Adaboost.M1 Fold07.Rep1
+38    372    78    39   411   100   Adaboost.M1 Fold07.Rep1
+39    374    76    41   409   150   Adaboost.M1 Fold07.Rep1
+40    380    70    45   405    50 Real adaboost Fold07.Rep1
+41    380    70    45   405   100 Real adaboost Fold07.Rep1
+42    380    70    45   405   150 Real adaboost Fold07.Rep1
+43    392    58    67   383    50   Adaboost.M1 Fold08.Rep1
+44    388    62    65   385   100   Adaboost.M1 Fold08.Rep1
+45    389    61    68   382   150   Adaboost.M1 Fold08.Rep1
+46    390    60    62   388    50 Real adaboost Fold08.Rep1
+47    390    60    63   387   100 Real adaboost Fold08.Rep1
+48    390    60    63   387   150 Real adaboost Fold08.Rep1
+49    380    70    42   408    50   Adaboost.M1 Fold09.Rep1
+50    388    62    46   404   100   Adaboost.M1 Fold09.Rep1
+51    383    67    44   406   150   Adaboost.M1 Fold09.Rep1
+52    395    55    60   390    50 Real adaboost Fold09.Rep1
+53    396    54    61   389   100 Real adaboost Fold09.Rep1
+54    396    54    61   389   150 Real adaboost Fold09.Rep1
+55    398    52    68   382    50   Adaboost.M1 Fold10.Rep1
+56    396    54    68   382   100   Adaboost.M1 Fold10.Rep1
+57    395    55    69   381   150   Adaboost.M1 Fold10.Rep1
+58    391    59    65   385    50 Real adaboost Fold10.Rep1
+59    391    59    65   385   100 Real adaboost Fold10.Rep1
+60    391    59    65   385   150 Real adaboost Fold10.Rep1
+61    389    61    45   405    50   Adaboost.M1 Fold01.Rep2
+62    388    62    46   404   100   Adaboost.M1 Fold01.Rep2
+63    388    62    48   402   150   Adaboost.M1 Fold01.Rep2
+64    384    66    58   392    50 Real adaboost Fold01.Rep2
+65    385    65    58   392   100 Real adaboost Fold01.Rep2
+66    385    65    58   392   150 Real adaboost Fold01.Rep2
+67    370    80    56   394    50   Adaboost.M1 Fold02.Rep2
+68    371    79    50   400   100   Adaboost.M1 Fold02.Rep2
+69    374    76    50   400   150   Adaboost.M1 Fold02.Rep2
+70    380    70    51   399    50 Real adaboost Fold02.Rep2
+71    380    70    51   399   100 Real adaboost Fold02.Rep2
+72    380    70    51   399   150 Real adaboost Fold02.Rep2
+73    375    75    56   394    50   Adaboost.M1 Fold03.Rep2
+74    379    71    57   393   100   Adaboost.M1 Fold03.Rep2
+75    382    68    57   393   150   Adaboost.M1 Fold03.Rep2
+76    367    83    55   395    50 Real adaboost Fold03.Rep2
+77    367    83    54   396   100 Real adaboost Fold03.Rep2
+78    367    83    54   396   150 Real adaboost Fold03.Rep2
+79    399    51    60   390    50   Adaboost.M1 Fold04.Rep2
+80    401    49    66   384   100   Adaboost.M1 Fold04.Rep2
+81    398    52    63   387   150   Adaboost.M1 Fold04.Rep2
+82    403    47    70   380    50 Real adaboost Fold04.Rep2
+83    405    45    70   380   100 Real adaboost Fold04.Rep2
+84    405    45    70   380   150 Real adaboost Fold04.Rep2
+85    380    70    52   398    50   Adaboost.M1 Fold05.Rep2
+86    383    67    53   397   100   Adaboost.M1 Fold05.Rep2
+87    384    66    51   399   150   Adaboost.M1 Fold05.Rep2
+88    382    68    48   402    50 Real adaboost Fold05.Rep2
+89    383    67    48   402   100 Real adaboost Fold05.Rep2
+90    383    67    48   402   150 Real adaboost Fold05.Rep2
+91    374    76    50   400    50   Adaboost.M1 Fold06.Rep2
+92    376    74    52   398   100   Adaboost.M1 Fold06.Rep2
+93    377    73    55   395   150   Adaboost.M1 Fold06.Rep2
+94    376    74    51   399    50 Real adaboost Fold06.Rep2
+95    378    72    51   399   100 Real adaboost Fold06.Rep2
+96    378    72    51   399   150 Real adaboost Fold06.Rep2
+97    394    56    47   403    50   Adaboost.M1 Fold07.Rep2
+98    396    54    48   402   100   Adaboost.M1 Fold07.Rep2
+99    395    55    41   409   150   Adaboost.M1 Fold07.Rep2
+100   393    57    63   387    50 Real adaboost Fold07.Rep2
+101   390    60    58   392   100 Real adaboost Fold07.Rep2
+102   390    60    58   392   150 Real adaboost Fold07.Rep2
+103   377    73    56   394    50   Adaboost.M1 Fold08.Rep2
+104   388    62    59   391   100   Adaboost.M1 Fold08.Rep2
+105   385    65    58   392   150   Adaboost.M1 Fold08.Rep2
+106   392    58    58   392    50 Real adaboost Fold08.Rep2
+107   390    60    54   396   100 Real adaboost Fold08.Rep2
+108   390    60    54   396   150 Real adaboost Fold08.Rep2
+109   387    63    55   395    50   Adaboost.M1 Fold09.Rep2
+110   381    69    53   397   100   Adaboost.M1 Fold09.Rep2
+111   383    67    57   393   150   Adaboost.M1 Fold09.Rep2
+112   385    65    44   406    50 Real adaboost Fold09.Rep2
+113   385    65    45   405   100 Real adaboost Fold09.Rep2
+114   385    65    45   405   150 Real adaboost Fold09.Rep2
+115   388    62    50   400    50   Adaboost.M1 Fold10.Rep2
+116   391    59    50   400   100   Adaboost.M1 Fold10.Rep2
+117   393    57    54   396   150   Adaboost.M1 Fold10.Rep2
+118   390    60    50   400    50 Real adaboost Fold10.Rep2
+119   390    60    50   400   100 Real adaboost Fold10.Rep2
+120   390    60    50   400   150 Real adaboost Fold10.Rep2
+121   386    64    59   391    50   Adaboost.M1 Fold01.Rep3
+122   387    63    58   392   100   Adaboost.M1 Fold01.Rep3
+123   386    64    53   397   150   Adaboost.M1 Fold01.Rep3
+124   378    72    53   397    50 Real adaboost Fold01.Rep3
+125   379    71    54   396   100 Real adaboost Fold01.Rep3
+126   379    71    54   396   150 Real adaboost Fold01.Rep3
+127   374    76    43   407    50   Adaboost.M1 Fold02.Rep3
+128   385    65    46   404   100   Adaboost.M1 Fold02.Rep3
+129   379    71    45   405   150   Adaboost.M1 Fold02.Rep3
+130   384    66    53   397    50 Real adaboost Fold02.Rep3
+131   384    66    55   395   100 Real adaboost Fold02.Rep3
+132   384    66    54   396   150 Real adaboost Fold02.Rep3
+133   388    62    64   386    50   Adaboost.M1 Fold03.Rep3
+134   388    62    62   388   100   Adaboost.M1 Fold03.Rep3
+135   390    60    64   386   150   Adaboost.M1 Fold03.Rep3
+136   388    62    63   387    50 Real adaboost Fold03.Rep3
+137   388    62    61   389   100 Real adaboost Fold03.Rep3
+138   389    61    58   392   150 Real adaboost Fold03.Rep3
+139   380    70    59   391    50   Adaboost.M1 Fold04.Rep3
+140   380    70    59   391   100   Adaboost.M1 Fold04.Rep3
+141   384    66    62   388   150   Adaboost.M1 Fold04.Rep3
+142   375    75    56   394    50 Real adaboost Fold04.Rep3
+143   373    77    58   392   100 Real adaboost Fold04.Rep3
+144   374    76    58   392   150 Real adaboost Fold04.Rep3
+145   388    62    55   395    50   Adaboost.M1 Fold05.Rep3
+146   391    59    60   390   100   Adaboost.M1 Fold05.Rep3
+147   391    59    61   389   150   Adaboost.M1 Fold05.Rep3
+148   389    61    53   397    50 Real adaboost Fold05.Rep3
+149   389    61    57   393   100 Real adaboost Fold05.Rep3
+150   391    59    57   393   150 Real adaboost Fold05.Rep3
+151   378    72    39   411    50   Adaboost.M1 Fold06.Rep3
+152   380    70    44   406   100   Adaboost.M1 Fold06.Rep3
+153   382    68    43   407   150   Adaboost.M1 Fold06.Rep3
+154   365    85    44   406    50 Real adaboost Fold06.Rep3
+155   366    84    43   407   100 Real adaboost Fold06.Rep3
+156   366    84    43   407   150 Real adaboost Fold06.Rep3
+157   387    63    45   405    50   Adaboost.M1 Fold07.Rep3
+158   384    66    44   406   100   Adaboost.M1 Fold07.Rep3
+159   389    61    52   398   150   Adaboost.M1 Fold07.Rep3
+160   392    58    56   394    50 Real adaboost Fold07.Rep3
+161   393    57    49   401   100 Real adaboost Fold07.Rep3
+162   393    57    49   401   150 Real adaboost Fold07.Rep3
+163   379    71    56   394    50   Adaboost.M1 Fold08.Rep3
+164   382    68    61   389   100   Adaboost.M1 Fold08.Rep3
+165   385    65    61   389   150   Adaboost.M1 Fold08.Rep3
+166   377    73    57   393    50 Real adaboost Fold08.Rep3
+167   377    73    57   393   100 Real adaboost Fold08.Rep3
+168   377    73    57   393   150 Real adaboost Fold08.Rep3
+169   388    62    40   410    50   Adaboost.M1 Fold09.Rep3
+170   390    60    41   409   100   Adaboost.M1 Fold09.Rep3
+171   391    59    44   406   150   Adaboost.M1 Fold09.Rep3
+172   399    51    61   389    50 Real adaboost Fold09.Rep3
+173   400    50    60   390   100 Real adaboost Fold09.Rep3
+174   400    50    60   390   150 Real adaboost Fold09.Rep3
+175   384    66    53   397    50   Adaboost.M1 Fold10.Rep3
+176   387    63    56   394   100   Adaboost.M1 Fold10.Rep3
+177   388    62    57   393   150   Adaboost.M1 Fold10.Rep3
+178   394    56    56   394    50 Real adaboost Fold10.Rep3
+179   395    55    56   394   100 Real adaboost Fold10.Rep3
+180   395    55    56   394   150 Real adaboost Fold10.Rep3
+
+[1] "**** resample ****"
+         AUC Precision    Recall         F    Resample
+1  0.9478318 0.9012048 0.8311111 0.8647399 Fold07.Rep1
+2  0.9536931 0.8899522 0.8266667 0.8571429 Fold01.Rep1
+3  0.9422309 0.8512035 0.8644444 0.8577729 Fold08.Rep1
+4  0.9489530 0.8705357 0.8666667 0.8685969 Fold04.Rep1
+5  0.9471620 0.8735892 0.8600000 0.8667413 Fold02.Rep1
+6  0.9558758 0.8899083 0.8622222 0.8758465 Fold01.Rep2
+7  0.9429032 0.8969555 0.8511111 0.8734322 Fold09.Rep1
+8  0.9496620 0.8690745 0.8555556 0.8622620 Fold08.Rep2
+9  0.9385036 0.8925234 0.8488889 0.8701595 Fold05.Rep1
+10 0.9422864 0.8650442 0.8688889 0.8669623 Fold05.Rep3
+11 0.9551239 0.8831461 0.8733333 0.8782123 Fold03.Rep1
+12 0.9450926 0.8820755 0.8311111 0.8558352 Fold02.Rep2
+13 0.9410867 0.8512931 0.8777778 0.8643326 Fold10.Rep1
+14 0.9468824 0.8704545 0.8511111 0.8606742 Fold09.Rep2
+15 0.9449965 0.8705357 0.8666667 0.8685969 Fold06.Rep1
+16 0.9449228 0.8988235 0.8488889 0.8731429 Fold06.Rep3
+17 0.9286856 0.8609865 0.8533333 0.8571429 Fold04.Rep3
+18 0.9372319 0.8701595 0.8488889 0.8593926 Fold03.Rep2
+19 0.9480710 0.8938679 0.8422222 0.8672769 Fold02.Rep3
+20 0.9459534 0.8791946 0.8733333 0.8762542 Fold10.Rep2
+21 0.9597238 0.8988506 0.8688889 0.8836158 Fold09.Rep3
+22 0.9500568 0.8820862 0.8644444 0.8731762 Fold07.Rep3
+23 0.9361062 0.8726852 0.8377778 0.8548753 Fold06.Rep2
+24 0.9475954 0.8633406 0.8844444 0.8737651 Fold04.Rep2
+25 0.9491461 0.8590308 0.8666667 0.8628319 Fold03.Rep3
+26 0.9430692 0.8792711 0.8577778 0.8683915 Fold01.Rep3
+27 0.9423504 0.8719101 0.8622222 0.8670391 Fold10.Rep3
+28 0.9409876 0.8632287 0.8555556 0.8593750 Fold08.Rep3
+29 0.9593982 0.9059633 0.8777778 0.8916479 Fold07.Rep2
+30 0.9364056 0.8827586 0.8533333 0.8677966 Fold05.Rep2
+
+
+[1] "+++++++++++++"
+[1] "rpart"
+[1] "+++++++++++++"
+[1] "**** finalModel ****"
+n= 9000 
+
+node), split, n, loss, yval, (yprob)
+      * denotes terminal node
+
+ 1) root 9000 4500 deceptive (0.50000000 0.50000000)  
+   2) HAS_NAME>=-1.176709 5555 1582 deceptive (0.71521152 0.28478848) *
+   3) HAS_NAME< -1.176709 3445  527 trustworthy (0.15297533 0.84702467)  
+     6) USERNAME_LENGTH>=-0.671548 2004  510 trustworthy (0.25449102 0.74550898)  
+      12) DUP_PROFILE>=-0.6701478 366  118 deceptive (0.67759563 0.32240437) *
+      13) DUP_PROFILE< -0.6701478 1638  262 trustworthy (0.15995116 0.84004884) *
+     7) USERNAME_LENGTH< -0.671548 1441   17 trustworthy (0.01179736 0.98820264) *
+
+[1] "**** results ****"
+          cp        AUC Precision    Recall         F      AUCSD PrecisionSD
+1 0.01155556 0.50606932 0.7408575 0.9054074 0.8130872 0.30768651  0.03708811
+2 0.01444444 0.20042524 0.7214154 0.8914074 0.7962804 0.23406897  0.02187337
+3 0.53133333 0.03675575 0.6027789 0.9390370 0.7244979 0.03783624  0.10469679
+    RecallSD        FSD
+1 0.04648453 0.01369093
+2 0.04748142 0.01544929
+3 0.06272290 0.05897388
+
+[1] "**** resampledCM ****"
+           cp cell1 cell2 cell3 cell4    Resample
+1  0.01155556   416    34   158   292 Fold01.Rep1
+2  0.01444444   396    54   155   295 Fold01.Rep1
+3  0.53133333   450     0   450     0 Fold01.Rep1
+4  0.01155556   424    26   185   265 Fold02.Rep1
+5  0.01444444   395    55   169   281 Fold02.Rep1
+6  0.53133333   395    55   169   281 Fold02.Rep1
+7  0.01155556   367    83    97   353 Fold03.Rep1
+8  0.01444444   376    74   106   344 Fold03.Rep1
+9  0.53133333   450     0   450     0 Fold03.Rep1
+10 0.01155556   377    73    82   368 Fold04.Rep1
+11 0.01444444   400    50   149   301 Fold04.Rep1
+12 0.53133333   450     0   450     0 Fold04.Rep1
+13 0.01155556   414    36   151   299 Fold05.Rep1
+14 0.01444444   395    55   157   293 Fold05.Rep1
+15 0.53133333   395    55   157   293 Fold05.Rep1
+16 0.01155556   417    33   157   293 Fold06.Rep1
+17 0.01444444   424    26   169   281 Fold06.Rep1
+18 0.53133333   450     0   450     0 Fold06.Rep1
+19 0.01155556   414    36   139   311 Fold07.Rep1
+20 0.01444444   393    57   137   313 Fold07.Rep1
+21 0.53133333   450     0   450     0 Fold07.Rep1
+22 0.01155556   417    33   180   270 Fold08.Rep1
+23 0.01444444   401    49   178   272 Fold08.Rep1
+24 0.53133333   401    49   178   272 Fold08.Rep1
+25 0.01155556   411    39   157   293 Fold09.Rep1
+26 0.01444444   389    61   156   294 Fold09.Rep1
+27 0.53133333   389    61   156   294 Fold09.Rep1
+28 0.01155556   416    34   175   275 Fold10.Rep1
+29 0.01444444   416    34   175   275 Fold10.Rep1
+30 0.53133333   393    57   161   289 Fold10.Rep1
+31 0.01155556   429    21   183   267 Fold01.Rep2
+32 0.01444444   402    48   170   280 Fold01.Rep2
+33 0.53133333   402    48   170   280 Fold01.Rep2
+34 0.01155556   379    71   116   334 Fold02.Rep2
+35 0.01444444   412    38   174   276 Fold02.Rep2
+36 0.53133333   396    54   166   284 Fold02.Rep2
+37 0.01155556   376    74    99   351 Fold03.Rep2
+38 0.01444444   407    43   155   295 Fold03.Rep2
+39 0.53133333   387    63   148   302 Fold03.Rep2
+40 0.01155556   386    64   119   331 Fold04.Rep2
+41 0.01444444   348   102   101   349 Fold04.Rep2
+42 0.53133333   395    55   173   277 Fold04.Rep2
+43 0.01155556   424    26   154   296 Fold05.Rep2
+44 0.01444444   424    26   154   296 Fold05.Rep2
+45 0.53133333   450     0   450     0 Fold05.Rep2
+46 0.01155556   376    74    98   352 Fold06.Rep2
+47 0.01444444   408    42   153   297 Fold06.Rep2
+48 0.53133333   450     0   450     0 Fold06.Rep2
+49 0.01155556   420    30   153   297 Fold07.Rep2
+50 0.01444444   399    51   151   299 Fold07.Rep2
+51 0.53133333   450     0   450     0 Fold07.Rep2
+52 0.01155556   421    29   155   295 Fold08.Rep2
+53 0.01444444   401    49   154   296 Fold08.Rep2
+54 0.53133333   450     0   450     0 Fold08.Rep2
+55 0.01155556   423    27   168   282 Fold09.Rep2
+56 0.01444444   423    27   168   282 Fold09.Rep2
+57 0.53133333   450     0   450     0 Fold09.Rep2
+58 0.01155556   426    24   191   259 Fold10.Rep2
+59 0.01444444   426    24   191   259 Fold10.Rep2
+60 0.53133333   398    52   175   275 Fold10.Rep2
+61 0.01155556   411    39   162   288 Fold01.Rep3
+62 0.01444444   411    39   170   280 Fold01.Rep3
+63 0.53133333   392    58   162   288 Fold01.Rep3
+64 0.01155556   413    37   164   286 Fold02.Rep3
+65 0.01444444   393    57   163   287 Fold02.Rep3
+66 0.53133333   393    57   163   287 Fold02.Rep3
+67 0.01155556   418    32   159   291 Fold03.Rep3
+68 0.01444444   418    32   159   291 Fold03.Rep3
+69 0.53133333   450     0   450     0 Fold03.Rep3
+70 0.01155556   352    98    99   351 Fold04.Rep3
+71 0.01444444   327   123    96   354 Fold04.Rep3
+72 0.53133333   383    67   164   286 Fold04.Rep3
+73 0.01155556   420    30   165   285 Fold05.Rep3
+74 0.01444444   402    48   165   285 Fold05.Rep3
+75 0.53133333   402    48   165   285 Fold05.Rep3
+76 0.01155556   399    51    90   360 Fold06.Rep3
+77 0.01444444   398    52   157   293 Fold06.Rep3
+78 0.53133333   450     0   450     0 Fold06.Rep3
+79 0.01155556   401    49   102   348 Fold07.Rep3
+80 0.01444444   421    29   164   286 Fold07.Rep3
+81 0.53133333   450     0   450     0 Fold07.Rep3
+82 0.01155556   421    29   168   282 Fold08.Rep3
+83 0.01444444   406    44   168   282 Fold08.Rep3
+84 0.53133333   406    44   168   282 Fold08.Rep3
+85 0.01155556   431    19   161   289 Fold09.Rep3
+86 0.01444444   399    51   155   295 Fold09.Rep3
+87 0.53133333   450     0   450     0 Fold09.Rep3
+88 0.01155556   424    26   159   291 Fold10.Rep3
+89 0.01444444   424    26   159   291 Fold10.Rep3
+90 0.53133333   450     0   450     0 Fold10.Rep3
+
+[1] "**** resample ****"
+          AUC Precision    Recall         F    Resample
+1  0.74861587 0.7247387 0.9244444 0.8125000 Fold01.Rep1
+2  0.31207494 0.8213508 0.8377778 0.8294829 Fold04.Rep1
+3  0.86541975 0.7909483 0.8155556 0.8030635 Fold03.Rep1
+4  0.08188816 0.6962233 0.9422222 0.8007554 Fold02.Rep1
+5  0.81856780 0.7327434 0.9200000 0.8157635 Fold05.Rep1
+6  0.32254858 0.7643564 0.8577778 0.8083770 Fold04.Rep2
+7  0.08378338 0.7038917 0.9244444 0.7992315 Fold10.Rep1
+8  0.81610986 0.7264808 0.9266667 0.8144531 Fold06.Rep1
+9  0.07670520 0.7335640 0.9422222 0.8249027 Fold05.Rep2
+10 0.07195914 0.7009804 0.9533333 0.8079096 Fold01.Rep2
+11 0.78001061 0.7486438 0.9200000 0.8255234 Fold07.Rep1
+12 0.36981816 0.7932489 0.8355556 0.8138528 Fold06.Rep2
+13 0.35710319 0.7656566 0.8422222 0.8021164 Fold02.Rep2
+14 0.75541613 0.6984925 0.9266667 0.7965616 Fold08.Rep1
+15 0.77447346 0.7329843 0.9333333 0.8211144 Fold07.Rep2
+16 0.35996970 0.7915789 0.8355556 0.8129730 Fold03.Rep2
+17 0.78244940 0.7235915 0.9133333 0.8074656 Fold09.Rep1
+18 0.79307598 0.7309028 0.9355556 0.8206628 Fold08.Rep2
+19 0.34903481 0.7972167 0.8911111 0.8415530 Fold07.Rep3
+20 0.69915655 0.7244367 0.9288889 0.8140214 Fold03.Rep3
+21 0.06591213 0.7157360 0.9400000 0.8126801 Fold09.Rep2
+22 0.81537754 0.7147708 0.9355556 0.8103946 Fold08.Rep3
+23 0.79894893 0.7804878 0.7822222 0.7813541 Fold04.Rep3
+24 0.07694123 0.6904376 0.9466667 0.7985005 Fold10.Rep2
+25 0.37797154 0.7280405 0.9577778 0.8272553 Fold09.Rep3
+26 0.81153453 0.7179487 0.9333333 0.8115942 Fold05.Rep3
+27 0.32285408 0.7172775 0.9133333 0.8035191 Fold01.Rep3
+28 0.07833352 0.7272727 0.9422222 0.8209100 Fold10.Rep3
+29 0.83408874 0.8159509 0.8866667 0.8498403 Fold06.Rep3
+30 0.78193666 0.7157712 0.9177778 0.8042843 Fold02.Rep3
+
+
+[1] "+++++++++++++"
+[1] "nnet"
+[1] "+++++++++++++"
+[1] "**** finalModel ****"
+a 13-5-1 network with 76 weights
+inputs: FOLLOWERS_COUNT FRIENDS_COUNT FF_RATIO LISTED_COUNT USERNAME_LENGTH GEO_ENABLED PROFILE_HAS_URL ACCOUNT_AGE_IN_MONTHS HAS_NAME HAS_IMAGE DUP_PROFILE HAS_PROFILE STATUS_COUNT 
+output(s): .outcome 
+options were - entropy fitting  decay=0.1
+
+[1] "**** results ****"
+  size decay       AUC Precision    Recall         F      AUCSD PrecisionSD
+1    1 0e+00 0.4173915 0.7873625 0.8402222 0.8124947 0.08515797  0.02061182
+2    1 1e-04 0.4283257 0.7878800 0.8372593 0.8116475 0.05554262  0.01862063
+3    1 1e-01 0.6578245 0.7880951 0.8366667 0.8115464 0.02370594  0.01574959
+4    3 0e+00 0.8348780 0.8155937 0.8298519 0.8223608 0.14749066  0.01977175
+5    3 1e-04 0.8358868 0.8217525 0.8316296 0.8261355 0.14493512  0.02669937
+6    3 1e-01 0.9160059 0.8163819 0.8394074 0.8274233 0.01493869  0.02026522
+7    5 0e+00 0.9175022 0.8377995 0.8368148 0.8369877 0.03428510  0.01931140
+8    5 1e-04 0.9217451 0.8448865 0.8413333 0.8427835 0.02987546  0.01796336
+9    5 1e-01 0.9325435 0.8420061 0.8373333 0.8393636 0.00784634  0.01653996
+    RecallSD        FSD
+1 0.02772086 0.01458401
+2 0.01786076 0.01385035
+3 0.01907838 0.01452134
+4 0.03045663 0.01982942
+5 0.02851024 0.01770767
+6 0.02384806 0.01476638
+7 0.02724584 0.01685859
+8 0.02420010 0.01314542
+9 0.02370817 0.01259475
+
+[1] "**** resampledCM ****"
+    cell1 cell2 cell3 cell4 size decay    Resample
+1     384    66    95   355    1 0e+00 Fold01.Rep1
+2     366    84    68   382    3 0e+00 Fold01.Rep1
+3     375    75    51   399    5 0e+00 Fold01.Rep1
+4     382    68    94   356    1 1e-01 Fold01.Rep1
+5     373    77    77   373    3 1e-01 Fold01.Rep1
+6     371    79    66   384    5 1e-01 Fold01.Rep1
+7     374    76    91   359    1 1e-04 Fold01.Rep1
+8     392    58    80   370    3 1e-04 Fold01.Rep1
+9     367    83    48   402    5 1e-04 Fold01.Rep1
+10    385    65   110   340    1 0e+00 Fold02.Rep1
+11    385    65    94   356    3 0e+00 Fold02.Rep1
+12    379    71   106   344    5 0e+00 Fold02.Rep1
+13    383    67   110   340    1 1e-01 Fold02.Rep1
+14    372    78    80   370    3 1e-01 Fold02.Rep1
+15    374    76    63   387    5 1e-01 Fold02.Rep1
+16    380    70   105   345    1 1e-04 Fold02.Rep1
+17    359    91    79   371    3 1e-04 Fold02.Rep1
+18    380    70    67   383    5 1e-04 Fold02.Rep1
+19    363    87   114   336    1 0e+00 Fold03.Rep1
+20    362    88    96   354    3 0e+00 Fold03.Rep1
+21    365    85    80   370    5 0e+00 Fold03.Rep1
+22    365    85   118   332    1 1e-01 Fold03.Rep1
+23    377    73    87   363    3 1e-01 Fold03.Rep1
+24    367    83    56   394    5 1e-01 Fold03.Rep1
+25    365    85   118   332    1 1e-04 Fold03.Rep1
+26    374    76    81   369    3 1e-04 Fold03.Rep1
+27    383    67    75   375    5 1e-04 Fold03.Rep1
+28    391    59   108   342    1 0e+00 Fold04.Rep1
+29    394    56   100   350    3 0e+00 Fold04.Rep1
+30    387    63    67   383    5 0e+00 Fold04.Rep1
+31    388    62   111   339    1 1e-01 Fold04.Rep1
+32    390    60    81   369    3 1e-01 Fold04.Rep1
+33    385    65    76   374    5 1e-01 Fold04.Rep1
+34    389    61   104   346    1 1e-04 Fold04.Rep1
+35    383    67    79   371    3 1e-04 Fold04.Rep1
+36    395    55    85   365    5 1e-04 Fold04.Rep1
+37    366    84    85   365    1 0e+00 Fold05.Rep1
+38    359    91    83   367    3 0e+00 Fold05.Rep1
+39    345   105    59   391    5 0e+00 Fold05.Rep1
+40    366    84    93   357    1 1e-01 Fold05.Rep1
+41    364    86    78   372    3 1e-01 Fold05.Rep1
+42    362    88    73   377    5 1e-01 Fold05.Rep1
+43    368    82    94   356    1 1e-04 Fold05.Rep1
+44    366    84    98   352    3 1e-04 Fold05.Rep1
+45    354    96    60   390    5 1e-04 Fold05.Rep1
+46    371    79    94   356    1 0e+00 Fold06.Rep1
+47    401    49    85   365    3 0e+00 Fold06.Rep1
+48    379    71    74   376    5 0e+00 Fold06.Rep1
+49    364    86    89   361    1 1e-01 Fold06.Rep1
+50    379    71    79   371    3 1e-01 Fold06.Rep1
+51    365    85    71   379    5 1e-01 Fold06.Rep1
+52    368    82    88   362    1 1e-04 Fold06.Rep1
+53    383    67    77   373    3 1e-04 Fold06.Rep1
+54    381    69    75   375    5 1e-04 Fold06.Rep1
+55    383    67    84   366    1 0e+00 Fold07.Rep1
+56    374    76    70   380    3 0e+00 Fold07.Rep1
+57    378    72    79   371    5 0e+00 Fold07.Rep1
+58    383    67    84   366    1 1e-01 Fold07.Rep1
+59    387    63    89   361    3 1e-01 Fold07.Rep1
+60    374    76    61   389    5 1e-01 Fold07.Rep1
+61    382    68    79   371    1 1e-04 Fold07.Rep1
+62    376    74    73   377    3 1e-04 Fold07.Rep1
+63    389    61    72   378    5 1e-04 Fold07.Rep1
+64    419    31   168   282    1 0e+00 Fold08.Rep1
+65    352    98    75   375    3 0e+00 Fold08.Rep1
+66    373    77    82   368    5 0e+00 Fold08.Rep1
+67    370    80   111   339    1 1e-01 Fold08.Rep1
+68    378    72   110   340    3 1e-01 Fold08.Rep1
+69    393    57    75   375    5 1e-01 Fold08.Rep1
+70    373    77   113   337    1 1e-04 Fold08.Rep1
+71    376    74    63   387    3 1e-04 Fold08.Rep1
+72    380    70    81   369    5 1e-04 Fold08.Rep1
+73    382    68   103   347    1 0e+00 Fold09.Rep1
+74    355    95    85   365    3 0e+00 Fold09.Rep1
+75    385    65    71   379    5 0e+00 Fold09.Rep1
+76    382    68   101   349    1 1e-01 Fold09.Rep1
+77    374    76    64   386    3 1e-01 Fold09.Rep1
+78    367    83    61   389    5 1e-01 Fold09.Rep1
+79    376    74   101   349    1 1e-04 Fold09.Rep1
+80    356    94    75   375    3 1e-04 Fold09.Rep1
+81    372    78    56   394    5 1e-04 Fold09.Rep1
+82    376    74   109   341    1 0e+00 Fold10.Rep1
+83    367    83    88   362    3 0e+00 Fold10.Rep1
+84    374    76    84   366    5 0e+00 Fold10.Rep1
+85    375    75   106   344    1 1e-01 Fold10.Rep1
+86    384    66    86   364    3 1e-01 Fold10.Rep1
+87    383    67    84   366    5 1e-01 Fold10.Rep1
+88    375    75   107   343    1 1e-04 Fold10.Rep1
+89    402    48   108   342    3 1e-04 Fold10.Rep1
+90    374    76    80   370    5 1e-04 Fold10.Rep1
+91    379    71   105   345    1 0e+00 Fold01.Rep2
+92    382    68    95   355    3 0e+00 Fold01.Rep2
+93    367    83    66   384    5 0e+00 Fold01.Rep2
+94    380    70   106   344    1 1e-01 Fold01.Rep2
+95    374    76    74   376    3 1e-01 Fold01.Rep2
+96    386    64    82   368    5 1e-01 Fold01.Rep2
+97    379    71   105   345    1 1e-04 Fold01.Rep2
+98    368    82    78   372    3 1e-04 Fold01.Rep2
+99    387    63    58   392    5 1e-04 Fold01.Rep2
+100   359    91   109   341    1 0e+00 Fold02.Rep2
+101   354    96    85   365    3 0e+00 Fold02.Rep2
+102   361    89    82   368    5 0e+00 Fold02.Rep2
+103   364    86   111   339    1 1e-01 Fold02.Rep2
+104   362    88    98   352    3 1e-01 Fold02.Rep2
+105   370    80    81   369    5 1e-01 Fold02.Rep2
+106   367    83   112   338    1 1e-04 Fold02.Rep2
+107   365    85   115   335    3 1e-04 Fold02.Rep2
+108   363    87    82   368    5 1e-04 Fold02.Rep2
+109   369    81    92   358    1 0e+00 Fold03.Rep2
+110   356    94    90   360    3 0e+00 Fold03.Rep2
+111   368    82    75   375    5 0e+00 Fold03.Rep2
+112   367    83    92   358    1 1e-01 Fold03.Rep2
+113   374    76    93   357    3 1e-01 Fold03.Rep2
+114   352    98    60   390    5 1e-01 Fold03.Rep2
+115   369    81    91   359    1 1e-04 Fold03.Rep2
+116   350   100    62   388    3 1e-04 Fold03.Rep2
+117   373    77    75   375    5 1e-04 Fold03.Rep2
+118   378    72   115   335    1 0e+00 Fold04.Rep2
+119   371    79    93   357    3 0e+00 Fold04.Rep2
+120   363    87    63   387    5 0e+00 Fold04.Rep2
+121   378    72   115   335    1 1e-01 Fold04.Rep2
+122   383    67    99   351    3 1e-01 Fold04.Rep2
+123   377    73    93   357    5 1e-01 Fold04.Rep2
+124   388    62   139   311    1 1e-04 Fold04.Rep2
+125   371    79    68   382    3 1e-04 Fold04.Rep2
+126   368    82    66   384    5 1e-04 Fold04.Rep2
+127   373    77    87   363    1 0e+00 Fold05.Rep2
+128   388    62    81   369    3 0e+00 Fold05.Rep2
+129   370    80    59   391    5 0e+00 Fold05.Rep2
+130   374    76    89   361    1 1e-01 Fold05.Rep2
+131   381    69    60   390    3 1e-01 Fold05.Rep2
+132   380    70    60   390    5 1e-01 Fold05.Rep2
+133   373    77    88   362    1 1e-04 Fold05.Rep2
+134   365    85    64   386    3 1e-04 Fold05.Rep2
+135   391    59    71   379    5 1e-04 Fold05.Rep2
+136   365    85    97   353    1 0e+00 Fold06.Rep2
+137   360    90    78   372    3 0e+00 Fold06.Rep2
+138   370    80    60   390    5 0e+00 Fold06.Rep2
+139   371    79   102   348    1 1e-01 Fold06.Rep2
+140   372    78    83   367    3 1e-01 Fold06.Rep2
+141   377    73    74   376    5 1e-01 Fold06.Rep2
+142   371    79   102   348    1 1e-04 Fold06.Rep2
+143   378    72    81   369    3 1e-04 Fold06.Rep2
+144   369    81    56   394    5 1e-04 Fold06.Rep2
+145   390    60    97   353    1 0e+00 Fold07.Rep2
+146   386    64    65   385    3 0e+00 Fold07.Rep2
+147   405    45    76   374    5 0e+00 Fold07.Rep2
+148   388    62    97   353    1 1e-01 Fold07.Rep2
+149   378    72    89   361    3 1e-01 Fold07.Rep2
+150   384    66    73   377    5 1e-01 Fold07.Rep2
+151   390    60    98   352    1 1e-04 Fold07.Rep2
+152   391    59    91   359    3 1e-04 Fold07.Rep2
+153   381    69    86   364    5 1e-04 Fold07.Rep2
+154   384    66    99   351    1 0e+00 Fold08.Rep2
+155   392    58    86   364    3 0e+00 Fold08.Rep2
+156   402    48    69   381    5 0e+00 Fold08.Rep2
+157   384    66    99   351    1 1e-01 Fold08.Rep2
+158   393    57    82   368    3 1e-01 Fold08.Rep2
+159   402    48    71   379    5 1e-01 Fold08.Rep2
+160   387    63   102   348    1 1e-04 Fold08.Rep2
+161   382    68    66   384    3 1e-04 Fold08.Rep2
+162   392    58    66   384    5 1e-04 Fold08.Rep2
+163   390    60    94   356    1 0e+00 Fold09.Rep2
+164   384    66    82   368    3 0e+00 Fold09.Rep2
+165   383    67    74   376    5 0e+00 Fold09.Rep2
+166   389    61    93   357    1 1e-01 Fold09.Rep2
+167   401    49   112   338    3 1e-01 Fold09.Rep2
+168   394    56    80   370    5 1e-01 Fold09.Rep2
+169   389    61   106   344    1 1e-04 Fold09.Rep2
+170   382    68    95   355    3 1e-04 Fold09.Rep2
+171   380    70    82   368    5 1e-04 Fold09.Rep2
+172   377    73   112   338    1 0e+00 Fold10.Rep2
+173   371    79    91   359    3 0e+00 Fold10.Rep2
+174   365    85    77   373    5 0e+00 Fold10.Rep2
+175   375    75   110   340    1 1e-01 Fold10.Rep2
+176   375    75    82   368    3 1e-01 Fold10.Rep2
+177   381    69    80   370    5 1e-01 Fold10.Rep2
+178   371    79   105   345    1 1e-04 Fold10.Rep2
+179   376    74    93   357    3 1e-04 Fold10.Rep2
+180   366    84    53   397    5 1e-04 Fold10.Rep2
+181   377    73   107   343    1 0e+00 Fold01.Rep3
+182   356    94   110   340    3 0e+00 Fold01.Rep3
+183   371    79    72   378    5 0e+00 Fold01.Rep3
+184   375    75   107   343    1 1e-01 Fold01.Rep3
+185   360    90    75   375    3 1e-01 Fold01.Rep3
+186   382    68    75   375    5 1e-01 Fold01.Rep3
+187   377    73   107   343    1 1e-04 Fold01.Rep3
+188   376    74   105   345    3 1e-04 Fold01.Rep3
+189   376    74    75   375    5 1e-04 Fold01.Rep3
+190   373    77   104   346    1 0e+00 Fold02.Rep3
+191   368    82    80   370    3 0e+00 Fold02.Rep3
+192   387    63    78   372    5 0e+00 Fold02.Rep3
+193   375    75   106   344    1 1e-01 Fold02.Rep3
+194   358    92    81   369    3 1e-01 Fold02.Rep3
+195   365    85    65   385    5 1e-01 Fold02.Rep3
+196   376    74   105   345    1 1e-04 Fold02.Rep3
+197   361    89    80   370    3 1e-04 Fold02.Rep3
+198   371    79    65   385    5 1e-04 Fold02.Rep3
+199   365    85    85   365    1 0e+00 Fold03.Rep3
+200   366    84    81   369    3 0e+00 Fold03.Rep3
+201   385    65    73   377    5 0e+00 Fold03.Rep3
+202   371    79    92   358    1 1e-01 Fold03.Rep3
+203   370    80    72   378    3 1e-01 Fold03.Rep3
+204   382    68    58   392    5 1e-01 Fold03.Rep3
+205   370    80    90   360    1 1e-04 Fold03.Rep3
+206   370    80    50   400    3 1e-04 Fold03.Rep3
+207   364    86    71   379    5 1e-04 Fold03.Rep3
+208   351    99   102   348    1 0e+00 Fold04.Rep3
+209   390    60    92   358    3 0e+00 Fold04.Rep3
+210   374    76    69   381    5 0e+00 Fold04.Rep3
+211   356    94   110   340    1 1e-01 Fold04.Rep3
+212   364    86    94   356    3 1e-01 Fold04.Rep3
+213   369    81    72   378    5 1e-01 Fold04.Rep3
+214   359    91   111   339    1 1e-04 Fold04.Rep3
+215   346   104    84   366    3 1e-04 Fold04.Rep3
+216   380    70    66   384    5 1e-04 Fold04.Rep3
+217   385    65   111   339    1 0e+00 Fold05.Rep3
+218   383    67    76   374    3 0e+00 Fold05.Rep3
+219   382    68    89   361    5 0e+00 Fold05.Rep3
+220   384    66   107   343    1 1e-01 Fold05.Rep3
+221   400    50    97   353    3 1e-01 Fold05.Rep3
+222   393    57    87   363    5 1e-01 Fold05.Rep3
+223   385    65   108   342    1 1e-04 Fold05.Rep3
+224   392    58   115   335    3 1e-04 Fold05.Rep3
+225   393    57    74   376    5 1e-04 Fold05.Rep3
+226   390    60    94   356    1 0e+00 Fold06.Rep3
+227   378    72    65   385    3 0e+00 Fold06.Rep3
+228   379    71    59   391    5 0e+00 Fold06.Rep3
+229   390    60    93   357    1 1e-01 Fold06.Rep3
+230   374    76    78   372    3 1e-01 Fold06.Rep3
+231   373    77    57   393    5 1e-01 Fold06.Rep3
+232   386    64    87   363    1 1e-04 Fold06.Rep3
+233   381    69    88   362    3 1e-04 Fold06.Rep3
+234   372    78    57   393    5 1e-04 Fold06.Rep3
+235   378    72    97   353    1 0e+00 Fold07.Rep3
+236   374    76    95   355    3 0e+00 Fold07.Rep3
+237   387    63    74   376    5 0e+00 Fold07.Rep3
+238   375    75    97   353    1 1e-01 Fold07.Rep3
+239   386    64    92   358    3 1e-01 Fold07.Rep3
+240   371    79    64   386    5 1e-01 Fold07.Rep3
+241   378    72    97   353    1 1e-04 Fold07.Rep3
+242   377    73    75   375    3 1e-04 Fold07.Rep3
+243   384    66    65   385    5 1e-04 Fold07.Rep3
+244   378    72   104   346    1 0e+00 Fold08.Rep3
+245   374    76    85   365    3 0e+00 Fold08.Rep3
+246   377    73    70   380    5 0e+00 Fold08.Rep3
+247   378    72   104   346    1 1e-01 Fold08.Rep3
+248   377    73   104   346    3 1e-01 Fold08.Rep3
+249   375    75    68   382    5 1e-01 Fold08.Rep3
+250   378    72   102   348    1 1e-04 Fold08.Rep3
+251   367    83    64   386    3 1e-04 Fold08.Rep3
+252   381    69    70   380    5 1e-04 Fold08.Rep3
+253   384    66   102   348    1 0e+00 Fold09.Rep3
+254   390    60    94   356    3 0e+00 Fold09.Rep3
+255   393    57    81   369    5 0e+00 Fold09.Rep3
+256   385    65   100   350    1 1e-01 Fold09.Rep3
+257   388    62    83   367    3 1e-01 Fold09.Rep3
+258   374    76    77   373    5 1e-01 Fold09.Rep3
+259   384    66   102   348    1 1e-04 Fold09.Rep3
+260   390    60    84   366    3 1e-04 Fold09.Rep3
+261   398    52    81   369    5 1e-04 Fold09.Rep3
+262   378    72    94   356    1 0e+00 Fold10.Rep3
+263   365    85    70   380    3 0e+00 Fold10.Rep3
+264   368    82    75   375    5 0e+00 Fold10.Rep3
+265   378    72    93   357    1 1e-01 Fold10.Rep3
+266   384    66    79   371    3 1e-01 Fold10.Rep3
+267   376    74    65   385    5 1e-01 Fold10.Rep3
+268   376    74    93   357    1 1e-04 Fold10.Rep3
+269   372    78    81   369    3 1e-04 Fold10.Rep3
+270   394    56    75   375    5 1e-04 Fold10.Rep3
+
+[1] "**** resample ****"
+         AUC Precision    Recall         F    Resample
+1  0.9367126 0.8674419 0.8288889 0.8477273 Fold06.Rep3
+2  0.9281360 0.8488372 0.8111111 0.8295455 Fold02.Rep3
+3  0.9373686 0.8528736 0.8244444 0.8384181 Fold07.Rep3
+4  0.9414496 0.8498943 0.8933333 0.8710726 Fold08.Rep2
+5  0.9436542 0.8681818 0.8488889 0.8584270 Fold03.Rep3
+6  0.9159728 0.8543689 0.7822222 0.8167053 Fold03.Rep2
+7  0.9259989 0.8021277 0.8377778 0.8195652 Fold04.Rep2
+8  0.9447144 0.8312236 0.8755556 0.8528139 Fold09.Rep2
+9  0.9330899 0.8465011 0.8333333 0.8398656 Fold08.Rep3
+10 0.9378328 0.8574766 0.8155556 0.8359909 Fold09.Rep1
+11 0.9282049 0.8201285 0.8511111 0.8353326 Fold10.Rep1
+12 0.9419755 0.8636364 0.8444444 0.8539326 Fold05.Rep2
+13 0.9202967 0.8367347 0.8200000 0.8282828 Fold04.Rep3
+14 0.9292691 0.8351410 0.8555556 0.8452250 Fold04.Rep1
+15 0.9267991 0.8371560 0.8111111 0.8239278 Fold06.Rep1
+16 0.9307160 0.8247863 0.8577778 0.8409586 Fold01.Rep2
+17 0.9245847 0.8264642 0.8466667 0.8364435 Fold10.Rep2
+18 0.9365372 0.8292683 0.8311111 0.8301887 Fold09.Rep3
+19 0.9275160 0.8321839 0.8044444 0.8180791 Fold05.Rep1
+20 0.9362666 0.8597701 0.8311111 0.8451977 Fold07.Rep1
+21 0.9287043 0.8359202 0.8377778 0.8368479 Fold06.Rep2
+22 0.9330421 0.8187500 0.8733333 0.8451613 Fold05.Rep3
+23 0.9313718 0.8489703 0.8244444 0.8365276 Fold01.Rep1
+24 0.9402290 0.8676123 0.8155556 0.8407789 Fold03.Rep1
+25 0.9188474 0.8203991 0.8222222 0.8213097 Fold02.Rep2
+26 0.9312213 0.8358862 0.8488889 0.8423374 Fold01.Rep3
+27 0.9412137 0.8526077 0.8355556 0.8439955 Fold10.Rep3
+28 0.9223181 0.8558352 0.8311111 0.8432920 Fold02.Rep1
+29 0.9385345 0.8397436 0.8733333 0.8562092 Fold08.Rep1
+30 0.9437265 0.8402626 0.8533333 0.8467475 Fold07.Rep2
+
+
+[1] "Query loading run time"
+[1] "=============="
+   user  system elapsed 
+  3.572   0.264   4.826 
+
+[1] "Models run time"
+[1] "=============="
+     user    system   elapsed 
+11725.932    96.884  2246.483 

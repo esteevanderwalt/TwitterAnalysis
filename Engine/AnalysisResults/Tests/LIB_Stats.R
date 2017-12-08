@@ -10,8 +10,24 @@ chi <- function(data) {
   for (i in colnames(d)) {
     print(i)
     if(i != "CLASS"){
-      mytable <- table(d[,i],CLASS)
-      x <- chisq.test(mytable)  
+      mytable <- table(d[,i],d$CLASS)
+      mytable1 <- as.data.frame(mytable)
+      #print(mytable1)
+      
+      exp <- mytable1[mytable1$Var2=='trustworthy',]$Freq
+      x <- if(length(exp)<50){length(exp)}else{50}
+      exp <- exp[1:x]
+      exp[is.na(exp)] <- 0  #replace NA with 0
+      total <- sum(exp)
+      exp.prop = exp / total
+      
+      obs <- mytable1[mytable1$Var2=='deceptive',]$Freq
+      obs <- obs[1:x]
+      obs[is.na(obs)] <- 0  #replace NA with 0
+      total <- sum(obs)
+      obs.prop = obs / total
+      
+      x <- chisq.test(obs.prop, p=exp.prop) 
       #save results
       a <- c(i, x$p.value, x$statistic["X-squared"])
       print(x)

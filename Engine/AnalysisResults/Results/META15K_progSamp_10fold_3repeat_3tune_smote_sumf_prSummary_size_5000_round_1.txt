@@ -1,0 +1,43 @@
+
+[1] "START INTRAIN"
+[1] "=============="
+     Resample1
+[1,]         1
+[2,]         2
+[3,]         3
+[4,]         4
+[5,]         5
+[6,]         6
+[1] "M2 started"
+[1] "M2 complete"
+    user   system  elapsed 
+1648.504   49.864  303.945 
+
+[1] "Model engine summary"
+[1] "===================="
+  Model Type Model Name  Accuracy     Kappa Sensitivity Specificity Precision
+1       type      model 0.8750219 0.2964248       0.996   0.8711072 0.2000321
+  Recall        F1 Prevalence       AUC    Cost
+1  0.996 0.3331549 0.03134482 0.9666712 303.945
+
+[1] "Model attribute importance"
+[1] "=========================="
+                    model
+FRIENDS_COUNT    75.20723
+FOLLOWERS_COUNT  65.89664
+STATUS_COUNT    100.00000
+LISTED_COUNT      0.00000
+TIMEZONE         49.53114
+
+[1] "Model engine results"
+[1] "===================="
+
+[1] "Query loading run time"
+[1] "=============="
+   user  system elapsed 
+ 20.552   0.140  22.458 
+
+[1] "Models run time"
+[1] "=============="
+    user   system  elapsed 
+1651.924   49.868  307.383 

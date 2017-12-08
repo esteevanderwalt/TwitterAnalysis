@@ -42,8 +42,8 @@ getl <- function(myconn, t1, t2) {
   table2 <- t2
   
   #run first sql one then the other
-  #sql1 <- paste("SELECT U.ID, U.SCREENNAME, U.LONGITUDE AS LONG1, U.LATITUDE AS LAT1, L.LONGITUDE AS LONG2, L.LATITUDE AS LAT2, LOWER(TRIM(U.LOCATION)) LOCATION FROM ",table1," U JOIN TWITTER.SMP_LOCATION L ON LOWER(TRIM(L.LOCATION)) = LOWER(TRIM(U.LOCATION)) WHERE U.LATITUDE IS NOT NULL AND L.LATITUDE IS NOT NULL",sep="")
-  sql1 <- paste("SELECT U.ID, U.SCREENNAME, U.LONGITUDE AS LONG1, U.LATITUDE AS LAT1, L.\"lon\" AS LONG2, L.\"lat\" AS LAT2, UPPER(TRIM(U.LOCATION)) LOCATION FROM ",table1," U JOIN TWITTER.SMP_LOCATION_C L ON UPPER(TRIM(L.\"location\")) = UPPER(TRIM(U.LOCATION)) WHERE U.LATITUDE IS NOT NULL AND L.\"lat\" IS NOT NULL  #",sep="")
+  sql1 <- paste("SELECT U.ID, U.SCREENNAME, U.LONGITUDE AS LONG1, U.LATITUDE AS LAT1, L.LONGITUDE AS LONG2, L.LATITUDE AS LAT2, LOWER(TRIM(U.LOCATION)) LOCATION FROM ",table1," U JOIN TWITTER.SMP_LOCATION L ON LOWER(TRIM(L.LOCATION)) = LOWER(TRIM(U.LOCATION)) WHERE U.LATITUDE IS NOT NULL AND L.LATITUDE IS NOT NULL",sep="")
+  #sql1 <- paste("SELECT U.ID, U.SCREENNAME, U.LONGITUDE AS LONG1, U.LATITUDE AS LAT1, L.\"lon\" AS LONG2, L.\"lat\" AS LAT2, UPPER(TRIM(U.LOCATION)) LOCATION FROM ",table1," U JOIN TWITTER.SMP_LOCATION_C L ON UPPER(TRIM(L.\"location\")) = UPPER(TRIM(U.LOCATION)) WHERE U.LATITUDE IS NOT NULL AND L.\"lat\" IS NOT NULL  #",sep="")
   
   #' ###Load data
   #+ get_data
@@ -55,7 +55,7 @@ getl <- function(myconn, t1, t2) {
   apply(data.latlon_clean, 1, hf_latlon, myconn, table2)
 }
 
-getl(myconn, "TWITTER.tweets2_users_20170106", "TWITTER.zz_users_enrich_20170106")
+getl(myconn, "TWITTER.zz_fake_users", "TWITTER.zz_fake_users_enrich")
 #getl(myconn, "TWITTER.tweets2_users_20170418", "TWITTER.zz_users_enrich_20170418")
 #getl(myconn, "TWITTER.tweets2_users_20170429", "TWITTER.zz_users_enrich_20170429")
 #getl(myconn, "TWITTER.tweets2_users_20170517", "TWITTER.zz_users_enrich_20170517")

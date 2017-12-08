@@ -115,7 +115,7 @@ rpart.plot(fit.m7$finalModel)
 
 rpart.plot(fit.m7$finalModel, # middle graph
            extra=104, box.palette="GnBu",
-           branch.lty=3, shadow.col="gray", nn=TRUE)
+           branch.lty=3, shadow.col="gray", nn=FALSE)
 
 
 library(rattle)

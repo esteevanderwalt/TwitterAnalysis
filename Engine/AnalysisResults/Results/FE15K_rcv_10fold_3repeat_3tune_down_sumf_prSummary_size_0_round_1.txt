@@ -1,0 +1,27 @@
+
+[1] "START INTRAIN"
+[1] "=============="
+     Resample1
+[1,]         1
+[2,]         4
+[3,]         5
+[4,]         6
+[5,]         7
+[6,]         8
+[1] "M1 started"
+[1] "M1 complete"
+    user   system  elapsed 
+2130.448   15.340  400.539 
+[1] "M2 started"
+[1] "M2 complete"
+   user  system elapsed 
+982.812  46.788 122.260 
+[1] "M3 started"
+[1] "M3 complete"
+   user  system elapsed 
+235.100   1.036 227.940 
+[1] "M4 started"
+[1] "M4 complete"
+   user  system elapsed 
+126.956  15.648  12.124 
+[1] "M5 started"

@@ -72,6 +72,9 @@ data.clean <- cleanup.Twitter(data.full)
 data.clean <- data.clean[ , -which(names(data.clean) %in% c("BACKGROUND_IMAGE", "IS_BACKGROUND_IMAGE_USED", "PROFILE_TEXT_COLOR", "PROFILE_BG_COLOR"))]
 data.clean <- data.clean[ , -which(names(data.clean) %in% c("CREATED", "ORIGINAL_PROFILE_IMAGE"))]
 data.clean <- data.clean[ , -which(names(data.clean) %in% c("GEO_ENABLED", "IS_DEFAULT_PROFILE", "IS_DEFAULT_PROFILE_IMAGE"))]
+data.clean <- data.clean[ , -which(names(data.clean) %in% c("LOCATION", "LONGITUDE", "LATITUDE"))]
+data.clean <- data.clean[ , -which(names(data.clean) %in% c("LANGUAGE", "UTC_OFFSET"))]
+data.clean <- data.clean[ , -which(names(data.clean) %in% c("PROFILE_IMAGE"))]
 
 rapply(data.clean,function(x)length(unique(x)))
 #all orig
@@ -80,7 +83,6 @@ rapply(i1,function(x)length(unique(x)))
 #all injected
 i2 <- data.clean[data.clean$CLASS=='trustworthy',]
 rapply(i2,function(x)length(unique(x)))
-
 
 #get bin plots
 
@@ -100,7 +102,7 @@ pdf("binning_followers.pdf", width = 7, height = 5)
 p
 dev.off()
 
-M <- cor(data.clean[,1:11])
+M <- cor(data.clean[,1:5])
 
 cor.mtest <- function(mat, ...) {
   mat <- as.matrix(mat)
@@ -117,7 +119,7 @@ cor.mtest <- function(mat, ...) {
   p.mat
 }
 # matrix of the p-value of the correlation
-p.mat <- cor.mtest(data.clean[,1:11])
+p.mat <- cor.mtest(data.clean[,1:5])
 
 library(scales)
 library(corrplot)
@@ -145,7 +147,7 @@ mosthighlycorrelated <- function(mydataframe,numtoreport)
   head(fm[order(abs(fm$Correlation),decreasing=T),],n=numtoreport)
 }
 
-mosthighlycorrelated(data.clean[,1:11], 10)
+mosthighlycorrelated(data.clean[,1:5], 10)
 
 nzv <- nearZeroVar(data.clean, saveMetrics= TRUE)
 nzv[nzv$nzv,]
@@ -153,15 +155,16 @@ nzv[nzv$nzv,]
 #remove unique values
 #data.clean <- data.clean[ , -which(names(data.clean) %in% c("LOCATION", "LONGITUDE", "LATITUDE"))]
 
-data.scaled <- as.data.frame(scale(data.clean[1:11], center = TRUE, scale = TRUE))
+data.scaled <- as.data.frame(scale(data.clean[1:5], center = TRUE, scale = TRUE))
+data.scaled <- as.data.frame(data.clean[1:5])
 #add class back
-data.scaled <- cbind(data.scaled,CLASS=data.clean[,12])
+data.scaled <- cbind(data.scaled,CLASS=data.clean[,6])
 
 #show mean per CLASS
 require(dplyr)
 data.scaled %>%
   group_by(CLASS) %>%
-  summarise_each(funs(max, min, mean, median, sd), FOLLOWERS_COUNT)
+  summarise_each(funs(max, min, mean, median, sd), PROFILE_IMAGE)
 
 filename <- "~/Projects/RStudio/TwitterAnalysis/Engine/AnalysisResults/Results/After_Chi.txt"
 sink(filename, append = TRUE)
@@ -217,7 +220,7 @@ science_themell = theme(panel.grid.major = element_line(size = 0.5, color = "gre
 library(ggplot2)
 library(reshape2)
 
-data.scaled <- data.scaled[ , -which(names(data.scaled) %in% c("LISTED_COUNT", "PROFILE_IMAGE","LATITUDE","LONGITUDE"))]
+#data.scaled <- data.scaled[ , -which(names(data.scaled) %in% c("LATITUDE","LONGITUDE"))]
 #box
 d <- melt(data.scaled)
 # Basic box plot
@@ -241,23 +244,28 @@ graph1 <- function(data, a) {
   p <- ggplot(data, aes(x=get(a), colour=CLASS, linetype=CLASS)) +
     theme_bw() +
     science_themel +
-    labs(y = "Scaled value", x = a) +
+    labs(y = "Data value", x = a) +
     geom_density(size=1.0) 
   #print(p)
   
-  pdf(paste("meta_",a,"_v2.png",sep=""), width = 6, height = 4)
+  #pdf(paste("meta_",a,"_v2.png",sep=""), width = 6, height = 4)
   print(p)
-  dev.off()
+  #dev.off()
 }
 
-graph1(data.scaled,"PROFILE_IMAGE")
-graph1(data.scaled,"STATUS_COUNT")
-graph1(data.scaled,"UTC_OFFSET")
-graph1(data.scaled,"TIMEZONE")
-graph1(data.scaled,"LISTED_COUNT")
-graph1(data.scaled,"LANGUAGE")
-graph1(data.scaled,"FRIENDS_COUNT")
-graph1(data.scaled,"FOLLOWERS_COUNT")
+data.clean[data.clean$FRIENDS_COUNT > 1000,]$FRIENDS_COUNT <- 1000
+data.clean[data.clean$FOLLOWERS_COUNT > 1000,]$FOLLOWERS_COUNT <- 1000
+data.clean[data.clean$STATUS_COUNT > 1000,]$STATUS_COUNT <- 1000
+data.clean[data.clean$LISTED_COUNT > 100,]$LISTED_COUNT <- 100
+
+graph1(data.clean,"PROFILE_IMAGE")
+graph1(data.clean,"STATUS_COUNT")
+graph1(data.clean,"UTC_OFFSET")
+graph1(data.clean,"TIMEZONE")
+graph1(data.clean,"LISTED_COUNT")
+graph1(data.clean,"LANGUAGE")
+graph1(data.clean,"FRIENDS_COUNT")
+graph1(data.clean,"FOLLOWERS_COUNT")
 
 #center / scale
 data.scaled <- as.data.frame(scale(data.clean[,1:11], center = TRUE, scale = TRUE))

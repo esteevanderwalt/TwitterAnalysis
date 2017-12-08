@@ -97,7 +97,13 @@ runDetails <- function(fit, f){
   assign(paste(f,".imp",sep=""), a, envir = .GlobalEnv)
   fit.mRoc <- roc(testing$CLASS,fit.trn.prob[,"deceptive"])
   assign(paste(f,".mRoc",sep=""), fit.mRoc, envir = .GlobalEnv)
-  fit.mPR <- pr.curve(fit.trn.prob$deceptive[index_class2], fit.trn.prob$deceptive[index_class1], curve = TRUE)
+  if(fit.trn.cm$overall[2]==0){  #cater for cases where there is no curve to draw
+    fit.mPR <- pr.curve(fit.trn.prob$deceptive[index_class2], fit.trn.prob$deceptive[index_class1], curve = FALSE)
+    fit.mPR$curve <- NULL
+  }else{
+    fit.mPR <- pr.curve(fit.trn.prob$deceptive[index_class2], fit.trn.prob$deceptive[index_class1], curve = TRUE)  
+  }
+  
   assign(paste(f,".mPR",sep=""), fit.mPR, envir = .GlobalEnv)
   
   #imagefile <- paste(imagefilename, "ROC_",f,".pdf", sep="")
@@ -120,12 +126,14 @@ ML_Models_ROC_P <- function(training, resamp, folds, tune, r, samp, filename, im
   }
   
   #--------------------------------------
-  # Model 1 - SVM Radial
+  # Model 1 - SVM Radial  -- changed to SVMLinear
   #--------------------------------------
   # Model notes:
   #   warnings() == F
   #   sigma == constant (0.547204984213807)
   #   C == varied, 3 times (0.25,0.5,1.0)
+  
+  #svmLinear -> C only as tuning
   
   fit.m1.seeds <- setSeeds(resamp, folds, r, tune)
   
@@ -146,7 +154,7 @@ ML_Models_ROC_P <- function(training, resamp, folds, tune, r, samp, filename, im
   # Build model
   set.seed(123)
   m1.t <- system.time(fit.m1 <- train(CLASS~., data=training,
-                                      method = "svmRadial",
+                                      method = "svmLinear",
                                       metric = "ROC",
                                       preProcess = c("center", "scale"),
                                       trControl = fit.m1.fc,
@@ -197,11 +205,13 @@ ML_Models_ROC_P <- function(training, resamp, folds, tune, r, samp, filename, im
   sink()
   
   #--------------------------------------
-  # Model 3 - Decision tree (J48)
+  # Model 3 - Decision tree (J48) --changed to C5.0 tree as J48 taking too long
   #--------------------------------------
   # Model notes:
   #   M == varied (1,2,3)
   #   C == varied (0.01, 0.255, 0.5), 3 times
+  
+  #C5.0 trials, model, winnow
   
   fit.m3.seeds <- setSeeds(resamp, folds, r, tune*tune)
   
@@ -222,7 +232,7 @@ ML_Models_ROC_P <- function(training, resamp, folds, tune, r, samp, filename, im
   # Build model
   set.seed(123)
   m3.t <- system.time(fit.m3 <- train(CLASS~., data=training,
-                                      method = "J48",
+                                      method = "J48", #C5.0
                                       metric = "ROC",
                                       preProcess = c("center", "scale"),
                                       trControl = fit.m3.fc,
@@ -298,7 +308,7 @@ ML_Models_ROC_P <- function(training, resamp, folds, tune, r, samp, filename, im
   # Build model
   set.seed(123)
   m5.t <- system.time(fit.m5 <- train(CLASS~., data=training,
-                                      method = "knn",
+                                      method = "kknn",
                                       metric = "ROC",
                                       preProcess = c("center", "scale"),
                                       trControl = fit.m5.fc,
@@ -311,7 +321,7 @@ ML_Models_ROC_P <- function(training, resamp, folds, tune, r, samp, filename, im
   sink()
   
   #--------------------------------------
-  # Model 6 - Adaboost
+  # Model 6 - Adaboost -changed to Adabag
   #--------------------------------------
   # Model notes:
   #   warnings() == F
@@ -337,7 +347,7 @@ ML_Models_ROC_P <- function(training, resamp, folds, tune, r, samp, filename, im
   # Build model
   set.seed(123)
   m6.t <- system.time(fit.m6 <- train(CLASS~., data=training,
-                                      method = "adaboost",
+                                      method = "adaboost", #adaboost
                                       metric = "ROC",
                                       preProcess = c("center", "scale"),
                                       trControl = fit.m6.fc,
@@ -450,7 +460,7 @@ ML_Models_ROC_P <- function(training, resamp, folds, tune, r, samp, filename, im
   model.types = c("SVM", "tree", "tree", "bayesian", "cluster", "tree", "tree","neuralnet")
   
   # Model Names
-  model.names = c("svmRadial", "rf", "J48", "bayesglm", "knn", "Adaboost", "rpart", "nnet")
+  model.names = c("svmLinear", "rf", "J48", "bayesglm", "kknn", "Adaboost", "rpart", "nnet")
   
   model_list <- list(svmRadial = fit.m1,
                      rf = fit.m2,
@@ -640,8 +650,10 @@ ML_Models_ROC_P <- function(training, resamp, folds, tune, r, samp, filename, im
   results_list_pr <- list(NA)
   num_mod <- 1
   for(the_pr in model_list_pr){
-    results_list_pr[[num_mod]] <- data.frame(the_pr$curve, model = names(model_list)[num_mod])  
-    num_mod <- num_mod + 1
+    if(!is.null(the_pr$curve)){
+      results_list_pr[[num_mod]] <- data.frame(the_pr$curve, model = names(model_list)[num_mod])  
+      num_mod <- num_mod + 1
+    }
   }
   results_df_pr <- bind_rows(results_list_pr)
   imagefile <- paste(imagefilename, "fullPR.pdf", sep="")
@@ -724,7 +736,7 @@ ML_Models_ROC_P <- function(training, resamp, folds, tune, r, samp, filename, im
   
 }
 
-ML_Models_ROC_P_knn <- function(training, resamp, folds, tune, r, samp, filename, ss = 0){
+ML_Models_ROC_P_speed <- function(training, resamp, folds, tune, r, samp, filename, imagefilename, ss = 0, summF){
   
   if(samp=="none"){
     samp <- NULL
@@ -744,7 +756,8 @@ ML_Models_ROC_P_knn <- function(training, resamp, folds, tune, r, samp, filename
                             repeats = r,
                             seeds = fit.m2.seeds,
                             classProbs = TRUE,
-                            summaryFunction = twoClassSummary,
+                            savePredictions = TRUE,
+                            summaryFunction = get(summF), #twoClassSummary,
                             sampling = samp)
   
   sink(filename, append = TRUE)
@@ -759,24 +772,7 @@ ML_Models_ROC_P_knn <- function(training, resamp, folds, tune, r, samp, filename
                                       preProcess = c("center", "scale"),
                                       trControl = fit.m2.fc,
                                       tuneLength = tune))
-  
-  # In-sample summary
-  fit.m2$finalModel
-  fit.m2$results
-  
-  # Plots
-  #plot(fit.m2, main = "Accuracy: fit.m2")
-  #plot(varImp(fit.m2), main = "Var Imp: fit.m2")
-  
-  # In-sample fit
-  fit.m2.trn.pred = predict(fit.m2, newdata = testing)
-  fit.m2.trn.prob = predict(fit.m2, newdata = testing, type = "prob")
-  fit.m2.trn.cm = confusionMatrix(fit.m2.trn.pred, testing$CLASS)
-  fit.m2.trn.cm$table
-  fit.m2.trn.cm$overall[1:2]
-  a <- varImp(fit.m2)$importance
-  fit.m2.imp <- a
-  fit.m2.mRoc <- roc(testing$CLASS,fit.m2.trn.prob[,"deceptive"], levels = c("trustworthy","deceptive"))
+  runDetails(fit.m2, "fit.m2")
   
   sink(filename, append = TRUE)
   print("M2 complete")
@@ -784,171 +780,198 @@ ML_Models_ROC_P_knn <- function(training, resamp, folds, tune, r, samp, filename
   sink()
   
   #--------------------------------------
-  # Model 5 - knn
+  # Model 4 - Bayesian Network
   #--------------------------------------
   # Model notes:
-  #   warnings() == F
-  #   kmax (5,7,9)
-  #   distance (fixed = 2)
-  #   kernel (fixed = optimal)
+  #   no tuning
   
-  #   k == varied, 30 times, each = 1 (knn)
-  fit.m5.seeds <- setSeeds(resamp, folds, r, tune)
+  fit.m4.seeds <- setSeeds(resamp, folds, r, 1)
   
-  # Specify fit parameters
-  fit.m5.fc <- trainControl(method = resamp, 
+  fit.m4.fc <- trainControl(method = resamp, 
                             number = folds,
                             repeats = r,
-                            seeds = fit.m5.seeds,
+                            seeds = fit.m4.seeds,
                             classProbs = TRUE,
-                            summaryFunction = twoClassSummary,
+                            savePredictions = TRUE,
+                            summaryFunction = get(summF), #twoClassSummary,
                             sampling = samp)
   
   sink(filename, append = TRUE)
-  print("M5 started")
+  print("M4 started")
   sink()
   
   # Build model
   set.seed(123)
-  m5.t <- system.time(fit.m5 <- train(CLASS~., data=training,
-                                      method = "kknn",
+  m4.t <- system.time(fit.m4 <- train(CLASS~., data=training,
+                                      method = "bayesglm",
                                       metric = "ROC",
                                       preProcess = c("center", "scale"),
-                                      trControl = fit.m5.fc,
-                                      tuneLength = tune))
-  
-  # In-sample summary
-  fit.m5$finalModel
-  fit.m5$results
-  
-  # In-sample fit
-  fit.m5.trn.pred = predict(fit.m5, newdata = testing)
-  fit.m5.trn.prob = predict(fit.m5, newdata = testing, type = "prob")
-  fit.m5.trn.cm = confusionMatrix(fit.m5.trn.pred, testing$CLASS)
-  fit.m5.trn.cm$table
-  fit.m5.trn.cm$overall[1:2]
-  a <- varImp(fit.m5)$importance
-  a[,2] <- NULL
-  fit.m5.imp <- a
-  fit.m5.mRoc <- roc(testing$CLASS,fit.m5.trn.prob[,"deceptive"], levels = c("trustworthy","deceptive"))
+                                      trControl = fit.m4.fc))
+  runDetails(fit.m4, "fit.m4")
   
   sink(filename, append = TRUE)
-  print("M5 complete")
-  print(m5.t)
+  print("M4 complete")
+  print(m4.t)
   sink()
   
   #--------------------------------------
-  # Model 6 - Adaboost
+  # Model 7 - CART
   #--------------------------------------
   # Model notes:
   #   warnings() == F
-  #   nlter == varied, 3 times (50, 100, 150)
-  #   method == varied, 2 times (Adaboost.M1, Real adaboost)
+  #   cp == varied, 3 times (0.05, 0.13, 0.31)
   
-  fit.m6.seeds <- setSeeds(resamp, folds, r, tune*2)
+  fit.m7.seeds <- setSeeds(resamp, folds, r, tune)
   
   # Specify fit parameters
-  fit.m6.fc <- trainControl(method = resamp, 
+  fit.m7.fc <- trainControl(method = resamp, 
                             number = folds,
                             repeats = r,
-                            seeds = fit.m6.seeds,
+                            seeds = fit.m7.seeds,
                             classProbs = TRUE,
-                            summaryFunction = twoClassSummary,
+                            savePredictions = TRUE,
+                            summaryFunction = get(summF), #twoClassSummary,
                             sampling = samp)
   
   sink(filename, append = TRUE)
-  print("M6 started")
+  print("M7 started")
   sink()
   
   # Build model
   set.seed(123)
-  m6.t <- system.time(fit.m6 <- train(CLASS~., data=training,
-                                      method = "adaboost",
+  m7.t <- system.time(fit.m7 <- train(CLASS~., data=training,
+                                      method = "rpart",
                                       metric = "ROC",
                                       preProcess = c("center", "scale"),
-                                      trControl = fit.m6.fc,
+                                      trControl = fit.m7.fc,
                                       tuneLength = tune))
-  
-  # In-sample summary
-  fit.m6$finalModel
-  fit.m6$results
-  
-  # In-sample fit
-  fit.m6.trn.pred = predict(fit.m6, newdata = testing)
-  fit.m6.trn.prob = predict(fit.m6, newdata = testing, type = "prob")
-  fit.m6.trn.cm = confusionMatrix(fit.m6.trn.pred, testing$CLASS)
-  fit.m6.trn.cm$table
-  fit.m6.trn.cm$overall[1:2]
-  a <- varImp(fit.m6)$importance
-  a[,2] <- NULL
-  fit.m6.imp <- a
-  fit.m6.mRoc <- roc(testing$CLASS,fit.m6.trn.prob[,"deceptive"], levels = c("trustworthy","deceptive"))
+  runDetails(fit.m7, "fit.m7")
   
   sink(filename, append = TRUE)
-  print("M6 complete")
-  print(m6.t)
+  print("M7 complete")
+  print(m7.t)
+  sink()
+
+  #--------------------------------------
+  # Model 8 - Neural network
+  #--------------------------------------
+  # Model notes:
+  #   warnings() == F
+  #   size 3
+  #   decay 3
+  
+  fit.m8.seeds <- setSeeds(resamp, folds, r, tune*tune)
+  
+  # Specify fit parameters
+  fit.m8.fc <- trainControl(method = resamp, 
+                            number = folds,
+                            repeats = r,
+                            seeds = fit.m8.seeds,
+                            classProbs = TRUE,
+                            savePredictions = TRUE,
+                            summaryFunction = get(summF), #twoClassSummary,
+                            sampling = samp)
+  
+  sink(filename, append = TRUE)
+  print("M8 started")
   sink()
   
+  # Build model
+  set.seed(123)
+  m8.t <- system.time(fit.m8 <- train(CLASS~., data=training,
+                                      method = "nnet",
+                                      metric = "ROC",
+                                      preProcess = c("center", "scale"),
+                                      trControl = fit.m8.fc,
+                                      tuneLength = tune))
+  runDetails(fit.m8, "fit.m8")
+  
+  sink(filename, append = TRUE)
+  print("M8 complete")
+  print(m8.t)
+  sink()
   
   #--------------------------------------
   # Model Comparison
   #--------------------------------------
   
   # Model Types
-  model.types = c("tree", "cluster", "ensamble")
+  model.types = c("tree", "bayesian", "tree", "neuralnet")
   
   # Model Names
-  model.names = c("rf", "knn", "Adaboost")
+  model.names = c("rf", "bayesglm", "rpart", "nnet")
+  
+  model_list <- list(rf = fit.m2,
+                     bayesglm = fit.m4,
+                     rpart = fit.m7,
+                     nnet = fit.m8
+  )
   
   # Accuracy, Train
   model.trn.acc = rbind(fit.m2.trn.cm$overall[1],
-                        fit.m5.trn.cm$overall[1],
-                        fit.m6.trn.cm$overall[1])
+                        fit.m4.trn.cm$overall[1],
+                        fit.m7.trn.cm$overall[1],
+                        fit.m8.trn.cm$overall[1])
   
   # Kappa, Train
   model.trn.kpp = rbind(fit.m2.trn.cm$overall[2],
-                        fit.m5.trn.cm$overall[2],
-                        fit.m6.trn.cm$overall[2])
+                        fit.m4.trn.cm$overall[2],
+                        fit.m7.trn.cm$overall[2],
+                        fit.m8.trn.cm$overall[2])
   
   # Sensitivity, Train
   model.trn.sens = rbind(fit.m2.trn.cm$byClass[1],
-                         fit.m5.trn.cm$byClass[1],
-                         fit.m6.trn.cm$byClass[1])
+                         fit.m4.trn.cm$byClass[1],
+                         fit.m7.trn.cm$byClass[1],
+                         fit.m8.trn.cm$byClass[1])
   
   # Specificity, Train
   model.trn.spec = rbind(fit.m2.trn.cm$byClass[2],
-                         fit.m5.trn.cm$byClass[2],
-                         fit.m6.trn.cm$byClass[2])
+                         fit.m4.trn.cm$byClass[2],
+                         fit.m7.trn.cm$byClass[2],
+                         fit.m8.trn.cm$byClass[2])
   
   # Precision, Train
   model.trn.prec = rbind(fit.m2.trn.cm$byClass[5],
-                         fit.m5.trn.cm$byClass[5],
-                         fit.m6.trn.cm$byClass[5])
+                         fit.m4.trn.cm$byClass[5],
+                         fit.m7.trn.cm$byClass[5],
+                         fit.m8.trn.cm$byClass[5])
   
   # Recall, Train
   model.trn.rec = rbind(fit.m2.trn.cm$byClass[6],
-                        fit.m5.trn.cm$byClass[6],
-                        fit.m6.trn.cm$byClass[6])
+                        fit.m4.trn.cm$byClass[6],
+                        fit.m7.trn.cm$byClass[6],
+                        fit.m8.trn.cm$byClass[6])
   
   # F1, Train
   model.trn.f1 = rbind(fit.m2.trn.cm$byClass[7],
-                       fit.m5.trn.cm$byClass[7],
-                       fit.m6.trn.cm$byClass[7])
+                       fit.m4.trn.cm$byClass[7],
+                       fit.m7.trn.cm$byClass[7],
+                       fit.m8.trn.cm$byClass[7])
   
   # Prevalence, Train
   model.trn.prev = rbind(fit.m2.trn.cm$byClass[8],
-                         fit.m5.trn.cm$byClass[8],
-                         fit.m6.trn.cm$byClass[8])
+                         fit.m4.trn.cm$byClass[8],
+                         fit.m7.trn.cm$byClass[8],
+                         fit.m8.trn.cm$byClass[8])
   
   #AUC
   model.trn.auc = rbind(fit.m2.mRoc$auc,
-                        fit.m5.mRoc$auc,
-                        fit.m6.mRoc$auc)
+                        fit.m4.mRoc$auc,
+                        fit.m7.mRoc$auc,
+                        fit.m8.mRoc$auc)
+  
+  #PR-AUC
+  model.trn.prauc = rbind(fit.m2.mPR$auc.integral,
+                          fit.m4.mPR$auc.integral,
+                          fit.m7.mPR$auc.integral,
+                          fit.m8.mPR$auc.integral)
   
   #Cost
   model.trn.cost = rbind(m2.t[3],
-                         m5.t[3],
-                         m6.t[3])
+                         m4.t[3],
+                         m7.t[3],
+                         m8.t[3])
   
   # Data Frame
   model.comp = data.frame(model.types,
@@ -962,6 +985,7 @@ ML_Models_ROC_P_knn <- function(training, resamp, folds, tune, r, samp, filename
                           model.trn.f1,
                           model.trn.prev,
                           model.trn.auc,
+                          model.trn.prauc,
                           model.trn.cost)
   rownames(model.comp) = 1:nrow(model.comp)
   colnames(model.comp) = c("Model Type",
@@ -975,7 +999,13 @@ ML_Models_ROC_P_knn <- function(training, resamp, folds, tune, r, samp, filename
                            "F1",
                            "Prevalence",
                            "AUC",
+                           "PR-AUC",
                            "Cost")
+  
+  model_list <- list(rf = fit.m2.mRoc,
+                     bayesglm = fit.m4.mRoc,
+                     rpart = fit.m7.mRoc,
+                     nnet = fit.m8.mRoc)
   
   sink(filename, append = TRUE)
   
@@ -1000,40 +1030,57 @@ ML_Models_ROC_P_knn <- function(training, resamp, folds, tune, r, samp, filename
   }
   
   model.imp <- merge.all(fit.m2.imp,
-                         fit.m5.imp,
-                         fit.m6.imp)
+                         fit.m4.imp,
+                         fit.m7.imp,
+                         fit.m8.imp)
   
-  colnames(model.imp) = c("rf", "knn", "Adaboost")
+  colnames(model.imp) = c("rf", "bayesglm", "rpart", "nnet")
   print(model.imp)
   
   cat("\n")
   print("Model engine results")
   print("====================")
   
-  print_engine.all <- function(x, ...) {
+  print_engine.all <- function(...) {
     L <- list(...)
     for (i in seq_along(L)) {
       cat("\n")
       print("+++++++++++++")
       print(L[[i]]$method)
       print("+++++++++++++")
+      print("**** finalModel ****")
       print(L[[i]]$finalModel)
       cat("\n")
+      print("**** results ****")
       print(L[[i]]$results)
+      cat("\n")
+      #confusionmatrix over all runs
+      print("**** resampledCM ****")
+      print(L[[i]]$resampledCM)
+      cat("\n")
+      #ROC, Sens, Spec over best tune (always 10x3 results - crossvalidation)
+      print("**** resample ****")
+      print(L[[i]]$resample)
+      cat("\n")
+      
     }
   }
   
-  print_engine.all(fit.m2,fit.m5,fit.m6)
-  
+  print_engine.all(fit.m2,fit.m4,fit.m7,fit.m8)
   
   sink()
   
   
 }
 
-rf <- function(training, resamp, folds, tune, r, samp, filename, tr){
+ML_Models_ROC_P_one <- function(training, resamp, folds, tune, r, samp, filename, imagefilename, ss = 0, summF){
+  
+  if(samp=="none"){
+    samp <- NULL
+  }
+  
   #--------------------------------------
-  # Model 2 - Random forest
+  # just run one model
   #--------------------------------------
   # Model notes:
   #   warnings() == T
@@ -1046,213 +1093,68 @@ rf <- function(training, resamp, folds, tune, r, samp, filename, tr){
                             repeats = r,
                             seeds = fit.m2.seeds,
                             classProbs = TRUE,
-                            summaryFunction = twoClassSummary,
+                            savePredictions = TRUE,
+                            summaryFunction = get(summF), #twoClassSummary,
                             sampling = samp)
+  
+  sink(filename, append = TRUE)
+  print("M2 started")
+  sink()
   
   # Build model
   set.seed(123)
   m2.t <- system.time(fit.m2 <- train(CLASS~., data=training,
                                       method = "rf",
-                                      ntree = tr,
                                       metric = "ROC",
                                       preProcess = c("center", "scale"),
                                       trControl = fit.m2.fc,
                                       tuneLength = tune))
-  
-  # In-sample summary
-  fit.m2$finalModel
-  fit.m2$results
-  
-  # Plots
-  #plot(fit.m2, main = "Accuracy: fit.m2")
-  #plot(varImp(fit.m2), main = "Var Imp: fit.m2")
-  
-  # In-sample fit
-  fit.m2.trn.pred = predict(fit.m2, newdata = testing)
-  fit.m2.trn.prob = predict(fit.m2, newdata = testing, type = "prob")
-  fit.m2.trn.cm = confusionMatrix(fit.m2.trn.pred, testing$CLASS)
-  fit.m2.trn.cm$table
-  fit.m2.trn.cm$overall[1:2]
-  a <- varImp(fit.m2)$importance
-  fit.m2.imp <- a
-  fit.m2.mRoc <- roc(testing$CLASS,fit.m2.trn.prob[,"deceptive"], levels = c("trustworthy","deceptive"))
-  
-  tree_num <- which(fit.m2$finalModel$forest$ndbigtree == min(fit.m2$finalModel$forest$ndbigtree))
-  tree_func(final_model = fit.m2$finalModel, tree_num, tr)
+  runDetails(fit.m2, "fit.m2")
   
   sink(filename, append = TRUE)
-  print(paste(tr, " complete"),sep="")
+  print("M2 complete")
   print(m2.t)
   sink()
   
-  output<-list(fit.m2,fit.m2.mRoc,fit.m2.trn.cm, fit.m2.imp)
-  return(output)
-}
-
-ML_Models_ROC_P_rf <- function(training, resamp, folds, tune, r, samp, filename, ss = 0){
-  
-  if(samp=="none"){
-    samp <- NULL
-  }
-  
-  returnlist <- rf(training, resamp, folds, tune, r, samp, filename, 5)
-  fit.m1 = returnlist[[1]]
-  fit.m1.mRoc = returnlist[[2]]
-  fit.m1.trn.cm = returnlist[[3]]
-  fit.m1.imp = returnlist[[4]]
-  
-  returnlist <- rf(training, resamp, folds, tune, r, samp, filename, 6)
-  fit.m2 = returnlist[[1]]
-  fit.m2.mRoc = returnlist[[2]]
-  fit.m2.trn.cm = returnlist[[3]]
-  fit.m2.imp = returnlist[[4]]
-  
-  returnlist <- rf(training, resamp, folds, tune, r, samp, filename, 7)
-  fit.m3 = returnlist[[1]]
-  fit.m3.mRoc = returnlist[[2]]
-  fit.m3.trn.cm = returnlist[[3]]
-  fit.m3.imp = returnlist[[4]]
-  
-  returnlist <- rf(training, resamp, folds, tune, r, samp, filename, 8)
-  fit.m4 = returnlist[[1]]
-  fit.m4.mRoc = returnlist[[2]]
-  fit.m4.trn.cm = returnlist[[3]]
-  fit.m4.imp = returnlist[[4]]
-  
-  returnlist <- rf(training, resamp, folds, tune, r, samp, filename, 9)
-  fit.m5 = returnlist[[1]]
-  fit.m5.mRoc = returnlist[[2]]
-  fit.m5.trn.cm = returnlist[[3]]
-  fit.m5.imp = returnlist[[4]]
-  
-  returnlist <- rf(training, resamp, folds, tune, r, samp, filename, 10)
-  fit.m6 = returnlist[[1]]
-  fit.m6.mRoc = returnlist[[2]]
-  fit.m6.trn.cm = returnlist[[3]]
-  fit.m6.imp = returnlist[[4]]
-  
-  returnlist <- rf(training, resamp, folds, tune, r, samp, filename, 11)
-  fit.m7 = returnlist[[1]]
-  fit.m7.mRoc = returnlist[[2]]
-  fit.m7.trn.cm = returnlist[[3]]
-  fit.m7.imp = returnlist[[4]]
-  
-  returnlist <- rf(training, resamp, folds, tune, r, samp, filename, 12)
-  fit.m8 = returnlist[[1]]
-  fit.m8.mRoc = returnlist[[2]]
-  fit.m8.trn.cm = returnlist[[3]]
-  fit.m8.imp = returnlist[[4]]
-  
-  
   #--------------------------------------
   # Model Comparison
   #--------------------------------------
   
   # Model Types
-  model.types = c("tree", "tree", "tree", "tree", "tree", "tree", "tree", "tree")
+  model.types = c("type")
   
   # Model Names
-  model.names = c("rf5", "rf6", "rf7", "rf8", "rf9", "rf10", "rf11", "rf12")
+  model.names = c("model")
   
   # Accuracy, Train
-  model.trn.acc = rbind(fit.m1.trn.cm$overall[1],
-                        fit.m2.trn.cm$overall[1],
-                        fit.m3.trn.cm$overall[1],
-                        fit.m4.trn.cm$overall[1],
-                        fit.m5.trn.cm$overall[1],
-                        fit.m6.trn.cm$overall[1],
-                        fit.m7.trn.cm$overall[1],
-                        fit.m8.trn.cm$overall[1])
+  model.trn.acc = rbind(fit.m2.trn.cm$overall[1])
   
   # Kappa, Train
-  model.trn.kpp = rbind(fit.m1.trn.cm$overall[2],
-                        fit.m2.trn.cm$overall[2],
-                        fit.m3.trn.cm$overall[2],
-                        fit.m4.trn.cm$overall[2],
-                        fit.m5.trn.cm$overall[2],
-                        fit.m6.trn.cm$overall[2],
-                        fit.m7.trn.cm$overall[2],
-                        fit.m8.trn.cm$overall[2])
+  model.trn.kpp = rbind(fit.m2.trn.cm$overall[2])
   
   # Sensitivity, Train
-  model.trn.sens = rbind(fit.m1.trn.cm$byClass[1],
-                         fit.m2.trn.cm$byClass[1],
-                         fit.m3.trn.cm$byClass[1],
-                         fit.m4.trn.cm$byClass[1],
-                         fit.m5.trn.cm$byClass[1],
-                         fit.m6.trn.cm$byClass[1],
-                         fit.m7.trn.cm$byClass[1],
-                         fit.m8.trn.cm$byClass[1])
+  model.trn.sens = rbind(fit.m2.trn.cm$byClass[1])
   
   # Specificity, Train
-  model.trn.spec = rbind(fit.m1.trn.cm$byClass[2],
-                         fit.m2.trn.cm$byClass[2],
-                         fit.m3.trn.cm$byClass[2],
-                         fit.m4.trn.cm$byClass[2],
-                         fit.m5.trn.cm$byClass[2],
-                         fit.m6.trn.cm$byClass[2],
-                         fit.m7.trn.cm$byClass[2],
-                         fit.m8.trn.cm$byClass[2])
+  model.trn.spec = rbind(fit.m2.trn.cm$byClass[2])
   
   # Precision, Train
-  model.trn.prec = rbind(fit.m1.trn.cm$byClass[5],
-                         fit.m2.trn.cm$byClass[5],
-                         fit.m3.trn.cm$byClass[5],
-                         fit.m4.trn.cm$byClass[5],
-                         fit.m5.trn.cm$byClass[5],
-                         fit.m6.trn.cm$byClass[5],
-                         fit.m7.trn.cm$byClass[5],
-                         fit.m8.trn.cm$byClass[5])
+  model.trn.prec = rbind(fit.m2.trn.cm$byClass[5])
   
   # Recall, Train
-  model.trn.rec = rbind(fit.m1.trn.cm$byClass[6],
-                        fit.m2.trn.cm$byClass[6],
-                        fit.m3.trn.cm$byClass[6],
-                        fit.m4.trn.cm$byClass[6],
-                        fit.m5.trn.cm$byClass[6],
-                        fit.m6.trn.cm$byClass[6],
-                        fit.m7.trn.cm$byClass[6],
-                        fit.m8.trn.cm$byClass[6])
+  model.trn.rec = rbind(fit.m2.trn.cm$byClass[6])
   
   # F1, Train
-  model.trn.f1 = rbind(fit.m1.trn.cm$byClass[7],
-                       fit.m2.trn.cm$byClass[7],
-                       fit.m3.trn.cm$byClass[7],
-                       fit.m4.trn.cm$byClass[7],
-                       fit.m5.trn.cm$byClass[7],
-                       fit.m6.trn.cm$byClass[7],
-                       fit.m7.trn.cm$byClass[7],
-                       fit.m8.trn.cm$byClass[7])
+  model.trn.f1 = rbind(fit.m2.trn.cm$byClass[7])
   
   # Prevalence, Train
-  model.trn.prev = rbind(fit.m1.trn.cm$byClass[8],
-                         fit.m2.trn.cm$byClass[8],
-                         fit.m3.trn.cm$byClass[8],
-                         fit.m4.trn.cm$byClass[8],
-                         fit.m5.trn.cm$byClass[8],
-                         fit.m6.trn.cm$byClass[8],
-                         fit.m7.trn.cm$byClass[8],
-                         fit.m8.trn.cm$byClass[8])
+  model.trn.prev = rbind(fit.m2.trn.cm$byClass[8])
   
   #AUC
-  model.trn.auc = rbind(fit.m1.mRoc$auc,
-                        fit.m2.mRoc$auc,
-                        fit.m3.mRoc$auc,
-                        fit.m4.mRoc$auc,
-                        fit.m5.mRoc$auc,
-                        fit.m6.mRoc$auc,
-                        fit.m7.mRoc$auc,
-                        fit.m8.mRoc$auc)
+  model.trn.auc = rbind(fit.m2.mRoc$auc)
   
   #Cost
-  model.trn.cost = rbind(0,
-                         0,
-                         0,
-                         0,
-                         0,
-                         0,
-                         0,
-                         0)
+  model.trn.cost = rbind(m2.t[3])
   
   # Data Frame
   model.comp = data.frame(model.types,
@@ -1303,16 +1205,9 @@ ML_Models_ROC_P_rf <- function(training, resamp, folds, tune, r, samp, filename,
     return(x)
   }
   
-  model.imp <- merge.all(fit.m1.imp,
-                         fit.m2.imp,
-                         fit.m3.imp,
-                         fit.m4.imp,
-                         fit.m5.imp,
-                         fit.m6.imp,
-                         fit.m7.imp,
-                         fit.m8.imp)
+  model.imp <- merge.all(fit.m2.imp)
   
-  colnames(model.imp) = c("rf5", "rf6", "rf7", "rf8", "rf9", "rf10", "rf11", "rf12")
+  colnames(model.imp) = c("model")
   print(model.imp)
   
   cat("\n")
@@ -1332,388 +1227,13 @@ ML_Models_ROC_P_rf <- function(training, resamp, folds, tune, r, samp, filename,
     }
   }
   
-  print_engine.all(fit.m1,fit.m2,fit.m3,fit.m4,fit.m5,fit.m6,fit.m7,fit.m8)
+  print_engine.all(fit.m2)
   
   
   sink()
   
   
 }
-
-ML_Models_ROC_TREE <- function(training, resamp, folds, tune, r, samp, filename){
-  
-  #build seeds vector
-  #length is = (n_repeats*nresampling)+1
-  #seeds <- vector(mode = "list", length = ((r*folds)+1) )
-  
-  #(3 is the number of tuning parameter, mtry for rf, here equal to ncol(iris)-2)
-  #for(i in 1:(r*folds)) seeds[[i]]<- sample.int(n=1000, tune)
-  
-  #for the last model
-  #seeds[[((r*folds)+1)]]<-sample.int(1000, 1)
-
-  #--------------------------------------
-  # Model 4 - gbm
-  #--------------------------------------
-  # Model notes:
-  #   Number of Boosting Iterations (n.trees, numeric)
-  # Max Tree Depth (interaction.depth, numeric)
-  # Shrinkage (shrinkage, numeric)
-  # Min. Terminal Node Size (n.minobsinnode, numeric)
-  
-  fit.m4.seeds <- setSeeds(resamp, folds, r, tune)
-  
-  fit.m4.fc <- trainControl(method = resamp, 
-                            number = folds,
-                            repeats = r,
-                            seeds = fit.m4.seeds,
-                            classProbs = TRUE,
-                            summaryFunction = twoClassSummary,
-                            sampling = samp)
-  
-  sink(filename, append = TRUE)
-  print("M4 started")
-  sink()
-  
-  # Build model
-  set.seed(123)
-  m4.t <- system.time(fit.m4 <- train(CLASS~., data=training,
-                                      method = "gbm",
-                                      metric = "ROC",
-                                      preProcess = c("center", "scale"),
-                                      trControl = fit.m4.fc,
-                                      tuneLength = tune))
-  
-  # In-sample summary
-  fit.m4$finalModel
-  fit.m4$results
-  
-  # Plots
-  #plot(fit.m4, main = "Accuracy: fit.m4")
-  #plot(varImp(fit.m4), main = "Var Imp: fit.m4")
-  
-  # In-sample fit
-  fit.m4.trn.pred = predict(fit.m4, newdata = testing)
-  fit.m4.trn.prob = predict(fit.m4, newdata = testing, type = "prob")
-  fit.m4.trn.cm = confusionMatrix(fit.m4.trn.pred, testing$CLASS)
-  fit.m4.trn.cm$table
-  fit.m4.trn.cm$overall[1:2]
-  a <- varImp(fit.m4)$importance
-  a[,2] <- NULL
-  fit.m4.imp <- a
-  fit.m4.mRoc <- roc(testing$CLASS,fit.m4.trn.prob[,"deceptive"], levels = c("trustworthy","deceptive"))
-  
-  sink(filename, append = TRUE)
-  print("M4 complete")
-  print(m4.t)
-  sink()
-  
-  #--------------------------------------
-  # Model 6 - AdaBoost.M1
-  #--------------------------------------
-  # Model notes:
-  #   warnings() == F
-  # Number of Trees (mfinal, numeric)
-  # Max Tree Depth (maxdepth, numeric)
-  # Coefficient Type (coeflearn, character)
-  
-  fit.m6.seeds <- setSeeds(resamp, folds, r, tune*4)
-  
-  # Specify fit parameters
-  fit.m6.fc <- trainControl(method = resamp, 
-                            number = folds,
-                            repeats = r,
-                            seeds = fit.m6.seeds,
-                            classProbs = TRUE,
-                            summaryFunction = twoClassSummary,
-                            sampling = samp)
-  
-  sink(filename, append = TRUE)
-  print("M6 started")
-  sink()
-  
-  # Build model
-  set.seed(123)
-  m6.t <- system.time(fit.m6 <- train(CLASS~., data=training,
-                                      method = "AdaBoost.M1",
-                                      metric = "ROC",
-                                      preProcess = c("center", "scale"),
-                                      trControl = fit.m6.fc,
-                                      tuneLength = tune))
-  
-  # In-sample summary
-  fit.m6$finalModel
-  fit.m6$results
-  
-  # In-sample fit
-  fit.m6.trn.pred = predict(fit.m6, newdata = testing)
-  fit.m6.trn.prob = predict(fit.m6, newdata = testing, type = "prob")
-  fit.m6.trn.cm = confusionMatrix(fit.m6.trn.pred, testing$CLASS)
-  fit.m6.trn.cm$table
-  fit.m6.trn.cm$overall[1:2]
-  a <- varImp(fit.m6)$importance
-  a[,2] <- NULL
-  fit.m6.imp <- a
-  fit.m6.mRoc <- roc(testing$CLASS,fit.m6.trn.prob[,"deceptive"], levels = c("trustworthy","deceptive"))
-  
-  sink(filename, append = TRUE)
-  print("M6 complete")
-  print(m6.t)
-  sink()
-  
-  #--------------------------------------
-  # Model 7 - CART
-  #--------------------------------------
-  # Model notes:
-  #   warnings() == F
-  #   Max Tree Depth (maxdepth, numeric)
-  
-  fit.m7.seeds <- setSeeds(resamp, folds, r, tune)
-  
-  # Specify fit parameters
-  fit.m7.fc <- trainControl(method = resamp, 
-                            number = folds,
-                            repeats = r,
-                            seeds = fit.m7.seeds,
-                            classProbs = TRUE,
-                            summaryFunction = twoClassSummary,
-                            sampling = samp)
-  
-  sink(filename, append = TRUE)
-  print("M7 started")
-  sink()
-  
-  # Build model
-  set.seed(123)
-  m7.t <- system.time(fit.m7 <- train(CLASS~., data=training,
-                                      method = "rpart2",
-                                      metric = "ROC",
-                                      preProcess = c("center", "scale"),
-                                      trControl = fit.m7.fc,
-                                      tuneLength = tune))
-  
-  # In-sample summary
-  fit.m7$finalModel
-  fit.m7$results
-  
-  # In-sample fit
-  fit.m7.trn.pred = predict(fit.m7, newdata = testing)
-  fit.m7.trn.prob = predict(fit.m7, newdata = testing, type = "prob")
-  fit.m7.trn.cm = confusionMatrix(fit.m7.trn.pred, testing$CLASS)
-  fit.m7.trn.cm$table
-  fit.m7.trn.cm$overall[1:2]
-  a <- varImp(fit.m7)$importance
-  fit.m7.imp <- a
-  fit.m7.mRoc <- roc(testing$CLASS,fit.m7.trn.prob[,"deceptive"], levels = c("trustworthy","deceptive"))
-  
-  sink(filename, append = TRUE)
-  print("M7 complete")
-  print(m7.t)
-  sink()
-  
-  #--------------------------------------
-  # Model 8 - ctree2
-  #--------------------------------------
-  # Model notes:
-  #   warnings() == F
-  #   Max Tree Depth (maxdepth, numeric)
-  # 1 - P-Value Threshold (mincriterion, numeric)
-  
-  fit.m8.seeds <- setSeeds(resamp, folds, r, tune*9)
-  
-  # Specify fit parameters
-  fit.m8.fc <- trainControl(method = resamp, 
-                            number = folds,
-                            repeats = r,
-                            seeds = fit.m8.seeds,
-                            classProbs = TRUE,
-                            summaryFunction = twoClassSummary,
-                            sampling = samp)
-  
-  sink(filename, append = TRUE)
-  print("M8 started")
-  sink()
-  
-  # Build model
-  set.seed(123)
-  m8.t <- system.time(fit.m8 <- train(CLASS~., data=training,
-                                      method = "ctree2",
-                                      metric = "ROC",
-                                      preProcess = c("center", "scale"),
-                                      trControl = fit.m8.fc,
-                                      tuneLength = tune))
-  
-  # In-sample summary
-  fit.m8$finalModel
-  fit.m8$results
-  
-  # In-sample fit
-  fit.m8.trn.pred = predict(fit.m8, newdata = testing)
-  fit.m8.trn.prob = predict(fit.m8, newdata = testing, type = "prob")
-  fit.m8.trn.cm = confusionMatrix(fit.m8.trn.pred, testing$CLASS)
-  fit.m8.trn.cm$table
-  fit.m8.trn.cm$overall[1:2]
-  a <- varImp(fit.m8)$importance
-  fit.m8.imp <- a
-  fit.m8.mRoc <- roc(testing$CLASS,fit.m8.trn.prob[,"deceptive"], levels = c("trustworthy","deceptive"))
-  
-  sink(filename, append = TRUE)
-  print("M8 complete")
-  print(m8.t)
-  sink()
-  
-  #--------------------------------------
-  # Model Comparison
-  #--------------------------------------
-  
-  # Model Types
-  model.types = c("tree", "tree", "tree","tree")
-  
-  # Model Names
-  model.names = c("gbm", "Adaboost.M1", "rpart2", "ctree2")
-  
-  # Accuracy, Train
-  model.trn.acc = rbind(fit.m4.trn.cm$overall[1],
-                        fit.m6.trn.cm$overall[1],
-                        fit.m7.trn.cm$overall[1],
-                        fit.m8.trn.cm$overall[1])
-  
-  # Kappa, Train
-  model.trn.kpp = rbind(fit.m4.trn.cm$overall[2],
-                        fit.m6.trn.cm$overall[2],
-                        fit.m7.trn.cm$overall[2],
-                        fit.m8.trn.cm$overall[2])
-  
-  # Sensitivity, Train
-  model.trn.sens = rbind(fit.m4.trn.cm$byClass[1],
-                         fit.m6.trn.cm$byClass[1],
-                         fit.m7.trn.cm$byClass[1],
-                         fit.m8.trn.cm$byClass[1])
-  
-  # Specificity, Train
-  model.trn.spec = rbind(fit.m4.trn.cm$byClass[2],
-                         fit.m6.trn.cm$byClass[2],
-                         fit.m7.trn.cm$byClass[2],
-                         fit.m8.trn.cm$byClass[2])
-  
-  # Precision, Train
-  model.trn.prec = rbind(fit.m4.trn.cm$byClass[5],
-                         fit.m6.trn.cm$byClass[5],
-                         fit.m7.trn.cm$byClass[5],
-                         fit.m8.trn.cm$byClass[5])
-  
-  # Recall, Train
-  model.trn.rec = rbind(fit.m4.trn.cm$byClass[6],
-                        fit.m6.trn.cm$byClass[6],
-                        fit.m7.trn.cm$byClass[6],
-                        fit.m8.trn.cm$byClass[6])
-  
-  # F1, Train
-  model.trn.f1 = rbind(fit.m4.trn.cm$byClass[7],
-                       fit.m6.trn.cm$byClass[7],
-                       fit.m7.trn.cm$byClass[7],
-                       fit.m8.trn.cm$byClass[7])
-  
-  # Prevalence, Train
-  model.trn.prev = rbind(fit.m4.trn.cm$byClass[8],
-                         fit.m6.trn.cm$byClass[8],
-                         fit.m7.trn.cm$byClass[8],
-                         fit.m8.trn.cm$byClass[8])
-  
-  #AUC
-  model.trn.auc = rbind(fit.m4.mRoc$auc,
-                        fit.m6.mRoc$auc,
-                        fit.m7.mRoc$auc,
-                        fit.m8.mRoc$auc)
-  
-  #Cost
-  model.trn.cost = rbind(m4.t[3],
-                         m6.t[3],
-                         m7.t[3],
-                         m8.t[3])
-  
-  # Data Frame
-  model.comp = data.frame(model.types,
-                          model.names,
-                          model.trn.acc,
-                          model.trn.kpp,
-                          model.trn.sens,
-                          model.trn.spec,
-                          model.trn.prec,
-                          model.trn.rec,
-                          model.trn.f1,
-                          model.trn.prev,
-                          model.trn.auc,
-                          model.trn.cost)
-  rownames(model.comp) = 1:nrow(model.comp)
-  colnames(model.comp) = c("Model Type",
-                           "Model Name",
-                           "Accuracy",
-                           "Kappa",
-                           "Sensitivity",
-                           "Specificity",
-                           "Precision",
-                           "Recall",
-                           "F1",
-                           "Prevalence",
-                           "AUC",
-                           "Cost")
-  
-  sink(filename, append = TRUE)
-  
-  cat("\n")
-  print("Model engine summary")
-  print("====================")
-  
-  print(model.comp)
-  
-  cat("\n")
-  print("Model attribute importance")
-  print("==========================")
-  #Show the importance of all variables per model
-  merge.all <- function(x, ..., by = "row.names") {
-    L <- list(...)
-    for (i in seq_along(L)) {
-      x <- merge(x, L[[i]], by = by)
-      rownames(x) <- x$Row.names
-      x$Row.names <- NULL
-    }
-    return(x)
-  }
-  
-  model.imp <- merge.all(fit.m4.imp,
-                         fit.m6.imp,
-                         fit.m7.imp,
-                         fit.m8.imp)
-  
-  colnames(model.imp) = c("gbm", "Adaboost.M1", "rpart2", "ctree2")
-  print(model.imp)
-  
-  cat("\n")
-  print("Model engine results")
-  print("====================")
-  
-  print_engine.all <- function(x, ...) {
-    L <- list(...)
-    for (i in seq_along(L)) {
-      cat("\n")
-      print("+++++++++++++")
-      print(L[[i]]$method)
-      print("+++++++++++++")
-      print(L[[i]]$finalModel)
-      cat("\n")
-      print(L[[i]]$results)
-    }
-  }
-  
-  print_engine.all(fit.m4,fit.m6,fit.m7,fit.m8)
-  
-  
-  sink()
-  
-  
-}
-
 
 ML_Models_ROC <- function(training, resamp, folds, tune, r, filename){
   
@@ -2266,615 +1786,6 @@ ML_Models_ROC <- function(training, resamp, folds, tune, r, filename){
   
   print_engine.all(fit.m1,fit.m2,fit.m3,fit.m4,fit.m5,fit.m6,fit.m7,fit.m8)
   
-  
   sink()
-  
-  
-}
-
-ML_Models_ROC_Test <- function(training, resamp, folds, tune, r, filename){
-  
-  seeds <- setSeeds(resamp, folds, r, 3)
-  
-  #--------------------------------------
-  # Model 7 - CART
-  #--------------------------------------
-  # Model notes:
-  #   warnings() == F
-  #   cp == varied, 3 times (0.05, 0.13, 0.31)
-  
-  # Specify fit parameters
-  fit.m7.fc <- trainControl(method = resamp, 
-                            number = folds,
-                            repeats = r,
-                            seeds = seeds,
-                            classProbs = TRUE,
-                            allowParallel = FALSE,
-                            summaryFunction = twoClassSummary)
-  
-  # Build model
-  set.seed(123)
-  m7.t <- system.time(fit.m7 <- train(CLASS~., data=training,
-                                      method = "rpart",
-                                      metric = "ROC",
-                                      preProcess = c("center", "scale"),
-                                      trControl = fit.m7.fc,
-                                      tuneLength = tune))
-  
-  # In-sample summary
-  fit.m7$finalModel
-  fit.m7$results
-  
-  # In-sample fit
-  fit.m7.trn.pred = predict(fit.m7, newdata = testing)
-  fit.m7.trn.prob = predict(fit.m7, newdata = testing, type = "prob")
-  fit.m7.trn.cm = confusionMatrix(fit.m7.trn.pred, testing$CLASS)
-  fit.m7.trn.cm$table
-  fit.m7.trn.cm$overall[1:2]
-  a <- varImp(fit.m7)$importance
-  fit.m7.imp <- a
-  fit.m7.mRoc <- roc(testing$CLASS,fit.m7.trn.prob[,"deceptive"], levels = c("trustworthy","deceptive"))
-  
-  sink(filename, append = TRUE)
-  print("M7 complete")
-  print(m7.t)
-  
-  cat("\n")
-  print(fit.m7$finalModel)
-  cat("\n")
-  print(fit.m7$results)
-  cat("\n")
-  print(fit.m7.imp)
-  
-  sink()
-  
-}
-
-ML_Models_apply <- function(filename, sqlSaveTable, data.original, testing){
-  
-  d <- "~/Projects/RStudio/TwitterAnalysis/Engine/AnalysisResults/Results/"
-  
-  #--------------------------------------
-  # Model 1 - SVM Radial
-  #--------------------------------------
-  # Model notes:
-  #   warnings() == F
-  #   sigma == constant (0.547204984213807)
-  #   C == varied, 3 times (0.25,0.5,1.0)
-  
-  
-  s <- paste(d,"f1", sep="")
-  m1.t <- system.time(load(s))
-  
-  # Plots
-  #plot(fit.m1, main = "Accuracy: fit.m1")
-  #plot(varImp(fit.m1), main = "Var Imp: fit.m1")
-  
-  # In-sample fit
-  fit.m1.trn.pred = predict(fit.m1, newdata = testing)
-  fit.m1.trn.prob = predict(fit.m1, newdata = testing, type = "prob")
-  fit.m1.trn.cm = confusionMatrix(fit.m1.trn.pred, testing$CLASS)
-  fit.m1.trn.cm$table
-  fit.m1.trn.cm$overall[1:2]
-  a <- varImp(fit.m1)$importance
-  a[,2] <- NULL
-  fit.m1.imp <- a
-  fit.m1.mRoc <- roc(testing$CLASS,fit.m1.trn.prob[,"deceptive"], levels = c("trustworthy","deceptive"))
-  if(sqlSaveTable != "NULL"){
-    #add userid, screenname to probability results
-    b <- cbind(data.original[,1:2], fit.m1.trn.prob, fit="m1")
-    #write back results to table  
-    sqlSave(channel=myconn, b, tablename=sqlSaveTable, append=TRUE, rownames=FALSE)  
-  }
-  
-  sink(filename, append = TRUE)
-  print("M1 complete")
-  print(m1.t)
-  sink()
-  
-  #--------------------------------------
-  # Model 2 - Random forest
-  #--------------------------------------
-  # Model notes:
-  #   warnings() == T
-  #   mtry == varied, 3 times (2,4,7)
-  
-  s <- paste(d,"f2", sep="")
-  m2.t <- system.time(load(s))
-  
-  # Plots
-  #plot(fit.m2, main = "Accuracy: fit.m2")
-  #plot(varImp(fit.m2), main = "Var Imp: fit.m2")
-  
-  # In-sample fit
-  fit.m2.trn.pred = predict(fit.m2, newdata = testing)
-  fit.m2.trn.prob = predict(fit.m2, newdata = testing, type = "prob")
-  fit.m2.trn.cm = confusionMatrix(fit.m2.trn.pred, testing$CLASS)
-  fit.m2.trn.cm$table
-  fit.m2.trn.cm$overall[1:2]
-  a <- varImp(fit.m2)$importance
-  fit.m2.imp <- a
-  fit.m2.mRoc <- roc(testing$CLASS,fit.m2.trn.prob[,"deceptive"], levels = c("trustworthy","deceptive"))
-  if(sqlSaveTable != "NULL"){
-    #add userid, screenname to probability results
-    b <- cbind(data.original[,1:2], fit.m2.trn.prob, fit="m2")
-    #write back results to table  
-    sqlSave(channel=myconn, b, tablename=sqlSaveTable, append=TRUE, rownames=FALSE)  
-  }
-  
-  sink(filename, append = TRUE)
-  print("M2 complete")
-  print(m2.t)
-  sink()
-  
-  #--------------------------------------
-  # Model 3 - Decision tree (J48)
-  #--------------------------------------
-  # Model notes:
-  #   M == varied (1,2,3)
-  #   C == varied (0.01, 0.255, 0.5), 3 times
-  
-  s <- paste(d,"f3", sep="")
-  m3.t <- system.time(load(s))
-  
-  # Plots
-  #plot(fit.m3, main = "Accuracy: fit.m3")
-  #plot(varImp(fit.m3), main = "Var Imp: fit.m3")
-  
-  # In-sample fit
-  #fit.m3.trn.pred = predict(fit.m3, newdata = testing)
-  #fit.m3.trn.prob = predict(fit.m3, newdata = testing, type = "prob")
-  #fit.m3.trn.cm = confusionMatrix(fit.m3.trn.pred, testing$CLASS)
-  #fit.m3.trn.cm$table
-  #fit.m3.trn.cm$overall[1:2]
-  #a <- varImp(fit.m3)$importance
-  #a[,2] <- NULL
-  #fit.m3.imp <- a
-  #fit.m3.mRoc <- roc(testing$CLASS,fit.m3.trn.prob[,"deceptive"], levels = c("trustworthy","deceptive"))
-  #if(sqlSaveTable != "NULL"){
-  #  #add userid, screenname to probability results
-  #  b <- cbind(data.original[,1:2], fit.m1.trn.prob, fit="m1")
-  #  #write back results to table  
-  #  sqlSave(channel=myconn, b, tablename=sqlSaveTable, append=TRUE, rownames=FALSE)  
-  #}
-  
-  #sink(filename, append = TRUE)
-  #print("M3 complete")
-  #print(m3.t)
-  #sink()
-  
-  #--------------------------------------
-  # Model 4 - Bayesian Network
-  #--------------------------------------
-  # Model notes:
-  #   no tuning
-  
-  s <- paste(d,"f4", sep="")
-  m4.t <- system.time(load(s))
-  
-  # Plots
-  #plot(fit.m4, main = "Accuracy: fit.m4")
-  #plot(varImp(fit.m4), main = "Var Imp: fit.m4")
-  
-  # In-sample fit
-  fit.m4.trn.pred = predict(fit.m4, newdata = testing)
-  fit.m4.trn.prob = predict(fit.m4, newdata = testing, type = "prob")
-  fit.m4.trn.cm = confusionMatrix(fit.m4.trn.pred, testing$CLASS)
-  fit.m4.trn.cm$table
-  fit.m4.trn.cm$overall[1:2]
-  a <- varImp(fit.m4)$importance
-  a[,2] <- NULL
-  fit.m4.imp <- a
-  fit.m4.mRoc <- roc(testing$CLASS,fit.m4.trn.prob[,"deceptive"], levels = c("trustworthy","deceptive"))
-  if(sqlSaveTable != "NULL"){
-    #add userid, screenname to probability results
-    b <- cbind(data.original[,1:2], fit.m4.trn.prob, fit="m4")
-    #write back results to table  
-    sqlSave(channel=myconn, b, tablename=sqlSaveTable, append=TRUE, rownames=FALSE)  
-  }
-  
-  sink(filename, append = TRUE)
-  print("M4 complete")
-  print(m4.t)
-  sink()
-  
-  #--------------------------------------
-  # Model 5 - knn
-  #--------------------------------------
-  # Model notes:
-  #   warnings() == F
-  #   kmax (5,7,9)
-  #   distance (fixed = 2)
-  #   kernel (fixed = optimal)
-  
-  s <- paste(d,"f5", sep="")
-  m5.t <- system.time(load(s))
-  
-  # In-sample fit
-  fit.m5.trn.pred = predict(fit.m5, newdata = testing)
-  fit.m5.trn.prob = predict(fit.m5, newdata = testing, type = "prob")
-  fit.m5.trn.cm = confusionMatrix(fit.m5.trn.pred, testing$CLASS)
-  fit.m5.trn.cm$table
-  fit.m5.trn.cm$overall[1:2]
-  a <- varImp(fit.m5)$importance
-  a[,2] <- NULL
-  fit.m5.imp <- a
-  fit.m5.mRoc <- roc(testing$CLASS,fit.m5.trn.prob[,"deceptive"], levels = c("trustworthy","deceptive"))
-  if(sqlSaveTable != "NULL"){
-    #add userid, screenname to probability results
-    b <- cbind(data.original[,1:2], fit.m5.trn.prob, fit="m5")
-    #write back results to table  
-    sqlSave(channel=myconn, b, tablename=sqlSaveTable, append=TRUE, rownames=FALSE)  
-  }
-  
-  sink(filename, append = TRUE)
-  print("M5 complete")
-  print(m5.t)
-  sink()
-  
-  #--------------------------------------
-  # Model 6 - Adaboost
-  #--------------------------------------
-  # Model notes:
-  #   warnings() == F
-  #   nlter == varied, 3 times (50, 100, 150)
-  #   method == varied, 2 times (Adaboost.M1, Real adaboost)
-  
-  s <- paste(d,"f6", sep="")
-  m6.t <- system.time(load(s))
-  
-  # In-sample fit
-  fit.m6.trn.pred = predict(fit.m6, newdata = testing)
-  fit.m6.trn.prob = predict(fit.m6, newdata = testing, type = "prob")
-  fit.m6.trn.cm = confusionMatrix(fit.m6.trn.pred, testing$CLASS)
-  fit.m6.trn.cm$table
-  fit.m6.trn.cm$overall[1:2]
-  a <- varImp(fit.m6)$importance
-  a[,2] <- NULL
-  fit.m6.imp <- a
-  fit.m6.mRoc <- roc(testing$CLASS,fit.m6.trn.prob[,"deceptive"], levels = c("trustworthy","deceptive"))
-  if(sqlSaveTable != "NULL"){
-    #add userid, screenname to probability results
-    b <- cbind(data.original[,1:2], fit.m6.trn.prob, fit="m6")
-    #write back results to table  
-    sqlSave(channel=myconn, b, tablename=sqlSaveTable, append=TRUE, rownames=FALSE)  
-  }
-  
-  sink(filename, append = TRUE)
-  print("M6 complete")
-  print(m6.t)
-  sink()
-  
-  #--------------------------------------
-  # Model 7 - CART
-  #--------------------------------------
-  # Model notes:
-  #   warnings() == F
-  #   cp == varied, 3 times (0.05, 0.13, 0.31)
-  
-  s <- paste(d,"f7", sep="")
-  m7.t <- system.time(load(s))
-  
-  # In-sample fit
-  fit.m7.trn.pred = predict(fit.m7, newdata = testing)
-  fit.m7.trn.prob = predict(fit.m7, newdata = testing, type = "prob")
-  fit.m7.trn.cm = confusionMatrix(fit.m7.trn.pred, testing$CLASS)
-  fit.m7.trn.cm$table
-  fit.m7.trn.cm$overall[1:2]
-  a <- varImp(fit.m7)$importance
-  fit.m7.imp <- a
-  fit.m7.mRoc <- roc(testing$CLASS,fit.m7.trn.prob[,"deceptive"], levels = c("trustworthy","deceptive"))
-  if(sqlSaveTable != "NULL"){
-    #add userid, screenname to probability results
-    b <- cbind(data.original[,1:2], fit.m7.trn.prob, fit="m7")
-    #write back results to table  
-    sqlSave(channel=myconn, b, tablename=sqlSaveTable, append=TRUE, rownames=FALSE)  
-  }
-  
-  sink(filename, append = TRUE)
-  print("M7 complete")
-  print(m7.t)
-  sink()
-  
-  #--------------------------------------
-  # Model 8 - Neural network
-  #--------------------------------------
-  # Model notes:
-  #   warnings() == F
-  #   size 3
-  #   decay 3
-  
-  s <- paste(d,"f8", sep="")
-  m8.t <- system.time(load(s))
-  
-  # In-sample fit
-  fit.m8.trn.pred = predict(fit.m8, newdata = testing)
-  fit.m8.trn.prob = predict(fit.m8, newdata = testing, type = "prob")
-  fit.m8.trn.cm = confusionMatrix(fit.m8.trn.pred, testing$CLASS)
-  fit.m8.trn.cm$table
-  fit.m8.trn.cm$overall[1:2]
-  a <- varImp(fit.m8)$importance
-  fit.m8.imp <- a
-  fit.m8.mRoc <- roc(testing$CLASS,fit.m8.trn.prob[,"deceptive"], levels = c("trustworthy","deceptive"))
-  if(sqlSaveTable != "NULL"){
-    #add userid, screenname to probability results
-    b <- cbind(data.original[,1:2], fit.m8.trn.prob, fit="m8")
-    #write back results to table  
-    sqlSave(channel=myconn, b, tablename=sqlSaveTable, append=TRUE, rownames=FALSE)  
-  }
-  
-  sink(filename, append = TRUE)
-  print("M8 complete")
-  print(m8.t)
-  sink()
-  
-  #--------------------------------------
-  # Model Comparison
-  #--------------------------------------
-  
-  # Model Types
-  model.types = c("SVM", "tree", "bayesian", "cluster", "tree", "tree","neuralnet")
-  
-  # Model Names
-  model.names = c("svmRadial", "rf", "bayesglm", "knn", "Adaboost", "rpart", "nnet")
-  
-  # Accuracy, Train
-  model.trn.acc = rbind(fit.m1.trn.cm$overall[1],
-                        fit.m2.trn.cm$overall[1],
-                        #fit.m3.trn.cm$overall[1],
-                        fit.m4.trn.cm$overall[1],
-                        fit.m5.trn.cm$overall[1],
-                        fit.m6.trn.cm$overall[1],
-                        fit.m7.trn.cm$overall[1],
-                        fit.m8.trn.cm$overall[1])
-  
-  # Kappa, Train
-  model.trn.kpp = rbind(fit.m1.trn.cm$overall[2],
-                        fit.m2.trn.cm$overall[2],
-                        #fit.m3.trn.cm$overall[2],
-                        fit.m4.trn.cm$overall[2],
-                        fit.m5.trn.cm$overall[2],
-                        fit.m6.trn.cm$overall[2],
-                        fit.m7.trn.cm$overall[2],
-                        fit.m8.trn.cm$overall[2])
-  
-  # Sensitivity, Train
-  model.trn.sens = rbind(fit.m1.trn.cm$byClass[1],
-                         fit.m2.trn.cm$byClass[1],
-                         #fit.m3.trn.cm$byClass[1],
-                         fit.m4.trn.cm$byClass[1],
-                         fit.m5.trn.cm$byClass[1],
-                         fit.m6.trn.cm$byClass[1],
-                         fit.m7.trn.cm$byClass[1],
-                         fit.m8.trn.cm$byClass[1])
-  
-  # Specificity, Train
-  model.trn.spec = rbind(fit.m1.trn.cm$byClass[2],
-                         fit.m2.trn.cm$byClass[2],
-                         #fit.m3.trn.cm$byClass[2],
-                         fit.m4.trn.cm$byClass[2],
-                         fit.m5.trn.cm$byClass[2],
-                         fit.m6.trn.cm$byClass[2],
-                         fit.m7.trn.cm$byClass[2],
-                         fit.m8.trn.cm$byClass[2])
-  
-  # Precision, Train
-  model.trn.prec = rbind(fit.m1.trn.cm$byClass[5],
-                         fit.m2.trn.cm$byClass[5],
-                         #fit.m3.trn.cm$byClass[5],
-                         fit.m4.trn.cm$byClass[5],
-                         fit.m5.trn.cm$byClass[5],
-                         fit.m6.trn.cm$byClass[5],
-                         fit.m7.trn.cm$byClass[5],
-                         fit.m8.trn.cm$byClass[5])
-  
-  # Recall, Train
-  model.trn.rec = rbind(fit.m1.trn.cm$byClass[6],
-                        fit.m2.trn.cm$byClass[6],
-                        #fit.m3.trn.cm$byClass[6],
-                        fit.m4.trn.cm$byClass[6],
-                        fit.m5.trn.cm$byClass[6],
-                        fit.m6.trn.cm$byClass[6],
-                        fit.m7.trn.cm$byClass[6],
-                        fit.m8.trn.cm$byClass[6])
-  
-  # F1, Train
-  model.trn.f1 = rbind(fit.m1.trn.cm$byClass[7],
-                       fit.m2.trn.cm$byClass[7],
-                       #fit.m3.trn.cm$byClass[7],
-                       fit.m4.trn.cm$byClass[7],
-                       fit.m5.trn.cm$byClass[7],
-                       fit.m6.trn.cm$byClass[7],
-                       fit.m7.trn.cm$byClass[7],
-                       fit.m8.trn.cm$byClass[7])
-  
-  # Prevalence, Train
-  model.trn.prev = rbind(fit.m1.trn.cm$byClass[8],
-                         fit.m2.trn.cm$byClass[8],
-                         #fit.m3.trn.cm$byClass[8],
-                         fit.m4.trn.cm$byClass[8],
-                         fit.m5.trn.cm$byClass[8],
-                         fit.m6.trn.cm$byClass[8],
-                         fit.m7.trn.cm$byClass[8],
-                         fit.m8.trn.cm$byClass[8])
-  
-  #AUC
-  model.trn.auc = rbind(fit.m1.mRoc$auc,
-                        fit.m2.mRoc$auc,
-                        #fit.m3.mRoc$auc,
-                        fit.m4.mRoc$auc,
-                        fit.m5.mRoc$auc,
-                        fit.m6.mRoc$auc,
-                        fit.m7.mRoc$auc,
-                        fit.m8.mRoc$auc)
-  
-  #Cost
-  model.trn.cost = rbind(m1.t[3],
-                         m2.t[3],
-                         #m3.t[3],
-                         m4.t[3],
-                         m5.t[3],
-                         m6.t[3],
-                         m7.t[3],
-                         m8.t[3])
-  
-  # Data Frame
-  model.comp = data.frame(model.types,
-                          model.names,
-                          model.trn.acc,
-                          model.trn.kpp,
-                          model.trn.sens,
-                          model.trn.spec,
-                          model.trn.prec,
-                          model.trn.rec,
-                          model.trn.f1,
-                          model.trn.prev,
-                          model.trn.auc,
-                          model.trn.cost)
-  rownames(model.comp) = 1:nrow(model.comp)
-  colnames(model.comp) = c("Model Type",
-                           "Model Name",
-                           "Accuracy",
-                           "Kappa",
-                           "Sensitivity",
-                           "Specificity",
-                           "Precision",
-                           "Recall",
-                           "F1",
-                           "Prevalence",
-                           "AUC",
-                           "Cost")
-  
-  sink(filename, append = TRUE)
-  
-  cat("\n")
-  print("Model engine summary")
-  print("====================")
-  
-  print(model.comp)
-  
-  sink()
-  
-  
-}
-
-ML_Models_apply_knn <- function(filename, sqlSaveTable, data.original, testing){
-  
-  d <- "~/Projects/RStudio/TwitterAnalysis/Engine/AnalysisResults/Results/"
-  
-  
-  #--------------------------------------
-  # Model 5 - knn
-  #--------------------------------------
-  # Model notes:
-  #   warnings() == F
-  #   kmax (5,7,9)
-  #   distance (fixed = 2)
-  #   kernel (fixed = optimal)
-  
-  s <- paste(d,"f5", sep="")
-  m5.t <- system.time(load(s))
-  
-  # In-sample fit
-  fit.m5.trn.pred = predict(fit.m5, newdata = testing)
-  fit.m5.trn.prob = predict(fit.m5, newdata = testing, type = "prob")
-  fit.m5.trn.cm = confusionMatrix(fit.m5.trn.pred, testing$CLASS)
-  fit.m5.trn.cm$table
-  fit.m5.trn.cm$overall[1:2]
-  a <- varImp(fit.m5)$importance
-  a[,2] <- NULL
-  fit.m5.imp <- a
-  fit.m5.mRoc <- roc(testing$CLASS,fit.m5.trn.prob[,"deceptive"], levels = c("trustworthy","deceptive"))
-  if(sqlSaveTable != "NULL"){
-    #add userid, screenname to probability results
-    b <- cbind(data.original[,1:2], fit.m5.trn.prob, fit="m5", cluster="x")
-    #write back results to table  
-    sqlSave(channel=myconn, b, tablename=sqlSaveTable, append=TRUE, rownames=FALSE)  
-  }
-  
-  sink(filename, append = TRUE)
-  print("M5 complete")
-  print(m5.t)
-  sink()
-  
-
-  
-  #--------------------------------------
-  # Model Comparison
-  #--------------------------------------
-  
-  # Model Types
-  model.types = c("cluster")
-  
-  # Model Names
-  model.names = c("knn")
-  
-  # Accuracy, Train
-  model.trn.acc = rbind(fit.m5.trn.cm$overall[1])
-  
-  # Kappa, Train
-  model.trn.kpp = rbind(fit.m5.trn.cm$overall[2])
-  
-  # Sensitivity, Train
-  model.trn.sens = rbind(fit.m5.trn.cm$byClass[1])
-  
-  # Specificity, Train
-  model.trn.spec = rbind(fit.m5.trn.cm$byClass[2])
-  
-  # Precision, Train
-  model.trn.prec = rbind(fit.m5.trn.cm$byClass[5])
-  
-  # Recall, Train
-  model.trn.rec = rbind(fit.m6.trn.cm$byClass[6])
-  
-  # F1, Train
-  model.trn.f1 = rbind(fit.m5.trn.cm$byClass[7])
-  
-  # Prevalence, Train
-  model.trn.prev = rbind(fit.m5.trn.cm$byClass[8])
-  
-  #AUC
-  model.trn.auc = rbind(fit.m5.mRoc$auc)
-  
-  #Cost
-  model.trn.cost = rbind(m5.t[3])
-  
-  # Data Frame
-  model.comp = data.frame(model.types,
-                          model.names,
-                          model.trn.acc,
-                          model.trn.kpp,
-                          model.trn.sens,
-                          model.trn.spec,
-                          model.trn.prec,
-                          model.trn.rec,
-                          model.trn.f1,
-                          model.trn.prev,
-                          model.trn.auc,
-                          model.trn.cost)
-  rownames(model.comp) = 1:nrow(model.comp)
-  colnames(model.comp) = c("Model Type",
-                           "Model Name",
-                           "Accuracy",
-                           "Kappa",
-                           "Sensitivity",
-                           "Specificity",
-                           "Precision",
-                           "Recall",
-                           "F1",
-                           "Prevalence",
-                           "AUC",
-                           "Cost")
-  
-  sink(filename, append = TRUE)
-  
-  cat("\n")
-  print("Model engine summary")
-  print("====================")
-  
-  print(model.comp)
-  
-  sink()
-  
   
 }

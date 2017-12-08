@@ -8,6 +8,7 @@ suppressMessages(library(FSelector))
 suppressMessages(library(pROC)) # for AUC calculations
 suppressMessages(library(PRROC)) # for Precision-Recall curve calculations
 suppressMessages(library(MLmetrics)) # for prSummary in Caret
+suppressMessages(library(DMwR))
 
 #LINUX
 setwd("~/Projects/RStudio/TwitterAnalysis/Engine/AnalysisResults/Tests")
@@ -49,6 +50,12 @@ data.clean <- cleanup.TwitterBot(data.full)
 #remove fields not in fake accounts
 #data.clean <- data.clean[ , -which(names(data.clean) %in% c("USERNAME_LENGTH", "GEO_ENABLED"))]
 #data.clean <- data.clean[ , -which(names(data.clean) %in% c("PROFILE_HAS_URL", "ACCOUNT_AGE_IN_MONTHS", "DUP_PROFILE", "HAS_PROFILE"))]
+data.clean <- data.clean[ , -which(names(data.clean) %in% c("LANGUAGE"))]
+
+data.clean[data.clean$FRIENDS_COUNT > 1000,]$FRIENDS_COUNT <- 1000
+data.clean[data.clean$FOLLOWERS_COUNT > 1000,]$FOLLOWERS_COUNT <- 1000
+data.clean[data.clean$STATUS_COUNT > 1000,]$STATUS_COUNT <- 1000
+data.clean[data.clean$LISTED_COUNT > 100,]$LISTED_COUNT <- 100
 
 #perform machine learning
 data.o <- data.clean
@@ -88,7 +95,7 @@ repeats <- c(3)
 #tune
 tune <- c(3)
 #sampling
-sampling <- c("smote")
+sampling <- c("none")
 #summary function
 summF <- c("prSummary") #"twoClassSummary", 
 rr <- c(1)  
@@ -102,9 +109,9 @@ for (n in summF) {
       for (y in repeats) {
         for (z in tune) {
           for (s in sz) {
-            for (r in 1:30) {
-              filename <- paste("~/Projects/RStudio/TwitterAnalysis/Engine/AnalysisResults/Results/BO5_rcv_",x,"fold_",y,"repeat_",z,"tune_",m,"_sumf_",n,"_size_",s,"_round_",r,".txt",sep="")
-              imagefilename <- paste("~/Projects/RStudio/TwitterAnalysis/Engine/AnalysisResults/Results/BO5_rcv_",x,"fold_",y,"repeat_",z,"tune_",m,"_sumf_",n,"_size_",s,"_round_",r,"_",sep="")
+            for (r in 28:30) {
+              filename <- paste("~/Projects/RStudio/TwitterAnalysis/Engine/AnalysisResults/Results/BOT2_15K_smote20_rcv_",x,"fold_",y,"repeat_",z,"tune_",m,"_sumf_",n,"_size_",s,"_round_",r,".txt",sep="")
+              imagefilename <- paste("~/Projects/RStudio/TwitterAnalysis/Engine/AnalysisResults/Results/BOT2_15K_smote20_rcv_",x,"fold_",y,"repeat_",z,"tune_",m,"_sumf_",n,"_size_",s,"_round_",r,"_",sep="")
               
               set.seed(Sys.time())
               inTrain <- createDataPartition(y = data.o$CLASS, p = .75, list = FALSE)
@@ -123,16 +130,21 @@ for (n in summF) {
               testing <- data.o[-inTrain,]
               
               #determine data for this test
-              #if(s > 0){
-              #  #get new data from random sample generator
-              #  data.r <- getRandomData(data.o, s)
-              #  inTrain <- createDataPartition(y = data.r$CLASS, p = .75, list = FALSE)
-              #  training <- data.r[inTrain,]
-              #  testing <- data.r[-inTrain,]
-              #  rm(inTrain) 
-              #}
+              if(s > 0){
+                #get new data from random sample generator
+                data.r <- getRandomData(data.o, s)
+                inTrain <- createDataPartition(y = data.r$CLASS, p = .75, list = FALSE)
+                training <- data.r[inTrain,]
+                testing <- data.r[-inTrain,]
+                rm(inTrain) 
+              }
               
-              #print(filename)
+              training <- SMOTE(CLASS ~., training, perc.over=100, perc.under=200)
+              #gives 45K records - reduce that to 4.5K
+              inTrain <- createDataPartition(y = training$CLASS, p = .20, list = FALSE)
+              training <- training[inTrain,]
+              rm(inTrain)
+              print(paste("Smote completed:",nrow(training),sep=""))
               t <- system.time(ML_Models_ROC_P(training, resamp, x, z, y, m, filename, imagefilename, 0, n))        
               sink(filename, append = TRUE)
               

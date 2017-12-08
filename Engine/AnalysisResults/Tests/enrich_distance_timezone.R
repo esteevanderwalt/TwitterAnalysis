@@ -42,8 +42,8 @@ getl <- function(myconn, t1, t2) {
   table2 <- t2
   
   #run first sql one then the other
-  #sql1 <- paste("SELECT U.ID, U.SCREENNAME, L.LONGITUDE AS LONG1, L.LATITUDE AS LAT1, TZ.LONGITUDE AS LONG2, TZ.LATITUDE AS LAT2 FROM ",table1," U	JOIN TWITTER.SMP_LOCATION L ON LOWER(TRIM(L.LOCATION)) = LOWER(TRIM(U.LOCATION)) AND L.LATITUDE IS NOT NULL JOIN TWITTER.SMP_LOCATION TZ ON LOWER(TRIM(TZ.LOCATION)) = LOWER(TRIM(U.TIMEZONE)) AND TZ.LATITUDE IS NOT NULL WHERE U.TIMEZONE IS NOT NULL AND U.LOCATION IS NOT NULL",sep="")
-  sql1 <- paste("SELECT U.ID, U.SCREENNAME, L.\"lon\" AS LONG1, L.\"lat\" AS LAT1, TZ.\"lon\" AS LONG2, TZ.\"lat\" AS LAT2 FROM ",table1," U JOIN TWITTER.SMP_LOCATION_C L ON UPPER(TRIM(L.\"location\")) = UPPER(TRIM(U.LOCATION)) AND L.\"lat\" IS NOT NULL JOIN TWITTER.SMP_LOCATION_C TZ ON UPPER(TRIM(TZ.\"location\")) = UPPER(TRIM(U.TIMEZONE)) AND TZ.\"lat\" IS NOT NULL WHERE U.TIMEZONE IS NOT NULL AND U.LOCATION IS NOT NULL",sep="")
+  sql1 <- paste("SELECT U.ID, U.SCREENNAME, L.LONGITUDE AS LONG1, L.LATITUDE AS LAT1, TZ.LONGITUDE AS LONG2, TZ.LATITUDE AS LAT2 FROM ",table1," U	JOIN TWITTER.SMP_LOCATION L ON LOWER(TRIM(L.LOCATION)) = LOWER(TRIM(U.LOCATION)) AND L.LATITUDE IS NOT NULL JOIN TWITTER.SMP_LOCATION TZ ON LOWER(TRIM(TZ.LOCATION)) = LOWER(TRIM(U.TIMEZONE)) AND TZ.LATITUDE IS NOT NULL WHERE U.TIMEZONE IS NOT NULL AND U.LOCATION IS NOT NULL",sep="")
+  #sql1 <- paste("SELECT U.ID, U.SCREENNAME, L.\"lon\" AS LONG1, L.\"lat\" AS LAT1, TZ.\"lon\" AS LONG2, TZ.\"lat\" AS LAT2 FROM ",table1," U JOIN TWITTER.SMP_LOCATION_C L ON UPPER(TRIM(L.\"location\")) = UPPER(TRIM(U.LOCATION)) AND L.\"lat\" IS NOT NULL JOIN TWITTER.SMP_LOCATION_C TZ ON UPPER(TRIM(TZ.\"location\")) = UPPER(TRIM(U.TIMEZONE)) AND TZ.\"lat\" IS NOT NULL WHERE U.TIMEZONE IS NOT NULL AND U.LOCATION IS NOT NULL",sep="")
   
   #' ###Load data
   #+ get_data
@@ -55,10 +55,11 @@ getl <- function(myconn, t1, t2) {
   apply(data.latlon_clean, 1, hf_latlon, myconn, table2)
 }
 
-getl(myconn, "TWITTER.tweets2_users_20170106", "TWITTER.zz_users_enrich_20170106")
-getl(myconn, "TWITTER.tweets2_users_20170418", "TWITTER.zz_users_enrich_20170418")
-getl(myconn, "TWITTER.tweets2_users_20170429", "TWITTER.zz_users_enrich_20170429")
-getl(myconn, "TWITTER.tweets2_users_20170517", "TWITTER.zz_users_enrich_20170517")
-getl(myconn, "TWITTER.tweets2_users_20170527", "TWITTER.zz_users_enrich_20170527")
+getl(myconn, "TWITTER.zz_fake_users", "TWITTER.zz_fake_users_enrich")
+#getl(myconn, "TWITTER.tweets2_users_20170106", "TWITTER.zz_users_enrich_20170106")
+#getl(myconn, "TWITTER.tweets2_users_20170418", "TWITTER.zz_users_enrich_20170418")
+#getl(myconn, "TWITTER.tweets2_users_20170429", "TWITTER.zz_users_enrich_20170429")
+#getl(myconn, "TWITTER.tweets2_users_20170517", "TWITTER.zz_users_enrich_20170517")
+#getl(myconn, "TWITTER.tweets2_users_20170527", "TWITTER.zz_users_enrich_20170527")
 
 close(myconn)

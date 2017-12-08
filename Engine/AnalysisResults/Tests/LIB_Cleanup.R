@@ -277,10 +277,10 @@ cleanup.TwitterFE <- function(data) {
   #numeric counts -> convert to hundreds
   #DISTANCE_LOCATION
   data$DISTANCE_LOCATION[is.na(data$DISTANCE_LOCATION)] <- 0
-  data$DISTANCE_LOCATION <- floor(data$DISTANCE_LOCATION/500)
+  data$DISTANCE_LOCATION <- floor(data$DISTANCE_LOCATION/100)
   #DISTANCE_TZ
   data$DISTANCE_TZ[is.na(data$DISTANCE_TZ)] <- 0
-  data$DISTANCE_TZ <- floor(data$DISTANCE_TZ/500)
+  data$DISTANCE_TZ <- floor(data$DISTANCE_TZ/100)
   #LISTED_COUNT
   data$LISTED_COUNT[is.na(data$LISTED_COUNT)] <- 0
   data$LISTED_COUNT <- floor(data$LISTED_COUNT/500)
@@ -290,13 +290,13 @@ cleanup.TwitterFE <- function(data) {
   data$FF_RATIO <- floor(data$FF_RATIO/500)
   #LEVENSHTEIN
   data$LEVENSHTEIN[is.na(data$LEVENSHTEIN)] <- 0
-  data$LEVENSHTEIN <- floor(data$LEVENSHTEIN/10)
+  data$LEVENSHTEIN <- floor(data$LEVENSHTEIN)  #/10
   #HAMMING
   data$HAMMING[is.na(data$HAMMING)] <- 0
-  data$HAMMING <- floor(data$HAMMING/10)
+  data$HAMMING <- floor(data$HAMMING)   #/10
   #COMPARE_AGE
   data$COMPARE_AGE[is.na(data$COMPARE_AGE)] <- 0
-  data$COMPARE_AGE <- floor(data$COMPARE_AGE/10)
+  data$COMPARE_AGE <- floor(data$COMPARE_AGE)   #/10
   
   #binary - dont need to do anything here
   #COMPARE_GENDER
