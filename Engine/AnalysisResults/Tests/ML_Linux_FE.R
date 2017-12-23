@@ -96,7 +96,7 @@ sampling <- c("none")
 #summary function
 summF <- c("prSummary") #"twoClassSummary", 
 rr <- c(1)  
-sz <- c(0) #c(100000,110000,140000) #use 0 for full set - , 1000, 10000, 100000
+sz <- c(1000,10000,100000) #c(100000,110000,140000) #use 0 for full set - , 1000, 10000, 100000
 
 cl <- makeCluster(detectCores())
 registerDoParallel(cores=7) #or cl
@@ -106,7 +106,7 @@ for (n in summF) {
       for (y in repeats) {
         for (z in tune) {
           for (s in sz) {
-            for (r in 2:30) {
+            for (r in 1:1) {
               filename <- paste("~/Projects/RStudio/TwitterAnalysis/Engine/AnalysisResults/Results/FE2_15K_smote20_rcv_",x,"fold_",y,"repeat_",z,"tune_",m,"_sumf_",n,"_size_",s,"_round_",r,".txt",sep="")
               imagefilename <- paste("~/Projects/RStudio/TwitterAnalysis/Engine/AnalysisResults/Results/FE2_15K_smote20_rcv_",x,"fold_",y,"repeat_",z,"tune_",m,"_sumf_",n,"_size_",s,"_round_",r,"_",sep="")
               

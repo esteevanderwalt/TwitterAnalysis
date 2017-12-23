@@ -52,10 +52,10 @@ data.clean <- cleanup.TwitterBot(data.full)
 #data.clean <- data.clean[ , -which(names(data.clean) %in% c("PROFILE_HAS_URL", "ACCOUNT_AGE_IN_MONTHS", "DUP_PROFILE", "HAS_PROFILE"))]
 data.clean <- data.clean[ , -which(names(data.clean) %in% c("LANGUAGE"))]
 
-data.clean[data.clean$FRIENDS_COUNT > 1000,]$FRIENDS_COUNT <- 1000
-data.clean[data.clean$FOLLOWERS_COUNT > 1000,]$FOLLOWERS_COUNT <- 1000
-data.clean[data.clean$STATUS_COUNT > 1000,]$STATUS_COUNT <- 1000
-data.clean[data.clean$LISTED_COUNT > 100,]$LISTED_COUNT <- 100
+#data.clean[data.clean$FRIENDS_COUNT > 1000,]$FRIENDS_COUNT <- 1000
+#data.clean[data.clean$FOLLOWERS_COUNT > 1000,]$FOLLOWERS_COUNT <- 1000
+#data.clean[data.clean$STATUS_COUNT > 1000,]$STATUS_COUNT <- 1000
+#data.clean[data.clean$LISTED_COUNT > 100,]$LISTED_COUNT <- 100
 
 #perform machine learning
 data.bot <- data.clean
@@ -154,9 +154,9 @@ for (n in summF) {
       for (y in repeats) {
         for (z in tune) {
           for (s in sz) {
-            for (r in 2:30) {
-              filename <- paste("~/Projects/RStudio/TwitterAnalysis/Engine/AnalysisResults/Results/FEA2_smote20_15K_rcv_",x,"fold_",y,"repeat_",z,"tune_",m,"_sumf_",n,"_size_",s,"_round_",r,".txt",sep="")
-              imagefilename <- paste("~/Projects/RStudio/TwitterAnalysis/Engine/AnalysisResults/Results/FEA2_smote20_15K_rcv_",x,"fold_",y,"repeat_",z,"tune_",m,"_sumf_",n,"_size_",s,"_round_",r,"_",sep="")
+            for (r in 1:1) {
+              filename <- paste("~/Projects/RStudio/TwitterAnalysis/Engine/AnalysisResults/Results/FEA4_smote20_15K_rcv_",x,"fold_",y,"repeat_",z,"tune_",m,"_sumf_",n,"_size_",s,"_round_",r,".txt",sep="")
+              imagefilename <- paste("~/Projects/RStudio/TwitterAnalysis/Engine/AnalysisResults/Results/FEA4_smote20_15K_rcv_",x,"fold_",y,"repeat_",z,"tune_",m,"_sumf_",n,"_size_",s,"_round_",r,"_",sep="")
               
               set.seed(Sys.time())
               inTrain <- createDataPartition(y = data.o$CLASS, p = .75, list = FALSE)
@@ -190,7 +190,7 @@ for (n in summF) {
               training <- training[inTrain,]
               rm(inTrain)
               print(paste("Smote completed:",nrow(training),sep=""))
-              t <- system.time(ML_Models_ROC_P(training, resamp, x, z, y, m, filename, imagefilename, 0, n))        
+              t <- system.time(ML_Models_ROC_P_one(training, resamp, x, z, y, m, filename, imagefilename, 0, n))        
               sink(filename, append = TRUE)
               
               cat("\n")

@@ -1,0 +1,214 @@
+
+[1] "START INTRAIN"
+[1] "=============="
+     Resample1
+[1,]         2
+[2,]         3
+[3,]         4
+[4,]         6
+[5,]         7
+[6,]        10
+Timing stopped at: 0.004 0 0.003 
+Timing stopped at: 0.632 0 0.633 
+Timing stopped at: 0 0 0.001 
+Timing stopped at: 0 0 0.001 
+Warning in install.packages :
+  installation of package ‘rgl’ had non-zero exit status
+Warning in install.packages :
+  installation of package ‘forestFloor’ had non-zero exit status
+Warning in install.packages :
+  installation of package ‘rgl’ had non-zero exit status
+Warning in install.packages :
+  installation of package ‘forestFloor’ had non-zero exit status
+Warning in install.packages :
+  installation of package ‘rgl’ had non-zero exit status
+NULL
+null device 
+          1 
+NULL
+null device 
+          1 
+  |                                                                         |                                                                 |   0%  |                                                                         |...                                                              |   5%
+   inline R code fragments
+
+  |                                                                         |......                                                           |  10%
+label: setup (with options) 
+List of 1
+ $ include: logi FALSE
+
+  |                                                                         |..........                                                       |  15%
+  ordinary text without R code
+
+  |                                                                         |.............                                                    |  20%
+label: unnamed-chunk-1
+  |                                                                         |................                                                 |  25%
+  ordinary text without R code
+
+  |                                                                         |....................                                             |  30%
+label: unnamed-chunk-2
+  |                                                                         |.......................                                          |  35%
+  ordinary text without R code
+
+  |                                                                         |..........................                                       |  40%
+label: unnamed-chunk-3
+  |                                                                         |.............................                                    |  45%
+  ordinary text without R code
+
+  |                                                                         |................................                                 |  50%
+label: unnamed-chunk-4
+  |                                                                         |....................................                             |  55%
+  ordinary text without R code
+
+  |                                                                         |.......................................                          |  60%
+label: unnamed-chunk-5
+  |                                                                         |..........................................                       |  65%
+   inline R code fragments
+
+[1] accuracy_decrease and gini_decrease
+  |                                                                         |..............................................                   |  70%
+label: unnamed-chunk-6
+
+  |                                                                         |                                                                 |   0%  |                                                                         |...                                                              |   5%
+   inline R code fragments
+
+  |                                                                         |......                                                           |  10%
+label: setup (with options) 
+List of 1
+ $ include: logi FALSE
+
+  |                                                                         |..........                                                       |  15%
+  ordinary text without R code
+
+  |                                                                         |.............                                                    |  20%
+label: unnamed-chunk-1
+  |                                                                         |................                                                 |  25%
+  ordinary text without R code
+
+  |                                                                         |....................                                             |  30%
+label: unnamed-chunk-2
+  |                                                                         |.......................                                          |  35%
+  ordinary text without R code
+
+  |                                                                         |..........................                                       |  40%
+label: unnamed-chunk-3
+  |                                                                         |.............................                                    |  45%
+  ordinary text without R code
+
+  |                                                                         |................................                                 |  50%
+label: unnamed-chunk-4
+  |                                                                         |....................................                             |  55%
+  ordinary text without R code
+
+  |                                                                         |.......................................                          |  60%
+label: unnamed-chunk-5
+  |                                                                         |..........................................                       |  65%
+   inline R code fragments
+
+[1] accuracy_decrease and gini_decrease
+  |                                                                         |..............................................                   |  70%
+label: unnamed-chunk-6
+
+   tree              variable minimal_depth
+1     1 ACCOUNT_AGE_IN_MONTHS             7
+2     1           COMPARE_AGE             3
+3     1        COMPARE_GENDER             5
+4     1           DISTANCE_TZ             1
+5     1           DUP_PROFILE             6
+6     1       FOLLOWERS_COUNT             8
+7     1           GEO_ENABLED             4
+8     1              HAS_NAME             0
+9     1           HAS_PROFILE             3
+10    1           LEVENSHTEIN             3
+[1] "Warning: your forest does not contain information on local importance so 'accuracy_decrease' measure cannot be extracted. To add it regrow the forest with the option localImp = TRUE and run this function again."
+                variable mean_min_depth no_of_nodes gini_decrease no_of_trees times_a_root
+1  ACCOUNT_AGE_IN_MONTHS          3.452         176       5.39315          47            0
+2            COMPARE_AGE          1.860         219      34.86199          50            8
+3         COMPARE_GENDER          4.532          68       8.10415          47            1
+4      DISTANCE_LOCATION          8.012           2       0.07236           2            0
+5            DISTANCE_TZ          3.796         119       4.40663          46            1
+6            DUP_PROFILE          3.704          71       7.89380          44            5
+7               FF_RATIO          7.528           8       0.27499           8            0
+8        FOLLOWERS_COUNT          4.296         125       2.86980          46            1
+9          FRIENDS_COUNT          4.820          93       2.05855          40            1
+10           GEO_ENABLED          5.132          62       1.30732          37            2
+11             HAS_IMAGE          8.032           2       0.06063           2            0
+12              HAS_NAME          2.536          78      15.79869          46            9
+13           HAS_PROFILE          4.412          49       4.75451          37            2
+14           LEVENSHTEIN          1.924         186      22.36361          49           13
+15          LISTED_COUNT          7.512          12       0.26755          12            0
+16       PROFILE_HAS_URL          6.768          18       0.62782          18            0
+17          STATUS_COUNT          3.664         162       4.41418          49            2
+18       USERNAME_LENGTH          3.040         169       7.21467          50            5
+                                  p_value
+1  0.000000000000000059570055249895445909
+2  0.000000000000000000000000000000004379
+3  0.994219899819815400299205521150724962
+4  1.000000000000000000000000000000000000
+5  0.001455963746108560790196162493259635
+6  0.985067377650655218168651572341332212
+7  1.000000000000000000000000000000000000
+8  0.000179296872929045385475568807898128
+9  0.385118949333769333698285208811284974
+10 0.999417028927819250938568984565790743
+11 1.000000000000000000000000000000000000
+12 0.913845982433382886256367783062160015
+13 0.999999497073085441556372643390204757
+14 0.000000000000000000027451098173537350
+15 1.000000000000000000000000000000000000
+16 1.000000000000000000000000000000000000
+17 0.000000000000968158949797886198558145
+18 0.000000000000008900214763183561236358
+[1] "ACCOUNT_AGE_IN_MONTHS" "COMPARE_AGE"           "HAS_NAME"             
+[4] "LEVENSHTEIN"           "STATUS_COUNT"          "USERNAME_LENGTH"      
+                 variable root_variable mean_min_depth occurrences
+105       USERNAME_LENGTH      HAS_NAME          1.865          37
+10            COMPARE_AGE   LEVENSHTEIN          1.449          36
+3   ACCOUNT_AGE_IN_MONTHS      HAS_NAME          1.666          35
+9             COMPARE_AGE      HAS_NAME          2.008          33
+81            LEVENSHTEIN      HAS_NAME          2.251          33
+99           STATUS_COUNT      HAS_NAME          2.549          33
+                       interaction uncond_mean_min_depth
+105       HAS_NAME:USERNAME_LENGTH                 3.040
+10         LEVENSHTEIN:COMPARE_AGE                 1.860
+3   HAS_NAME:ACCOUNT_AGE_IN_MONTHS                 3.452
+9             HAS_NAME:COMPARE_AGE                 1.860
+81            HAS_NAME:LEVENSHTEIN                 1.924
+99           HAS_NAME:STATUS_COUNT                 3.664
+   tree              variable minimal_depth
+1     1 ACCOUNT_AGE_IN_MONTHS             7
+2     1           COMPARE_AGE             3
+3     1        COMPARE_GENDER             5
+4     1           DISTANCE_TZ             1
+5     1           DUP_PROFILE             6
+6     1       FOLLOWERS_COUNT             8
+7     1           GEO_ENABLED             4
+8     1              HAS_NAME             0
+9     1           HAS_PROFILE             3
+10    1           LEVENSHTEIN             3
+
+Call:
+ randomForest(x = x, y = y, mtry = param$mtry) 
+               Type of random forest: classification
+                     Number of trees: 500
+No. of variables tried at each split: 2
+
+        OOB estimate of  error rate: 3.27%
+Confusion matrix:
+            deceptive trustworthy class.error
+deceptive        4292         208     0.04622
+trustworthy        86        4414     0.01911
+[1] 2 2 3 1
+[1] 2 2 3 1
+             freqRatio percentUnique zeroVar  nzv
+IS_CELEBRITY      0.00     0.0005899    TRUE TRUE
+LANGUAGE         53.59     0.0336249   FALSE TRUE
+HAS_IMAGE       253.15     0.0011798   FALSE TRUE
+[1] freqRatio     percentUnique zeroVar       nzv          
+<0 rows> (or 0-length row.names)
+[1] "Smote completed:9000"
+Timing stopped at: 0.104 0.32 0.415 
+Timing stopped at: 1.008 0.32 1.325 
+[1] "Smote completed:9000"
+Timing stopped at: 0.068 0.228 0.351 
+Timing stopped at: 0.928 0.228 1.223 
+Timing stopped at: 0 0 0.001 

@@ -1235,6 +1235,43 @@ ML_Models_ROC_P_one <- function(training, resamp, folds, tune, r, samp, filename
   
 }
 
+ML_Models_ROC_P_rf <- function(training, resamp, folds, tune, r, samp, filename, imagefilename, ss = 0, summF){
+  
+  if(samp=="none"){
+    samp <- NULL
+  }
+  
+  #--------------------------------------
+  # just run one model
+  #--------------------------------------
+  # Model notes:
+  #   warnings() == T
+  #   mtry == varied, 3 times (2,4,7)
+  
+  fit.m2.seeds <- setSeeds(resamp, folds, r, tune)
+  
+  fit.m2.fc <- trainControl(method = resamp, 
+                            number = folds,
+                            repeats = r,
+                            seeds = fit.m2.seeds,
+                            classProbs = TRUE,
+                            savePredictions = TRUE,
+                            summaryFunction = get(summF), #twoClassSummary,
+                            sampling = samp)
+  
+  # Build model
+  set.seed(123)
+  m2.t <- system.time(fit.m2 <- train(CLASS~., data=training,
+                                      method = "rf",
+                                      metric = "ROC",
+                                      preProcess = c("center", "scale"),
+                                      trControl = fit.m2.fc,
+                                      tuneLength = tune))
+  runDetails(fit.m2, "fit.m2")
+  
+}
+
+
 ML_Models_ROC <- function(training, resamp, folds, tune, r, filename){
   
   #--------------------------------------
