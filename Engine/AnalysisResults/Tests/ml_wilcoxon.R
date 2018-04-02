@@ -1,5 +1,5 @@
 #load the data of all users
-data <- read.csv(file="C://PhD//ProjectsV2//RStudio//TwitterAnalysis//Engine//AnalysisResults//Results//fe_ml_30runs_results.csv",header=TRUE,sep=",");
+data <- read.csv(file="C://PhD//ProjectsV2//RStudio//TwitterAnalysis//Engine//AnalysisResults//Results//fe_ml_features.csv",header=TRUE,sep=",");
 
 c <- ncol(data)
 r = c(0,0,0)
@@ -33,8 +33,8 @@ for(i in 2:c){
   print(paste(r[1],r[2],r[3],sep="-"))
 }
 
-mean(data[,8])
-w <- wilcox.test(x=data[,8],y=data[,2])
+mean(data[,0])
+w <- wilcox.test(x=data[,0],y=data[,2])
 w
 w$p.value
 w$p.value < 0.05

@@ -155,8 +155,8 @@ for (n in summF) {
         for (z in tune) {
           for (s in sz) {
             for (r in 1:1) {
-              filename <- paste("~/Projects/RStudio/TwitterAnalysis/Engine/AnalysisResults/Results/FEA4_smote20_15K_rcv_",x,"fold_",y,"repeat_",z,"tune_",m,"_sumf_",n,"_size_",s,"_round_",r,".txt",sep="")
-              imagefilename <- paste("~/Projects/RStudio/TwitterAnalysis/Engine/AnalysisResults/Results/FEA4_smote20_15K_rcv_",x,"fold_",y,"repeat_",z,"tune_",m,"_sumf_",n,"_size_",s,"_round_",r,"_",sep="")
+              filename <- paste("~/Projects/RStudio/TwitterAnalysis/Engine/AnalysisResults/Results/FEA_savemodel_smote20_15K_rcv_",x,"fold_",y,"repeat_",z,"tune_",m,"_sumf_",n,"_size_",s,"_round_",r,".txt",sep="")
+              imagefilename <- paste("~/Projects/RStudio/TwitterAnalysis/Engine/AnalysisResults/Results/FEA_savemodel_smote20_15K_rcv_",x,"fold_",y,"repeat_",z,"tune_",m,"_sumf_",n,"_size_",s,"_round_",r,"_",sep="")
               
               set.seed(Sys.time())
               inTrain <- createDataPartition(y = data.o$CLASS, p = .75, list = FALSE)
@@ -190,7 +190,7 @@ for (n in summF) {
               training <- training[inTrain,]
               rm(inTrain)
               print(paste("Smote completed:",nrow(training),sep=""))
-              t <- system.time(ML_Models_ROC_P_one(training, resamp, x, z, y, m, filename, imagefilename, 0, n))        
+              t <- system.time(ML_Models_ROC_P(training, resamp, x, z, y, m, filename, imagefilename, 1, n))        
               sink(filename, append = TRUE)
               
               cat("\n")
