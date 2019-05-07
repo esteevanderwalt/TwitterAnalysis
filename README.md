@@ -23,7 +23,7 @@ The study consists of the following phases
 3. [The results](/Engine/AnalysisResults/Results.md)
 4. Future Potential work
 
-##The Identity Deception Detection Engine
+## The Identity Deception Detection Engine
 The identity deception engine that is built as part of this research has a few main components
 
 1. Preprocessing of the data (data cleaning, scaling, etc).
@@ -35,10 +35,10 @@ The identity deception engine that is built as part of this research has a few m
 7. Evaluation of results with attributes, features and fuzzy features.
 8. A notion of an IDI over time.
 
-###Inner workings of the engine
+### Inner workings of the engine
 
 
-####Data cleaning
+#### Data cleaning
 Here we will start with a trained dataset. 
 (Data Cleaning) The following was done to clean data
 
@@ -50,13 +50,13 @@ Here we will start with a trained dataset.
 6. Remove all users which do not exist anymore (probably closed/banned)
 
 
-####Data protection
+#### Data protection
 With regards to privacy protection the following measures have been taken
 
 1. Names are obfuscated by not reporting on them
 
 
-####Data enrichment for feature engineering
+#### Data enrichment for feature engineering
 A few additional features will be added via various means
 
 1. Names (levenshtein distance between screenname and actual account name, does the actual name exist, get gender of name)
@@ -65,22 +65,22 @@ A few additional features will be added via various means
 4. Social (get sentiment of tweets and hashtags, get the distance per user against that of total group)
 
 
-####Feature extraction
+#### Feature extraction
 The next step is to identify those identity features that could indicate deception.
 The idea is to take each attribute, find correlations to others and determine whether they will be useful input to a anomoly detection model.
 We will also add each feature individually to the attributes and determine information gain / entropy.
 
-####Injection of dummy accounts
+#### Injection of dummy accounts
 Some dummy accounts will be generated that are deceptive. These will be injected into the result set.
 This will change the problem to a classification problem that can be solved using various existing machine learning algorithms.
 
-####Scoring
+#### Scoring
 Initially a deception score (DS) was calculated per attribute or feature evaluated. This however is not required anymore once we start using machine learning as the algorithms will make use of all available data and not look at each attribute/feature individually.
 For each user a identity deception score (IDI) will be calculated per day based on the probability that they are deceptive as per the outcome of the machine learning algorithm.
 
 An overall IDI (identity deception indicator) will be created per user as a combination of all DS over several days to understand the average deceptiveness of the user.
 
-####Evaluating results
+#### Evaluating results
 A confusion matrix will indicate the effectiveness of each machine learning algorihtm run (false positives, etc). In addition the ROC, sensitivity, specificity, Kappa scores will show results.
 
 The results of different algorithms will be compared like-for-like.
